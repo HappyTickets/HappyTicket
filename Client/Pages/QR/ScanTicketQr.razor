@@ -1,0 +1,110 @@
+﻿@page "/scan-qr-ticket"
+@using ZXingBlazor.Components
+@inject BITicketService TicketService
+@inject ICustomSnackbarProvider Snackbar
+@inject BITicketService TicketService
+
+
+@attribute [Authorize(Policy = "IsAdmin")]
+
+<h3>QR Code Scanner</h3>
+
+@if (showScanner)
+{
+    <BarcodeReader ScanResult="(e => HandleScanResult(e))" DecodeAllFormats Options=@(new() { ShowSelectFile = true, Screenshot = scannerFromScreenShot }) ScanBtnTitle="Scan" ResetBtnTitle="Reset" SelectDeviceBtnTitle="Select" CloseBtnTitle="Close" UseBuiltinDiv="false" @ref="barcodeReaderCustom" 
+        Close=@(() => { scannerFromScreenShot = false; }) />
+    
+    <div @ref="barcodeReaderCustom.Element">
+        <div style="width: 480px; max-width: 100%">
+            <MudButton data-action="startButton">Scan</MudButton>
+            <MudButton OnClick=@(async _ => { scannerFromScreenShot = true; showScanner = false; await Task.Delay(1); showScanner = true; StateHasChanged(); })>Scan from share screen</MudButton>
+            <MudButton data-action="resetButton" OnClick=@(_ => scanResult = string.Empty)>Reset</MudButton>
+            <MudButton data-action="closeButton" type="button">Close</MudButton>
+
+            <div data-action="sourceSelectPanel" style="display:none">
+                <label for="sourceSelect">Select Source:</label>
+                <select data-action="sourceSelect" style="max-width:100%" class="form-control">
+                </select>
+            </div>
+            <div>
+                <video id="video" playsinline autoplay style="height:480px;width: 640px;border: 1px solid red"></video>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    private bool showScanner = true;
+    private bool scannerFromScreenShot;
+    private string scanResult;
+    BarcodeReader barcodeReaderCustom;
+
+    private string statusClass = "alert alert-info";
+
+    protected override async Task OnInitializedAsync()
+    {
+        scanResult = "";
+    }
+
+    // Function to handle the scan result
+    private async Task HandleScanResult(string result)
+    {
+        scanResult = result;
+
+        // Check if the result is a valid GUID
+        if (!Guid.TryParse(result, out Guid ticketId))
+        {
+            // Invalid QR Code
+            Snackbar.Show("Invalid QR Code", Severity.Error);
+            scanResult = string.Empty;
+            statusClass = "alert alert-danger";
+        }
+        else
+        {
+            // Call the ScanTicketQrAsync method
+            var scanResponse = await TicketService.ScanTicketQrAsync(ticketId);
+
+            // Match to handle success or failure response
+            _ = scanResponse.Match(
+                success =>
+                {
+                    if (success.IsSuccess)  // Check if the status is success
+                    {
+                        if (success.ErrorList is not null)
+                        {
+                            scanResult = success.ErrorList.FirstOrDefault().Message;
+                            Snackbar.Show(scanResult, Severity.Error);
+                        }
+                        else
+                        {
+                            // Display success message from the API response
+                            scanResult = success.Data ?? "An Error Happened Please Try Again...!";
+                            Snackbar.Show(scanResult, Severity.Success);
+                        }
+                    }
+                    else
+                    {
+                        // Handle unsuccessful operation
+                        var errorMessage = success.ErrorList?.FirstOrDefault()?.Message ?? "Failed to scan the ticket.";
+                        Snackbar.Show(errorMessage, Severity.Error);
+                    }
+                    return Unit.Default;
+                },
+                failure =>
+                {
+                    // Handle unexpected failures
+                    Snackbar.Show(failure.Message, Severity.Error);
+                    statusClass = "alert alert-danger";
+                    return Unit.Default;
+                });
+
+            // Ensure UI update after handling the result
+            StateHasChanged();
+        }
+
+        // Restart scanning automatically
+        await barcodeReaderCustom.Start(); // Re-initialize the scanner after each scan
+    }
+
+}

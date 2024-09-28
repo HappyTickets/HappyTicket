@@ -1,0 +1,85 @@
+﻿@using MudBlazor
+@using System.Globalization
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+<div class="datetime-picker">
+    <MudPaper Elevation="4" Class="p-3">
+        <MudGrid Container="true" Class="text-center">
+            <MudItem xs="12" md="6">
+                <MudDatePicker Label="Date" @bind-Date="SelectedDate" Variant="Variant.Filled" />
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudTimePicker Label="Time" @bind-Time="SelectedTime" Variant="Variant.Filled" />
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+</div>
+
+@code {
+    [Parameter] public DateTime? SelectedDateTime { get; set; }
+    [Parameter] public EventCallback<DateTime?> SelectedDateTimeChanged { get; set; }
+
+    private DateTime? SelectedDate { get; set; }
+    private TimeSpan? SelectedTime { get; set; }
+
+    protected override void OnInitialized()
+    {
+        InitializeDateTime();
+    }
+
+    private void InitializeDateTime()
+    {
+        if (SelectedDateTime.HasValue)
+        {
+            SelectedDate = SelectedDateTime.Value.Date;
+            SelectedTime = SelectedDateTime.Value.TimeOfDay;
+        }
+        else
+        {
+            SelectedDate = null;
+            SelectedTime = null;
+        }
+    }
+
+    private async Task UpdateDateTime()
+    {
+        if (SelectedDate.HasValue && SelectedTime.HasValue)
+        {
+            DateTime selectedDateTime = SelectedDate.Value.Date + SelectedTime.Value;
+            await SelectedDateTimeChanged.InvokeAsync(selectedDateTime);
+        }
+        else
+        {
+            await SelectedDateTimeChanged.InvokeAsync(null);
+        }
+    }
+
+    // Handle date change
+    private async Task DateChanged(DateTime? newDate)
+    {
+        SelectedDate = newDate;
+        await UpdateDateTime();
+    }
+
+    // Handle time change
+    private async Task TimeChanged(TimeSpan? newTime)
+    {
+        SelectedTime = newTime;
+        await UpdateDateTime();
+    }
+
+    // Reset the component
+    private void Reset()
+    {
+        SelectedDate = null;
+        SelectedTime = null;
+        InitializeDateTime();
+    }
+
+    // Validate if both date and time are selected
+    private bool Validate()
+    {
+        return SelectedDate.HasValue && SelectedTime.HasValue;
+    }
+}

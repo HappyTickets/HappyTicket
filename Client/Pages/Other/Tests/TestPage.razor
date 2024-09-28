@@ -1,0 +1,45 @@
+﻿@* @page "/Test"
+@using QRCoder
+@using System.Text
+@using System.IO
+@using Microsoft.JSInterop
+
+<img src=@(qrCodeImage) />
+@((MarkupString)qrCodeUri)
+@code {
+    string qrCodeUri = string.Empty;
+    string qrCodeImage = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        QRCodeGenerator qrGenerator = new QRCodeGenerator();
+        QRCodeData qrCodeData = qrGenerator.CreateQrCode(Guid.NewGuid().ToString(), QRCodeGenerator.ECCLevel.H);
+        SvgQRCode qrCode = new SvgQRCode(qrCodeData);
+        PngByteQRCode pngqrCode = new PngByteQRCode(qrCodeData);
+        qrCodeUri = qrCode.GetGraphic(7);
+        qrCodeImage = ConvertByteArrayToBlob(pngqrCode.GetGraphic(7));
+        base.OnInitialized();
+    }
+
+    public string ConvertByteArrayToBlob(byte[] byteArray)
+    {
+        using var ms = new MemoryStream(byteArray);
+
+        // Create a Blob from the MemoryStream
+        var blob = new System.IO.MemoryStream(ms.ToArray());
+
+        // Generate a URL for the Blob
+        return $"data:{GetContentType(byteArray)};base64,{Convert.ToBase64String(byteArray)}";
+    }
+    private string GetContentType(byte[] imageBytes)
+    {
+        switch (imageBytes[0])
+        {
+            case 137: return "image/png";
+            case 82: return "image/gif";
+            case 71: return "image/bmp";
+            default: return "application/octet-stream";
+        }
+    }
+}
+ *@

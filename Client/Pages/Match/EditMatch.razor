@@ -1,0 +1,231 @@
+﻿@page "/match/edit/{matchId:guid}"
+
+@inject ICustomSnackbarProvider Snackbar
+@inject BITeamService TeamService
+@inject BIMatchService MatchService
+@inject IDialogService DialogService
+@inject BIStadiumService StadiumService
+@inject NavigationManager NavigationManager
+@attribute [Authorize(Policy = "IsAdmin")]
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+<PageTitle>@Resource.Edit @Resource.TheMatch</PageTitle>
+
+<MudPaper Class="mt-2">
+    <MudGrid Class="pa-4 gap-2">
+        <MudItem xs="12">
+            <MudText Typo="Typo.h5" Style="font-weight:bold;">@Resource.Edit @Resource.TheMatch</MudText>
+        </MudItem>
+        <MudItem xs="12">
+            <MudGrid>
+                @if (teams == null || stadiums == null)
+                {
+                    <MudItem xs="12">
+                        <MudText Typo="Typo.h6">@Resource.Loading</MudText>
+                    </MudItem>
+                }
+                else
+                {
+                    <MudItem xs="12">
+                        <MudSelect T="Guid?" Label="Team A" Value="match.TeamAId" ValueChanged="ChangeTeamA" ToStringFunc="@(x => (x == null || x == Guid.Empty) ? $"{Resource.Add} {Resource.NewTeam}" : teams.FirstOrDefault(y => y.Id == x)?.Name)" Required>
+                            @foreach (var team in teams.Where(x => x.Id != Guid.Empty))
+                            {
+                                <MudSelectItem T="Guid?" Value="@team.Id">@team.Name</MudSelectItem>
+                            }
+                            <MudSelectItem T="Guid?" Value="null">@Resource.Add @Resource.NewTeam</MudSelectItem>
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudSelect T="Guid?" Label="Team B" Value="match.TeamBId" ValueChanged="ChangeTeamB" ToStringFunc="@(x => (x == null || x == Guid.Empty) ? $"{Resource.Add} {Resource.NewTeam}" : teams.FirstOrDefault(y => y.Id == x)?.Name)" Required>
+                            @foreach (var team in teams.Where(x => x.Id != Guid.Empty))
+                            {
+                                <MudSelectItem T="Guid?" Value="@team.Id">@team.Name</MudSelectItem>
+                            }
+                            <MudSelectItem T="Guid?" Value="null">@Resource.Add @Resource.NewTeam</MudSelectItem>
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudSelect T="Guid?" Label="Stadium" Value="match.StadiumId" ValueChanged="ChangeStadium" ToStringFunc="@(x => (x == null || x == Guid.Empty) ? $"{Resource.Add} {Resource.NewStadium}" : stadiums.FirstOrDefault(y => y.Id == x)?.Name)" Required>
+                            @foreach (var stadium in stadiums.Where(x => x.Id != Guid.Empty))
+                            {
+                                <MudSelectItem T="Guid?" Value="@stadium.Id">@stadium.Name</MudSelectItem>
+                            }
+                            <MudSelectItem T="Guid?" Value="null">@Resource.Add @Resource.NewStadium</MudSelectItem>
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudNumericField @bind-Value="match.MaxPerUser" Label=@Resource.TicketPerCustomer Variant="Variant.Text" Min="1" Required />
+                    </MudItem>
+                    <MudItem xs="12">
+                        <label for="matchDateTime">@Resource.Match_DateTime</label>
+                        <MudGrid>
+                            <MudItem xs="12" md="6">
+                                <MudDatePicker @bind-Date="match.EventDate" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.BottomCenter" Label=@Resource.Date Variant="Variant.Text" />
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudTimePicker @bind-Time="match.EventTime" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.BottomCenter" Label=@Resource.Time Variant="Variant.Text" AmPm />
+                            </MudItem>
+                        </MudGrid>
+                    </MudItem>
+                    <MudItem xs="12" Class="d-flex justify-end">
+                        <LoadingButton OnClick="UpdateMatch" Color="Color.Primary" Variant="Variant.Filled">@Resource.Edit @Resource.TheMatch</LoadingButton>
+                    </MudItem>
+                }
+            </MudGrid>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+<CreateTeamDialog OnTeamCreated="ReloadTeams" @bind-IsVisible="showCreateTeamDialog" />
+<CreateStadiumDialog OnStadiumCreated="ReloadStadiums" @bind-IsVisible="showCreateStadiumDialog" />
+
+@code {
+    [Parameter]
+    public Guid matchId { get; set; }
+
+    private MatchDto match = new MatchDto();
+    private List<TeamDto> teams = new List<TeamDto>();
+    private List<StadiumDto> stadiums = new List<StadiumDto>();
+    private bool showCreateTeamDialog;
+    private bool showCreateStadiumDialog;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMatchDetails();
+        await LoadTeamsAndStadiums();
+    }
+
+    private async Task LoadMatchDetails()
+    {
+        var response = await MatchService.GetMatchByIdAsync(matchId, false);
+        _ = response.Match(
+            succ =>
+            {
+                match = succ.Data ?? new();
+                if (!succ.IsSuccess)
+                {
+                    Snackbar.Show(Resource.MatchDetails_Load_Fail, Severity.Error);
+                }
+                Snackbar.Show(succ.Title, succ.IsSuccess ? Severity.Info : Severity.Error);
+                succ.ErrorList?.ToList().ForEach(x => Snackbar.Show($"{x.Title}: {x.Message}", Severity.Error));
+                return new Unit();
+            },
+            fail =>
+            {
+                match = new();
+                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                return new Unit();
+            }
+        );
+    }
+
+    private async Task LoadTeamsAndStadiums()
+    {
+        await ReloadTeams();
+        await ReloadStadiums();
+    }
+
+    private void ChangeTeamA(Guid? teamId)
+    {
+        if (teamId == null || teamId == Guid.Empty)
+        {
+            showCreateTeamDialog = true;
+            return;
+        }
+        match.TeamAId = teamId!.Value;
+    }
+    private void ChangeTeamB(Guid? teamId)
+    {
+        if (teamId == null || teamId == Guid.Empty)
+        {
+            showCreateTeamDialog = true;
+            return;
+        }
+        match.TeamBId = teamId!.Value;
+    }
+    private void ChangeStadium(Guid? stadiumId)
+    {
+        if (stadiumId == null || stadiumId == Guid.Empty)
+        {
+            showCreateStadiumDialog = true;
+            return;
+        }
+        match.StadiumId = stadiumId!.Value;
+    }
+
+    private async Task UpdateMatch()
+    {
+        if (ValidateForm())
+        {
+            
+            var response = await MatchService.UpdateMatchAsync(match);
+            response.Match(
+                succ =>
+                {
+                    if (succ.IsSuccess)
+                    {
+                        Snackbar.Show(Resource.Match_Update_Success, Severity.Success);
+                        NavigationManager.NavigateTo("/matches");
+                    }
+                    else
+                    {
+                        Snackbar.Show(Resource.Match_Update_Fail, Severity.Success);
+                        Snackbar.Show(succ.Title, Severity.Error);
+                        succ.ErrorList?.ToList().ForEach(x => Snackbar.Show($"{x.Title}: {x.Message}", Severity.Error));
+                    }
+                    return new Unit();
+                },
+                fail =>
+                {
+                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                    return new Unit();
+                }
+            );
+        }
+        else
+        {
+            Snackbar.Show(Resource.RequiredFields, Severity.Error);
+        }
+    }
+
+    private async Task ReloadTeams()
+    {
+        var teamResponse = await TeamService.GetTeamsAsync(false);
+        teamResponse.Match(
+            succ =>
+            {
+                teams = succ.Data?.ToList() ?? new List<TeamDto>();
+                return new Unit();
+            },
+            fail =>
+            {
+                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                Console.WriteLine(fail.Message);
+                return new Unit();
+            }
+        );
+    }
+
+    private async Task ReloadStadiums()
+    {
+        var stadiumResponse = await StadiumService.GetStadiumsAsync(false);
+        stadiumResponse.Match(
+            succ =>
+            {
+                stadiums = succ.Data?.ToList() ?? new List<StadiumDto>();
+                return new Unit();
+            },
+            fail =>
+            {
+                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                Console.WriteLine(fail.Message);
+                return new Unit();
+            }
+        );
+    }
+
+    private bool ValidateForm()
+    {
+        return match.TeamAId != Guid.Empty && match.TeamBId != Guid.Empty && match.StadiumId != Guid.Empty && match.EventDate != null && match.EventTime != null;
+    }
+}

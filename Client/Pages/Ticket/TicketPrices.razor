@@ -1,0 +1,247 @@
+﻿@page "/match/ticket-prices/{matchId:guid}"
+@using Shared.Enums
+@inject ICustomSnackbarProvider Snackbar
+@inject BIMatchService MatchService
+@inject BITicketService TicketService
+@inject NavigationManager NavigationManager
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+<PageTitle>@Resource.Match_Ticket_Prices</PageTitle>
+<MudCard>
+    <MudCardContent>
+        <MudText Typo="Typo.h3" Align="Align.Center">@Resource.Match_Ticket_Prices</MudText>
+
+        @if (match == null)
+        {
+            <MudText Typo="Typo.h6" Align="Align.Center">@Resource.Loading</MudText>
+        }
+        else
+        {
+            <MudGrid>
+                <MudItem xs="12" md="6" Class="d-flex align-items-center justify-content-center">
+                    @if (match.TeamA != null)
+                    {
+                        <div class="text-center">
+                            <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), match.TeamA?.Logo))" alt="@match.TeamA?.Name" class="team-logo" />
+                            <div class="mt-2">@match.TeamA!.Name</div>
+                        </div>
+                    }
+                </MudItem>
+                <MudItem xs="12" md="6" Class="d-flex align-items-center justify-content-center">
+                    @if (match.TeamB != null)
+                    {
+                        <div class="text-center">
+                            <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), match.TeamB?.Logo))" alt="@match.TeamB?.Name" class="team-logo" />
+                            <div class="mt-2">@match.TeamB!.Name</div>
+                        </div>
+                    }
+                </MudItem>
+            </MudGrid>
+            <MudText Typo="Typo.subtitle1" Align="Align.Center" Class="mt-2">Stadium: @match.Stadium?.Name</MudText>
+            <MudText Typo="Typo.subtitle2" Align="Align.Center" Class="mt-1">Event Date and Time: @(match.EventDate?.ToString("dd-MM-yyyy")) @match.EventTime</MudText>
+
+            <MudDivider Class="my-4" />
+
+            <MudText Typo="Typo.h5" Align="Align.Center">@Resource.Enter @Resource.TicketDetails</MudText>
+
+            <MudForm @ref="form">
+                <MudGrid>
+                    <!-- Header -->
+                    <MudItem xs="12" md="2">
+                        <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.Class</MudText>
+                    </MudItem>
+                    <MudItem xs="12" md="2">
+                        <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.Price</MudText>
+                    </MudItem>
+                    <MudItem xs="12" md="2">
+                        <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.Team</MudText>
+                    </MudItem>
+                    <MudItem xs="12" md="1">
+                        <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.SeatNumber</MudText>
+                    </MudItem>
+                    <MudItem xs="12" md="2">
+                        <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.Location</MudText>
+                    </MudItem>
+                    <MudItem xs="12" md="1">
+                        <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.DoDisplay</MudText>
+                    </MudItem>
+                    <MudItem xs="12" md="1">
+                        <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.ForAdmin</MudText>
+                    </MudItem>
+                    <MudItem xs="12" md="1">
+                        <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.TheActions</MudText>
+                    </MudItem>
+
+                    <!-- Row Data -->
+                    @foreach (var ticket in tickets.Select((t, i) => new { t, i }))
+                    {
+                        <MudItem xs="12" md="2">
+                            <MudTextField @bind-Value="ticket.t.Class" Required Label=@Resource.Class Variant="Variant.Text" />
+                        </MudItem>
+                        <MudItem xs="12" md="2">
+                            <MudNumericField @bind-Value="ticket.t.Price" Required Label=@Resource.Price Variant="Variant.Text" Min="0" Step=".1M" />
+                        </MudItem>
+                        <MudItem xs="12" md="2">
+                            <MudSelect @bind-Value="ticket.t.TeamId" Required Label=@Resource.Team>
+                                <MudSelectItem Value="Guid.Empty" Disabled>@Resource.Team_Select</MudSelectItem>
+                                @if (match.TeamA != null)
+                                {
+                                    <MudSelectItem Value="@match.TeamAId">@match.TeamA.Name</MudSelectItem>
+                                }
+                                @if (match.TeamB != null)
+                                {
+                                    <MudSelectItem Value="@match.TeamBId">@match.TeamB.Name</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12" md="1">
+                            <MudNumericField @bind-Value="ticket.t.TicketsCount" Required Label=@Resource.TicketsCount Min="1" Variant="Variant.Text" />
+                        </MudItem>
+                        <MudItem xs="12" md="2">
+                            <MudSelect @bind-Value="ticket.t.Location" Required Label=@Resource.Location>
+                                <MudSelectItem Value=@("VIP")>@Resource.VIP</MudSelectItem>
+                                <MudSelectItem Value=@("Grade 1")>@Resource.Grade1</MudSelectItem>
+                                <MudSelectItem Value=@("Grade 2")>@Resource.Grade2</MudSelectItem>
+                                <MudSelectItem Value=@("Grade 3")>@Resource.Grade3</MudSelectItem>
+                                <MudSelectItem Value=@("Guest")>@Resource.Guest</MudSelectItem>
+                                <MudSelectItem Value=@("Invitations")>@Resource.Invitation</MudSelectItem>
+                                <MudSelectItem Value=@("All")>@Resource.TheAll</MudSelectItem>
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12" md="1">
+                            <MudCheckBox T="bool" @bind-Value="ticket.t.DisplayForSale" />
+                        </MudItem>
+                        <MudItem xs="12" md="1">
+                            <MudCheckBox T="bool" @bind-Value="ticket.t.IsForAdmins" />
+                        </MudItem>
+                        <MudItem xs="12" md="1" Class="d-flex align-items-center justify-content-center">
+                            <MudIconButton Icon="@Icons.Material.Rounded.Delete" Color="Color.Error" OnClick="() => DeleteRow(ticket.i)" />
+                        </MudItem>
+                    }
+
+                    <MudItem xs="12" Class="text-center">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="AddNewRow" Class="mt-2">@Resource.Add @Resource.NewTicket</MudButton>
+                    </MudItem>
+                </MudGrid>
+                <LoadingButton Variant="Variant.Filled" Color="Color.Primary" OnClick="AddTickets" Class="mt-4 w-full">@Resource.Add @Resource.TheTickets</LoadingButton>
+            </MudForm>
+        }
+    </MudCardContent>
+</MudCard>
+
+@code {
+    [Parameter] public Guid matchId { get; set; }
+
+    private MatchDto match;
+    private List<TicketDto> tickets = new List<TicketDto> { new TicketDto() };
+    private MudForm form;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMatchDetails();
+    }
+
+    private async Task LoadMatchDetails()
+    {
+        try
+        {
+            var response = await MatchService.GetMatchByIdAsync(matchId, true);
+            _ = response.Match(
+                succ =>
+                {
+                    match = succ.Data ?? new();
+                    if (!succ.IsSuccess)
+                    {
+                        Snackbar.Show(Resource.MatchDetails_Load_Fail, Severity.Error);
+                    }
+                    Snackbar.Show(succ.Title, succ.IsSuccess ? Severity.Info : Severity.Error);
+                    succ.ErrorList?.ToList().ForEach(x => Snackbar.Show($"{x.Title}: {x.Message}", Severity.Error));
+                    return new Unit();
+                },
+                fail =>
+                {
+                    match = new();
+                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                    return new Unit();
+                }
+            );
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    private async Task AddTickets()
+    {
+        try
+        {
+            await form.Validate();
+
+            if (form.IsValid)
+            {
+                var allTickets = new List<TicketDto>();
+
+                foreach (var ticket in tickets)
+                {
+                    for (int i = 1; i <= ticket.TicketsCount; i++)
+                    {
+                        allTickets.Add(new TicketDto
+                            {
+                                MatchId = matchId,
+                                Class = ticket.Class,
+                                Price = ticket.Price,
+                                TeamId = ticket.TeamId,
+                                Location = ticket.Location,
+                                DisplayForSale = ticket.DisplayForSale,
+                                TicketsCount = i,
+                                TicketStatus = ticket.IsForAdmins ? TicketStatusDTO.ForAdmins : TicketStatusDTO.Active 
+                            });
+                    }
+                }
+
+                var response = await TicketService.CreateTicketsAsync(allTickets);
+                response.Match(
+                    succ =>
+                    {
+                        if (succ.IsSuccess)
+                        {
+                            Snackbar.Show(Resource.Tickets_Create_Success, Severity.Success);
+                            NavigationManager.NavigateTo("/matches");
+                        }
+                        else
+                        {
+                            Snackbar.Show(Resource.Tickets_Create_Fail, Severity.Error);
+                            succ.ErrorList?.ToList().ForEach(x => Snackbar.Show($"{x.Title}: {x.Message}", Severity.Error));
+                        }
+                        return new Unit();
+                    },
+                    fail =>
+                    {
+                        Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                        return new Unit();
+                    }
+                );
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    private void AddNewRow()
+    {
+        tickets.Add(new TicketDto());
+    }
+
+    private void DeleteRow(int index)
+    {
+        if (index >= 0 && index < tickets.Count)
+        {
+            tickets.RemoveAt(index);
+        }
+    }
+}

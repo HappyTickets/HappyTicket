@@ -1,0 +1,20 @@
+﻿@inject ICustomSnackbarProvider Snackbar
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (!(user.Identity?.IsAuthenticated ?? false))
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            Snackbar.Show(@Resource.NotAuthorized, Severity.Error, Defaults.Classes.Position.BottomLeft);
+        }
+    }
+}

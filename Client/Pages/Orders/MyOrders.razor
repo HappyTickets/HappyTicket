@@ -1,0 +1,155 @@
+﻿@page "/my-orders/{PaymentStatus:guid?}"
+@inject IBOrderService BOrderService
+@inject ILocalStorageService LocalStorageService
+@inject ICustomSnackbarProvider Snackbar // Inject Snackbar for notifications
+<div class="container">
+    <div class="grid">
+        <div class="grid-item">
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th>Items</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Orders != null && Orders.Any())
+                    {
+                        @foreach (var order in Orders)
+                        {
+                            foreach (var cartItem in order.CartItems)
+                            {
+                                var ticket = cartItem.Ticket;
+                                if (ticket?.Match != null)
+                                {
+                                    var match = ticket.Match;
+                                    <tr>
+                                        <td>
+                                            <div class="ticket-container">
+                                                <div class="ticket">
+                                                    <div class="ticket-header">
+                                                        <h4>Championship Name | اسم البطولة</h4>
+                                                    </div>
+                                                    <div class="ticket-body">
+                                                        <div class="teams">
+                                                            <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), match.TeamA?.Logo))"
+                                                                 alt="@match.TeamA?.Name" class="team-logo" />
+                                                            <span class="vs">VS</span>
+                                                            <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), match.TeamB?.Logo))"
+                                                                 alt="@match.TeamB?.Name" class="team-logo" />
+                                                        </div>
+                                                        <div class="match-info">
+                                                            <p><strong>Stadium:</strong> @match.Stadium?.Name</p>
+                                                            <p><strong>Date:</strong> @match.EventDate?.ToString("yyyy/MM/dd")</p>
+                                                            <p><strong>Time:</strong> @match.EventTime?.ToString(@"hh\:mm")</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="qr-section">
+                                                        <img src="https://api.qrserver.com/v1/create-qr-code/?data=@ticket.Id&size=200x200"
+                                                             alt="QR Code for Ticket ID: @ticket.Id" class="qr-code" aria-label="QR Code for Ticket" />
+                                                    </div>
+                                                    <div class="ticket-footer">
+                                                        <div class="seat-info">
+                                                            <p>GATE: @ticket.Location | بوابة</p>
+                                                        </div>
+                                                        <p class="ticket-number">TICKET NUMBER: @ticket.Id</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>No orders found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="progress-bar">
+            <div class="loading"></div>
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert-error">@errorMessage</div>
+    }
+</div>
+@code {
+    private IEnumerable<OrderDto> Orders { get; set; } = new List<OrderDto>();
+    private bool isLoading = true;
+    private string? errorMessage = null;
+
+    [Parameter] public Guid? PaymentStatus { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (PaymentStatus.HasValue)
+        {
+            await HandlePaymentStatus(PaymentStatus.Value);
+        }
+        else
+        {
+            await LoadOrdersAsync();
+        }
+    }
+
+    private async Task HandlePaymentStatus(Guid paymentStatus)
+    {
+        // Add logic to interpret paymentStatus
+        var authorizedToken = await LocalStorageService.GetItemAsStringAsync("aT");
+        var declinedToken = await LocalStorageService.GetItemAsStringAsync("dT");
+        var cancelledToken = await LocalStorageService.GetItemAsStringAsync("cT");
+
+        if (paymentStatus.ToString() == GeneralEncryptorDecryptor.DecryptString(authorizedToken))
+        {
+            Snackbar.Show("Payment was successful!", Severity.Success);
+            await LoadOrdersAsync(); // Load orders after successful payment
+        }
+        else if (paymentStatus.ToString() == GeneralEncryptorDecryptor.DecryptString(declinedToken) ||
+                 paymentStatus.ToString() == GeneralEncryptorDecryptor.DecryptString(cancelledToken))
+        {
+            Snackbar.Show("Payment was not completed. Please try again.", Severity.Error);
+            errorMessage = "Payment was not completed. Please try again.";
+        }
+
+        // Clear the payment status from local storage after handling
+        await LocalStorageService.RemoveItemsAsync(new[] { "aT", "dT", "cT" });
+    }
+
+    private async Task LoadOrdersAsync()
+    {
+        var result = await BOrderService.GetMyOrdersAsync();
+
+        result.Match(
+            success =>
+            {
+                Orders = success.Data != null
+                    ? success.Data.Select(ticketDto => new OrderDto
+                        {
+                            CartItems = new List<CartItemDto>
+                            {
+                            new CartItemDto { Ticket = ticketDto }
+                            }
+                        }) : new List<OrderDto>();
+                return Unit.Default;
+            },
+            failure =>
+            {
+                errorMessage = failure.Message;
+                return Unit.Default;
+            }
+        );
+
+        isLoading = false;
+    }
+}

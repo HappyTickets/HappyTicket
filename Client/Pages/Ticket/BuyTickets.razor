@@ -1,0 +1,378 @@
+﻿@page "/buy-tickets/{matchId:guid}"
+@inject ICustomSnackbarProvider Snackbar
+@inject BICartService CartService
+@inject BIMatchService MatchService
+@inject BITicketService TicketService
+@inject BIFavoriteTeamService FavoriteTeamService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider _AuthenticationStateProvider
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+<PageTitle>@Resource.BuyTheTickets</PageTitle>
+<MudCard Class="mb-4" @key="key">
+    <MudCardContent>
+        <MudText Typo="Typo.h3" Align="Align.Center" Class="mb-4">@Resource.BuyTheTickets</MudText>
+
+        @if (match == null || tickets == null)
+        {
+            <MudText Typo="Typo.h6" Align="Align.Center">@Resource.Loading</MudText>
+        }
+        else if (selectedTeam == null)
+        {
+            <MudText Typo="Typo.h6" Align="Align.Center" Class="mb-4">@Resource.FavouriteTeam_Select</MudText>
+            <MudGrid Class="mt-5 d-flex align-center flex-grow-1">
+                <MudItem xs="12" md="5">
+                    <MudCard Elevation="2">
+                        <MudCardContent Class="text-center">
+                            <MudImage Src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), match.TeamA?.Logo).ToString())" Alt="Team Logo" Class="mb-3" ObjectFit=ObjectFit.Cover Height=250 Width=250 />
+                            <MudText Class="fs-5 text-center">@match.TeamA?.Name</MudText>
+                        </MudCardContent>
+                        <MudCardActions Class="text-center">
+                            <LoadingButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="(() => SetFavoriteTeam(match.TeamA?.Id))" Class="w-100">@Resource.FavouriteTeam</LoadingButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+                <MudItem xs="12" md="2">
+                    <MudCard Elevation="0">
+                        <MudCardContent Class="text-center">
+                            <MudImage Src=@(new Uri(new Uri(NavigationManager.BaseUri), "Icons/competition_vs.png").ToString()) Alt="Versus Image" Width="100" />
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+                <MudItem xs="12" md="5">
+                    <MudCard Elevation="2">
+                        <MudCardContent Class="text-center">
+                            <MudImage Src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), match.TeamB?.Logo).ToString())" Alt="Team Logo" Class="mb-3" ObjectFit=ObjectFit.Cover Height=250 Width=250 />
+                            <MudText Class="fs-5 text-center">@match.TeamB?.Name</MudText>
+                        </MudCardContent>
+                        <MudCardActions Class="text-center">
+                            <LoadingButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="(() => SetFavoriteTeam(match.TeamB?.Id))" Class="w-100">@Resource.FavouriteTeam</LoadingButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
+        }
+        else if (tickets.Count == 0)
+        {
+            <MudText Typo="Typo.h6" Align="Align.Center">@Resource.Tickets_NotAvailable</MudText>
+        }
+        else
+        {
+            <MudGrid>
+                <MudItem xs="12" md="4" Class="d-flex align-items-center justify-content-center">
+                    @if (match.TeamA != null)
+                    {
+                        <div class="text-center">
+                            <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), match.TeamA.Logo))" alt="@match.TeamA.Name" class="team-logo" />
+                            <div class="mt-2">@match.TeamA.Name</div>
+                        </div>
+                    }
+                </MudItem>
+                <MudItem xs="12" md="4" Class="d-flex align-items-center justify-content-center">
+                    <MudImage Src="Icons/competition_vs.png" Alt="Versus Image" Width="100" />
+                </MudItem>
+                <MudItem xs="12" md="4" Class="d-flex align-items-center justify-content-center">
+                    @if (match.TeamB != null)
+                    {
+                        <div class="text-center">
+                            <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), match.TeamB.Logo))" alt="@match.TeamB.Name" class="team-logo" />
+                            <div class="mt-2">@match.TeamB.Name</div>
+                        </div>
+                    }
+                </MudItem>
+            </MudGrid>
+
+            <MudGrid Justify="Justify.Center">
+                <MudItem xs="12" md="6" lg="3">
+                    <div class="d-flex justify-content-center align-content-center flex-nowrap mt-4">
+                        <MudChip T="string" Color="Color.Secondary" Class="flex-fill">
+                            @Resource.Stadium
+                        </MudChip>
+                        <MudChip T="string" Color="Color.Primary" Class="flex-fill">
+                            @match.Stadium?.Name
+                        </MudChip>
+                    </div>
+                    <div class="d-flex justify-content-center align-content-center flex-nowrap mt-4">
+                        <MudChip T="string" Color="Color.Secondary" Class="flex-fill">
+                            @Resource.DateTime
+                        </MudChip>
+                        <MudChip T="string" Color="Color.Primary" Class="flex-fill">
+                            @(match.EventDate?.ToString("yyyy-MM-dd")) @match.EventTime
+                        </MudChip>
+                    </div>
+                    <div class="d-flex justify-content-center align-content-center flex-nowrap mt-4">
+                        <MudChip T="string" Color="Color.Secondary" Class="flex-fill">
+                            @Resource.Tickets_Available
+                        </MudChip>
+                        <MudChip T="string" Color="Color.Primary" Class="flex-fill">
+                            @tickets.Count
+                        </MudChip>
+                    </div>
+                </MudItem>
+            </MudGrid>
+
+            <MudDivider Class="my-4" />
+
+            <MudGrid>
+                <MudDataGrid Items=@ticketTemplate Filterable SortMode=@SortMode.Multiple Style="width: 100%">
+                    <Columns>
+                        <PropertyColumn Property="x => x.Class" Title=@Resource.Class HeaderClass="fw-bold" />
+                        <PropertyColumn Property="x => x.Location" Title=@Resource.Location HeaderClass="fw-bold" />
+                        <PropertyColumn Property="x => x.Price" Format="C" Title=@Resource.Price HeaderClass="fw-bold" />
+                        <TemplateColumn CellClass="d-flex justify-start" Filterable=false Sortable=false Title="@Resource.BuyTicket" HeaderClass="fw-bold">
+                            <CellTemplate>
+                                <MudTooltip Text=@Resource.Cart_Add>
+                                    <LoadingIconButton Icon="@Icons.Material.Filled.AddShoppingCart" OnClick="@(() => AddToCart(context.Item))" Color="Color.Primary" />
+                                </MudTooltip>
+                            </CellTemplate>
+                        </TemplateColumn>
+                    </Columns>
+                </MudDataGrid>
+            </MudGrid>
+        }
+    </MudCardContent>
+</MudCard>
+
+@code {
+    int key = 0;
+    [Parameter] public Guid matchId { get; set; }
+    private List<TicketDto> tickets = new();
+    private List<TicketDto> ticketTemplate = new();
+    private MatchDto? match = null;
+    private Guid? selectedTeam = null;
+    private bool HasTicketsInCart = false;
+
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationState { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMatchDetailsAsync();
+        await LoadCurrentUserAsync();
+        await CheckCartForTickets();
+    }
+
+    private async Task LoadMatchDetailsAsync()
+    {
+        try
+        {
+            var response = await MatchService.GetMatchByIdAsync(matchId, false);
+            _ = response.Match(
+                succ =>
+                {
+                    match = succ.Data ?? new();
+                    if (!succ.IsSuccess)
+                    {
+                        Snackbar.Show(Resource.MatchDetails_Load_Fail, Severity.Error);
+                    }
+                    Snackbar.Show(succ.Title, succ.IsSuccess ? Severity.Info : Severity.Error);
+                    succ.ErrorList?.ToList().ForEach(x => Snackbar.Show($"{x.Title}: {x.Message}", Severity.Error));
+                    key++;
+                    return new Unit();
+                },
+                fail =>
+                {
+                    match = new();
+                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                    return new Unit();
+                }
+            );
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    private async Task LoadTicketsAsync()
+    {
+        try
+        {
+            var response = await TicketService.GetTicketsByMatchIdAndSelectedTeamAsync(matchId, selectedTeam, false);
+            _ = response.Match(
+                succ =>
+                {
+                    tickets = succ.Data?.ToList() ?? new List<TicketDto>();
+                    var templates = tickets.GroupBy(x => new { x.Class, x.Location, x.Price, x.DisplayForSale, x.TeamId });
+                    ticketTemplate = templates.Select(x => new TicketDto() { Class = x.Key.Class, Location = x.Key.Location, Price = x.Key.Price, DisplayForSale = x.Key.DisplayForSale, TeamId = x.Key.TeamId, TicketsCount = x.Count() }).ToList();
+
+                    if (!succ.IsSuccess)
+                    {
+                        Snackbar.Show(Resource.Tickets_Load_Fail, Severity.Error);
+                    }
+                    // Snackbar.Show(succ.Title, Severity.Info);
+                    succ.ErrorList?.ToList().ForEach(x => Snackbar.Show($"{x.Title}: {x.Message}", Severity.Error));
+                    return new Unit();
+                },
+                fail =>
+                {
+                    tickets = new List<TicketDto>();
+                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                    return new Unit();
+                }
+            );
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    private async Task LoadCurrentUserAsync()
+    {
+        var authState = await AuthenticationState;
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var userId = user.FindFirst("sub")?.Value;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var response = await FavoriteTeamService.GetUserFavoriteTeamAsync(userId, matchId, false);
+                _ = await response.Match(
+                    async succ =>
+                    {
+                        selectedTeam = succ.Data?.Id ?? null;
+                        // Load tickets only if a favorite team is found
+                        if (selectedTeam != null)
+                        {
+                            await LoadTicketsAsync();
+                        }
+                        return new Unit();
+                    },
+                    async fail =>
+                    {
+                        Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                        Console.WriteLine(fail.Message);
+                        return new Unit();
+                    }
+                );
+            }
+        }
+    }
+
+    private async void SetFavoriteTeam(Guid? team)
+    {
+        var authState = await AuthenticationState;
+        var userId = authState.User.FindFirst("sub")?.Value;
+
+        if (!string.IsNullOrEmpty(userId))
+        {
+            var result = await FavoriteTeamService.AddFavoriteTeamAsync(userId, team, matchId);
+            _ = await result.Match(
+                async succ =>
+                {
+                    selectedTeam = team;
+                    Snackbar.Show(Resource.FavoriteTeam_Update, Severity.Success);
+                    // Load tickets after the user selects a team
+                    await LoadTicketsAsync();
+                    StateHasChanged(); // Trigger re-render
+                    return new Unit();
+                },
+                async fail =>
+                {
+                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                    Console.WriteLine(fail.Message);
+                    return new Unit();
+                }
+            );
+        }
+    }
+
+
+    private async Task AddToCart(TicketDto ticketTemplate)
+    {
+        var ticket = tickets.OrderBy(x => Guid.NewGuid()).FirstOrDefault(x => x.Class == ticketTemplate.Class &&
+                                                                              x.Location == ticketTemplate.Location &&
+                                                                              x.Price == ticketTemplate.Price &&
+                                                                              x.DisplayForSale == ticketTemplate.DisplayForSale &&
+                                                                              x.TeamId == ticketTemplate.TeamId);
+
+        if (ticket == null)
+        {
+            Snackbar.Show(Resource.Ticket_NotFound, Severity.Error);
+            return;
+        }
+
+        var userId = (await AuthenticationState).User.FindFirst("sub")?.Value;
+
+        if (string.IsNullOrEmpty(userId))
+        {
+            Snackbar.Show(Resource.NotLoggedIn, Severity.Error);
+            return;
+        }
+
+        var cartItem = new CartItemDto
+            {
+                TicketId = ticket.Id,
+                Quantity = 1 // Default quantity
+            };
+
+        var addItemRequest = new AddItemRequest
+            {
+                UserId = userId,
+                Item = cartItem
+            };
+
+        var result = await CartService.AddToCartAsync(addItemRequest);
+
+        _ = result.Match(
+            succ =>
+            {
+                if (succ.IsSuccess)
+                {
+                    Snackbar.Show(Resource.Ticket_AddedToCart_Success, Severity.Success);
+                    tickets.Remove(ticket);
+                    StateHasChanged();
+                }
+                else
+                {
+                    Snackbar.Show(Resource.Ticket_AddedToCart_Fail, Severity.Error);
+                }
+
+                // Snackbar.Show(succ.Title, Severity.Info);
+                succ.ErrorList?.ToList().ForEach(x => Snackbar.Show($"{x.Title}: {x.Message}", Severity.Error));
+
+                return new Unit();
+            },
+            fail =>
+            {
+                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                Console.WriteLine(fail.Message);
+                return new Unit();
+            }
+        );
+    }
+
+    private async Task CheckCartForTickets()
+    {
+        var userId = (await AuthenticationState).User.FindFirst("sub")?.Value;
+        if (!string.IsNullOrEmpty(userId))
+        {
+            var response = await CartService.GetCartByUserIdAsync(userId, false, CancellationToken.None);
+            _ = response.Match(
+                succ =>
+                {
+                    HasTicketsInCart = succ.Data?.CartItems?.Any(item => item.Ticket?.MatchId == matchId) ?? false;
+                    if (!HasTicketsInCart)
+                    {
+                        FavoriteTeamService.RemoveFavoriteTeamAsync(userId, matchId);
+                        selectedTeam = null;
+                        StateHasChanged();
+                    }
+                    return new Unit();
+                },
+                fail =>
+                {
+                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                    Console.WriteLine(fail.Message);
+                    return new Unit();
+                }
+            );
+        }
+    }
+
+}

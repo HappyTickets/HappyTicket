@@ -1,0 +1,138 @@
+﻿@inject IStringLocalizer<Resource> Localizer
+@inject MudRTLProvider MudRTLProvider
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+<MudCard Class="footer-card" Style="padding-inline: var(--mud-drawer-width-mini-right);" Elevation="1">
+    <MudCardContent>
+        <MudGrid Justify="Justify.Center">
+          @*   <!-- Social Media Links -->
+            <MudItem xs="12" md="3">
+                <MudText Typo="Typo.h6" Class="mb-3">
+                    @Resource.FollowUs
+                </MudText>
+                <MudPaper Class="d-flex flex-column flex-grow-1 gap-2" Elevation="0">
+                    <MudLink Href="https://x.com/happyapp_sa?s=11&t=ZonIqtyk9Ofg8V1BAUhbcjvD0260m8biSFlYBDcgPz0" Target="_blank" Underline="Underline.None">
+                        <MudIcon Icon="@ArrowForwardIosIcon" Size="Size.Small" />
+                        <MudIcon Icon="@Icons.Custom.Brands.X" /> @Resource.X
+
+                    </MudLink>
+                    <MudLink Href="https://www.facebook.com/share/sXgYFPjVskHr1wfq/?mibextid=LQQJ4d" Target="_blank" Underline="Underline.None">
+                        <MudIcon Icon="@ArrowForwardIosIcon" Size="Size.Small" />
+                        <MudIcon Icon="@Icons.Custom.Brands.Facebook" /> @Resource.Facebook
+
+                    </MudLink>
+                    <MudLink Href="https://www.instagram.com/happyapp.sa?igsh=N3dyOHBjMHdkMXR1" Target="_blank" Underline="Underline.None">
+                        <MudIcon Icon="@ArrowForwardIosIcon" Size="Size.Small" />
+                        <MudIcon Icon="@Icons.Custom.Brands.Instagram" /> @Resource.Instagram
+
+                    </MudLink>
+                    <MudLink Href="@("https://www.tiktok.com/@happyapp.sa?_t=8oz8vidJmyn&_r=1")" Target="_blank" Underline="Underline.None">
+                        <MudIcon Icon="@ArrowForwardIosIcon" Size="Size.Small" />
+                        <MudIcon Icon="@Icons.Custom.Brands.TikTok" /> @Resource.TikTok
+                    </MudLink>
+                </MudPaper>
+            </MudItem> *@
+
+            <!-- Contact Information -->
+            <MudItem xs="12" md="4" Class="ps-md-5 justify-content-center">
+                <MudText Typo="Typo.h6" Class="mb-3">
+                    @Resource.footeraboutus
+                </MudText>
+                <MudPaper Class="d-flex flex-column flex-grow-1 gap-2" Elevation="0">
+                    <p>
+                        @Resource.footer_beyond
+                    </p>
+                    
+                    @* <MudLink Href="mailto:Happy@ticketshappy.com" Underline="Underline.None" Class="text-nowrap">
+                        <MudIcon Icon="@ArrowForwardIosIcon" Size="Size.Small" />
+                        <MudIcon Icon="@Icons.Material.Filled.Email" />
+                        Happy@ticketshappy.com
+                    </MudLink>
+                    <MudLink Href="tel:+966501234567" Underline="Underline.None" Class="text-nowrap">
+                        <MudIcon Icon="@ArrowForwardIosIcon" Size="Size.Small" />
+                        <MudIcon Icon="@Icons.Material.Filled.Phone" />
+                        (+966)501234567
+                    </MudLink>
+                    <MudText Class="text-nowrap">
+                        <MudIcon Icon="@ArrowForwardIosIcon" Size="Size.Small" />
+                        <MudIcon Icon="@Icons.Material.Filled.LocationOn" Color="Color.Primary"/>
+                        @Resource.KSA_Riyadh
+                    </MudText> *@
+                </MudPaper>
+            </MudItem>
+
+            <!-- Page Links -->
+            <MudItem xs="12" md="4" Class="ps-md-5 justify-content-end">
+                <MudText Typo="Typo.h6" Class="mb-3">
+                    @Resource.QuickLinks
+                </MudText>
+                <MudPaper Class="d-flex flex-column flex-grow-1 gap-2" Elevation="0">
+                    <MudLink Href="/Active-Matches" Underline="Underline.None">
+                        <MudIcon Icon="@ArrowForwardIosIcon" Size="Size.Small" />
+                        @Resource.Matches
+                    </MudLink>
+                    <MudLink Href="/AboutUs" Underline="Underline.None">
+                        <MudIcon Icon="@ArrowForwardIosIcon" Size="Size.Small" />
+                        @Resource.AboutUs
+                    </MudLink>
+                    <MudLink Href="/ContactUs" Underline="Underline.None">
+                        <MudIcon Icon="@ArrowForwardIosIcon" Size="Size.Small" />
+                        @Resource.ContactUs
+                    </MudLink>
+                </MudPaper>
+            </MudItem>
+
+            <!-- Social Media Links -->
+            <MudItem xs="12" md="4" Class="ps-md-5 justify-content-end">
+                <MudPaper Class="d-flex flex-column flex-grow-1 gap-2" Elevation="0">
+                    <a href="/" style="height: 35px;" class="mb-0 m-2" aria-label="@Resource.Home">
+                        <MudImage Src="logos/logo.svg" Style="height:170%;" />
+                    </a>
+
+                    <MudText Typo="Typo.body2" Class="mb-3 mt-8">
+                        @Resource.FollowUs
+                    </MudText>
+
+                    <div class="d-flex flex-row gap-2">
+                        <MudLink Href="https://x.com/happyapp_sa?s=11&t=ZonIqtyk9Ofg8V1BAUhbcjvD0260m8biSFlYBDcgPz0" Target="_blank" Underline="Underline.None">
+                            <MudIcon Icon="@Icons.Custom.Brands.X" />
+                        </MudLink>
+                        <MudLink Href="https://www.facebook.com/share/sXgYFPjVskHr1wfq/?mibextid=LQQJ4d" Target="_blank" Underline="Underline.None">
+                            <MudIcon Icon="@Icons.Custom.Brands.Facebook" />
+                        </MudLink>
+                        <MudLink Href="https://www.instagram.com/happyapp.sa?igsh=N3dyOHBjMHdkMXR1" Target="_blank" Underline="Underline.None">
+                            <MudIcon Icon="@Icons.Custom.Brands.Instagram" />
+                        </MudLink>
+                        <MudLink Href="@("https://www.tiktok.com/@happyapp.sa?_t=8oz8vidJmyn&_r=1")" Target="_blank" Underline="Underline.None">
+                            <MudIcon Icon="@Icons.Custom.Brands.TikTok" />
+                        </MudLink>    
+                        <MudLink Href="@("mailto:Happy@ticketshappy.com")" Target="_blank" Underline="Underline.None">
+                            <MudIcon Icon="@Icons.Custom.Brands.Gmail" />
+                        </MudLink>
+                    </div>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </MudCardContent>
+    <hr />
+    <MudCardActions>
+        <MudText Typo="Typo.body2" Class="mx-auto mb-3">&copy; @Resource.Copyright</MudText>
+    </MudCardActions>
+</MudCard>
+
+@code {
+    private string ArrowForwardIosIcon { get; set; } = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        @if (MudRTLProvider.RightToLeft)
+        {
+            ArrowForwardIosIcon = @Icons.Material.Filled.ArrowBackIosNew;
+        }
+        else
+        {
+            ArrowForwardIosIcon = @Icons.Material.Filled.ArrowForwardIos;
+        }
+    }
+}

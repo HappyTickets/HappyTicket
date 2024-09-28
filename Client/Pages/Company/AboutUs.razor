@@ -1,0 +1,50 @@
+﻿@page "/Aboutus"
+
+@inject IStringLocalizer<Resource> Localizer
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+<MudContainer  Class="d-flex flex-column justify-center">
+    <MudGrid>
+        <MudItem xs="12" md="5">
+            <MudText Typo="Typo.caption" Class="mb-2" Color="Color.Primary">ABOUT US</MudText>
+            <MudText Typo="Typo.h5" Class="font-weight-bold pt-2">@Resource.GetToKnowUs @Resource.CompanyName</MudText>
+            <MudText Typo="Typo.body1" Class="mt-4 company-description pt-8">
+                @(new MarkupString(Resource.WhoWeAreText))
+            </MudText>
+        </MudItem>
+        <MudItem md="2"></MudItem>
+        <MudItem xs="12" md="5" Class="d-flex align-items-center">
+            <MudImage Src="logos/logo.svg" Alt="Office Meeting" Width="300" Style="border-radius: 8px; padding-top:75px" />
+        </MudItem>
+    </MudGrid>
+
+    <MudGrid Class="mt-6 d-flex align-items-stretch">
+        <MudItem xs="12" md="6">
+            <MudPaper Class="p-4 mb-4 d-flex flex-column" Elevation="2" Style="height: 200px;">
+                <MudText Typo="Typo.h5" Class="font-weight-bold d-flex align-items-center mb-3">
+                    <MudAvatar Class="me-3" Color="Color.Primary" Variant="Variant.Filled" > 
+                        01
+                        </MudAvatar>
+                    @Resource.Mission
+                </MudText>
+                <MudText Typo="Typo.body1" Class="flex-grow-1">
+                    @(new MarkupString(Resource.WhyChooseUsText))
+                </MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudPaper Class="p-4 mb-4 d-flex flex-column" Elevation="2" Style="height: 200px;">
+                <MudText Typo="Typo.h5" Class="font-weight-bold d-flex align-items-center mb-3">
+                    <MudAvatar Class="me-3" Color="Color.Primary" Variant="Variant.Filled" >  02
+                        </MudAvatar>
+                    @Resource.Vision
+                </MudText>
+                <MudText Typo="Typo.body1" Class="flex-grow-1">
+                    @(new MarkupString(Resource.OurMissionText))
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+

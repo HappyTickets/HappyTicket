@@ -1,0 +1,164 @@
+﻿@page "/login"
+
+@inject IStringLocalizer<Resource> Localizer
+@inject ICustomSnackbarProvider Snackbar
+@inject IDialogService DialogService
+@inject IAuthStateProvider AuthState
+@inject IIdentityService IdentityService
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+<EditForm Model="loginRequest">
+    <DataAnnotationsValidator />
+    <MudGrid Justify="Justify.Center" Class="align-center forms-mud-grid">
+        <MudItem xs="12" md="6">
+            <MudCard>
+                <MudCardHeader Class="text-center">
+                    <MudText Typo="Typo.h5" Class="mx-auto">@Resource.Login</MudText>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="12">
+                            <MudTextField @bind-Value="loginRequest.Email"
+                                          Label=@Resource.Email
+                                          For="@(() => loginRequest.Email)"
+                                          Immediate="true"
+                                          Required />
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudTextField @bind-Value="loginRequest.Password"
+                                          Label=@Resource.Password
+                                          For="@(() => loginRequest.Password)"
+                                          Immediate="true"
+                                          InputType="@passwordInputType"
+                                          Adornment="Adornment.End"
+                                          AdornmentIcon="@(!string.IsNullOrWhiteSpace(loginRequest.Password) ? passwordIcon : "")"
+                                          OnAdornmentClick="@TogglePasswordVisibility"
+                                          Required />
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudGrid Justify="Justify.Center">
+                                <MudItem xs="12" md="6">
+                                    <LoadingButton OnClick="login" Disabled="!IsFormValidToProceedWith()" Color="Color.Primary" Variant="Variant.Filled" FullWidth="true">@Resource.Login</LoadingButton>
+                                </MudItem>
+                                <MudItem xs="12" md="6">
+                                    <LoadingButton OnClick="OpenPasswordResetDialog" Color="Color.Primary" Variant="Variant.Filled" FullWidth="true">@Resource.Password_Reset</LoadingButton>
+                                </MudItem>
+                            </MudGrid>
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    </MudGrid>   
+</EditForm>
+
+@code {
+    private LoginRequest loginRequest = new LoginRequest();
+    private InputType passwordInputType = InputType.Password;
+    private string passwordIcon = Icons.Material.Filled.VisibilityOff;
+
+    private async Task login()
+    {
+        if (!IsFormValidToProceedWith()) return;
+        try
+        {
+            var response = await IdentityService.LoginAsync(loginRequest);
+            await response.Match<ValueTask<Unit>>(
+                async Succ =>
+                {
+                    if (Succ.Status == System.Net.HttpStatusCode.OK || Succ.IsSuccess && Resource.Email_Confirmation == Resource.Email_Confirmation)
+                    {
+                        var result = Succ.Data!;
+                        if (string.IsNullOrWhiteSpace(result.JWT) || string.IsNullOrWhiteSpace(result.RefreshToken))
+                        {
+                            Snackbar.Show(Resource.TryAgainLater, Severity.Error);
+                            return new Unit();
+                        }
+                        Snackbar.Show(Succ.Title + Resource.Login_Success, Severity.Success);
+
+                        string jwtToken = result.JWT;
+                        if (jwtToken.StartsWith("\"") && jwtToken.EndsWith("\""))
+                        {
+                            jwtToken = jwtToken.Substring(1, jwtToken.Length - 2); 
+                        }
+
+                        await LocalStorage.SetItemAsync("jwtToken", jwtToken);
+
+                        string refreshToken = result.RefreshToken;
+                        if (refreshToken.StartsWith("\"") && refreshToken.EndsWith("\""))
+                        {
+                            refreshToken = refreshToken.Substring(1, refreshToken.Length - 2);
+                        }
+
+                        await LocalStorage.SetItemAsync("refreshToken", refreshToken);
+
+                        string? token = await LocalStorage.GetItemAsStringAsync("jwtToken");
+                        AuthState.SetAuthenticationState(true);
+                        await AuthenticationStateProvider.GetAuthenticationStateAsync();
+                        Navigation.NavigateTo("/");
+                    }
+                    else if (Succ.Status == System.Net.HttpStatusCode.BadRequest || !Succ.IsSuccess)
+                    {
+                        Snackbar.Show((string.IsNullOrWhiteSpace(Succ.Title)) ? Resource.Login_Fail : $"{Resource.Login_Fail}\n{Succ.Title.Humanize()}", Severity.Error);
+                        Succ.ErrorList?.ToList().ForEach(x =>
+                        {
+                            if (x.Title == Resource.Email_NotConfirmed && !string.IsNullOrWhiteSpace(loginRequest.Email))
+                            {
+                                var config = (SnackbarOptions options) =>
+                                {
+                                    options.Action = Resource.ResendEmailAgain;
+                                    options.ActionColor = Color.Primary;
+                                    options.Onclick = async snackbar =>
+                                    {
+                                        await IdentityService.SendEmailConfirmationAsync(new() { Email = loginRequest.Email });
+                                    };
+                                };
+
+                                Snackbar.Show($"{x.Title.Humanize()}: {x.Message.Humanize()}", Severity.Error, configurations: config);
+                            }
+                            else Snackbar.Show($"{x.Title.Humanize()}: {x.Message.Humanize()}", Severity.Error);
+                        });
+                    }
+                    return new Unit();
+                },
+                async Fail => { Snackbar.Show($"{Resource.Login_Fail}\n{Fail.Message.Humanize()}", Severity.Error); return await Task.FromResult(new Unit()); }
+            );
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+        }
+    }
+
+    private async Task OpenPasswordResetDialog()
+    {
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
+        var dialog = DialogService.Show<PasswordResetDialog>(Resource.Password_Reset, options);
+        var result = await dialog.Result;
+    }
+
+    private bool IsFormValidToProceedWith()
+    {
+        var result = !string.IsNullOrWhiteSpace(loginRequest.Email) &&
+                     !string.IsNullOrWhiteSpace(loginRequest.Password);
+
+        return result;
+    }
+
+    private void TogglePasswordVisibility()
+    {
+        if (passwordInputType == InputType.Password)
+        {
+            passwordInputType = InputType.Text;
+            passwordIcon = Icons.Material.Filled.Visibility;
+        }
+        else
+        {
+            passwordInputType = InputType.Password;
+            passwordIcon = Icons.Material.Filled.VisibilityOff;
+        }
+    }
+}

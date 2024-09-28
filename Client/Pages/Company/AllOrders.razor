@@ -1,0 +1,32 @@
+﻿@page "/all-orders"
+@attribute [Authorize(Policy = "IsAdmin")]
+
+
+<MudTable ServerData="ReloadServerDataAsync" Dense="true" Hover="true">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6" Class="mx-auto">@Resource.ClosedOrders</MudText>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortLabel="Id" T="OrderDto">@Resource.Id</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="UserName" T="OrderDto">@Resource.DoneBy</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="Email" T="OrderDto">@Resource.UserEmail</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="PhoneNumber" T="OrderDto">@Resource.PhoneNumber</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="TotalAmount" T="OrderDto">@Resource.TotalPaid</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@(++Counter)</MudTd>
+        <MudTd DataLabel="User Name">@context.User.UserName</MudTd>
+        <MudTd DataLabel="Email">@context.User.Email</MudTd>
+        <MudTd DataLabel="Phone Number">@context.User.PhoneNumber</MudTd>
+        <MudTd DataLabel="Total Amount">@($"{context.TotalAmount} {Resource.Sar}")</MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>@Resource.NoRecordsFound</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>@Resource.Loading</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>

@@ -1,0 +1,928 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutUs" xml:space="preserve">
+    <value>من نحن</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>إجراء</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>إجراءات</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>إضافة</value>
+  </data>
+  <data name="Stadium_Add" xml:space="preserve">
+    <value>اضف ملعب جديد</value>
+  </data>
+  <data name="Cart_Add" xml:space="preserve">
+    <value>اضف الي العربة</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>كل</value>
+  </data>
+  <data name="Matches_Available" xml:space="preserve">
+    <value>المبارايات المتاحة</value>
+  </data>
+  <data name="Tickets_Available" xml:space="preserve">
+    <value>التذاكر المتاحة</value>
+  </data>
+  <data name="AwayTeam" xml:space="preserve">
+    <value>الفريق الضيف</value>
+  </data>
+  <data name="BuyNow" xml:space="preserve">
+    <value>اشتري الآن</value>
+  </data>
+  <data name="Ticket_Buy" xml:space="preserve">
+    <value>اشتري تذكرة</value>
+  </data>
+  <data name="Tickets_Buy" xml:space="preserve">
+    <value>اشتري تذاكر</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>إلغاء</value>
+  </data>
+  <data name="Cart" xml:space="preserve">
+    <value>العربة</value>
+  </data>
+  <data name="Checkout" xml:space="preserve">
+    <value>دفع</value>
+  </data>
+  <data name="Checkout_Error" xml:space="preserve">
+    <value>حدث خطاء أثناء الدفع</value>
+  </data>
+  <data name="Checkout_Incomplete" xml:space="preserve">
+    <value>فشل في إكمال عملية الدفع</value>
+  </data>
+  <data name="Checkout_Successfully" xml:space="preserve">
+    <value>تم الدفع بنجاح</value>
+  </data>
+  <data name="Class" xml:space="preserve">
+    <value>صنف</value>
+  </data>
+  <data name="CompanyName" xml:space="preserve">
+    <value>هابي</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>تأكيد</value>
+  </data>
+  <data name="Email_Confirm" xml:space="preserve">
+    <value>تأكيد البريد الالكتروني</value>
+  </data>
+  <data name="Confirming_Password_Validation" xml:space="preserve">
+    <value>كلمة المرور الموكٍّدة مطلوبة!</value>
+  </data>
+  <data name="ContactUs" xml:space="preserve">
+    <value>تواصل معنا</value>
+  </data>
+  <data name="CountryCode" xml:space="preserve">
+    <value>كود الدولة</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>إنشاء</value>
+  </data>
+  <data name="Match_Create_Fail" xml:space="preserve">
+    <value>فشل في انشاء المباراة</value>
+  </data>
+  <data name="Match_Create_Success" xml:space="preserve">
+    <value>تم اضافة المباراة بتجاح</value>
+  </data>
+  <data name="DarkMode" xml:space="preserve">
+    <value>الوضع الداكن</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>تاريخ</value>
+  </data>
+  <data name="DateTime" xml:space="preserve">
+    <value>التاريخ والوقت</value>
+  </data>
+  <data name="DoDisplay" xml:space="preserve">
+    <value>اعرض</value>
+  </data>
+  <data name="DragDrop" xml:space="preserve">
+    <value>اسحب وأفلِت أو انقر هنا لرفع</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>تعديل</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>البريد الإلكتروني</value>
+  </data>
+  <data name="Email_Confirmation" xml:space="preserve">
+    <value>تأكيد البريد الإلكتروني</value>
+  </data>
+  <data name="Email_Confirmation_Fail" xml:space="preserve">
+    <value>لم نتمكن من تأكيد بريدك الإلكتروني. يرجى المحاولة مرة أخرى.</value>
+  </data>
+  <data name="Email_Confirmed" xml:space="preserve">
+    <value>تم تأكيد البريد الإلكتروني</value>
+  </data>
+  <data name="EmailHelperText" xml:space="preserve">
+    <value>ادخل البريد الإلكتروني هنا.</value>
+  </data>
+  <data name="Email_NotFound" xml:space="preserve">
+    <value>لم نتمكن من العثور على بريدك الإلكتروني</value>
+  </data>
+  <data name="EmailVerificationMessage" xml:space="preserve">
+    <value>لقد تم إرسال بريد إلكتروني إليك يحتوي على رابط للتحقق من حسابك.</value>
+  </data>
+  <data name="Email_Required_Validation" xml:space="preserve">
+    <value>البريد الإلكتروني مطلوب!</value>
+  </data>
+  <data name="Cart_Empty" xml:space="preserve">
+    <value>عربتك فارغة.</value>
+  </data>
+  <data name="Enter" xml:space="preserve">
+    <value>ادخل</value>
+  </data>
+  <data name="Error_Occurred" xml:space="preserve">
+    <value>حدث خطاء</value>
+  </data>
+  <data name="FavouriteTeam" xml:space="preserve">
+    <value>الفريق المفضل</value>
+  </data>
+  <data name="Grade1" xml:space="preserve">
+    <value>الدرجة الأولى</value>
+  </data>
+  <data name="Grade2" xml:space="preserve">
+    <value>الدرجة الثانية</value>
+  </data>
+  <data name="Grade3" xml:space="preserve">
+    <value>الدرجة الثالثة</value>
+  </data>
+  <data name="Guest" xml:space="preserve">
+    <value>ضيف</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>الصفحة الرئيسية</value>
+  </data>
+  <data name="HomeTeam" xml:space="preserve">
+    <value>الفريق المضيف</value>
+  </data>
+  <data name="Invitation" xml:space="preserve">
+    <value>دعوة</value>
+  </data>
+  <data name="IsOver" xml:space="preserve">
+    <value>هل انتهت؟</value>
+  </data>
+  <data name="Item_Removed" xml:space="preserve">
+    <value>تم إزالة العنصر بنجاح.</value>
+  </data>
+  <data name="Item_Removed_Fail" xml:space="preserve">
+    <value>فشل في إزالة العنصر.</value>
+  </data>
+  <data name="LightMode" xml:space="preserve">
+    <value>الوضع الفاتح</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>من فضلك انتظر...</value>
+  </data>
+  <data name="Cart_Loading_Fail" xml:space="preserve">
+    <value>فشل في استرجاع العربة</value>
+  </data>
+  <data name="MatchDetails_Load_Fail" xml:space="preserve">
+    <value>فشل استرجاع تفاصيل المباراة</value>
+  </data>
+  <data name="Matches_Load_Fail" xml:space="preserve">
+    <value>فشل تحميل المباريات المتاحة</value>
+  </data>
+  <data name="Stadia_Load_Fail" xml:space="preserve">
+    <value>فشل تحميل الملاعب</value>
+  </data>
+  <data name="Teams_Load_Fail" xml:space="preserve">
+    <value>فشل تحميل الفرق</value>
+  </data>
+  <data name="Tickets_Load_Fail" xml:space="preserve">
+    <value>فشل استرجاع التذاكر</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>موقع</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>تسجيل دخول</value>
+  </data>
+  <data name="Login_Fail" xml:space="preserve">
+    <value>فشلت محاولة تسجيل الدخول</value>
+  </data>
+  <data name="Login_Redirect" xml:space="preserve">
+    <value>إعادة التوجيه إلى صفحة تسجيل الدخول...</value>
+  </data>
+  <data name="Logo" xml:space="preserve">
+    <value>شعار</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>تسجيل خروج</value>
+  </data>
+  <data name="Match" xml:space="preserve">
+    <value>مباراة</value>
+  </data>
+  <data name="Match_DateTime" xml:space="preserve">
+    <value>تاريخ و وقت المباراة</value>
+  </data>
+  <data name="MatchDetails" xml:space="preserve">
+    <value>تفاصيل المباراة</value>
+  </data>
+  <data name="Matches" xml:space="preserve">
+    <value>مباريات</value>
+  </data>
+  <data name="Matches_Settings" xml:space="preserve">
+    <value>إعدادات المباريات</value>
+  </data>
+  <data name="Match_Load_Fail" xml:space="preserve">
+    <value>فشل تحميل المباريات المتاحة</value>
+  </data>
+  <data name="Match_Ticket" xml:space="preserve">
+    <value>تذكرة المباراة</value>
+  </data>
+  <data name="Match_Ticket_Prices" xml:space="preserve">
+    <value>أسعار تذاكر المباراة</value>
+  </data>
+  <data name="Match_Tickets" xml:space="preserve">
+    <value>تذاكر المباراة</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>رسالة</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>اسم</value>
+  </data>
+  <data name="NewMatch" xml:space="preserve">
+    <value>مباراة جديدة</value>
+  </data>
+  <data name="NewStadium" xml:space="preserve">
+    <value>ملعب جديد</value>
+  </data>
+  <data name="NewTeam" xml:space="preserve">
+    <value>فريق جديد</value>
+  </data>
+  <data name="NewTicket" xml:space="preserve">
+    <value>تدكرة جديدة</value>
+  </data>
+  <data name="Matches_NotAvailable" xml:space="preserve">
+    <value>لا توجد مباريات متاحة</value>
+  </data>
+  <data name="Tickets_NotAvailable" xml:space="preserve">
+    <value>لا توجد تذاكر متاحة.</value>
+  </data>
+  <data name="NotAuthorized" xml:space="preserve">
+    <value>غير مصرح</value>
+  </data>
+  <data name="Ongoing" xml:space="preserve">
+    <value>مستمرة</value>
+  </data>
+  <data name="OurMission" xml:space="preserve">
+    <value>مهمتنا</value>
+  </data>
+  <data name="OurMissionText" xml:space="preserve">
+    <value>نحن نؤمن بأن أعظم متع الحياة تكمن في صخب الجماهير، والتشويق الناتج عن النتيجة النهائية، والفرح المشترك الناتج عن الأداء الحي. وتتمثل مهمتنا في جعل هذه اللحظات في متناول الجميع، من خلال توفير &lt;strong&gt;أفضل الأسعار&lt;/strong&gt; وأسهل طريقة&lt;/strong&gt; لشراء التذاكر.</value>
+  </data>
+  <data name="Over" xml:space="preserve">
+    <value>انتهت</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>كلمة المرور</value>
+  </data>
+  <data name="Password_Reset_Fail" xml:space="preserve">
+    <value>نأسف لذلك، لم نتمكن من تغيير كلمة المرور الخاصة بك.</value>
+  </data>
+  <data name="Password_Reset_Request_Fail" xml:space="preserve">
+    <value>فشل طلب تغيير كلمة المرور</value>
+  </data>
+  <data name="Password_Reset_Success" xml:space="preserve">
+    <value>تم إعادة تعيين كلمة المرور بنجاح</value>
+  </data>
+  <data name="Password_Validation" xml:space="preserve">
+    <value>كلمة المرور مطلوبة!</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>رقم الجوال</value>
+  </data>
+  <data name="PhoneNumber_Validation" xml:space="preserve">
+    <value>رقم الجوال مطلوب!</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>السعر</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>الكمية</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>إنشاء حساب</value>
+  </data>
+  <data name="Registration_Fail" xml:space="preserve">
+    <value>فشل في التسجيل</value>
+  </data>
+  <data name="Registration_Success" xml:space="preserve">
+    <value>تم التسجيل بنجاح</value>
+  </data>
+  <data name="RequiredFields" xml:space="preserve">
+    <value>الرجاء ملء جميع الحقول المطلوبة</value>
+  </data>
+  <data name="ResendEmailAgain" xml:space="preserve">
+    <value>أعد إرسال البريد الإلكتروني؟</value>
+  </data>
+  <data name="Password_Reset" xml:space="preserve">
+    <value>أعد تعيين كلمة المرور</value>
+  </data>
+  <data name="ResetPasswordEmailSentMessage" xml:space="preserve">
+    <value>لقد تم إرسال بريد إلكتروني إليك يحتوي على رابط لإعادة تعيين كلمة المرور الخاصة بك.</value>
+  </data>
+  <data name="SeatNumber" xml:space="preserve">
+    <value>رقم المقعد</value>
+  </data>
+  <data name="FavouriteTeam_Select" xml:space="preserve">
+    <value>اختر فريقك المفضل</value>
+  </data>
+  <data name="Team_Select" xml:space="preserve">
+    <value>اختر فريق</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>إرسال</value>
+  </data>
+  <data name="Stadia" xml:space="preserve">
+    <value>ملاعب</value>
+  </data>
+  <data name="Stadium" xml:space="preserve">
+    <value>ملعب</value>
+  </data>
+  <data name="StadiumLogo" xml:space="preserve">
+    <value>شعار الملعب</value>
+  </data>
+  <data name="StadiumName" xml:space="preserve">
+    <value>اسم الملعب</value>
+  </data>
+  <data name="SystemPreference" xml:space="preserve">
+    <value>إعدادات النظام</value>
+  </data>
+  <data name="Team" xml:space="preserve">
+    <value>فريق</value>
+  </data>
+  <data name="Team_Add_Success" xml:space="preserve">
+    <value>تم اضافة الفريق بنجاح</value>
+  </data>
+  <data name="TeamDescription" xml:space="preserve">
+    <value>وصف الفريق</value>
+  </data>
+  <data name="TeamLogo" xml:space="preserve">
+    <value>شعار الفريق</value>
+  </data>
+  <data name="TeamName" xml:space="preserve">
+    <value>اسم الفريق</value>
+  </data>
+  <data name="Teams" xml:space="preserve">
+    <value>فرق</value>
+  </data>
+  <data name="TheAction" xml:space="preserve">
+    <value>الإجراء</value>
+  </data>
+  <data name="TheActions" xml:space="preserve">
+    <value>الإجراءات</value>
+  </data>
+  <data name="TheAll" xml:space="preserve">
+    <value>الكل</value>
+  </data>
+  <data name="TheDate" xml:space="preserve">
+    <value>التاريخ</value>
+  </data>
+  <data name="TheMatch" xml:space="preserve">
+    <value>المباراة</value>
+  </data>
+  <data name="TheMatches" xml:space="preserve">
+    <value>المباريات</value>
+  </data>
+  <data name="TheTime" xml:space="preserve">
+    <value>الساعة</value>
+  </data>
+  <data name="Ticket" xml:space="preserve">
+    <value>تذكرة</value>
+  </data>
+  <data name="TicketDetails" xml:space="preserve">
+    <value>بيانات التذكرة</value>
+  </data>
+  <data name="TicketPerCustomer" xml:space="preserve">
+    <value>الحد الأقصى للتذكرة لكل عميل</value>
+  </data>
+  <data name="TicketPrices" xml:space="preserve">
+    <value>أسعار التذاكر</value>
+  </data>
+  <data name="Tickets" xml:space="preserve">
+    <value>تذاكر</value>
+  </data>
+  <data name="TicketsCount" xml:space="preserve">
+    <value>عدد التذاكر</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>ساعة</value>
+  </data>
+  <data name="Token_NotFound" xml:space="preserve">
+    <value>لم يتم العثور على الرمز الخاص بك</value>
+  </data>
+  <data name="TryAgainLater" xml:space="preserve">
+    <value>حدث خطأ ما. يرجى المحاولة مرة أخرى.</value>
+  </data>
+  <data name="FavoriteTeam_Update" xml:space="preserve">
+    <value>تم تحديث الفريق المفضل</value>
+  </data>
+  <data name="Match_Update_Fail" xml:space="preserve">
+    <value>فشل في تعديل المباراة</value>
+  </data>
+  <data name="Match_Update_Success" xml:space="preserve">
+    <value>تم تعديل المباراة بتجاح</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>اسم المستخدم</value>
+  </data>
+  <data name="UserName_Validation" xml:space="preserve">
+    <value>اسم المستخدم مطلوب!</value>
+  </data>
+  <data name="VIP" xml:space="preserve">
+    <value>كبار الشخصيات</value>
+  </data>
+  <data name="VS" xml:space="preserve">
+    <value>ضد</value>
+  </data>
+  <data name="WhoWeAre" xml:space="preserve">
+    <value>من نحن؟</value>
+  </data>
+  <data name="WhoWeAreText" xml:space="preserve">
+    <value>في قلب عالم الرياضة والترفيه الصاخب، تقف شركتنا كمنارة للمشجعين الذين يبحثون عن تجارب لا تُنسى. نحن لسنا مجرد بائعي تذاكر؛ بل نحن أمناء على الإثارة، ومحفزون للمغامرة، ومهندسون للحظات صنع الذكريات.</value>
+  </data>
+  <data name="WhyChooseUs" xml:space="preserve">
+    <value>لماذا تختارنا؟</value>
+  </data>
+  <data name="WhyChooseUsText" xml:space="preserve">
+    <value>بفضل منصة سهلة الاستخدام والالتزام بأسعار معقولة والشغف بإرضاء العملاء، فإننا نضمن أن تكون رحلتك من النقرة الأولى إلى الظهور النهائي سلسة مثل العروض التي تحضرها.</value>
+  </data>
+  <data name="YourCart" xml:space="preserve">
+    <value>عربتك</value>
+  </data>
+  <data name="NotLoggedIn" xml:space="preserve">
+    <value>المستخدم غير مسجل الدخول</value>
+  </data>
+  <data name="Tickets_Create_Fail" xml:space="preserve">
+    <value>فشل إنشاء التذاكر</value>
+  </data>
+  <data name="Tickets_Create_Success" xml:space="preserve">
+    <value>تم إنشاء التذاكر بنجاح</value>
+  </data>
+  <data name="Tickets_Update_Fail" xml:space="preserve">
+    <value>فشل تعديل التذاكر</value>
+  </data>
+  <data name="Tickets_Update_Success" xml:space="preserve">
+    <value>تم تعديل التذاكر بنجاح</value>
+  </data>
+  <data name="Ticket_AddedToCart_Fail" xml:space="preserve">
+    <value>فشل في إضافة التذكرة إلى سلة التسوق الخاصة بك</value>
+  </data>
+  <data name="Ticket_AddedToCart_Success" xml:space="preserve">
+    <value>تمت إضافة التذكرة إلى سلة التسوق الخاصة بك بنجاح</value>
+  </data>
+  <data name="Ticket_NotFound" xml:space="preserve">
+    <value>لم نتمكن من العثور على التذكرة</value>
+  </data>
+  <data name="Hello" xml:space="preserve">
+    <value>أهلًا، </value>
+  </data>
+  <data name="Details_View" xml:space="preserve">
+    <value>عرض التفاصيل</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>الاجمالي</value>
+  </data>
+  <data name="Email_Format_Validation" xml:space="preserve">
+    <value>صيغة بريد إلكتروني غير صحيحة!</value>
+  </data>
+  <data name="Message_Validation" xml:space="preserve">
+    <value>محتوى الرسالة فارغ!</value>
+  </data>
+  <data name="Name_Validation" xml:space="preserve">
+    <value>الاسم مطلوب!</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>العنوان</value>
+  </data>
+  <data name="ContactUsHeadline" xml:space="preserve">
+    <value>لديك مشكلة، إذًا لا تتردد في التواصل معنا!</value>
+  </data>
+  <data name="CustomerService" xml:space="preserve">
+    <value>تواصل معنا</value>
+  </data>
+  <data name="KSA_Riyadh" xml:space="preserve">
+    <value>السعودية - الرياض</value>
+  </data>
+  <data name="Copyright" xml:space="preserve">
+    <value>جميع الحقوق محفوظة - هابي المحدودة ٢٠٢٤</value>
+  </data>
+  <data name="Password_Format_Validation" xml:space="preserve">
+    <value>صيغة كلمة مرور غير مقبولة! قم بإدخال حروف صغيرة وكبيرة ورموز خاصة وأرقام</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>تأكيد</value>
+  </data>
+  <data name="PhoneNumberRegexError" xml:space="preserve">
+    <value>رقم جوال غير صحيح! اختر كود الدولة أولًا ثم ادخل ما تبقى من رقم الجوال</value>
+  </data>
+  <data name="Passwords_NotMatching" xml:space="preserve">
+    <value>كلمتي المرور غير متطابقتين!</value>
+  </data>
+  <data name="BuyTheTickets" xml:space="preserve">
+    <value>اشتري تذاكر</value>
+  </data>
+  <data name="BuyTicket" xml:space="preserve">
+    <value>اشتري التذكرة</value>
+  </data>
+  <data name="Facebook" xml:space="preserve">
+    <value>فيسبوك</value>
+  </data>
+  <data name="FollowUs" xml:space="preserve">
+    <value>تابعنا</value>
+  </data>
+  <data name="Instagram" xml:space="preserve">
+    <value>إنستغرام</value>
+  </data>
+  <data name="QuickLinks" xml:space="preserve">
+    <value>روابط سريعة</value>
+  </data>
+  <data name="TikTok" xml:space="preserve">
+    <value>تيك توك</value>
+  </data>
+  <data name="X" xml:space="preserve">
+    <value>إكس</value>
+  </data>
+  <data name="AboutUsHeadline" xml:space="preserve">
+    <value>تعرف على المزيد حول شركة هابي تيكتس!</value>
+  </data>
+  <data name="BackToRegistration" xml:space="preserve">
+    <value>العودة إلى التسجيل</value>
+  </data>
+  <data name="LicenseText" xml:space="preserve">
+    <value>اتفاقية ترخيص شراء التذاكر
+
+آخر تحديث: [التاريخ]
+
+1. المقدمة
+من خلال شراء تذكرة عبر [اسم الموقع] (""الموقع""), فإنك توافق على الالتزام بالشروط والأحكام الواردة في اتفاقية الترخيص هذه (""الاتفاقية""). تنطبق هذه الاتفاقية على جميع مشتريات التذاكر التي تتم عبر الموقع.
+
+2. ترخيص استخدام التذكرة
+عند شراء تذكرة, يتم منحك ترخيصًا محدودًا وغير قابل للتحويل وقابل للإلغاء لحضور الفعالية التي تم شراء التذكرة من أجلها (""الفعالية""). لا يمنحك هذا الترخيص أي حقوق ملكية في التذكرة أو الفعالية.
+
+3. القيود
+أنت توافق على عدم:
+- بيع أو إعادة بيع أو نقل التذكرة إلى أي طرف ثالث بدون إذن صريح من [اسم الموقع] أو منظم الفعالية.
+- استخدام التذكرة لأي غرض تجاري غير مصرح به, بما في ذلك على سبيل المثال لا الحصر العروض الترويجية أو المسابقات.
+- تغيير أو إعادة إنتاج التذكرة بأي شكل.
+
+4. الاسترداد والإلغاء
+جميع مبيعات التذاكر نهائية. لا يُسمح باسترداد أو استبدال أو إلغاء التذاكر, إلا إذا كان ذلك مطلوبًا بموجب القانون أو كما هو مذكور في شروط وأحكام الفعالية.
+
+5. تغييرات الفعالية
+يحتفظ [اسم الموقع] ومنظمو الفعالية بالحق في إجراء تغييرات على الفعالية, بما في ذلك على سبيل المثال لا الحصر التاريخ والوقت والمكان, دون إشعار مسبق. في حالة الإلغاء أو التغيير الكبير, قد يقوم [اسم الموقع], وفقًا لتقديره, بتقديم استرداد أو استبدال.
+
+6. تحديد المسؤولية
+إلى أقصى حد يسمح به القانون, لن يكون [اسم الموقع] مسؤولاً عن أي أضرار مباشرة أو غير مباشرة أو عرضية أو تبعية تنشأ عن أو تتعلق بشراء أو استخدام التذكرة, بما في ذلك على سبيل المثال لا الحصر الإصابات الشخصية أو الأضرار التي تلحق بالممتلكات أو الأرباح الضائعة.
+
+7. القانون الحاكم
+تخضع هذه الاتفاقية وتُفسر وفقًا لقوانين [الدولة/البلد], دون مراعاة لمبادئ تضارب القوانين.
+
+8. التعديلات
+يحتفظ [اسم الموقع] بالحق في تعديل أو تغيير هذه الاتفاقية في أي وقت. ستكون أي تغييرات سارية فور نشرها على الموقع. إن استمرار استخدامك للموقع بعد نشر التغييرات يشكل قبولك لهذه التغييرات.
+
+9. معلومات الاتصال
+لأي أسئلة أو استفسارات بخصوص هذه الاتفاقية, يرجى الاتصال بـ [بريد خدمة العملاء الإلكتروني] أو [رقم هاتف خدمة العملاء].</value>
+  </data>
+  <data name="TermsAndConditions" xml:space="preserve">
+    <value>الشروط والأحكام الخاصة بنا</value>
+  </data>
+  <data name="TermsAndConditionsCheckBoxValidation" xml:space="preserve">
+    <value>يجب الموافقة على الشروط والأحكام الخاصة بالشركة لإكمال عملية التسجيل بنجاح</value>
+  </data>
+  <data name="TermsAndConditionsPartialLabel" xml:space="preserve">
+    <value>بوضعك علامة على هذا المربع، هذا يعني موافقتك على</value>
+  </data>
+  <data name="TheTicket" xml:space="preserve">
+    <value>التذكرة</value>
+  </data>
+  <data name="TheTickets" xml:space="preserve">
+    <value>التذاكر</value>
+  </data>
+  <data name="Credentials_Invalid" xml:space="preserve">
+    <value>بيانات غير صحيحة</value>
+  </data>
+  <data name="Email_Confirmation_Message" xml:space="preserve">
+    <value>يرجى تأكيد بريدك الإلكتروني بالضغط هنا:</value>
+  </data>
+  <data name="Email_Invalid" xml:space="preserve">
+    <value>البريج الالكتروني غير صحيح</value>
+  </data>
+  <data name="Email_NotConfirmed" xml:space="preserve">
+    <value>الحساب الالكتروني غير مفعل</value>
+  </data>
+  <data name="Email_NotConfirmed_Message" xml:space="preserve">
+    <value>لم تقم بتأكيد بريدك الإلكتروني بعد.</value>
+  </data>
+  <data name="FavoriteTeam_NotFound_Message" xml:space="preserve">
+    <value>لم يتم العثور على فريق مفضل للمستخدم {userId} للمباراة {matchId}.</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>غير موجود</value>
+  </data>
+  <data name="NotFoundInDB_Message" xml:space="preserve">
+    <value>لم يتم العثور على أي {type} مخزّن في قاعدة البيانات.</value>
+  </data>
+  <data name="NotFound_Message" xml:space="preserve">
+    <value>لم يتم العثور على {type}.</value>
+  </data>
+  <data name="Password_Reset_Message" xml:space="preserve">
+    <value>من فضلك قم بتغيير كلمة المرور الخاصة بك بالضغط هنا: </value>
+  </data>
+  <data name="PurchaseOrder_Invalid" xml:space="preserve">
+    <value>طلب شراء غير صالح</value>
+  </data>
+  <data name="PurchaseOrder_Invalid_Message" xml:space="preserve">
+    <value>لقد وصلت إلى الحد الأقصى لعدد التذاكر المسموح به لكل عميل لهذه المباراة.</value>
+  </data>
+  <data name="Invoice_Email_Template" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="ar"&gt;
+    &lt;head&gt;
+        &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+        &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;
+        &lt;style&gt;
+            table {
+                border: 1px solid #ccc;
+                border-collapse: collapse;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                table-layout: fixed;
+            }
+
+            table caption {
+                font-size: 1.5em;
+                margin: .5em 0 .75em;
+            }
+
+            table tr {
+                background-color: #f8f8f8;
+                border: 1px solid #ddd;
+                padding: .35em;
+            }
+
+            table th,
+            table td {
+                padding: .625em;
+                text-align: center;
+            }
+
+            table th {
+                font-size: .85em;
+                letter-spacing: .1em;
+                text-transform: uppercase;
+            }
+            
+            {style}
+
+            body {
+                font-family: "Open Sans", sans-serif;
+                line-height: 1.25;
+            }
+        &lt;/style&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+        &lt;table&gt;
+            &lt;caption&gt;فاتورة هابي&lt;/caption&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th scope="col"&gt;الفريق المضيف&lt;/th&gt;
+                    &lt;th scope="col"&gt;الفريق الضيف&lt;/th&gt;
+                    &lt;th scope="col"&gt;فريقك&lt;/th&gt;
+                    &lt;th scope="col"&gt;الملعب&lt;/th&gt;
+                    &lt;th scope="col"&gt;التاريخ&lt;/th&gt;
+                    &lt;th scope="col"&gt;الفئة&lt;/th&gt;
+                    &lt;th scope="col"&gt;رقم التذكرة&lt;/th&gt;
+                    &lt;th scope="col"&gt;رمز QR للتذكرة&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+                {body}
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</value>
+  </data>
+  <data name="Invoice_Email_Table_Body_Template" xml:space="preserve">
+    <value>&lt;tr&gt;
+  &lt;td data-label="الفريق المضيف"&gt;{HomeTeam}&lt;/td&gt;
+  &lt;td data-label="الفريق الضيف"&gt;{AwayTeam}&lt;/td&gt;
+  &lt;td data-label="فريقك"&gt;{YourTeam}&lt;/td&gt;
+  &lt;td data-label="الملعب"&gt;{Stadium}&lt;/td&gt;
+  &lt;td data-label="التاريخ"&gt;{Date}&lt;/td&gt;
+  &lt;td data-label="الفئة"&gt;{Class}&lt;/td&gt;
+  &lt;td data-label="رقم التذكرة"&gt;{TicketNumber}&lt;/td&gt;
+  &lt;td data-label="رمز QR للتذكرة"&gt;{QR}&lt;/td&gt;
+&lt;/tr&gt;</value>
+  </data>
+  <data name="Invoice_Title" xml:space="preserve">
+    <value>فاتورة هابي</value>
+  </data>
+  <data name="Login_Success" xml:space="preserve">
+    <value>لقد قمت بتسجيل الدخول بنجاح!</value>
+  </data>
+  <data name="footeraboutus" xml:space="preserve">
+    <value>من نحن</value>
+  </data>
+  <data name="Rates" xml:space="preserve">
+    <value>نجاحتنا في ارقام</value>
+  </data>
+  <data name="footer_beyond" xml:space="preserve">
+    <value>بوابتك لتجارب لا تُنسى في عالم الرياضة والترفيه - نحن أكثر من مجرد بائعي تذاكر، نحن ننسج الإثارة، نمكّن المغامرات، ونصنع ذكريات تدوم.</value>
+  </data>
+  <data name="ContactUsText" xml:space="preserve">
+    <value>سواء كان لديك سؤال، تحتاج إلى مساعدة، أو ترغب فقط في مشاركة تجربتك، فريقنا هنا لمساعدتك.
+ملاحظاتك مهمة لنا، ونحن ملتزمون بتقديم خدمة استثنائية لك</value>
+  </data>
+  <data name="Mission" xml:space="preserve">
+    <value>مهمتنا</value>
+  </data>
+  <data name="Vision" xml:space="preserve">
+    <value>رؤيتنا</value>
+  </data>
+  <data name="GetToKnowUs" xml:space="preserve">
+    <value>أعرف أكثر عن</value>
+  </data>
+  <data name="ClosedOrders" xml:space="preserve">
+    <value>الطلبات المغلقة</value>
+  </data>
+  <data name="DoneBy" xml:space="preserve">
+    <value>طُلب بواسطة</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>م</value>
+  </data>
+  <data name="NoRecordsFound" xml:space="preserve">
+    <value>لا توجد بيانات!</value>
+  </data>
+  <data name="Orders" xml:space="preserve">
+    <value>الطلبات</value>
+  </data>
+  <data name="Sar" xml:space="preserve">
+    <value>ر.س</value>
+  </data>
+  <data name="TotalPaid" xml:space="preserve">
+    <value>إجمالي المدفوع</value>
+  </data>
+  <data name="UserEmail" xml:space="preserve">
+    <value>البريد الإلكتروني</value>
+  </data>
+  <data name="UserPhoneNumber" xml:space="preserve">
+    <value>رقم الجوال</value>
+  </data>
+  <data name="ForAdmin" xml:space="preserve">
+    <value>للأدمن فقط</value>
+  </data>
+  <data name="Ticket_Status_Invalid" xml:space="preserve">
+    <value>عملية غير ناجحة</value>
+  </data>
+  <data name="Ticket_Status_Invalid1" xml:space="preserve">
+    <value>عملية غير ناجحة</value>
+  </data>
+  <data name="Ticket_Scanned_Success" xml:space="preserve">
+    <value>تم مسح التذكرة بنجاح</value>
+  </data>
+  <data name="Ticket_Scanned_Success1" xml:space="preserve">
+    <value>تم مسح التذكرة بنجاح</value>
+  </data>
+  <data name="ScanQr" xml:space="preserve">
+    <value>مسح الرمز</value>
+  </data>
+  <data name="Championship_Name" xml:space="preserve">
+    <value>إسم البطولة</value>
+  </data>
+  <data name="QR_Code_Alt" xml:space="preserve">
+    <value>الباركود</value>
+  </data>
+  <data name="GATE" xml:space="preserve">
+    <value>بوابة</value>
+  </data>
+  <data name="No_Tickets_To_Display" xml:space="preserve">
+    <value>ليس لديك تذاكر للعرض</value>
+  </data>
+</root>

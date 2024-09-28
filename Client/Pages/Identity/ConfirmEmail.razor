@@ -1,0 +1,82 @@
+﻿@page "/ConfirmEmail/{Token}"
+
+@inject ICustomSnackbarProvider Snackbar
+@inject IIdentityService identityService
+@inject ILocalStorageService localStorage
+@inject NavigationManager navigation
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+<PageTitle>@Resource.Email_Confirm</PageTitle>
+
+@if (_loading)
+{
+    <MudText>@Resource.Loading</MudText>
+}
+else
+{
+    <MudForm Model="_confirmEmailRequest">
+        <MudCard>
+            <MudCardHeader>
+                <MudText Typo="Typo.h4">@Resource.Email_Confirm</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudTextField T="string" Label=@Resource.Email @bind-Value="_confirmEmailRequest.Email" InputType="InputType.Email" InputMode="InputMode.email" HelperText=@Resource.EmailHelperText Required ErrorText=@Resource.Email_Invalid Immediate />
+            </MudCardContent>
+            <MudCardActions Class="d-flex justify-end">
+                <LoadingButton OnClick="Submit" Disabled=@(string.IsNullOrWhiteSpace(_confirmEmailRequest.Email))>@Resource.Email_Confirm</LoadingButton>
+            </MudCardActions>
+        </MudCard>
+    </MudForm>
+}
+
+
+@code {
+    private bool _loading = true;
+    private ConfirmEmailRequest _confirmEmailRequest = new();
+
+    [Parameter]
+    public string Token { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _confirmEmailRequest.Email = await localStorage.GetItemAsStringAsync("email") ?? string.Empty;
+            _confirmEmailRequest.Token = string.IsNullOrWhiteSpace(Token) ? throw new InvalidOperationException(Resource.Token_NotFound) : Token;
+            _loading = false;
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show(ex.Message, Severity.Error);
+            navigation.NavigateTo("/login", true);
+        }
+    }
+
+    private async Task Submit()
+    {
+        var result = await identityService.ConfirmEmailAsync(_confirmEmailRequest);
+        _ = result.Match(
+            Succ =>
+            {
+                if (Succ.IsSuccess)
+                {
+                    Snackbar.Show($"{Resource.Email_Confirmed} 🎊🎊🎊", Severity.Success);
+                    Snackbar.Show(@Resource.Login_Redirect, Severity.Normal);
+                    navigation.NavigateTo("/login", true);
+                }
+                else
+                {
+                    Snackbar.Show(Resource.Email_Confirmation_Fail, Severity.Error);
+                    Succ.ErrorList?.ToList().ForEach(err => Snackbar.Show($"{err.Title.Humanize()}: {err.Message.Humanize()}.", Severity.Error));
+                }
+                return new Unit();
+            },
+            Fail =>
+            {
+                Snackbar.Show(Fail.Message.Humanize(), Severity.Error);
+                return new Unit();
+            }
+        );
+    }
+}

@@ -1,0 +1,117 @@
+﻿@page "/match-details/{matchId:guid}"
+
+@inject ICustomSnackbarProvider Snackbar
+@inject BIMatchService MatchService
+@inject NavigationManager NavigationManager
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+<PageTitle>@Resource.MatchDetails</PageTitle>
+
+<MudCard>
+    <MudCardContent>
+        <MudText Typo="Typo.h3" Align="Align.Center" Class="mb-4">@Resource.MatchDetails</MudText>
+
+        @if (match == null)
+        {
+            <MudText Typo="Typo.h6" Align="Align.Center">@Resource.Loading</MudText>
+        }
+        else
+        {
+            <MudGrid>
+                <MudItem xs="12" md="4" Class="d-flex align-items-center justify-content-center">
+                    @if (match.TeamA != null)
+                    {
+                        <div class="text-center">
+                            <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), match.TeamA?.Logo))" alt="@match.TeamA?.Name" class="team-logo" />
+                            <div class="mt-2">@match.TeamA?.Name</div>
+                        </div>
+                    }
+                </MudItem>
+                <MudItem xs="12" md="4" Class="d-flex align-items-center justify-content-center">
+                    <MudImage Src="Icons/competition_vs.png" Alt="Versus Image" Width="100" />
+                </MudItem>
+                <MudItem xs="12" md="4" Class="d-flex align-items-center justify-content-center">
+                    @if (match.TeamB != null)
+                    {
+                        <div class="text-center">
+                            <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), match.TeamB?.Logo))" alt="@match.TeamB?.Name" class="team-logo" />
+                            <div class="mt-2">@match.TeamB?.Name</div>
+                        </div>
+                    }
+                </MudItem>
+            </MudGrid>
+           
+            <MudGrid Justify="Justify.Center">
+                <MudItem xs="12" md="6" lg="3">
+                    <div class="d-flex justify-content-center align-content-center flex-nowrap mt-4">
+                        <MudChip T="string" Color="Color.Secondary" Class="flex-fill">
+                            @Resource.Stadium
+                        </MudChip>
+                        <MudChip T="string" Color="Color.Primary" Class="flex-fill">
+                            @match.Stadium?.Name
+                        </MudChip>
+                    </div>
+                    <div class="d-flex justify-content-center align-content-center flex-nowrap mt-4">
+                        <MudChip T="string" Color="Color.Secondary" Class="flex-fill">
+                            @Resource.Match_DateTime
+                        </MudChip>
+                        <MudChip T="string" Color="Color.Primary" Class="flex-fill">
+                            @(match.EventDate?.ToString("dd-MM-yyyy")) @match.EventTime
+                        </MudChip>
+                    </div>
+                </MudItem>
+            </MudGrid>
+
+            <MudDivider Class="my-4" />
+
+            <LoadingButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => NavigateToBuyTickets(match.Id))" Class="mt-4 w-100">@Resource.Tickets_Buy</LoadingButton>
+        }
+    </MudCardContent>
+</MudCard>
+
+@code {
+    [Parameter] public Guid matchId { get; set; }
+    private MatchDto match;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMatchDetailsAsync();
+    }
+
+    private async Task LoadMatchDetailsAsync()
+    {
+        try
+        {
+            var response = await MatchService.GetMatchByIdAsync(matchId, true);
+            _ = response.Match(
+                succ =>
+                {
+                    match = succ.Data ?? new();
+                    if (!succ.IsSuccess)
+                    {
+                        Snackbar.Show(Resource.MatchDetails_Load_Fail, Severity.Error);
+                    }
+                    Snackbar.Show(succ.Title, succ.IsSuccess ? Severity.Info : Severity.Error);
+                    succ.ErrorList?.ToList().ForEach(x => Snackbar.Show($"{x.Title}: {x.Message}", Severity.Error));
+                    return new Unit();
+                },
+                fail =>
+                {
+                    match = new();
+                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                    return new Unit();
+                }
+            );
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    private void NavigateToBuyTickets(Guid matchId)
+    {
+        NavigationManager.NavigateTo($"/buy-tickets/{matchId}");
+    }
+}

@@ -1,0 +1,42 @@
+﻿<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+<div style="position:relative;">
+    <MudDatePicker @bind-Date="_date" PickerClosed="OpenTimer" DateFormat="dd.MM.yyyy HH:mm:ss" Label=@Label Variant=@Variant Style="position:absolute;top:0;left:0;" />
+    <MudTimePicker @ref="_timePicket" @bind-Time="_time" Variant=@Variant Style="display:none;" PickerClosed="AddTimeToDatetime" />
+</div>
+
+@code {
+    private MudTimePicker? _timePicket { get; set; } = new MudTimePicker();
+    private DateTime? _date { get; set; }
+    private TimeSpan? _time { get; set; }
+
+    [Parameter]
+    public string Label { get; set; } = string.Empty;
+    [Parameter]
+    public Variant Variant { get; set; }
+    [Parameter]
+    public DateTime DateTime { get; set; }
+    [Parameter]
+    public EventCallback<DateTime> DateTimeChanged { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        _date = DateTime.Date;
+        _time = DateTime.TimeOfDay;
+    }
+
+    void OpenTimer()
+    {
+        _timePicket!.Open();
+    }
+
+    async Task AddTimeToDatetime()
+    {
+        if (_time != null)
+        {
+            TimeSpan nonNullableTimeSpan = _time ?? TimeSpan.Zero;
+            _date = _date?.Add(nonNullableTimeSpan);
+        }
+        if (DateTimeChanged.HasDelegate) await DateTimeChanged.InvokeAsync(DateTime);
+    }
+}

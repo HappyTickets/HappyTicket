@@ -1,0 +1,100 @@
+﻿@page "/active-matches"
+@inject ICustomSnackbarProvider Snackbar
+@inject BIMatchService MatchService
+@inject NavigationManager NavigationManager
+@attribute [Authorize]
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+<PageTitle>@Resource.Matches_Available</PageTitle>
+
+<MudCard>
+    <MudCardContent>
+        <MudText Typo="Typo.h3" Align="Align.Center" Class="mb-4">@Resource.Matches_Available</MudText>
+
+        @if (matches == null)
+        {
+            <MudText Typo="Typo.h6" Align="Align.Center">@Resource.Loading</MudText>
+        }
+        else if (!matches.Any())
+        {
+            <MudText Typo="Typo.h6" Align="Align.Center">@Resource.Matches_NotAvailable</MudText>
+        }
+        else
+        {
+            <MudTable Items="@matches" Striped="true" Bordered="true" Hover="true">
+                <HeaderContent>
+                    <MudTh>@Resource.Match</MudTh>
+                    <MudTh>@Resource.DateTime</MudTh>
+                    <MudTh>@Resource.Stadium</MudTh>
+                    <MudTh>@Resource.TheActions</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd>
+                        <MudGrid>
+                            <MudItem xs="12" md="6">
+                                <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), context.TeamA?.Logo))" alt="@context.TeamA?.Name" class="team-logo" />
+                                <div>@context.TeamA?.Name</div>
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), context.TeamB?.Logo))" alt="@context.TeamB?.Name" class="team-logo" />
+
+                                <div>@context.TeamB?.Name</div>
+                            </MudItem>
+                        </MudGrid>
+                    </MudTd>
+                    <MudTd>@context.EventDate?.ToString("dd-MM-yyyy") @context.EventTime</MudTd>
+                    <MudTd>@context.Stadium?.Name</MudTd>
+                    <MudTd>
+                        <LoadingButton OnClick="@(() => NavigateToDetails(context.Id))" Color="Color.Primary" Variant="Variant.Filled">@Resource.Details_View</LoadingButton>
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
+        }
+    </MudCardContent>
+</MudCard>
+
+@code {
+    private List<MatchDto> matches;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadActiveMatchesAsync();
+    }
+
+    private async Task LoadActiveMatchesAsync()
+    {
+        try
+        {
+            var response = await MatchService.GetActiveMatches(false);
+            _ = response.Match(
+                succ =>
+                {
+                    matches = succ.Data?.ToList() ?? [];
+                    if (!succ.IsSuccess)
+                    {
+                        Snackbar.Show(Resource.Match_Load_Fail, Severity.Error);
+                    }
+                    Snackbar.Show(succ.Title, succ.IsSuccess ? Severity.Info : Severity.Error);
+                    succ.ErrorList?.ToList().ForEach(x => Snackbar.Show($"{x.Title}: {x.Message}", Severity.Error));
+                    return new Unit();
+                },
+                fail =>
+                {
+                    matches ??= [];
+                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                    return new Unit();
+                }
+            );
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    private void NavigateToDetails(Guid matchId)
+    {
+        NavigationManager.NavigateTo($"/match-details/{matchId}");
+    }
+}

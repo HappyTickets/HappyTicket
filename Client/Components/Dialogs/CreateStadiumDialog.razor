@@ -1,0 +1,43 @@
+﻿@inject IHttpClientHelper HttpHelper
+@inject BIStadiumService StadiumService
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+<BaseFormDialog T="StadiumDto" Submit=HandleValidSubmit Entity="_stadium" Title=@($"{Resource.Add} {Resource.Stadium}") IsVisible="IsVisible" IsVisibleChanged="IsVisibleChanged">
+    <MudGrid Class="mx-4 my-1 gap-2">
+        <MudItem xs="12">
+            <MudTextField Label=@Resource.StadiumName @bind-Value="@context.Name" FullWidth Required />
+        </MudItem>
+        <MudItem xs="12">
+            <ImageUpload Label=@Resource.StadiumLogo Required FilesChanged="@(x => _logo = x.LastOrDefault())" />
+        </MudItem>
+    </MudGrid>
+</BaseFormDialog>
+
+@code {
+
+    [Parameter]
+    public EventCallback OnStadiumCreated { get; set; }
+    [Parameter]
+    public bool IsVisible { get; set; }
+    [Parameter]
+    public EventCallback<bool> IsVisibleChanged { get; set; }
+    KeyValuePair<string, string> _logo = new();
+
+    private StadiumDto _stadium = new StadiumDto();
+
+    private async Task HandleValidSubmit(StadiumDto stadium)
+    {
+        var sanitizedStadiumName = stadium.Name.Replace(" ", "_"); // Sanitize the stadium name
+        var sanitizedFileName = _logo.Key.Replace(" ", "_"); // Sanitize the filename
+
+        var logoPath = $"/Images/Stadia/{sanitizedStadiumName}/{sanitizedFileName}";
+        stadium.Photo = (await HttpHelper.PostBaseAsync<FileInfoDTO, BaseResponse<string>?>("api/File/UploadFile", new FileInfoDTO() { Path = logoPath, Base64EncodedString = _logo.Value })).IfFail(x => new())?.Data!;
+
+        await StadiumService.CreateStadiumAsync(stadium);
+        await OnStadiumCreated.InvokeAsync();
+        _stadium = new();
+    }
+
+
+}

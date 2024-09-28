@@ -1,0 +1,52 @@
+﻿@page "/checkout"
+
+@inject BICartService CartService
+@inject ICustomSnackbarProvider Snackbar
+@inject NavigationManager NavigationManager
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+<PageTitle>@Resource.Checkout</PageTitle>
+
+<MudCard>
+    <MudCardContent>
+        <MudText Typo="Typo.h3" Align="Align.Center">@Resource.Checkout</MudText>
+
+        @if (cart == null || !cart.Any())
+        {
+            <MudText Typo="Typo.h6" Align="Align.Center">@Resource.Cart_Empty</MudText>
+        }
+        else
+        {
+            <MudGrid>
+                @foreach (var ticket in cart)
+                {
+                    <MudItem xs="12" md="6">
+                        <MudCard>
+                            <MudCardContent>
+                                <MudText Typo="Typo.subtitle1">@Resource.Class: @ticket.Class</MudText>
+                                <MudText Typo="Typo.subtitle1">@Resource.Price: @ticket.Price</MudText>
+                                <MudText Typo="Typo.subtitle1">@Resource.Location: @ticket.Location</MudText>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
+                }
+            </MudGrid>
+
+            <LoadingButton Variant=Variant.Filled Color=Color.Primary OnClick=PlaceOrder Class="mt-4 w-full">Place Order</LoadingButton>
+        }
+    </MudCardContent>
+</MudCard>
+
+@code {
+    private List<TicketDto> cart;
+    protected override async Task OnInitializedAsync()
+    {
+       // cart = await CartService.GetCartByUserIdAsync();
+    }
+
+    private void PlaceOrder()
+    {
+        var paymentUrl = "https://paymentgateway.com/process-payment";
+        NavigationManager.NavigateTo(paymentUrl);
+    }
+}

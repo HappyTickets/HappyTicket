@@ -1,0 +1,32 @@
+﻿@inject ITokenExpirationService TokenExpirationService
+
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(Program).Assembly" OnNavigateAsync="HandleNavigation">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <NotAuthorized>
+                    <NotAuthorizedRedirect @key="@(routeData.PageType)" />
+                </NotAuthorized>
+            </AuthorizeRouteView>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p role="alert">Sorry, there's nothing at this address.</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>
+
+@code {
+    private async Task HandleNavigation(NavigationContext args)
+    {
+       
+        // Skip token expiration check if navigating to login
+        if (!args.Path.Contains("login", StringComparison.OrdinalIgnoreCase))
+        {
+           await TokenExpirationService.CheckTokenExpiration();
+        }
+    }
+}

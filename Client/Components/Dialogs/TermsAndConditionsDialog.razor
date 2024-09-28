@@ -1,0 +1,40 @@
+﻿@inject IStringLocalizer<Resource> Localizer
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+<MudDialog>
+    <DialogContent>
+        <div class="dialog-content">
+            @if (_loading)
+            {
+                <MudProgressCircular Indeterminate="true"></MudProgressCircular>
+            }
+            else
+            {
+                <MudText Style="white-space: pre-wrap !important;">@_licenseText</MudText>
+            }
+        </div>
+
+        <div class="dialog-actions">
+            <LoadingButton Color="Color.Primary" OnClick="Ok" FullWidth="true" Variant="Variant.Filled">@Resource.BackToRegistration</LoadingButton>
+        </div>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    private string _licenseText = string.Empty;
+    private bool _loading;
+
+    [CascadingParameter]
+    private MudDialogInstance MudDialog { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _loading = true;
+        _licenseText = Resource.LicenseText;
+        _loading = false;
+    }
+
+    private void Ok() => MudDialog.Close(DialogResult.Ok(true));
+}

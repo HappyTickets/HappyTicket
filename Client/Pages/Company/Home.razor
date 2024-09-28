@@ -1,0 +1,133 @@
+﻿@page "/"
+@inject ICustomSnackbarProvider Snackbar
+@inject IStringLocalizer<Resource> Localizer
+@inject BIMatchService MatchService
+@inject NavigationManager NavigationManager
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+<PageTitle>@Resource.CompanyName</PageTitle>
+
+<section class="mb-4">
+    <MudCarousel Class="mud-width-full rounded-xl" Style="height:500px;" ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object">
+        <BulletTemplate Context="selected">
+            <div Class="mud-button-root mud-icon-button mud-ripple mud-ripple-icon">
+                <span class="mud-icon-button-label">
+                    <MudIcon Class="mud-ripple mud-ripple-icon mud-icon-button-size-medium" Icon="@(selected ? Icons.Material.Filled.Circle : Icons.Material.Outlined.Circle)" />
+                </span>
+            </div>
+        </BulletTemplate>
+        <PreviousButtonTemplate>
+            <div Class="mud-button-root mud-icon-button mud-ripple mud-ripple-icon">
+                <span class="mud-icon-button-label">
+                    <MudIcon Class="mud-ripple mud-ripple-icon mud-icon-button-size-medium" Icon="@Icons.Material.Rounded.ArrowBackIos" />
+                </span>
+            </div>
+        </PreviousButtonTemplate>
+        <NextButtonTemplate>
+            <div Class="mud-button-root mud-icon-button mud-ripple mud-ripple-icon">
+                <span class="mud-icon-button-label">
+                    <MudIcon Class="mud-ripple mud-ripple-icon mud-icon-button-size-medium" Icon="@Icons.Material.Rounded.ArrowForwardIos" />
+                </span>
+            </div>
+        </NextButtonTemplate>
+
+        <ChildContent>
+            <MudCarouselItem Transition="Transition.Fade" Color="@Color.Primary">
+                <div class="d-flex w-100" style="height:100%">
+                    <MudImage Src="Imgs/1.jpg" Class="mx-auto my-auto" Style="width:100%; height:100%; object-fit:cover;" />
+                </div>
+            </MudCarouselItem>
+            <MudCarouselItem Transition="Transition.Fade" Color="@Color.Primary">
+                <div class="d-flex w-100" style="height:100%">
+                    <MudImage Src="Imgs/2.jpg" Class="mx-auto my-auto" Style="width:100%; height:100%; object-fit:cover;" />
+                </div>
+            </MudCarouselItem>
+            <MudCarouselItem Transition="Transition.Fade" Color="@Color.Primary">
+                <div class="d-flex w-100" style="height:100%">
+                    <MudImage Src="Imgs/3.jpg" Class="mx-auto my-auto" Style="width:100%; height:100%; object-fit:cover;" />
+                </div>
+            </MudCarouselItem>
+        </ChildContent>
+    </MudCarousel>
+</section>
+
+<!---Statistics Section-->
+<div class="title-with-lines mb-5">
+    <div class="line"></div>
+    <MudText Typo="Typo.h5" Color="Color.Primary" Align="Align.Center" Class="mt-5">@Resource.Rates</MudText>
+    <div class="line"></div>
+</div>
+<section class="mb-4">
+    <MudContainer>
+        <MudGrid>
+            <MudItem xs="12" md="4" Class="ps-md-5">
+                <PieChartComponent FillPercentage="70" ChartLabel="Users" InnerValue="50000" />
+
+            </MudItem>
+            <MudItem xs="12" md="4" Class="ps-md-5">
+                <PieChartComponent FillPercentage="60" ChartLabel="Sold Tickets" InnerValue="10000" />
+
+            </MudItem>
+            <MudItem xs="12" md="4" Class="ps-md-5">
+                <PieChartComponent FillPercentage="85" ChartLabel="Matches" InnerValue="5000" />
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</section>
+
+@code {
+    private bool arrows = true;
+    private bool bullets = false;
+    private bool enableSwipeGesture = true;
+    private bool autocycle = true;
+    private Transition transition = Transition.Slide;
+    private List<MatchDto> ActiveMatches = new();
+    private bool IsCarouselShown { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadActiveMatchesAsync();
+    }
+
+    private async Task LoadActiveMatchesAsync()
+    {
+        try
+        {
+            var response = await MatchService.GetActiveMatches(false);
+            _ = response.Match(
+                succ =>
+                {
+                    ActiveMatches = succ.Data?.ToList() ?? [];
+                    if (ActiveMatches.Count > 4)
+                    {
+                        IsCarouselShown = true;
+                    }
+
+                    if (!succ.IsSuccess)
+                    {
+                        Snackbar.Show(Resource.Match_Load_Fail, Severity.Error);
+                    }
+                    Snackbar.Show(succ.Title!, succ.IsSuccess ? Severity.Info : Severity.Error);
+                    succ.ErrorList?.ToList().ForEach(x => Snackbar.Show($"{x.Title}: {x.Message}", Severity.Error));
+                    return new Unit();
+                },
+                fail =>
+                {
+                    ActiveMatches ??= [];
+                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                    return new Unit();
+                }
+            );
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+            Console.WriteLine($"Error during LoadActiveMatchesAsync: {ex.Message}");
+        }
+    }
+
+    private void NavigateToDetails(Guid matchId)
+    {
+        NavigationManager.NavigateTo($"/match-details/{matchId}");
+    }
+}

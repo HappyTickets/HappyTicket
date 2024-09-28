@@ -1,0 +1,50 @@
+﻿@inject ICustomSnackbarProvider Snackbar
+@inject BITeamService TeamService
+@inject IHttpClientHelper HttpHelper
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+<BaseFormDialog T="TeamDto" Submit=HandleValidSubmit Entity="_team" Title=@($"{Resource.Add} {Resource.Team}") IsVisible="IsVisible" IsVisibleChanged="IsVisibleChanged">
+    <MudGrid Class="mx-4 my-1 gap-2">
+        <MudItem xs="12">
+            <MudTextField Label=@Resource.TeamName @bind-Value="@context.Name" FullWidth Required />
+        </MudItem>
+        <MudItem xs="12">
+            <MudTextField Label=@Resource.TeamDescription Variant="Variant.Text" @bind-Value="@context.Description" Lines="3" FullWidth AutoGrow />
+        </MudItem>
+        <MudItem xs="12">
+            <ImageUpload Label=@Resource.TeamLogo Required="true" FilesChanged="@(x => _logo = x.LastOrDefault())" />
+        </MudItem>
+    </MudGrid>
+</BaseFormDialog>
+
+@code {
+    [Parameter]
+    public EventCallback OnTeamCreated { get; set; }
+    [Parameter]
+    public bool IsVisible { get; set; }
+    [Parameter]
+    public EventCallback<bool> IsVisibleChanged { get; set; }
+    KeyValuePair<string, string> _logo = new();
+
+    private TeamDto _team = new TeamDto();
+
+    private async Task HandleValidSubmit(TeamDto team)
+    {
+        _team = team;
+        var logoPath = SanitizePath($"/Images/Teams/{team.Name}/{_logo.Key}");
+        team.Logo = (await HttpHelper.PostBaseAsync<FileInfoDTO, BaseResponse<string>?>("api/File/UploadFile", new FileInfoDTO() { Path = logoPath, Base64EncodedString = _logo.Value })).IfFail(x => new())?.Data;
+        await TeamService.CreateTeamAsync(team);
+        await OnTeamCreated.InvokeAsync();
+        Snackbar.Show(@Resource.Team_Add_Success, Severity.Success);
+    }
+
+    private string SanitizePath(string path)
+    {
+        // Remove white spaces and potentially unwanted characters
+        string directoryName = Path.GetDirectoryName(path).Replace(" ", "_");
+        string fileName = Path.GetFileName(path).Replace(" ", "_");
+
+        return Path.Combine(directoryName, fileName);
+    }
+}

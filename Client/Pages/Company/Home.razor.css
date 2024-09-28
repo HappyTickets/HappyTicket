@@ -1,0 +1,73 @@
+﻿.title-with-lines {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.line {
+    flex-grow: 1;
+    height: 3px;
+    background-color: #008080; /* Adjust color as needed */
+    margin: 0 10px;
+    margin-top: 20px !important;
+}
+
+.title-text {
+    color: #008080; /* Adjust color as needed */
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.member {
+    width: 25%;
+    /* border: 3px solid white; */
+    position: relative;
+    overflow: hidden;
+}
+
+.member .mud-card-media {
+    width: 100%;
+    transition: all 1s 1s;
+}
+
+.member:hover .mud-card-media {
+    transform: scale(1.3);
+}
+
+.member .member-caption {
+    background-color: rgba(0, 0, 0, 0.4);
+    text-align: center;
+    padding: 15px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    color: white;
+    opacity: 0;
+    transition: all 1s;
+}
+
+.member:hover .member-caption {
+    opacity: 1;
+}
+
+.member-caption h4 {
+    position: relative;
+    left: 120%;
+    transition: all 1s 2s;
+}
+
+.member:hover h4 {
+    left: 0;
+}
+
+.member-caption p {
+    position: relative;
+    left: 120%;
+    transition: all 1s 2.5s;
+    text-align: center;
+}
+
+.member:hover p {
+    left: 0;
+}

@@ -1,0 +1,18 @@
+﻿.custom-datetime-picker {
+    display: flex;
+    gap: 10px;
+}
+
+.date-picker,
+.time-picker {
+    background-color: #2b2b2b;
+    color: #ffffff;
+    border: 1px solid #555555;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+    .date-picker::placeholder,
+    .time-picker::placeholder {
+        color: #cccccc;
+    }

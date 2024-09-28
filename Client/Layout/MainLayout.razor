@@ -1,0 +1,315 @@
+﻿@inherits LayoutComponentBase
+@inject ICustomSnackbarProvider Snackbar
+@inject BICartService CartService
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IStringLocalizer<Resource> Localizer
+@inject IBrowserViewportService BrowserViewportService
+@implements IAsyncDisposable
+@using MudBlazor
+@using Client.Layout
+
+
+@* Here are the common providers and page title *@
+<MudThemeProvider @ref=_mudThemeProvider IsDarkMode=_darkMode Theme=_appTheme />
+<MudDialogProvider />
+<MudSnackbarProvider />
+<PageTitle>@Resource.CompanyName</PageTitle>
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+@* Here is the (MUD RTL PROVIDER) and its contents *@
+<MudRTLProvider Class="pa-0" RightToLeft=_rightToLeft>
+    <MudLayout>
+
+        @* Beginning of (MUD APP BAR) *@
+        <MudAppBar Elevation="1" Style="backdrop-filter: blur(15px); height: var(--mud-appbar-height);" Class="d-flex">
+            <MudHidden Breakpoint="Breakpoint.MdAndDown" Invert="true">
+                <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Primary" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+                <MudSpacer />
+            </MudHidden>
+
+            <a href="/" style="height: 35px;" class="mb-0 m-2" aria-label="@Resource.Home">
+                <MudImage Src="logos/logo.svg" Style="height:inherit;" />
+            </a>
+
+            <MudHidden Breakpoint="Breakpoint.MdAndDown" Invert="false">
+                <div class="d-flex align-center" style="width: initial; height: var(--mud-appbar-height);">
+                    <AppNavLink Href="/" Text=@Resource.Home />
+                    <AppNavLink Href="/AboutUs" BeforeIcon="@Icons.Material.Outlined.Groups2" Text=@Resource.AboutUs />
+                    <AppNavLink Href="/ContactUs" BeforeIcon="@Icons.Material.Outlined.Email" Text=@Resource.ContactUs />
+                   
+                    <AppNavLink Href="/Active-Matches" BeforeIcon="@Icons.Material.Filled.SportsSoccer" Text=@Resource.Matches />
+                    @if (user != null && user.Claims.Any(x => x.Type == "Role" && x.Value == "Admin"))
+                    {
+                        <AppNavLink Href="/Matches" BeforeIcon="@Icons.Material.Filled.SportsSoccer" Style="width: 170px; height: 100%" Text=@Resource.Matches_Settings />
+                        <AppNavLink Href="/all-orders" BeforeIcon="@Icons.Material.Filled.Sell" Text="@Resource.Orders" />
+                        <AppNavLink Href="/my-orders" BeforeIcon="@Icons.Material.Filled.Sell" Text="@Resource.Orders" />
+                        <AppNavLink Href="/scan-qr-ticket" BeforeIcon="@Icons.Material.Filled.QrCodeScanner" Text="@Resource.ScanQr" />
+
+                    }
+                    @if (!string.IsNullOrWhiteSpace(userName) && CurrentBreakpoint >= Breakpoint.Lg)
+                    {
+                        <div class="vr align-self-center" style="height: 45px; margin-right: 30px"></div>
+@*                         <MudText Typo="Typo.subtitle1" Class="text-center pb-1">@Resource.Hello <strong>@userName</strong></MudText>
+ *@                    }
+                </div>
+            </MudHidden>
+
+            <MudSpacer />
+            <MudSpacer />
+
+            @if (!string.IsNullOrWhiteSpace(userName))
+            {
+                <MudText Typo="Typo.subtitle1" Class="text-center pb-1 ps-4 pe-4">@Resource.Hello <strong>@userName</strong></MudText>
+
+            }
+            <LanguagePicker CultureChanged=@LanguageChange />
+
+            <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+                <MudTooltip Placement="Placement.Bottom" Text=@(_modePreferences == 1 ? @Resource.SystemPreference : _modePreferences == 2 ? @Resource.DarkMode : @Resource.LightMode)>
+                    <MudIconButton Icon="@_iconTheme" Color="Color.Primary" OnClick="@ThemeToggle">
+                        @(_modePreferences == 1 ? "SystemPreference" : _modePreferences == 2 ? @Resource.DarkMode : @Resource.LightMode)
+                    </MudIconButton>
+                </MudTooltip>
+            </MudHidden>
+@* 
+            <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="false">
+                <MudTooltip Text=@(_modePreferences == 1 ? @Resource.SystemPreference : _modePreferences == 2 ? @Resource.DarkMode : @Resource.LightMode)>
+                    <MudIconButton OnClick="@ThemeToggle" Icon="@_iconTheme" Color="Color.Primary" Title=@(_modePreferences == 1 ? @Resource.SystemPreference : _modePreferences == 2 ? @Resource.DarkMode : @Resource.LightMode) />
+                </MudTooltip>
+            </MudHidden> *@
+
+            <MudHidden Breakpoint="Breakpoint.MdAndDown" Invert="false">
+                <div class="d-flex align-center" style="margin-left: auto;">
+                    <div class="vr mx-2 align-self-center" style="height: 45px"></div>
+                    @if (string.IsNullOrWhiteSpace(userName))
+                    {
+                        <LoadingButton Href="/login" StartIcon="@Icons.Material.Filled.Login" Color="Color.Primary" Class="mx-2">@Resource.Login</LoadingButton>
+                        <LoadingButton Href="/register" StartIcon="@Icons.Material.Filled.PersonAdd" Color="Color.Primary">@Resource.Register</LoadingButton>
+                    }
+                    else
+                    {
+                        <MudIconButton Icon="@Icons.Material.Filled.ShoppingCart" Color="Color.Primary" OnClick="@GoToCart" />
+                        <LoadingButton StartIcon="@Icons.Material.Filled.Logout" Color="Color.Primary" Class="mx-2" OnClick="Logout">@Resource.Logout</LoadingButton>
+                    }
+                </div>
+            </MudHidden>
+        </MudAppBar>
+        @* End of (MUD APP BAR) *@
+
+        @* Beginning of the (MUD DRAWER) and (MUD MAIN CONTENT) *@
+        <MudPaper Style="overflow:hidden; position:relative;">
+            <MudDrawerContainer Class="mud-height-full">
+                <MudDrawer @bind-Open="@_open" @bind-Variant="_drawerVariant" @bind-OpenMiniOnHover="_openMiniOnHover" @bind-ClipMode="_drawerClipMode" Style="position: fixed;">
+                    <MudNavMenu Class="pt-2">
+                        @if (!string.IsNullOrWhiteSpace(userName) && CurrentBreakpoint < Breakpoint.Lg)
+                        {
+                            <MudText Typo="Typo.subtitle1" Class="text-center pb-1">@Resource.Hello <strong>@userName</strong></MudText>
+                        }
+                        <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Store" IconColor="Color.Primary">@Resource.Home</MudNavLink>
+                        <MudNavLink Href="/AboutUs" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Groups2" IconColor="Color.Primary">@Resource.AboutUs</MudNavLink>
+                        <MudNavLink Href="/ContactUs" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Email" IconColor="Color.Primary">@Resource.ContactUs </MudNavLink>
+                        <MudNavLink Href="/Active-Matches" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.SportsSoccer" IconColor="Color.Primary">@Resource.Matches </MudNavLink>
+                        @if (user != null && user.Claims.Any(x => x.Type == "Role" && x.Value == "Admin"))
+                        {
+                            <MudNavLink Href="/Matches" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.SportsSoccer" IconColor="Color.Primary">@Resource.Matches_Settings </MudNavLink>
+                            <MudNavLink Href="/all-orders" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Sell" IconColor="Color.Primary">@Resource.Orders</MudNavLink>
+                            <MudNavLink Href="/scan-qr-ticket" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.QrCodeScanner" IconColor="Color.Primary">@Resource.ScanQr</MudNavLink>
+                        }
+                        <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                            <hr />
+                            @if (string.IsNullOrWhiteSpace(userName))
+                            {
+                                <MudNavLink Href="/login" Icon="@Icons.Material.Filled.Login" IconColor="Color.Primary">@Resource.Login</MudNavLink>
+                                <MudNavLink Href="/register" Icon="@Icons.Material.Filled.PersonAdd" IconColor="Color.Primary">@Resource.Register</MudNavLink>
+                            }
+                            else
+                            {
+                                <MudNavLink Icon="@Icons.Material.Filled.ShoppingCart" IconColor="Color.Primary" OnClick="@GoToCart">@Resource.Cart</MudNavLink>
+                                <MudNavLink Icon="@Icons.Material.Filled.Logout" IconColor="Color.Primary" OnClick="Logout">@Resource.Logout</MudNavLink>
+                            }
+                        </MudHidden>
+                    </MudNavMenu>
+                </MudDrawer>
+                <MudMainContent Class="pa-4 mt-16">
+                    <div class="justify-center align-center">
+                        @Body
+                    </div>
+                </MudMainContent>
+            </MudDrawerContainer>
+        </MudPaper>
+        @* Beginning of the (MUD DRAWER) and (MUD MAIN CONTENT) *@
+    </MudLayout>
+    <Footer />
+</MudRTLProvider>
+
+
+@code {
+    bool _darkMode = false;
+    bool _rightToLeft = false;
+    private bool _open = false;
+    int _modePreferences = 1;
+    string _iconTheme = Icons.Material.Rounded.AutoMode;
+    MudTheme _appTheme = new();
+    MudThemeProvider _mudThemeProvider = new();
+    string? userName = null;
+    ClaimsPrincipal? user = null;
+    CartDto? userCart = null;
+    private DrawerVariant _drawerVariant = DrawerVariant.Responsive;
+    private bool _openMiniOnHover = false;
+    private DrawerClipMode _drawerClipMode = DrawerClipMode.Always;
+    private Guid BreakPointChangeSubscriptionId { get; set; }
+    private Breakpoint CurrentBreakpoint { get; set; }
+
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationState { get; set; } = default!;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var culture = await LocalStorage.GetItemAsStringAsync("currentCulture");
+        _rightToLeft = culture?.Contains("ar", StringComparison.InvariantCultureIgnoreCase) ?? true;
+        user = (await AuthenticationState).User;
+        char[] delimiters = new char[] { '_', '-', ' ' };
+        var firstName = user
+            .FindFirst("name")?
+            .Value
+            .Split(delimiters, StringSplitOptions.RemoveEmptyEntries)[0];
+        if (firstName is not null)
+        {
+            userName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(firstName.ToLower());
+        }
+        else
+        {
+            userName = null;
+        }
+        if (user.Identity?.IsAuthenticated ?? false)
+        {
+        }
+    }
+
+    async Task Logout()
+    {
+        await LocalStorage.RemoveItemAsync("jwtToken");
+        await LocalStorage.RemoveItemAsync("refreshToken");
+        await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        MudThemeProvider theme = new();
+        _appTheme = theme.Theme ?? new();
+        _appTheme.Palette.Primary = "#1e4164";
+        _appTheme.Palette.AppbarBackground = new(_appTheme.Palette.Background.R, _appTheme.Palette.Background.G, _appTheme.Palette.Background.B, 0.8);
+        _appTheme.Palette.AppbarText = "#424242";
+        _appTheme.PaletteDark.Primary = "#d2a645";
+        _appTheme.PaletteDark.AppbarBackground = new(_appTheme.PaletteDark.Background.R, _appTheme.PaletteDark.Background.G, _appTheme.PaletteDark.Background.B, 0.8);
+        _appTheme.PaletteDark.AppbarText = "#92929f";
+
+        _appTheme.Palette.Secondary = "#ff5e00";
+
+        await AdjustDrawerViewOnDifferentBreakpointsAsync();
+
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _darkMode = false;
+            await _mudThemeProvider.WatchSystemPreference(OnSystemPreferenceChanged);
+            StateHasChanged();
+        }
+    }
+
+    private Task OnSystemPreferenceChanged(bool newValue)
+    {
+        _darkMode = _modePreferences == 1 ? newValue : _darkMode;
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    private async Task ThemeToggle()
+    {
+        _modePreferences = _modePreferences >= 3 ? 1 : ++_modePreferences;
+        switch (_modePreferences)
+        {
+            case 1:
+                _darkMode = await _mudThemeProvider.GetSystemPreference();
+                _iconTheme = Icons.Material.Rounded.AutoMode;
+                break;
+            case 2:
+                _darkMode = true;
+                _iconTheme = Icons.Material.Outlined.DarkMode;
+                break;
+            default:
+                _darkMode = false;
+                _iconTheme = Icons.Material.Filled.WbSunny;
+                break;
+        }
+    }
+
+    void GoToCart()
+    {
+        NavigationManager.NavigateTo("cart");
+    }
+
+    private void ToggleDrawer()
+    {
+        _open = !_open;
+    }
+
+    void LanguageChange(CultureInfo chosenLanguage)
+    {
+        _rightToLeft = chosenLanguage.Name.Contains("ar", StringComparison.InvariantCultureIgnoreCase);
+        StateHasChanged();
+    }
+
+    private async Task AdjustDrawerViewOnDifferentBreakpointsAsync()
+    {
+        if (await BrowserViewportService.GetCurrentBreakpointAsync() >= Breakpoint.Lg)
+        {
+            _drawerVariant = DrawerVariant.Mini;
+            _openMiniOnHover = true;
+            _drawerClipMode = DrawerClipMode.Docked;
+        }
+        else
+        {
+            _drawerVariant = DrawerVariant.Responsive;
+            _openMiniOnHover = false;
+            _drawerClipMode = DrawerClipMode.Always;
+        }
+
+        BreakPointChangeSubscriptionId = Guid.NewGuid();
+
+        await BrowserViewportService.SubscribeAsync(BreakPointChangeSubscriptionId, (eventArgs) =>
+        {
+            CurrentBreakpoint = eventArgs.Breakpoint;
+
+            if (eventArgs.Breakpoint >= Breakpoint.Lg)
+            {
+                _drawerVariant = DrawerVariant.Mini;
+                _openMiniOnHover = true;
+                _drawerClipMode = DrawerClipMode.Always;
+                _open = false;
+                StateHasChanged();
+            }
+            else
+            {
+                _drawerVariant = DrawerVariant.Responsive;
+                _openMiniOnHover = false;
+                _drawerClipMode = DrawerClipMode.Always;
+                _open = false;
+            }
+        });
+
+        StateHasChanged();
+    }
+
+    public ValueTask DisposeAsync() {
+        BrowserViewportService.UnsubscribeAsync(BreakPointChangeSubscriptionId);
+        return ValueTask.CompletedTask;
+    }
+}

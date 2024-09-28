@@ -1,0 +1,137 @@
+﻿@inject NavigationManager NavMan
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+<a href="@Href" class="@GetClass()" style="@GetStyle()" @attributes="ContainerAttributes">
+    @if (ChildContent is not null)
+    {
+        @ChildContent
+    }
+    else
+    {
+        @RenderIcon(BeforeIcon, ActiveBeforeIcon, BeforeIconColor, ActiveBeforeIconColor, BeforeIconSize, ActiveBeforeIconSize, BeforeIconAttributes)
+        <MudText UserAttributes="TextAttributes" Align="Align.Center" GutterBottom="false" Typo="@GetTextTypo()" Color="@GetTextColor()" Class="@GetTextClass()" Style="@GetTextStyle()">@Text</MudText>
+        @RenderIcon(AfterIcon, ActiveAfterIcon, AfterIconColor, ActiveAfterIconColor, AfterIconSize, ActiveAfterIconSize, AfterIconAttributes)
+    }
+</a>
+
+@code {
+    [Parameter]
+    public string Href { get; set; } = string.Empty;
+    [Parameter]
+    public bool IsActive { get; set; }
+    [Parameter]
+    public NavLinkMatch Match { get; set; } = NavLinkMatch.All;
+
+    [Parameter]
+    public string Class { get; set; } = "mud-theme-appbartext mud-button-root mud-button mud-button-text mud-button-text-inherit mud-button-text-size-medium mud-ripple align-center px-3";
+    [Parameter]
+    public string ActiveClass { get; set; } = "border-b-2 border-solid mud-border-primary mud-primary-text mud-button-root mud-button mud-button-text mud-button-text-inherit mud-button-text-size-medium mud-ripple align-center px-3";
+    [Parameter]
+    public string Style { get; set; } = "width: 135px; height: var(--mud-appbar-height);";
+    [Parameter]
+    public string ActiveStyle { get; set; } = string.Empty;
+    public Dictionary<string, object> ContainerAttributes { get; set; } = new();
+
+    [Parameter]
+    public string BeforeIcon { get; set; } = string.Empty;
+    [Parameter]
+    public string? ActiveBeforeIcon { get; set; }
+    [Parameter]
+    public Color BeforeIconColor { get; set; } = Color.Default;
+    [Parameter]
+    public Color? ActiveBeforeIconColor { get; set; } = Color.Primary;
+    [Parameter]
+    public Size BeforeIconSize { get; set; } = Size.Small;
+    [Parameter]
+    public Size? ActiveBeforeIconSize { get; set; }
+    [Parameter]
+    public Dictionary<string, object> BeforeIconAttributes { get; set; } = new();
+
+    [Parameter]
+    public string Text { get; set; } = string.Empty;
+    [Parameter]
+    public Typo TextTypo { get; set; } = Typo.overline;
+    [Parameter]
+    public Typo? ActiveTextTypo { get; set; }
+    [Parameter]
+    public Color TextColor { get; set; } = Color.Default;
+    [Parameter]
+    public Color? ActiveTextColor { get; set; } = Color.Primary;
+    [Parameter]
+    public string TextClass { get; set; } = "px-2";
+    [Parameter]
+    public string? ActiveTextClass { get; set; }
+    [Parameter]
+    public string TextStyle { get; set; } = string.Empty;
+    [Parameter]
+    public string? ActiveTextStyle { get; set; }
+    public Dictionary<string, object> TextAttributes { get; set; } = new();
+
+    [Parameter]
+    public string AfterIcon { get; set; } = string.Empty;
+    [Parameter]
+    public string? ActiveAfterIcon { get; set; }
+    [Parameter]
+    public Color AfterIconColor { get; set; } = Color.Default;
+    [Parameter]
+    public Color? ActiveAfterIconColor { get; set; }
+    [Parameter]
+    public Size AfterIconSize { get; set; } = Size.Small;
+    [Parameter]
+    public Size? ActiveAfterIconSize { get; set; }
+    [Parameter]
+    public Dictionary<string, object> AfterIconAttributes { get; set; } = new();
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        CheckIfActive();
+        NavMan.LocationChanged += CheckIfActive;
+        base.OnParametersSet();
+    }
+
+    private void CheckIfActive(object? sender = null, LocationChangedEventArgs? args = null)
+    {
+        string currentUri = args is not null ? args.Location : NavMan.Uri;
+
+        currentUri = currentUri.Replace(NavMan.BaseUri, "/");
+
+        IsActive = Match == NavLinkMatch.All ? currentUri == Href : currentUri.Contains(Href);
+
+        StateHasChanged();
+    }
+
+    private string GetClass() => IsActive && !string.IsNullOrWhiteSpace(ActiveClass) ? ActiveClass : Class;
+
+    private string GetStyle() => IsActive && !string.IsNullOrWhiteSpace(ActiveStyle) ? ActiveStyle : Style;
+
+    private Typo GetTextTypo() => IsActive && ActiveTextTypo.HasValue ? ActiveTextTypo.Value : TextTypo;
+
+    private Color GetTextColor() => IsActive && ActiveTextColor.HasValue ? ActiveTextColor.Value : TextColor;
+
+    private string GetTextClass() => IsActive && !string.IsNullOrWhiteSpace(ActiveTextClass) ? ActiveTextClass : TextClass;
+
+    private string GetTextStyle() => IsActive && !string.IsNullOrWhiteSpace(ActiveTextStyle) ? ActiveTextStyle : TextStyle;
+
+    private RenderFragment RenderIcon(string icon, string? activeIcon, Color color, Color? activeColor, Size size, Size? activeSize, Dictionary<string, object> attributes) => builder =>
+    {
+        if (!string.IsNullOrWhiteSpace(icon))
+        {
+            builder.OpenComponent<MudIcon>(0);
+            builder.AddAttribute(1, "UserAttributes", attributes);
+            builder.AddAttribute(2, "Icon", GetIcon(icon, activeIcon));
+            builder.AddAttribute(3, "Color", GetIconColor(color, activeColor));
+            builder.AddAttribute(4, "Size", GetIconSize(size, activeSize));
+            builder.CloseComponent();
+        }
+    };
+
+    private string GetIcon(string icon, string? activeIcon) => IsActive && !string.IsNullOrWhiteSpace(activeIcon) ? activeIcon : icon;
+
+    private Color GetIconColor(Color color, Color? activeColor) => IsActive && activeColor.HasValue ? activeColor.Value : color;
+
+    private Size GetIconSize(Size size, Size? activeSize) => IsActive && activeSize.HasValue ? activeSize.Value : size;
+}

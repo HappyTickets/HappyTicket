@@ -1,0 +1,68 @@
+﻿@typeparam T
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+<MudDialog Class="overflow-x-hidden overflow-y-auto" ClassActions="mr-5 mb-3 gap-2" TitleClass="pb-0" IsVisible=IsVisible IsVisibleChanged=IsVisibleChanged Options=DialogOptions ClassContent=@ClassContent ContentStyle=@ContentStyle Style=@Style DisableSidePadding=DisableSidePadding>
+    <TitleContent>
+        @if (TitleContent == null)
+        {
+            <MudItem Class="d-flex justify-space-between align-center">
+                <MudText Typo=Typo.h6 Style="display: flex; align-items: center;">
+                    @if (!string.IsNullOrWhiteSpace(Icon))
+                    {
+                        <MudIcon Icon=@Icon Color=Color.Primary Class="mr-3" />
+                    } @Title
+                </MudText>
+                <MudIconButton Icon=@Icons.Material.Filled.Close OnClick=CancelClicked />
+            </MudItem>
+        }
+        else
+        {
+            @TitleContent(Entity)
+        }
+    </TitleContent>
+
+    <DialogContent>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudForm @ref=_form Style=" display: flex; ">
+                    @ChildContent?.Invoke(Entity)
+                </MudForm>
+            </MudItem>
+            @* @if (_form.Errors.Any())
+            {
+                <br />
+
+                <MudItem xs="12">
+                    <MudGrid>
+                        @foreach (var error in _form.Errors)
+                        {
+                            <MudItem xs="12">
+                                <MudText Typo=Typo.body2 Color=Color.Error>* @error</MudText>
+                            </MudItem>
+                        }
+                    </MudGrid>
+                </MudItem>
+            } *@
+        </MudGrid>
+    </DialogContent>
+
+    <DialogActions>
+        @if (ActionContent == null)
+        {
+            <LoadingButton OnClick=SubmitClicked Variant=Variant.Filled Color=Color.Primary>Save</LoadingButton>
+            @if (Reset != null)
+            {
+                <LoadingButton OnClick=ResetClicked Variant=Variant.Filled Color=Color.Primary>Reset</LoadingButton>
+            }
+            @if (Cancel != null)
+            {
+                <LoadingButton OnClick=CancelClicked Variant=Variant.Filled Color=Color.Primary>Cancel</LoadingButton>
+            }
+        }
+        else
+        {
+            @ActionContent(Entity)
+        }
+    </DialogActions>
+</MudDialog>

@@ -1,0 +1,71 @@
+﻿@using MudBlazor
+@implements IDisposable
+
+<MudPaper Class="pa-4" Elevation="4">
+    <MudChart @ref="chartRef" Height="200px" Width="200px" ChartType="ChartType.Donut"
+              InputLabels="@_labels" InputData="@_currentData"
+              ChartOptions="new ChartOptions { ChartPalette = colors }">
+        <CustomGraphics>
+            <text class="donut-inner-text" x="47%" y="35%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="2"></text>
+            <text class="donut-inner-text" x="47%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="5">@InnerValueFormatted</text>
+        </CustomGraphics>
+    </MudChart>
+</MudPaper>
+
+@code {
+    private MudChart chartRef;
+    [Parameter] public int FillPercentage { get; set; } = 70; // Set the fill percentage here
+    [Parameter] public string ChartLabel { get; set; } = "Progress"; // Set the chart label here
+    [Parameter] public int InnerValue { get; set; } = 10000; // Set the custom inner value here
+    private int currentInnerValue = 0;
+    private string InnerValueFormatted => $"{currentInnerValue:n0}"; // Format the inner value as a string with commas
+    private readonly int _duration = 2000; // Animation duration in ms
+    private string[] _labels;
+    private double[] _currentData = new double[] { 50, 25 }; // Initialize with default values
+    public string[] colors = new string[]
+    {
+        "#1e4164", "#f7f7f7"
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _labels = new string[] { ChartLabel }; // Set the label dynamically
+            await FillDonutChartAndCountUp();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error during initialization: {ex.Message}");
+        }
+    }
+
+    private async Task FillDonutChartAndCountUp()
+    {
+        int step = 1; // Steps for incrementing the fill percentage
+        double interval = _duration / (double)FillPercentage;
+        int innerValueStep = InnerValue / FillPercentage;
+
+        for (int i = 0; i <= FillPercentage; i += step)
+        {
+            UpdateChartData(i);
+            currentInnerValue = i * innerValueStep; // Update the InnerValue based on the fill percentage
+            await InvokeAsync(StateHasChanged);
+            await Task.Delay((int)interval);
+        }
+
+        UpdateChartData(FillPercentage); // Ensure the chart data ends on the target value
+        currentInnerValue = InnerValue; // Ensure the InnerValue ends on the target value
+    }
+
+    private void UpdateChartData(int currentValue)
+    {
+        double factor = (double)currentValue / 100; // Calculate the fill factor based on percentage
+        _currentData[0] = factor * 100; // Set the data for the single segment
+    }
+
+    public void Dispose()
+    {
+        // Dispose any resources if necessary
+    }
+}

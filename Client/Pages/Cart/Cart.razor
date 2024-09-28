@@ -1,0 +1,314 @@
+﻿@page "/cart/{PaymentStatus:guid?}"
+@using Shared.DTOs.PaymentDTOs
+@inject ICustomSnackbarProvider Snackbar
+@inject BICartService CartService
+@inject ILocalStorageService LocalStorageService
+@inject NavigationManager NavigationManager
+@attribute [Authorize]
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+<PageTitle>@Resource.Cart</PageTitle>
+
+<MudCard @key="Key" Class="mx-auto my-4" Style="max-width: 800px;">
+    <MudCardContent>
+        <MudText Typo="Typo.h4" Align="Align.Center" GutterBottom="true">@Resource.YourCart</MudText>
+
+        @if (cart == null)
+        {
+            <MudText Typo="Typo.h6" Color="Color.Primary">@Resource.Loading</MudText>
+        }
+        else if (cart.CartItemsGrouped == null || !cart.CartItemsGrouped.Any())
+        {
+            <MudText Typo="Typo.h6" Color="Color.Primary">@Resource.Cart_Empty</MudText>
+        }
+        else
+        {
+            <MudTable Items="@cart.CartItemsGrouped" Striped="true" Bordered="true" Hover="true">
+                <HeaderContent>
+                    <MudTh>@Resource.Match</MudTh>
+                    <MudTh>@Resource.TeamName</MudTh>
+                    <MudTh>@Resource.Class</MudTh>
+                    <MudTh>@Resource.Location</MudTh>
+                    <MudTh>@Resource.Quantity</MudTh>
+                    <MudTh>@Resource.Price</MudTh>
+                    <MudTh>@Resource.TheActions</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd>@context.MatchName</MudTd>
+                    <MudTd>@context.TeamName</MudTd>
+                    <MudTd>@context.Class</MudTd>
+                    <MudTd>@context.Location</MudTd>
+                    <MudTd>@context.TotalQuantity</MudTd>
+                    <MudTd>@context.TotalPrice.ToString("C")</MudTd>
+                    <MudTd>
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => RemoveItem(context.Id)" />
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
+            <MudSpacer />
+
+            <MudText Typo="Typo.h6" Align="Align.Right" Class="mt-3 mb-3">
+                <MudChip T="string" Color="Color.Secondary" Class="ms-0">
+                    @Resource.Total
+                </MudChip>
+                <MudChip T="string" Color="Color.Primary">
+                    @cart.Total.ToString("C")
+                </MudChip> 
+            </MudText>
+            <MudButton Disabled="@_processing" OnClick="ProceedToCheckout" Variant="Variant.Outlined" Color="Color.Primary" FullWidth>
+                @if (_processing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                    <MudText Class="ms-2">Processing</MudText>
+                }
+                else
+                {
+                    <MudText>CHECKOUT</MudText>
+                }
+            </MudButton>
+        }
+    </MudCardContent>
+</MudCard>
+@if (_spinnerShown)
+{
+    <div class="w-100 d-flex justify-content-center" >
+        <MudProgressCircular Color="Color.Primary" Style="margin-top:50px;height:200px;width:200px;" Indeterminate="true" />
+    </div>
+}
+
+@code {
+    private bool _processing = false;
+    private bool _spinnerShown;
+    private CartDtoGrouped? cart = new();
+    private Guid? _cartId;
+    [Parameter] public Guid? PaymentStatus { get; set; }
+    [CascadingParameter] public Task<AuthenticationState> AuthenticationState { get; set; } = default!;
+    int Key = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var user = (await AuthenticationState).User;
+
+        var authorizedToken = await LocalStorageService.GetItemAsStringAsync("aT");
+        var declinedToken = await LocalStorageService.GetItemAsStringAsync("dT");
+        var cancelledToken = await LocalStorageService.GetItemAsStringAsync("cT");
+
+        if (!string.IsNullOrWhiteSpace(authorizedToken) && PaymentStatus.ToString() == GeneralEncryptorDecryptor.DecryptString(authorizedToken))
+        {
+            var pUrl = await LocalStorageService.GetItemAsStringAsync("pUrl");
+            var pRef = await LocalStorageService.GetItemAsStringAsync("pRef");
+
+            if (!string.IsNullOrWhiteSpace(pUrl) && !string.IsNullOrWhiteSpace(pRef))
+            {
+                _spinnerShown = true;
+                StateHasChanged();
+
+                var checkoutRequestDto = new CheckoutRequestDto
+                    {
+                        UserId = (await AuthenticationState).User.FindFirst("sub")?.Value!,
+                        PaymentUrl = pUrl,
+                        PaymentRef = pRef,
+                    };
+
+                var response = await CartService.CheckoutAsync(checkoutRequestDto);
+
+                _ = response.Match(
+                    succ =>
+                    {
+                        if (succ.IsSuccess && succ.Data)
+                        {
+                            Snackbar.Show(Resource.Checkout_Successfully, Severity.Success);
+                            cart?.CartItemsGrouped.Clear();
+                        }
+                        else
+                        {
+                            Snackbar.Show(Resource.Checkout_Incomplete, Severity.Error);
+                        }
+
+                        return new Unit();
+                    },
+                    fail =>
+                    {
+                        Snackbar.Show($"{Resource.Checkout_Error}: {fail.Message}", Severity.Error);
+                        return new Unit();
+                    }
+                );
+
+                _spinnerShown = false;
+                StateHasChanged();
+            }
+        }
+        else if (!string.IsNullOrWhiteSpace(declinedToken) && PaymentStatus.ToString() == GeneralEncryptorDecryptor.DecryptString(declinedToken))
+        {
+            Snackbar.Show(Resource.Checkout_Incomplete, Severity.Error);
+        }
+        else if (!string.IsNullOrWhiteSpace(cancelledToken) && PaymentStatus.ToString() == GeneralEncryptorDecryptor.DecryptString(cancelledToken))
+        {
+            Snackbar.Show(Resource.Checkout_Incomplete, Severity.Error);
+        }
+
+        await LocalStorageService.RemoveItemsAsync(["pUrl", "pRef", "aT", "dT", "cT"]);
+
+        await LoadCartAsync(user);
+    }
+
+    private async Task LoadCartAsync(ClaimsPrincipal user)
+    {
+        try
+        {
+            var userId = user.FindFirst("sub")?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                // Should Logout and redirect to login screen.
+                Snackbar.Show("User ID not found.", Severity.Error);
+                return;
+            }
+
+            var response = await CartService.GetCartByUserIdAsync(userId, false);
+
+            _ = response.Match(
+                succ =>
+                {
+                    _cartId = succ.Data?.CartItems?.FirstOrDefault()?.CartId;
+                    cart = new CartDtoGrouped
+                    {
+                        CartItemsGrouped = succ.Data?.CartItems?.Where(x => x.Ticket != null && !x.IsCheckedOut)
+                                .GroupBy(item => new { item.Ticket!.MatchId, item.Ticket!.Class, item.Ticket!.Location })
+                                .Select(group => new CartItemGroupedDto
+                                {
+                                    Id = group.First().Id,
+                                    ItemId = group.First().TicketId,
+                                    MatchId = group.First().Ticket!.MatchId,
+                                    MatchName = group.FirstOrDefault()?.Ticket!.Match?.TeamA?.Name + $" {Resource.VS} " + group.FirstOrDefault()?.Ticket!.Match?.TeamB?.Name,
+                                    TeamName = group.First().Ticket!.Team!.Name,
+                                    Class = group.First().Ticket!.Class,
+                                    Location = group.First().Ticket!.Location,
+                                    TotalQuantity = group.Count(),
+                                    TotalPrice = group.Select(x => x.Ticket!.Price).Aggregate(0.0m, (seed, price) => seed + price)
+                                })
+                                .ToList() ?? new List<CartItemGroupedDto>(),
+                        Total = succ.Data?.CartItems?.Where(x => x.Ticket != null && !x.IsCheckedOut).Select(x => x.Ticket!.Price).Aggregate(0.0m, (seed, price) => seed + price) ?? 0
+                    };
+
+                    if (!succ.IsSuccess)
+                    {
+                        Snackbar.Show(Resource.Cart_Loading_Fail, Severity.Error);
+                    }
+                    Snackbar.Show(succ.Title, succ.IsSuccess ? Severity.Info : Severity.Error);
+                    succ.ErrorList?.ToList().ForEach(x => Snackbar.Show($"{x.Title}: {x.Message}", Severity.Error));
+                    return new Unit();
+                },
+                fail =>
+                {
+                    cart = new CartDtoGrouped();
+                    Snackbar.Show($"{Resource.Cart_Loading_Fail}: {fail.Message}", Severity.Error);
+                    return new Unit();
+                }
+            );
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+        }
+    }
+
+    private async Task RemoveItem(Guid itemId)
+    {
+        try
+        {
+           
+            var removeItemRequest = new RemoveItemRequest
+            {
+                    ItemId = itemId
+            };
+
+            var response = await CartService.RemoveItemAsync(removeItemRequest);
+
+            _ = response.Match(
+                succ =>
+                {
+                    if (succ.IsSuccess)
+                    {
+                        Snackbar.Show(Resource.Item_Removed, Severity.Success);
+                        _ = ReloadCartAsync();
+                    }
+                    else
+                    {
+                        Snackbar.Show(Resource.Item_Removed_Fail, Severity.Error);
+                    }
+                    return new Unit();
+                },
+                fail =>
+                {
+                    Snackbar.Show($"{Resource.Item_Removed_Fail}: {fail.Message}", Severity.Error);
+                    return new Unit();
+                }
+            );
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+        }
+    }
+
+    private async Task ReloadCartAsync()
+    {
+        var user = (await AuthenticationState).User;
+        await LoadCartAsync(user);
+        StateHasChanged();
+    }
+
+    private async Task ProceedToCheckout()
+    {
+        _processing = true;
+
+        try
+        {
+            if (cart is not null && _cartId is not null)
+            {
+                var paymentRequestDto = new PaymentRequestDto
+                {
+                    UserId = (await AuthenticationState).User.FindFirst("sub")?.Value!,
+                    CartId = _cartId.ToString()!,
+                    Amount = cart!.Total
+                };
+
+                var paymentResponse = await CartService.PayOrderAsync(paymentRequestDto);
+
+                _ = paymentResponse.Match(
+                    success =>
+                    {
+                        if (success.IsSuccess)
+                        {
+                            var paymentUrl = success.Data?.PaymentUrl;
+                            var paymentRef = success.Data?.PaymentRef;
+                            var authorizedToken = success.Data?.AuthorizedToken;
+                            var declinedToken = success.Data?.DeclinedToken;
+                            var cancelledToken = success.Data?.CancelledToken;
+
+                            LocalStorageService.SetItemAsStringAsync("pUrl", paymentUrl ?? "");
+                            LocalStorageService.SetItemAsStringAsync("pRef", paymentRef ?? "");
+                            LocalStorageService.SetItemAsStringAsync("aT", GeneralEncryptorDecryptor.EncryptString(authorizedToken ?? ""));
+                            LocalStorageService.SetItemAsStringAsync("dT", GeneralEncryptorDecryptor.EncryptString(declinedToken ?? ""));
+                            LocalStorageService.SetItemAsStringAsync("cT", GeneralEncryptorDecryptor.EncryptString(cancelledToken ?? ""));
+
+                            _processing = false;
+                            NavigationManager.NavigateTo(paymentUrl ?? "/");
+                        }
+
+                        return new Unit();
+                    },
+                    failure =>
+                    {
+                        return new Unit();
+                    }
+                );
+            } 
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+            Console.WriteLine(ex.Message);
+        }
+    }
+}

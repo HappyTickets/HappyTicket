@@ -1,0 +1,23 @@
+﻿@page "/counter/{CurrentCount:int}"
+@page "/counter/{Name}"
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter - @Name</h1>
+
+<p role="status">Current count: @CurrentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+    [Parameter]
+    public string Name { get; set; } = string.Empty;
+
+    [Parameter]
+    public int CurrentCount { get; set; }
+
+    private void IncrementCount()
+    {
+        CurrentCount++;
+    }
+}
