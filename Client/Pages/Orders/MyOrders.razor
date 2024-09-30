@@ -1,15 +1,15 @@
 ﻿@page "/my-orders/{PaymentStatus:guid?}"
+@using Shared.Enums
 @inject IBOrderService BOrderService
 @inject ILocalStorageService LocalStorageService
-@inject ICustomSnackbarProvider Snackbar // Inject Snackbar for notifications
+@inject ICustomSnackbarProvider Snackbar
+
 <div class="container">
     <div class="grid">
         <div class="grid-item">
             <table class="order-table">
                 <thead>
-                    <tr>
-                        <th>Items</th>
-                    </tr>
+                    <tr><th>Items</th></tr>
                 </thead>
                 <tbody>
                     @if (Orders != null && Orders.Any())
@@ -27,15 +27,14 @@
                                             <div class="ticket-container">
                                                 <div class="ticket">
                                                     <div class="ticket-header">
-                                                        <h4>Championship Name | اسم البطولة</h4>
+                                                        <h4>ROSHN Saudi League | RSL </h4>
                                                     </div>
                                                     <div class="ticket-body">
+                                                        <div class="ticket-background" style="background-image: url('logos/rsl-logo.svg');"></div>
                                                         <div class="teams">
-                                                            <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), match.TeamA?.Logo))"
-                                                                 alt="@match.TeamA?.Name" class="team-logo" />
+                                                            <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), match.TeamA?.Logo))" alt="@match.TeamA?.Name" class="team-logo @(ticket.TeamId == match.TeamAId ? "highlight-team" : "")" />
                                                             <span class="vs">VS</span>
-                                                            <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), match.TeamB?.Logo))"
-                                                                 alt="@match.TeamB?.Name" class="team-logo" />
+                                                            <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), match.TeamB?.Logo))" alt="@match.TeamB?.Name" class="team-logo @(ticket.TeamId == match.TeamBId ? "highlight-team" : "")" />
                                                         </div>
                                                         <div class="match-info">
                                                             <p><strong>Stadium:</strong> @match.Stadium?.Name</p>
@@ -43,17 +42,28 @@
                                                             <p><strong>Time:</strong> @match.EventTime?.ToString(@"hh\:mm")</p>
                                                         </div>
                                                     </div>
-
                                                     <div class="qr-section">
-                                                        <img src="https://api.qrserver.com/v1/create-qr-code/?data=@ticket.Id&size=200x200"
-                                                             alt="QR Code for Ticket ID: @ticket.Id" class="qr-code" aria-label="QR Code for Ticket" />
+                                                        <img src="https://api.qrserver.com/v1/create-qr-code/?data=@ticket.Id&size=200x200" alt="QR Code for Ticket ID: @ticket.Id" class="qr-code" aria-label="QR Code for Ticket" />
                                                     </div>
                                                     <div class="ticket-footer">
-                                                        <div class="seat-info">
-                                                            <p>GATE: @ticket.Location | بوابة</p>
+                                                        <div class="gate-info">
+                                                            <p><strong>External Gate:</strong> @ticket.ExternalGate</p>
+                                                            <p><strong>Internal Gate:</strong> @ticket.InternalGate</p>
+                                                            <p><strong>Class:</strong> @ticket.Class</p>
                                                         </div>
-                                                        <p class="ticket-number">TICKET NUMBER: @ticket.Id</p>
+                                                        <div class="ticket-logo-status">
+                                                            @if (ticket.TicketStatus == TicketStatusDTO.Used)
+                                                            {
+                                                                <span class="status-icon used" title="Used"></span>
+                                                            }
+                                                            else if (ticket.TicketStatus == TicketStatusDTO.Sold || ticket.TicketStatus == TicketStatusDTO.ForAdmins)
+                                                            {
+                                                                <span class="status-icon sold" title="Sold"></span>
+                                                            }
+                                                            <img src="logos/logo.svg" alt="Logo" class="footer-logo" />
+                                                        </div>
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </td>
@@ -64,9 +74,7 @@
                     }
                     else
                     {
-                        <tr>
-                            <td>No orders found.</td>
-                        </tr>
+                        <tr><td>No orders found.</td></tr>
                     }
                 </tbody>
             </table>
@@ -75,15 +83,14 @@
 
     @if (isLoading)
     {
-        <div class="progress-bar">
-            <div class="loading"></div>
-        </div>
+        <div class="progress-bar"><div class="loading"></div></div>
     }
     else if (!string.IsNullOrEmpty(errorMessage))
     {
         <div class="alert-error">@errorMessage</div>
     }
 </div>
+
 @code {
     private IEnumerable<OrderDto> Orders { get; set; } = new List<OrderDto>();
     private bool isLoading = true;
@@ -105,7 +112,7 @@
 
     private async Task HandlePaymentStatus(Guid paymentStatus)
     {
-        // Add logic to interpret paymentStatus
+        // Logic to interpret payment status
         var authorizedToken = await LocalStorageService.GetItemAsStringAsync("aT");
         var declinedToken = await LocalStorageService.GetItemAsStringAsync("dT");
         var cancelledToken = await LocalStorageService.GetItemAsStringAsync("cT");
@@ -113,16 +120,14 @@
         if (paymentStatus.ToString() == GeneralEncryptorDecryptor.DecryptString(authorizedToken))
         {
             Snackbar.Show("Payment was successful!", Severity.Success);
-            await LoadOrdersAsync(); // Load orders after successful payment
+            await LoadOrdersAsync();
         }
-        else if (paymentStatus.ToString() == GeneralEncryptorDecryptor.DecryptString(declinedToken) ||
-                 paymentStatus.ToString() == GeneralEncryptorDecryptor.DecryptString(cancelledToken))
+        else if (paymentStatus.ToString() == GeneralEncryptorDecryptor.DecryptString(declinedToken) || paymentStatus.ToString() == GeneralEncryptorDecryptor.DecryptString(cancelledToken))
         {
             Snackbar.Show("Payment was not completed. Please try again.", Severity.Error);
             errorMessage = "Payment was not completed. Please try again.";
         }
 
-        // Clear the payment status from local storage after handling
         await LocalStorageService.RemoveItemsAsync(new[] { "aT", "dT", "cT" });
     }
 
@@ -133,14 +138,7 @@
         result.Match(
             success =>
             {
-                Orders = success.Data != null
-                    ? success.Data.Select(ticketDto => new OrderDto
-                        {
-                            CartItems = new List<CartItemDto>
-                            {
-                            new CartItemDto { Ticket = ticketDto }
-                            }
-                        }) : new List<OrderDto>();
+                Orders = success.Data != null ? success.Data.Select(ticketDto => new OrderDto { CartItems = new List<CartItemDto> { new CartItemDto { Ticket = ticketDto } } }) : new List<OrderDto>();
                 return Unit.Default;
             },
             failure =>

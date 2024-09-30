@@ -47,21 +47,27 @@
             <MudForm @ref="form">
                 <MudGrid>
                     <!-- Header -->
-                    <MudItem xs="12" md="2">
+                    <MudItem xs="12" md="1">
                         <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.Class</MudText>
                     </MudItem>
-                    <MudItem xs="12" md="2">
+                    <MudItem xs="12" md="1">
                         <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.Price</MudText>
                     </MudItem>
                     <MudItem xs="12" md="2">
                         <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.Team</MudText>
                     </MudItem>
-                    <MudItem xs="12" md="1">
-                        <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.SeatNumber</MudText>
+                     <MudItem xs="12" md="2">
+                        <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.External_Gate</MudText>
                     </MudItem>
                     <MudItem xs="12" md="2">
-                        <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.Location</MudText>
+                        <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.Internal_Gate</MudText>
                     </MudItem>
+                    <MudItem xs="12" md="1">
+                        <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.TicketsCount</MudText>
+                    </MudItem>
+                    @* <MudItem xs="12" md="2">
+                        <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.Location</MudText>
+                    </MudItem> *@
                     <MudItem xs="12" md="1">
                         <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.DoDisplay</MudText>
                     </MudItem>
@@ -75,11 +81,12 @@
                     <!-- Row Data -->
                     @foreach (var ticket in tickets.Select((t, i) => new { t, i }))
                     {
-                        <MudItem xs="12" md="2">
+                        <MudItem xs="12" md="1">
                             <MudTextField @bind-Value="ticket.t.Class" Required Label=@Resource.Class Variant="Variant.Text" />
                         </MudItem>
-                        <MudItem xs="12" md="2">
-                            <MudNumericField @bind-Value="ticket.t.Price" Required Label=@Resource.Price Variant="Variant.Text" Min="0" Step=".1M" />
+
+                        <MudItem xs="12" md="1">
+                            <MudNumericField @bind-Value="ticket.t.Price" Required Label=@Resource.Price Variant="Variant.Text" Min="0" />
                         </MudItem>
                         <MudItem xs="12" md="2">
                             <MudSelect @bind-Value="ticket.t.TeamId" Required Label=@Resource.Team>
@@ -93,11 +100,22 @@
                                     <MudSelectItem Value="@match.TeamBId">@match.TeamB.Name</MudSelectItem>
                                 }
                             </MudSelect>
+                            
+                        </MudItem>
+                        <MudItem xs="12" md="2">
+                            <MudSelect @bind-Value="ticket.t.ExternalGate" Required Label="@Resource.External_Gate">
+
+                                <MudSelectItem Value=@("Gate 1")>@Resource.Gate1</MudSelectItem>
+                                <MudSelectItem Value=@("Gate 2")>@Resource.Gate2</MudSelectItem>
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12" md="2">
+                            <MudTextField @bind-Value="ticket.t.InternalGate" Required Label="@Resource.Internal_Gate" Variant="Variant.Text" />
                         </MudItem>
                         <MudItem xs="12" md="1">
                             <MudNumericField @bind-Value="ticket.t.TicketsCount" Required Label=@Resource.TicketsCount Min="1" Variant="Variant.Text" />
                         </MudItem>
-                        <MudItem xs="12" md="2">
+                       @*  <MudItem xs="12" md="2">
                             <MudSelect @bind-Value="ticket.t.Location" Required Label=@Resource.Location>
                                 <MudSelectItem Value=@("VIP")>@Resource.VIP</MudSelectItem>
                                 <MudSelectItem Value=@("Grade 1")>@Resource.Grade1</MudSelectItem>
@@ -107,7 +125,7 @@
                                 <MudSelectItem Value=@("Invitations")>@Resource.Invitation</MudSelectItem>
                                 <MudSelectItem Value=@("All")>@Resource.TheAll</MudSelectItem>
                             </MudSelect>
-                        </MudItem>
+                        </MudItem> *@
                         <MudItem xs="12" md="1">
                             <MudCheckBox T="bool" @bind-Value="ticket.t.DisplayForSale" />
                         </MudItem>
@@ -117,7 +135,11 @@
                         <MudItem xs="12" md="1" Class="d-flex align-items-center justify-content-center">
                             <MudIconButton Icon="@Icons.Material.Rounded.Delete" Color="Color.Error" OnClick="() => DeleteRow(ticket.i)" />
                         </MudItem>
+                   
+                    
                     }
+
+                    <!-- New fields for External and Internal Gates -->
 
                     <MudItem xs="12" Class="text-center">
                         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="AddNewRow" Class="mt-2">@Resource.Add @Resource.NewTicket</MudButton>

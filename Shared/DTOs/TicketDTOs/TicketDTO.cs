@@ -17,6 +17,8 @@ public class TicketDto
     public MatchDto? Match { get; set; }
     public TicketStatusDTO TicketStatus{ get; set; }
 
-    public bool IsForAdmins { get; set; } 
+    public bool IsForAdmins { get; set; }
+    public string ExternalGate { get; set; } 
+    public string InternalGate { get; set; } 
 
 }

@@ -44,8 +44,14 @@ namespace Application.Implementations
                 .Include(o => o.CartItems)
                     .ThenInclude(ci => ci.Ticket)
                         .ThenInclude(t => t.Match)
-                            .ThenInclude(m => m.TeamB)
-        };
+                            .ThenInclude(m => m.TeamB),
+            orderDto => orderDto
+                .Include(o => o.CartItems)
+                    .ThenInclude(ci => ci.Ticket)
+                        .ThenInclude(t => t.Match)
+                            .ThenInclude(m => m.Stadium)
+
+            };
 
                 // Filter to get only orders for the specified user
                 Expression<Func<OrderDto, bool>> orderFilter = order => order.UserId == userId && order.CartItems.Any(ci => ci.Ticket != null);
@@ -70,11 +76,16 @@ namespace Application.Implementations
                             Location = ticket.Location,
                             Class = ticket.Class,
                             TicketStatus = (TicketStatusDTO)ticket.TicketStatus,
+                            TeamId=ticket.TeamId,
+                            ExternalGate=ticket.ExternalGate,
+                            InternalGate=ticket.InternalGate,
                             Match = new MatchDto
                             {
                                 Stadium=ticket.Match.Stadium,
                                 EventDate = ticket.Match?.EventDate,
                                 EventTime = ticket.Match?.EventTime,
+                                TeamAId=ticket.Match.TeamAId,
+                                TeamBId=ticket.Match.TeamBId,
                                 TeamA = new TeamDto
                                 {
                                     Name = ticket.Match?.TeamA?.Name,

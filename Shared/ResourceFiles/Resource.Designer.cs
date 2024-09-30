@@ -595,6 +595,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to External Gate.
+        /// </summary>
+        public static string External_Gate {
+            get {
+                return ResourceManager.GetString("External_Gate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Facebook.
         /// </summary>
         public static string Facebook {
@@ -686,6 +695,24 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gate 1.
+        /// </summary>
+        public static string Gate1 {
+            get {
+                return ResourceManager.GetString("Gate1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gate 2.
+        /// </summary>
+        public static string Gate2 {
+            get {
+                return ResourceManager.GetString("Gate2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GET TO KNOW ABOUT.
         /// </summary>
         public static string GetToKnowUs {
@@ -772,6 +799,15 @@ namespace Shared.ResourceFiles {
         public static string Instagram {
             get {
                 return ResourceManager.GetString("Instagram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Internal Gate.
+        /// </summary>
+        public static string Internal_Gate {
+            get {
+                return ResourceManager.GetString("Internal_Gate", resourceCulture);
             }
         }
         

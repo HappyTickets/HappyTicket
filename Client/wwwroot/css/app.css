@@ -286,6 +286,21 @@ code {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Container & Grid */
 .container {
     margin: 0 auto;
@@ -310,12 +325,12 @@ code {
     table-layout: fixed;
 }
 
-    .order-table th,
-    .order-table td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: center; /* Center align text */
-    }
+.order-table th,
+.order-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center; /* Center align text */
+}
 
 /* Ticket Styling */
 .ticket-container {
@@ -331,15 +346,16 @@ code {
     padding: 1rem;
     background-color: #f9f9f9;
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
-    max-width: 700px; /* Keep original max width for desktop */
+   width: 900px;
     height: auto;
-    display: grid; /* Use grid layout for desktop */
+    display: grid;
     grid-template-rows: auto auto auto;
-    grid-template-columns: 2fr 1fr; /* Maintain original layout */
+    grid-template-columns: 2fr 1fr;
     position: relative;
     opacity: 0;
     transform: translateY(20px);
     animation: fadeInUp 0.5s forwards ease-in-out;
+    direction: ltr; 
 }
 
 @keyframes fadeInUp {
@@ -351,7 +367,8 @@ code {
 
 .ticket-header {
     grid-column: 1 / 3;
-    background: linear-gradient(to right, #002855, #004080);
+    /* background: linear-gradient(to right, #002855, #004080);*/
+    background: #1e4164;
     color: #fff;
     text-align: center;
     font-size: 1.5rem;
@@ -360,7 +377,6 @@ code {
     border-radius: 6px 6px 0 0;
     letter-spacing: 1px;
 }
-
 .ticket-body {
     grid-column: 1 / 2;
     display: flex;
@@ -368,7 +384,24 @@ code {
     justify-content: space-around;
     padding: 15px;
     font-family: 'Roboto', sans-serif;
+    position: relative; /* Necessary for absolute positioning of the background */
+    overflow: hidden; /* Prevents background from overflowing */
+    z-index: 1;
 }
+
+.ticket-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('logos/rsl-logo.svg') center/contain no-repeat;
+    background-blend-mode: lighten;
+    opacity: 0.2; /* Only applies opacity to the background */
+    z-index: -1; /* Places the background behind the content */
+    pointer-events: none; /* Ensures the background doesn’t interfere with interactions */
+}
+
 
 .teams {
     display: flex;
@@ -377,16 +410,16 @@ code {
 }
 
 .team-logo {
-    width: 70px; /* Original size for desktop */
+    width: 70px;
     height: auto;
     margin: 0 20px;
     border-radius: 50%;
     transition: transform 0.3s ease;
 }
 
-    .team-logo:hover {
-        transform: scale(1.1);
-    }
+.team-logo:hover {
+    transform: scale(1.1);
+}
 
 .vs {
     font-size: 2rem;
@@ -411,21 +444,110 @@ code {
 }
 
 .qr-code {
-    width: 150px; /* Larger QR code for desktop */
+    width: 150px;
     height: 150px;
     transition: transform 0.3s ease-in-out;
 }
 
-    .qr-code:hover {
-        transform: scale(1.1);
-    }
+.qr-code:hover {
+    transform: scale(1.1);
+}
 
 .ticket-footer {
     grid-column: 1 / 3;
     display: flex;
     justify-content: space-between;
+    align-items: center; /* Center items vertically */
     padding-top: 15px;
     border-top: 2px dashed #ccc;
+}
+.gate-info {
+    display: flex;
+    align-items: center; /* Center align vertically */
+}
+
+    .gate-info p {
+        margin: 0 10px; /* Spacing for gate info */
+    }
+/* Ticket Footer Layout */
+.ticket-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+}
+
+/* Gate Info Styling */
+.gate-info p {
+    margin: 0 10px;
+    font-size: 0.9rem;
+    font-family: 'Arial', sans-serif;
+    color: #333; /* Darker text for better readability */
+}
+
+/* Logo and Status Section */
+.ticket-logo-status {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* More space between logo and status icon */
+}
+
+/* Footer Logo */
+.footer-logo {
+    width: 40px;
+    height: auto;
+    opacity: 0.9; /* Subtle opacity for a cleaner look */
+    transition: opacity 0.3s ease;
+}
+
+.footer-logo:hover {
+    opacity: 1; /* Full opacity on hover */
+}
+
+/* Status Icons */
+.status-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    background-color: currentColor;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Colors for Different Statuses */
+.status-icon.used {
+    background-color: #ff4d4d; /* Softer red for better aesthetics */
+}
+
+.status-icon.sold {
+    background-color: #4caf50; /* Green, now more vibrant */
+}
+
+/* Hover Effect for Status Icon */
+.status-icon:hover {
+    transform: scale(1.2); /* Slightly enlarge on hover */
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.2); /* Stronger shadow for hover */
+}
+
+/* Responsive Styling for Smaller Screens */
+@media (max-width: 600px) {
+    .ticket-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ticket-logo-status {
+        margin-top: 10px;
+    }
+}
+
+
+/* Logo in Footer */
+.footer-logo {
+    height: 30px; /* Adjust height for logo */
+    margin-left: auto; /* Push logo to the right */
 }
 
 .seat-info {
@@ -462,7 +584,6 @@ code {
     0% {
         width: 0;
     }
-
     100% {
         width: 100%;
     }
@@ -482,34 +603,105 @@ code {
 @media (max-width: 600px) {
     .ticket {
         display: flex;
-        flex-direction: column; /* Stack items vertically */
+        flex-direction: column;
     }
 
     .ticket-header,
     .ticket-footer {
-        grid-column: 1 / 3; /* Full width on mobile */
+        grid-column: 1 / 3;
     }
 
     .qr-section {
         border-left: none;
-        border-top: 2px dashed #ccc; /* Change border for mobile */
+        border-top: 2px dashed #ccc;
         padding-top: 10px;
     }
 
     .team-logo {
-        width: 40px; /* Adjust for smaller screens */
+        width: 40px;
     }
 
     .qr-code {
-        width: 140px; /* Adjust for smaller screens */
+        width: 140px;
     }
 
     .match-info {
-        font-size: 0.8rem; /* Smaller font for better readability */
+        font-size: 0.8rem;
     }
 
     .seat-info,
     .ticket-number {
-        font-size: 0.8rem; /* Smaller footer font */
+        font-size: 0.8rem;
     }
+}
+
+.championship-logo {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+}
+
+
+
+/* Enhanced highlighted team styling */
+.highlight-team {
+    position: relative; /* Position relative for the pseudo-element */
+    border: 4px solid #1e4164; /* Use the primary color for the border */
+    padding: 5px;
+    border-radius: 50%; /* Keep the logo round */
+    background-color: rgba(30, 65, 100, 0.15); /* Light background using the primary color */
+    animation: pulse 2s infinite alternate; /* Continuous pulsing effect */
+    transition: box-shadow 0.3s ease; /* Smooth transition for box-shadow */
+}
+
+/* Continuous pulsing animation */
+@keyframes pulse {
+    0% {
+        transform: scale(1); /* Start at normal size */
+        box-shadow: 0 0 20px rgba(30, 65, 100, 0.3); /* Initial glow */
+    }
+
+    100% {
+        transform: scale(1.05); /* Slightly enlarge */
+        box-shadow: 0 0 30px rgba(30, 65, 100, 0.5); /* Stronger glow */
+    }
+}
+
+/* More pronounced hover effect */
+.highlight-team:hover {
+    transform: scale(1.1); /* Slightly larger on hover */
+    box-shadow: 0 0 30px rgba(30, 65, 100, 0.6); /* Stronger glow on hover */
+}
+
+/* Pseudo-element for additional effects */
+.highlight-team::after {
+    content: '';
+    position: absolute;
+    top: -10px; /* Positioning */
+    left: -10px; /* Positioning */
+    right: -10px; /* Positioning */
+    bottom: -10px; /* Positioning */
+    border-radius: 50%; /* Keep the outline round */
+    border: 3px dashed rgba(255, 59, 48, 0.8); /* Dashed border for extra flair */
+    opacity: 0; /* Start invisible */
+    animation: outline-pulse 2s infinite alternate; /* Slower pulsing outline effect for smoother motion */
+}
+
+/* Animation for the outline pulse effect */
+@keyframes outline-pulse {
+    0% {
+        opacity: 0.3; /* Fade in */
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0; /* Fade out */
+        transform: scale(1.05); /* Slightly enlarge the outline */
+    }
+}
+
+/* Smooth hover effect for the outline */
+.highlight-team:hover::after {
+    opacity: 1; /* Show the dashed outline on hover */
+    animation: outline-pulse 1s forwards; /* End pulsing effect when hovered */
 }

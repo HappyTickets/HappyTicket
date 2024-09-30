@@ -175,7 +175,7 @@
     <value>تم الدفع بنجاح</value>
   </data>
   <data name="Class" xml:space="preserve">
-    <value>صنف</value>
+    <value>فئة</value>
   </data>
   <data name="CompanyName" xml:space="preserve">
     <value>هابي</value>
@@ -446,6 +446,9 @@
   </data>
   <data name="SeatNumber" xml:space="preserve">
     <value>رقم المقعد</value>
+  </data>
+  <data name="TicketsCount" xml:space="preserve">
+    <value>عدد التذاكر</value>
   </data>
   <data name="FavouriteTeam_Select" xml:space="preserve">
     <value>اختر فريقك المفضل</value>
@@ -924,5 +927,17 @@
   </data>
   <data name="No_Tickets_To_Display" xml:space="preserve">
     <value>ليس لديك تذاكر للعرض</value>
+  </data>
+  <data name="Gate1" xml:space="preserve">
+    <value>بوابة 1</value>
+  </data>
+  <data name="Gate2" xml:space="preserve">
+    <value>بوابة 2</value>
+  </data>
+  <data name="External_Gate" xml:space="preserve">
+    <value>البوابة الخارجية</value>
+  </data>
+  <data name="Internal_Gate" xml:space="preserve">
+    <value>البوابة الداخلية</value>
   </data>
 </root>

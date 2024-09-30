@@ -447,6 +447,9 @@
   <data name="SeatNumber" xml:space="preserve">
     <value>Seat Number</value>
   </data>
+  <data name="TicketsCount" xml:space="preserve">
+    <value>Tickets Count</value>
+  </data>
   <data name="FavouriteTeam_Select" xml:space="preserve">
     <value>Select your favourite team</value>
   </data>
@@ -973,5 +976,17 @@ For any questions or concerns regarding this Agreement, please contact [Customer
   </data>
   <data name="No_Tickets_To_Display" xml:space="preserve">
     <value>No Tickets To Display</value>
+  </data>
+  <data name="Gate1" xml:space="preserve">
+    <value>Gate 1</value>
+  </data>
+  <data name="Gate2" xml:space="preserve">
+    <value>Gate 2</value>
+  </data>
+  <data name="External_Gate" xml:space="preserve">
+    <value>External Gate</value>
+  </data>
+  <data name="Internal_Gate" xml:space="preserve">
+    <value>Internal Gate</value>
   </data>
 </root>
