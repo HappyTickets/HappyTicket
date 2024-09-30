@@ -215,10 +215,12 @@
                                 Class = ticket.Class,
                                 Price = ticket.Price,
                                 TeamId = ticket.TeamId,
-                                Location = ticket.Location,
                                 DisplayForSale = ticket.DisplayForSale,
                                 TicketsCount = i,
-                                TicketStatus = ticket.IsForAdmins ? TicketStatusDTO.ForAdmins : TicketStatusDTO.Active 
+                                TicketStatus = ticket.IsForAdmins ? TicketStatusDTO.ForAdmins : TicketStatusDTO.Active ,
+                                ExternalGate=ticket.ExternalGate,
+                                InternalGate = ticket.InternalGate,
+                                Location="Visitor"
                             });
                     }
                 }
