@@ -44,10 +44,10 @@
                     {
                         <AppNavLink Href="/Matches" BeforeIcon="@Icons.Material.Filled.SportsSoccer" Style="width: 170px; height: 100%" Text=@Resource.Matches_Settings />
                         <AppNavLink Href="/all-orders" BeforeIcon="@Icons.Material.Filled.Sell" Text="@Resource.Orders" />
-                        <AppNavLink Href="/my-orders" BeforeIcon="@Icons.Material.Filled.Sell" Text="@Resource.Orders" />
                         <AppNavLink Href="/scan-qr-ticket" BeforeIcon="@Icons.Material.Filled.QrCodeScanner" Text="@Resource.ScanQr" />
 
                     }
+                        <AppNavLink Href="/my-orders" BeforeIcon="@Icons.Material.Filled.Sell" Text="@Resource.MyOrders" />
                     @if (!string.IsNullOrWhiteSpace(userName) && CurrentBreakpoint >= Breakpoint.Lg)
                     {
                         <div class="vr align-self-center" style="height: 45px; margin-right: 30px"></div>
@@ -117,6 +117,7 @@
                             <MudNavLink Href="/all-orders" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Sell" IconColor="Color.Primary">@Resource.Orders</MudNavLink>
                             <MudNavLink Href="/scan-qr-ticket" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.QrCodeScanner" IconColor="Color.Primary">@Resource.ScanQr</MudNavLink>
                         }
+                            <MudNavLink Href="/my-orders" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Sell" IconColor="Color.Primary">@Resource.MyOrders</MudNavLink>
                         <MudHidden Breakpoint="Breakpoint.LgAndUp">
                             <hr />
                             @if (string.IsNullOrWhiteSpace(userName))

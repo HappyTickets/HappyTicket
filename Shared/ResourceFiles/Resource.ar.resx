@@ -528,9 +528,6 @@
   <data name="Tickets" xml:space="preserve">
     <value>تذاكر</value>
   </data>
-  <data name="TicketsCount" xml:space="preserve">
-    <value>عدد التذاكر</value>
-  </data>
   <data name="Time" xml:space="preserve">
     <value>ساعة</value>
   </data>
@@ -939,5 +936,8 @@
   </data>
   <data name="Internal_Gate" xml:space="preserve">
     <value>البوابة الداخلية</value>
+  </data>
+  <data name="MyOrders" xml:space="preserve">
+    <value>طلباتي</value>
   </data>
 </root>

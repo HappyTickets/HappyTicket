@@ -1229,6 +1229,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to My Orders.
+        /// </summary>
+        public static string MyOrders {
+            get {
+                return ResourceManager.GetString("MyOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {

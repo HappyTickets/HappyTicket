@@ -528,9 +528,6 @@
   <data name="Tickets" xml:space="preserve">
     <value>Tickets</value>
   </data>
-  <data name="TicketsCount" xml:space="preserve">
-    <value>Tickets Count</value>
-  </data>
   <data name="Time" xml:space="preserve">
     <value>Time</value>
   </data>
@@ -988,5 +985,8 @@ For any questions or concerns regarding this Agreement, please contact [Customer
   </data>
   <data name="Internal_Gate" xml:space="preserve">
     <value>Internal Gate</value>
+  </data>
+  <data name="MyOrders" xml:space="preserve">
+    <value>My Orders</value>
   </data>
 </root>
