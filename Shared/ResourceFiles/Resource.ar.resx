@@ -940,4 +940,44 @@
   <data name="MyOrders" xml:space="preserve">
     <value>طلباتي</value>
   </data>
+  <data name="Team_With_Match_Deletion_Failure" xml:space="preserve">
+    <value>غير قادر على حذف الفريق لأن هناك مباراة قائمة.</value>
+  </data>
+  <data name="Team_Create" xml:space="preserve">
+    <value>اضافه فريق</value>
+  </data>
+  <data name="Teams_All" xml:space="preserve">
+    <value>كل الفرق</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>الوصف</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>حذف</value>
+  </data>
+  <data name="Team_Deleted_Successfully" xml:space="preserve">
+    <value>تم حذف الفريق بنجاح</value>
+  </data>
+  <data name="Team_Deletion_Failure" xml:space="preserve">
+    <value>فشل فى حذف الفريق</value>
+  </data>
+  <data name="Confirm_Deletion_Text" xml:space="preserve">
+    <value>هل تريد حقًا حذف هذا السجل؟ لا يمكن التراجع عن هذه العملية.</value>
+  </data>
+  <data name="Team_Created" xml:space="preserve">
+    <value>تم اضافه الفريق بنجاح</value>
+  </data>
+  <data name="Team_Updated" xml:space="preserve">
+    <value>تم تعديل الفريق بنجاح</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Team_Update" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="File_Upoad_Error" xml:space="preserve">
+    <value>تعذر تحميل الملف</value>
+  </data>
+  <data name="File_Required" xml:space="preserve">
+    <value>الملف مطلوب</value>
+  </data>
 </root>

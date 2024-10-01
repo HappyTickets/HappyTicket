@@ -13,5 +13,6 @@ namespace Client.Services.Interfaces
         Task<Result<BaseResponse<TeamDto>>> RecoverTeamByIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task<Result<BaseResponse<TeamDto>>> SoftDeleteTeamByIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task<Result<BaseResponse<TeamDto>>> HardDeleteTeamByIdAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<Result<BaseResponse<TeamDto>>> DeleteTeamWithNoMatchesAsync(Guid id, CancellationToken cancellationToken = default);
     }
 }

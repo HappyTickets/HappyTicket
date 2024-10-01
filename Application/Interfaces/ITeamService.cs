@@ -11,5 +11,6 @@ namespace Application.Interfaces
         Task<Result<TeamDto>> AddFavTeam(UserFavoriteTeamDto userFavoriteTeamDto, CancellationToken cancellationToken = default);
         Task<Result<Unit>> RemoveFavTeam(UserFavoriteTeamDto userFavoriteTeamDto, CancellationToken cancellationToken = default);
         Task<Result<TeamDto>> GetUserFavTeam(string userId,Guid matchId, bool useCache = true, CancellationToken cancellationToken = default);
+        Task<Result<TeamDto>> DeleteTeamWithNoMatchesAsync(Guid id, CancellationToken cancellationToken = default);
     }
 }
