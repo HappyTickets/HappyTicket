@@ -295,6 +295,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to delete this record? This process cannot be undone..
+        /// </summary>
+        public static string Confirm_Deletion_Text {
+            get {
+                return ResourceManager.GetString("Confirm_Deletion_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirming Password is required!.
         /// </summary>
         public static string Confirming_Password_Validation {
@@ -402,6 +411,24 @@ namespace Shared.ResourceFiles {
         public static string DateTime {
             get {
                 return ResourceManager.GetString("DateTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Descritpion.
+        /// </summary>
+        public static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
             }
         }
         
@@ -645,6 +672,24 @@ namespace Shared.ResourceFiles {
         public static string FavouriteTeam_Select {
             get {
                 return ResourceManager.GetString("FavouriteTeam_Select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File field is required.
+        /// </summary>
+        public static string File_Required {
+            get {
+                return ResourceManager.GetString("File_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to upload file.
+        /// </summary>
+        public static string File_Upoad_Error {
+            get {
+                return ResourceManager.GetString("File_Upoad_Error", resourceCulture);
             }
         }
         
@@ -1751,11 +1796,74 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create Team.
+        /// </summary>
+        public static string Team_Create {
+            get {
+                return ResourceManager.GetString("Team_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Team has been created successfully.
+        /// </summary>
+        public static string Team_Created {
+            get {
+                return ResourceManager.GetString("Team_Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Team has been deleted successfully.
+        /// </summary>
+        public static string Team_Deleted_Successfully {
+            get {
+                return ResourceManager.GetString("Team_Deleted_Successfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to delete the team.
+        /// </summary>
+        public static string Team_Deletion_Failure {
+            get {
+                return ResourceManager.GetString("Team_Deletion_Failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Team.
         /// </summary>
         public static string Team_Select {
             get {
                 return ResourceManager.GetString("Team_Select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تعديل فريق.
+        /// </summary>
+        public static string Team_Update {
+            get {
+                return ResourceManager.GetString("Team_Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Team has been updated successfully.
+        /// </summary>
+        public static string Team_Updated {
+            get {
+                return ResourceManager.GetString("Team_Updated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to delete the team because there is an existing match..
+        /// </summary>
+        public static string Team_With_Match_Deletion_Failure {
+            get {
+                return ResourceManager.GetString("Team_With_Match_Deletion_Failure", resourceCulture);
             }
         }
         
@@ -1792,6 +1900,15 @@ namespace Shared.ResourceFiles {
         public static string Teams {
             get {
                 return ResourceManager.GetString("Teams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Teams.
+        /// </summary>
+        public static string Teams_All {
+            get {
+                return ResourceManager.GetString("Teams_All", resourceCulture);
             }
         }
         
