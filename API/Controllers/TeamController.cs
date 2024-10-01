@@ -203,5 +203,24 @@ namespace API.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+        
+        [HttpGet]
+        [Route("DeleteTeamWithNoMatches/{id:guid}")]
+        public async Task<ActionResult> DeleteTeamWithNoMatches(Guid id, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    return ReturnResult(await _teamService.DeleteTeamWithNoMatchesAsync(id, cancellationToken: cancellationToken));
+                }
+
+                return BadRequest(ModelState);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
     }
 }
