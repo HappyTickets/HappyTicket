@@ -1,5 +1,4 @@
-﻿using Application.Implementations.IdentityServices;
-using Application.Interfaces.IIdentityServices;
+﻿using Application.Interfaces.IIdentityServices;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Common.ApiRoutes;
 using Shared.Common.General;
