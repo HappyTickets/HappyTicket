@@ -8,11 +8,11 @@ namespace Shared.Common.General
         public int PageSize { get; set; } = 10;
         public bool PaginationOff { get; set; } = true;
         //Search Parameters
-        public string SearchKey { get; set; } = null;
-        public string SearchIn { get; set; } = null;
-        public DateTime? FromDate { get; set; } = null;
-        public DateTime? ToDate { get; set; } = null;
-        public string OrderBy { get; set; } = null;
+        public string? SearchKey { get; set; }
+        public string? SearchIn { get; set; }
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
+        public string? OrderBy { get; set; }
 
 
 

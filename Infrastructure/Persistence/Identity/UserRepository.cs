@@ -4,6 +4,7 @@ using Domain.Enums;
 using LanguageExt.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Shared.Common.General;
 using Shared.Exceptions;
 using System.Linq;
 using System.Linq.Expressions;
@@ -21,6 +22,35 @@ public class UserRepository<TUser> : IUserRepository<TUser> where TUser : Applic
 
 
     #region Query
+
+    public async Task<Result<PaginatedList<TUser>>> GetAllAsync(PaginationSearchModel queryParams, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            // Step 1: Apply filters 
+            var filteredUsersQuery = SearchFilterPagination.Filter(_userManager.Users, queryParams);
+
+            // Step 2: Get the total count of filtered users before pagination
+            var totalItems = await filteredUsersQuery.CountAsync(cancellationToken);
+
+            // Step 3: Apply pagination to the query
+            var paginatedUsers = await SearchFilterPagination.PaginateData(filteredUsersQuery, queryParams);
+
+            if (paginatedUsers is null || !paginatedUsers.Any())
+            {
+                return new(new NotFoundException(
+                    [new() { Title = "Not Found", Message = "Users cannot be found." }]));
+            }
+
+            var paginatedList = PaginatedList<TUser>.Create(paginatedUsers, totalItems, queryParams.PageIndex, queryParams.PageSize);
+            return new Result<PaginatedList<TUser>>(paginatedList);
+        }
+        catch (Exception e)
+        {
+            return new(new ServerException([new() { Title = "Internal Server Error", Message = $"{e.Message}." }]));
+        }
+    }
+
 
     public async Task<Result<TUser>> GetByIdAsync(string id, CancellationToken cancellationToken = default)
     {
@@ -167,7 +197,7 @@ public class UserRepository<TUser> : IUserRepository<TUser> where TUser : Applic
                 {
                     return new(new ServerException(
                         result.Errors.Prepend(new() { Code = "Internal Server Error", Description = $"An error while trying to create the user." })
-                                     .Select(x => new ErrorInfo() { Title = x.Code, Message = x.Description})));
+                                     .Select(x => new ErrorInfo() { Title = x.Code, Message = x.Description })));
                 }
 
                 string emailConfirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -309,6 +339,8 @@ public class UserRepository<TUser> : IUserRepository<TUser> where TUser : Applic
             return new(new ServerException([new() { Title = "Internal Server Error", Message = $"{e.Message}." }]));
         }
     }
+
+
 
     #endregion
 }
