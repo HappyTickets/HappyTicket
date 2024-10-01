@@ -980,4 +980,7 @@
   <data name="File_Required" xml:space="preserve">
     <value>الملف مطلوب</value>
   </data>
+  <data name="Delete_Tickets" xml:space="preserve">
+    <value>حذف التذكره</value>
+  </data>
 </root>

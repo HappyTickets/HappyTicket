@@ -25,6 +25,8 @@ public class BaseResponse<T>
     public IEnumerable<ResponseError>? ErrorList { get; set; }
     public bool IsSuccess => (int)Status < 400 ;
 }
+
+
 public class BaseListResponse<T> where T : IEnumerable
 {
     public BaseListResponse() { }

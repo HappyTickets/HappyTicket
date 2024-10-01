@@ -45,6 +45,11 @@ namespace Client.Services.Implementation
             return await _httpClientHelper.PutBaseAsync<MatchDto, BaseResponse<MatchDto>>("api/Match/UpdateMatch", match);
         }
 
+        public async Task<bool> DeleteMatchAsync(Guid Id,CancellationToken cancellationToken = default)
+        {
+            return await _httpClientHelper.DeleteAsync(Id);
+        }
+
         //public async Task<ApiResponse> SoftDeleteMatchByIdAsync(Guid id, CancellationToken cancellationToken = default)
         //{
         //    return await _httpClientHelper.DeleteAsync($"api/Match/SoftDeleteMatch?id={id}");

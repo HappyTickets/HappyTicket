@@ -156,12 +156,30 @@ public class MatchController : BaseController
             {
                 return ReturnResult(await _matchService.HardDeleteByIdAsync(id, cancellationToken: cancellationToken));
             }
-
             return BadRequest(ModelState);
         }
         catch (Exception ex)
         {
             return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
         }
+    }
+
+    [HttpDelete]
+    [Route("DeleteMatch")]
+    public async Task<ActionResult> DeleteMatchById(Guid id, CancellationToken cancellationToken = default)
+    {
+
+        try
+        {
+            var result = await _matchService.DeleteMatchByIdAsync(id, cancellationToken: cancellationToken);
+
+            if (result == true)
+                return StatusCode((int)HttpStatusCode.OK, true);
+            return StatusCode((int)HttpStatusCode.BadRequest, false);
+        }catch(Exception ex)
+        {
+
+        }
+      
     }
 }

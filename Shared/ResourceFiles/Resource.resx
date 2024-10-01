@@ -1028,4 +1028,7 @@ For any questions or concerns regarding this Agreement, please contact [Customer
   <data name="File_Required" xml:space="preserve">
     <value>File field is required</value>
   </data>
+  <data name="Delete_Tickets" xml:space="preserve">
+    <value>Delete</value>
+  </data>
 </root>

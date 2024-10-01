@@ -215,7 +215,7 @@ public class BaseService<Tentity, Tdto> : IBaseService<Tentity, Tdto>
                 fail =>
                 {
                     return (fail is NotFoundException) ?
-                        new Result<IEnumerable<Tdto>>(new NotFoundException([new() { Title = Resource.NotFound, Message = Resource.NotFoundInDB_Message.ToString().Replace("{type}", _localizer[typeof(Tentity).Name.Pluralize()])  }])) :
+                        new Result<IEnumerable<Tdto>>(new NotFoundException([new() { Title = Resource.NotFound, Message = Resource.NotFoundInDB_Message.ToString().Replace("{type}", _localizer[typeof(Tentity).Name.Pluralize()]) }])) :
                             new(fail);
                 }
             );

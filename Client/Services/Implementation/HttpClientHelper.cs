@@ -115,6 +115,19 @@ namespace Client.Services.Implementation
             }
         }
 
+        public async Task<bool> DeleteAsync(Guid Id)
+        {
+            var response = await _httpClient.DeleteAsync($"https://localhost:7211/DeleteMatch/{Id}");
+            var content = await response.Content.ReadAsStringAsync();
+
+            bool result;
+            if (bool.TryParse(content, out result))
+            {
+                return result;
+            }
+            return result;
+        }
+
         public async Task<ApiResponse> PostAsync(object T, string Url, bool useAuth = true)
         {
             if (useAuth) _ = await GetUserCurrentIdentityAsync();

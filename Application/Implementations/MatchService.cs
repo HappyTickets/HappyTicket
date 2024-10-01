@@ -58,6 +58,7 @@ namespace Application.Implementations
                 return result;
             }
         }
+      
         public async Task<Result<IEnumerable<MatchDto>>> GetActiveMatchesAsync(bool useCache, CancellationToken cancellationToken = default)
         {
             Expression<Func<IQueryable<MatchDto>, IIncludableQueryable<MatchDto, object>>>[] includeProperties =
@@ -130,6 +131,28 @@ namespace Application.Implementations
             {
                 return result;
             }
+        }
+
+        public async Task<Result<bool>> DeleteMatchByIdAsync(Guid id, bool useCache, CancellationToken cancellationToken = default)
+        {
+          
+            var result = await GetByIdAsync(id, useCache, cancellationToken: cancellationToken);
+
+            if (result.IsSuccess)
+            {
+                var match = result.Match(
+                    Succ: matchDto => matchDto,
+                    Fail: ex => null
+                    );
+
+                if(match.Tickets.Any() && (DateTime.UtcNow < match.EventDate))
+                {
+                    await _unitOfWork.Repository<Match>().HardDeleteByIdAsync(id);
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

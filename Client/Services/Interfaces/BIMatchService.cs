@@ -12,6 +12,7 @@ namespace Client.Services.Interfaces
         Task<Result<BaseResponse<MatchDto>>> GetMatchByIdAsync(Guid id, bool useCache, CancellationToken cancellationToken = default);
         Task<Result<BaseResponse<MatchCommandDto>>> CreateMatchAsync(MatchCommandDto match, CancellationToken cancellationToken = default);
         Task<Result<BaseResponse<MatchDto>>> UpdateMatchAsync(MatchDto match, CancellationToken cancellationToken = default);
+        Task<bool> DeleteMatchAsync(Guid Id,CancellationToken cancellationToken = default);
         //Task<ApiResponse> RecoverMatchByIdAsync(Guid id, CancellationToken cancellationToken = default);
         //Task<ApiResponse> SoftDeleteMatchByIdAsync(Guid id, CancellationToken cancellationToken = default);
         //Task<ApiResponse> HardDeleteMatchByIdAsync(Guid id, CancellationToken cancellationToken = default);
