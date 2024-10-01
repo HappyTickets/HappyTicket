@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Client.Services.Interfaces;
-using Shared.DTOs;
 using LanguageExt;
 using Shared.Common.General;
+using Shared.DTOs;
 
 namespace Client.Pages.Company
 {

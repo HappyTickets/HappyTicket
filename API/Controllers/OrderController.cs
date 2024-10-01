@@ -1,21 +1,18 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
+using LanguageExt;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Shared.Common;
 using Shared.Common.General;
 using Shared.DTOs;
-using Shared.DTOs.CartDTOs;
 using Shared.DTOs.Identity.UserDTOs;
 using Shared.DTOs.TicketDTOs;
-using Shared.Enums;
 using Shared.Extensions;
 using System.Linq.Expressions;
 using System.Net;
-using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -23,6 +20,7 @@ namespace API.Controllers
     public class OrderController : BaseController
     {
         private readonly IOrderService _orderService;
+
 
         public OrderController(IHttpContextAccessor httpContextAccessor, IOrderService orderService) : base(httpContextAccessor)
         {
@@ -98,43 +96,23 @@ namespace API.Controllers
             }
         }
 
-
-      
         [HttpPost]
         [Route("GetPaginatedOrders")]
-        public async Task<ActionResult> GetPaginatedOrdersAsync(PaginationParams paginationParams, bool useCache = false, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<IEnumerable<OrderDto>>> GetPaginatedOrdersAsync([FromBody] PaginationParams paginationParams, bool useCache = false, CancellationToken cancellationToken = default)
         {
             try
             {
-                var includingExpression = new Expression<Func<IQueryable<OrderDto>, IIncludableQueryable<OrderDto, object>>>[]
-                {
-                    dtoQuery => dtoQuery.Include(dto => dto.User)
-                };
 
-                Func<Order, OrderDto>? orderMap = order => new OrderDto
-                {
-                    User = new ApplicationUserDTO
-                    {
-                        UserName = order.User.UserName,
-                        Email = order.User.Email,
-                        PhoneNumber = order.User.PhoneNumber,
-                    },
-                    TotalAmount = order.TotalAmount,
-                };
-
-                var result = await _orderService
-                    .GetPaginatedAsync(paginationParams,
-                                       useCache,
-                                       customMapper: orderMap,
-                                       includeDTOProperties: includingExpression,
-                                       cancellationToken: cancellationToken);
-                
+                var result = await _orderService.GetPaginatedAsync(paginationParams, useCache, null, cancellationToken);
                 return ReturnListResult(result);
+
             }
             catch (Exception ex)
             {
+
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
+
         }
 
         [HttpGet]

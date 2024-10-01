@@ -12,6 +12,8 @@ namespace Shared.DTOs
         public int? PaymentStatus { get; set; }
         public string? PaymentOrderRef { get; set; }
         public string? PaymentUrl { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
         public ICollection<CartItemDto> CartItems { get; set; } = [];
     }
 

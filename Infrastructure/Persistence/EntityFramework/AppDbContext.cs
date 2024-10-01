@@ -81,17 +81,17 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     }
 
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-public DbSet<RefreshToken> RefreshTokens { get; set; }
-public DbSet<Ticket> Tickets { get; set; }
-public DbSet<Block> Blocks { get; set; }
-public DbSet<Match> Matches { get; set; }
-public DbSet<Team> Teams{ get; set; }
-public DbSet<Stadium> Stadiums{ get; set; }
-public DbSet<Seat> Seats{ get; set; }
-public DbSet<Order> Orders{ get; set; }
-public DbSet<CartItem> CartItems { get; set; }
-public DbSet<UserFavoriteTeam> UserFavoriteTeams{ get; set; }
-    
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<Ticket> Tickets { get; set; }
+    public DbSet<Block> Blocks { get; set; }
+    public DbSet<Match> Matches { get; set; }
+    public DbSet<Team> Teams { get; set; }
+    public DbSet<Stadium> Stadiums { get; set; }
+    public DbSet<Seat> Seats { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<CartItem> CartItems { get; set; }
+    public DbSet<UserFavoriteTeam> UserFavoriteTeams { get; set; }
+
     public void PrepareEntity()
     {
         try
