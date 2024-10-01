@@ -1,0 +1,128 @@
+﻿@page "/teams"
+
+@inject ICustomSnackbarProvider Snackbar
+@inject BITeamService TeamService
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+@attribute [Authorize(Policy = "IsAdmin")]
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+<MudToolBar>
+    <MudSpacer></MudSpacer>
+    <LoadingButton Variant="Variant.Filled" Color="Color.Primary" Href="/teams/create">@Resource.Team_Create</LoadingButton>
+</MudToolBar>
+<PageTitle>@Resource.Teams_All</PageTitle>
+
+<MudCard>
+    <MudCardContent>
+        <MudText Typo="Typo.h3">@Resource.Teams_All</MudText>
+
+        @if (IsLoading)
+        {
+            <MudText Typo="Typo.h6">@Resource.Loading</MudText>
+        }
+        else if (TeamsList.Count == 0)
+        {
+            <MudText Typo="Typo.h6">@Resource.Matches_NotAvailable</MudText>
+        }
+        else
+        {
+            <MudTable Items="@TeamsList" Striped="true" Bordered="true" Hover="true">
+                <HeaderContent>
+                    <MudTh>@Resource.Logo</MudTh>
+                    <MudTh>@Resource.Name</MudTh>
+                    <MudTh>@Resource.Description</MudTh>
+                    <MudTh>@Resource.TheActions</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd>
+                          <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), context?.Logo))" class="team-logo" style="max-width:60px;"/>
+                    </MudTd>
+                    <MudTd>@context.Name</MudTd>
+                    <MudTd>@context.Description</MudTd>
+                    <MudTd>
+                        <MudButton OnClick="@(()=> NavigationManager.NavigateTo($"/teams/update/{@context.Id}"))" Color="Color.Primary" Variant="Variant.Filled">@Resource.Edit</MudButton>
+                        <MudButton OnClick="@(() => DeleteAsync(context))" Color="Color.Error" Variant="Variant.Filled">@Resource.Delete</MudButton>
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
+        }
+    </MudCardContent>
+</MudCard>
+
+@code {
+    private List<TeamDto> TeamsList = new();
+    private bool IsLoading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsLoading = true;
+
+        await LoadTeamsAsync();
+
+        IsLoading = false;
+    }
+
+    private async Task LoadTeamsAsync()
+    {
+        var result = await TeamService.GetTeamsAsync(false);
+        result.Match(
+            response =>
+            {
+                if (response.Data != null)
+                    TeamsList = response.Data.ToList();
+
+                return Unit.Default;
+            },
+            ex =>
+            {
+                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                return Unit.Default;
+            }
+        );
+    }
+
+    private async Task DeleteAsync(TeamDto team)
+    {
+        if (await ConfirmDeletion())
+        {
+            TeamsList.Remove(team);
+
+            var result = await TeamService.DeleteTeamWithNoMatchesAsync(team.Id);
+            result.Match(
+                response =>
+                {
+                    if(response.IsSuccess)
+                        Snackbar.Show(Resource.Team_Deleted_Successfully, Severity.Success);
+                    else
+                    {
+                        TeamsList.Add(team);
+                        Snackbar.Show(Resource.Team_Deletion_Failure, Severity.Error);
+                        Snackbar.Show(response.Title, Severity.Error);
+                    }
+                    return Unit.Default;
+                },
+                ex =>
+                {
+                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                    return Unit.Default;
+                }
+            );
+        }
+    }
+
+    private async Task<bool> ConfirmDeletion()
+    {
+        var parameters = new DialogParameters<AlertDialog>
+        {
+            { x => x.ContentText, Resource.Confirm_Deletion_Text },
+            { x => x.ButtonText, Resource.Delete },
+            { x => x.Color, Color.Error }
+        };
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        return !(await (await DialogService.ShowAsync<AlertDialog>(Resource.Delete, parameters, options)).Result).Canceled;
+    }
+}

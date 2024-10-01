@@ -58,6 +58,7 @@ builder.Services.AddTransient<MudRTLProvider>();
 builder.Services.AddScoped<IHttpClientHelper, HttpClientHelper>();
 
 builder.Services.AddScoped<IIdentityService, IdentityService>();
+builder.Services.AddScoped<IFileService, FileService>();
 
 builder.Services.AddMudServices();
 

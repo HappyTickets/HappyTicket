@@ -989,4 +989,43 @@ For any questions or concerns regarding this Agreement, please contact [Customer
   <data name="MyOrders" xml:space="preserve">
     <value>My Orders</value>
   </data>
+  <data name="Team_With_Match_Deletion_Failure" xml:space="preserve">
+    <value>Unable to delete the team because there is an existing match.</value>
+  </data>
+  <data name="Team_Create" xml:space="preserve">
+    <value>Create Team</value>
+  </data>
+  <data name="Teams_All" xml:space="preserve">
+    <value>All Teams</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Descritpion</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Team_Deleted_Successfully" xml:space="preserve">
+    <value>Team has been deleted successfully</value>
+  </data>
+  <data name="Team_Deletion_Failure" xml:space="preserve">
+    <value>Failed to delete the team</value>
+  </data>
+  <data name="Confirm_Deletion_Text" xml:space="preserve">
+    <value>Do you really want to delete this record? This process cannot be undone.</value>
+  </data>
+  <data name="Team_Created" xml:space="preserve">
+    <value>Team has been created successfully</value>
+  </data>
+  <data name="Team_Updated" xml:space="preserve">
+    <value>Team has been updated successfully</value>
+  </data>
+  <data name="Team_Update" xml:space="preserve">
+    <value>تعديل فريق</value>
+  </data>
+  <data name="File_Upoad_Error" xml:space="preserve">
+    <value>Failed to upload file</value>
+  </data>
+  <data name="File_Required" xml:space="preserve">
+    <value>File field is required</value>
+  </data>
 </root>

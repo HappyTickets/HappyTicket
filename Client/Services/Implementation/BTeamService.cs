@@ -55,6 +55,11 @@ namespace Client.Services.Implementation
         {
             return await _httpClientHelper.GetBaseAsync<BaseResponse<TeamDto>>($"api/Team/HardDeleteTeam?id={id}");
         }
+        
+        public async Task<Result<BaseResponse<TeamDto>>> DeleteTeamWithNoMatchesAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            return await _httpClientHelper.GetBaseAsync<BaseResponse<TeamDto>>($"api/Team/DeleteTeamWithNoMatches/{id}");
+        }
 
     }
 }

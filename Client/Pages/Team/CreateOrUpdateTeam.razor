@@ -1,0 +1,187 @@
+﻿@page "/teams/create"
+@page "/teams/update/{id:guid}"
+
+@inject ICustomSnackbarProvider Snackbar
+@inject BITeamService TeamService
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+@inject IFileService FileService
+@attribute [Authorize(Policy = "IsAdmin")]
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+<PageTitle>
+    @(IsUpdate() ? Resource.Team_Update : Resource.Team_Create)
+</PageTitle>
+
+<MudPaper Class="mt-2">
+    <MudGrid Class="pa-4 gap-2">
+        <MudItem xs="12">
+            <MudText Typo="Typo.h5" Style="font-weight:bold;">@(IsUpdate() ? Resource.Team_Update : Resource.Team_Create)</MudText>
+        </MudItem>
+        <MudItem xs="12">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudTextField @bind-Value=Team.Name For="()=>Team.Name" Label=@Resource.Name Variant="Variant.Text" Required />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField @bind-Value=Team.Description For="()=>Team.Description" Label=@Resource.Description Variant="Variant.Text" />
+                </MudItem>
+                <MudItem xs="12">
+                    <ImageUpload Label=@Resource.TeamLogo IsMultipleFiles="false" FilesChanged="OnFileChanged" Required="true" />
+                </MudItem>
+                <MudItem>
+                        <LoadingButton OnClick="HandleValidSubmit" Color="Color.Primary" Variant="Variant.Filled">@(IsUpdate() ? Resource.Team_Update : Resource.Team_Create)</LoadingButton>
+                </MudItem>
+            </MudGrid>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+
+@code {
+    [Parameter]
+    public Guid? Id { get; set; }
+
+    private TeamDto Team = new();
+    KeyValuePair<string, string>? Logo = null;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadTeamAsync();
+    }
+
+    private async Task LoadTeamAsync()
+    {
+        if(IsUpdate())
+        {
+            var result = await TeamService.GetTeamByIdAsync(Id!.Value, false);
+            result.Match(
+                response =>
+                {
+                    if (response.Data != null)
+                        Team = response.Data;
+
+                    return Unit.Default;
+                }
+                ,
+                ex =>
+                {
+                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                    return Unit.Default;
+                }
+            );
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (Team.Name == null)
+            return;
+
+        if (Logo != null)
+            await UploadFileAsync();
+
+        if (Team.Logo != null)
+        {
+            if (IsUpdate())
+                await UpdateTeamAsync();
+            else
+                await CreateTeamAsync();
+        }
+        else
+            Snackbar.Show(Resource.File_Required, Severity.Error);
+    }
+
+    private async Task UploadFileAsync()
+    {
+        var result = await FileService.UploadFileAsync(new()
+            {
+                Path = $"/Images/Teams/{Team.Name}/{Logo?.Key}".Replace(" ", "_"),
+                Base64EncodedString = Logo?.Value
+            });
+
+        result.Match(
+            response =>
+            {
+                if (response.IsSuccess)
+                    Team.Logo = response.Data;
+                else
+                    Snackbar.Show(Resource.File_Upoad_Error, Severity.Error);
+
+                return Unit.Default;
+            },
+            ex =>
+            {
+                Snackbar.Show(Resource.File_Upoad_Error, Severity.Error);
+                return Unit.Default;
+            }
+        );
+    }
+
+    private async Task CreateTeamAsync()
+    {
+        var result = await TeamService.CreateTeamAsync(Team);
+        result.Match(
+            response =>
+            {
+                if (response.IsSuccess)
+                {
+                    Snackbar.Show(Resource.Team_Created, Severity.Success);
+                    NavigationManager.NavigateTo("/teams");
+                }
+                else
+                {
+                    Snackbar.Show(response.Title, Severity.Error);
+                    if (response.ErrorList != null)
+                    {
+                        foreach (var error in response.ErrorList)
+                            Snackbar.Show($"{error.Title}: {error.Message}", Severity.Error);
+                    }
+                }
+                return Unit.Default;
+            },
+            ex =>
+            {
+                Snackbar.Show(Resource.Team_Updated, Severity.Error);
+                return Unit.Default;
+            }
+        );
+    }
+
+    private async Task UpdateTeamAsync()
+    {
+        var result = await TeamService.UpdateTeamAsync(Team);
+        result.Match(
+            response =>
+            {
+                if (response.IsSuccess)
+                {
+                    Snackbar.Show(Resource.Error_Occurred, Severity.Success);
+                    NavigationManager.NavigateTo("/teams");
+                }
+                else
+                {
+                    Snackbar.Show(response.Title, Severity.Error);
+                    if (response.ErrorList != null)
+                    {
+                        foreach (var error in response.ErrorList)
+                            Snackbar.Show($"{error.Title}: {error.Message}", Severity.Error);
+                    }
+                }
+                return Unit.Default;
+            },
+            ex =>
+            {
+                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                return Unit.Default;
+            }
+        );
+    }
+
+    private void OnFileChanged(Dictionary<string, string> files)
+        => Logo = files.FirstOrDefault();
+
+    private bool IsUpdate()
+        => Id != null;
+}

@@ -111,6 +111,23 @@ namespace Application.Implementations
                 return new(ex);
             }
         }
+
+        public async Task<Result<TeamDto>> DeleteTeamWithNoMatchesAsync(Guid id, CancellationToken cancellationToken = default) 
+        {
+            var matchesRepo = _unitOfWork.Repository<Match>();
+            var teamsRepo = _unitOfWork.Repository<Team>();
+
+            if (await matchesRepo.Query().AnyAsync(m => m.TeamAId == id || m.TeamBId == id))
+                return new(new Exception(Resource.Team_With_Match_Deletion_Failure));
+
+            var result = await teamsRepo.HardDeleteByIdAsync(id, cancellationToken);
+            return await result.Match(
+                async team => {
+                    await _unitOfWork.SaveChangesAsync();
+                    return _mapper.Map<TeamDto>(team).ToResult();
+                },
+                async ex => await ex.ToResultAsync<TeamDto>());
+        }
     }
 
 }
