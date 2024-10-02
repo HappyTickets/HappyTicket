@@ -2,6 +2,7 @@
 using Application.Interfaces.Persistence;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 using FluentValidation;
 using LanguageExt;
 using LanguageExt.ClassInstances;
@@ -38,7 +39,6 @@ namespace Application.Implementations
                 {
                     x=>x.Include(o=>o.User),
 
-
                 };
                 Func<Order, OrderDto>? orderMap = order => new OrderDto
                 {
@@ -50,26 +50,28 @@ namespace Application.Implementations
                     },
                     TotalAmount = order.TotalAmount,
                     PaymentStatus = order.PaymentStatus,
+                    PaymentStatusString = order.PaymentStatus.HasValue ? ((PaymentStatusEnum)order.PaymentStatus.Value).ToString() : null,
                     CreatedDate = order.CreatedDate,
                     ModifiedBy = order.ModifiedBy,
-                    PaymentUrl = order.PaymentUrl,
 
                 };
-                var result = await GetAllAsync(useCache, orderMap, cancellationToken: cancellationToken, includeDTOProperties: includeProperties);
-                if (result.IsSuccess)
-                {
-                    List<OrderDto> orders = result.Match(
-                       Succ: orders => orders.ToList(),
-                       Fail: ex => new List<OrderDto>()
-                       );
 
-                    return orders;
+                var result = await GetPaginatedAsync(paginationParams, useCache, orderMap, cancellationToken: cancellationToken, includeDTOProperties: includeProperties);
+                //if (result.IsSuccess)
+                //{
+                //    List<OrderDto> orders = result.Match(
+                //       Succ: orders => orders.ToList(),
+                //       Fail: ex => new List<OrderDto>()
+                //       );
 
-                }
-                else
-                {
-                    return result;
-                }
+                //    return orders;
+
+                //}
+                //else
+                //{
+                //    return result;
+                //}
+                return result;
             }
 
 

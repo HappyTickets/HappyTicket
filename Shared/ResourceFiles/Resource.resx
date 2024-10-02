@@ -989,4 +989,16 @@ For any questions or concerns regarding this Agreement, please contact [Customer
   <data name="MyOrders" xml:space="preserve">
     <value>My Orders</value>
   </data>
+  <data name="CreatedDate" xml:space="preserve">
+    <value>Created Date</value>
+  </data>
+  <data name="ModifiedBy" xml:space="preserve">
+    <value>Modified By</value>
+  </data>
+  <data name="PaymentStatus" xml:space="preserve">
+    <value>Payment Status</value>
+  </data>
+  <data name="PaymentStatusString" xml:space="preserve">
+    <value>Payment Status</value>
+  </data>
 </root>

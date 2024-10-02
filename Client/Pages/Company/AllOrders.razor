@@ -12,6 +12,11 @@
         <MudTh><MudTableSortLabel SortLabel="Email" T="OrderDto">@Resource.UserEmail</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="PhoneNumber" T="OrderDto">@Resource.PhoneNumber</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="TotalAmount" T="OrderDto">@Resource.TotalPaid</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="PaymentStatus" T="OrderDto">@Resource.PaymentStatusString</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="CreatedDate" T="OrderDto">@Resource.CreatedDate</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="ModifiedBy" T="OrderDto">@Resource.ModifiedBy</MudTableSortLabel></MudTh>
+       
+        
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Id">@(++Counter)</MudTd>
@@ -19,6 +24,20 @@
         <MudTd DataLabel="Email">@context.User.Email</MudTd>
         <MudTd DataLabel="Phone Number">@context.User.PhoneNumber</MudTd>
         <MudTd DataLabel="Total Amount">@($"{context.TotalAmount} {Resource.Sar}")</MudTd>
+        <MudTd DataLabel="Payment Status">@context.PaymentStatusString</MudTd>
+        <MudTd DataLabel="Created Date">@context.CreatedDate</MudTd>
+        <MudTd DataLabel="Modified By">
+            @if (context.ModifiedBy != null)
+            {
+                @context.ModifiedBy
+            }
+            else
+            {
+                <i>Not Modified</i>
+            }
+        </MudTd>
+        
+        
     </RowTemplate>
     <NoRecordsContent>
         <MudText>@Resource.NoRecordsFound</MudText>

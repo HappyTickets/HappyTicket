@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
-using MudBlazor;
-using Client.Services.Interfaces;
+﻿using Client.Services.Interfaces;
 using LanguageExt;
+using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using Shared.Common.General;
 using Shared.DTOs;
 

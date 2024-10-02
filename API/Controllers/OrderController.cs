@@ -103,7 +103,7 @@ namespace API.Controllers
             try
             {
 
-                var result = await _orderService.GetPaginatedAsync(paginationParams, useCache, null, cancellationToken);
+                var result = await _orderService.GetPaginatedOrdersAsync(paginationParams, useCache, null, cancellationToken);
                 return ReturnListResult(result);
 
             }

@@ -11,7 +11,7 @@ namespace Shared.DTOs
         public decimal TotalAmount { get; set; }
         public int? PaymentStatus { get; set; }
         public string? PaymentOrderRef { get; set; }
-        public string? PaymentUrl { get; set; }
+        public string? PaymentStatusString { get; set; }
         public DateTime CreatedDate { get; set; }
         public Guid? ModifiedBy { get; set; }
         public ICollection<CartItemDto> CartItems { get; set; } = [];

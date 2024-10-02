@@ -940,4 +940,13 @@
   <data name="MyOrders" xml:space="preserve">
     <value>طلباتي</value>
   </data>
+  <data name="CreatedDate" xml:space="preserve">
+    <value>تاريخ الانشاء</value>
+  </data>
+  <data name="ModifiedBy" xml:space="preserve">
+    <value>تم التعديل بواسطة</value>
+  </data>
+  <data name="PaymentStatus" xml:space="preserve">
+    <value>حالة الدفع</value>
+  </data>
 </root>
