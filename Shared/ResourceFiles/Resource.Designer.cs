@@ -433,6 +433,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Currently, there’s no description for this team. Please add relevant details to enhance user experience..
+        /// </summary>
+        public static string Description_Not_Exists {
+            get {
+                return ResourceManager.GetString("Description_Not_Exists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to View Details.
         /// </summary>
         public static string Details_View {
@@ -1040,6 +1049,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LocationUrl.
+        /// </summary>
+        public static string LocationUrl {
+            get {
+                return ResourceManager.GetString("LocationUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
         public static string Login {
@@ -1247,6 +1265,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max size 10MB.
+        /// </summary>
+        public static string Max_size_10MB {
+            get {
+                return ResourceManager.GetString("Max_size_10MB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Message.
         /// </summary>
         public static string Message {
@@ -1351,6 +1378,15 @@ namespace Shared.ResourceFiles {
         public static string NoRecordsFound {
             get {
                 return ResourceManager.GetString("NoRecordsFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Oops! We couldn’t find any data for this page. It may not be available or may have been removed. Please check back later or try a different section of the site!.
+        /// </summary>
+        public static string Not_Found {
+            get {
+                return ResourceManager.GetString("Not_Found", resourceCulture);
             }
         }
         
@@ -1553,6 +1589,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Photo.
+        /// </summary>
+        public static string Photo {
+            get {
+                return ResourceManager.GetString("Photo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Price.
         /// </summary>
         public static string Price {
@@ -1742,6 +1787,69 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create Stadium.
+        /// </summary>
+        public static string Stadium_Create {
+            get {
+                return ResourceManager.GetString("Stadium_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stadium has been created successfully.
+        /// </summary>
+        public static string Stadium_Created {
+            get {
+                return ResourceManager.GetString("Stadium_Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stadium has been deleted successfully.
+        /// </summary>
+        public static string Stadium_Deleted_Successfully {
+            get {
+                return ResourceManager.GetString("Stadium_Deleted_Successfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to delete stadium.
+        /// </summary>
+        public static string Stadium_Deletion_Failure {
+            get {
+                return ResourceManager.GetString("Stadium_Deletion_Failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stadium Details.
+        /// </summary>
+        public static string Stadium_Details {
+            get {
+                return ResourceManager.GetString("Stadium_Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Stadium.
+        /// </summary>
+        public static string Stadium_Update {
+            get {
+                return ResourceManager.GetString("Stadium_Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stadium has been updated successfully.
+        /// </summary>
+        public static string Stadium_Updated {
+            get {
+                return ResourceManager.GetString("Stadium_Updated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stadium Logo.
         /// </summary>
         public static string StadiumLogo {
@@ -1756,6 +1864,15 @@ namespace Shared.ResourceFiles {
         public static string StadiumName {
             get {
                 return ResourceManager.GetString("StadiumName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Stadiums.
+        /// </summary>
+        public static string Stadiums_All {
+            get {
+                return ResourceManager.GetString("Stadiums_All", resourceCulture);
             }
         }
         
@@ -1832,6 +1949,24 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Team Details.
+        /// </summary>
+        public static string Team_Details {
+            get {
+                return ResourceManager.GetString("Team_Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to load team data.
+        /// </summary>
+        public static string Team_Load_Failure {
+            get {
+                return ResourceManager.GetString("Team_Load_Failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Team.
         /// </summary>
         public static string Team_Select {
@@ -1841,7 +1976,7 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to تعديل فريق.
+        ///   Looks up a localized string similar to Team Update.
         /// </summary>
         public static string Team_Update {
             get {

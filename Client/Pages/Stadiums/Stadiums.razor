@@ -1,0 +1,111 @@
+﻿@page "/stadiums"
+
+@inject ICustomSnackbarProvider Snackbar
+@inject BIStadiumService StadiumService
+@inject NavigationManager NavigationManager
+@inject IPopUpService PopUpService
+@* @attribute [Authorize(Policy = "IsAdmin")] *@
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+<PageTitle>@Resource.Stadiums_All</PageTitle>
+
+<MudTable Items="@StadiumsList" Loading="IsLoading" Class="w-100">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">@Resource.Stadiums_All</MudText>
+        <MudSpacer />
+        <LoadingButton Variant="Variant.Filled" Color="Color.Primary" Href="/stadiums/create">@Resource.Stadium_Create</LoadingButton>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>@Resource.Photo</MudTh>
+        <MudTh>@Resource.Name</MudTh>
+        <MudTh>@Resource.Location</MudTh>
+        <MudTh>@Resource.Description</MudTh>
+        <MudTh>@Resource.TheActions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd Class="justify-content-center">
+            <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), context?.Photo))" class="stadium-logo" />
+        </MudTd>
+        <MudTd Class="justify-content-center text-nowrap">@context.Name</MudTd>
+        <MudTd Class="justify-content-center text-nowrap">
+            <MudLink Href="@context.LocationUrl">@context.Location </MudLink>
+        </MudTd>       
+        <MudTd Class="justify-content-center">@context.Description </MudTd>
+        <MudTd Class="justify-content-center">
+            <div class="d-flex gap-2 flex-nowrap">
+                <MudButton OnClick="@(()=> NavigationManager.NavigateTo($"/stadiums/update/{@context.Id}"))" Color="Color.Primary" Variant="Variant.Filled">@Resource.Edit</MudButton>
+                <MudButton OnClick="@(()=> NavigationManager.NavigateTo($"/stadiums/details/{@context.Id}"))" Color="Color.Secondary" Variant="Variant.Filled" Class="text-nowrap">@Resource.Details_View</MudButton>
+                <MudButton OnClick="@(() => DeleteStadiumAsync(context))" Color="Color.Error" Variant="Variant.Filled">@Resource.Delete</MudButton>
+            </div>
+        </MudTd>
+    </RowTemplate>
+    <LoadingContent>
+        <MudText>@Resource.Loading...</MudText>
+    </LoadingContent>
+    <NoRecordsContent>
+        <MudText>@Resource.NoRecordsFound</MudText>
+    </NoRecordsContent>
+</MudTable>
+
+
+@code {
+    private List<StadiumDto> StadiumsList = new();
+    private bool IsLoading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsLoading = true;
+
+        await LoadStadiumsAsync();
+
+        IsLoading = false;
+    }
+
+    private async Task LoadStadiumsAsync()
+    {
+        var result = await StadiumService.GetStadiumsAsync(false);
+        result.Match(
+            response =>
+            {
+                if (response.Data != null)
+                    StadiumsList = response.Data.ToList();
+
+                return Unit.Default;
+            },
+            ex =>
+            {
+                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                return Unit.Default;
+            }
+        );
+    }
+
+    private async Task DeleteStadiumAsync(StadiumDto stadium)
+    {
+        if (await PopUpService.ConfirmDeletionAsync())
+        {
+            StadiumsList.Remove(stadium);
+
+            var result = await StadiumService.HardDeleteStadiumByIdAsync(stadium.Id);
+            result.Match(
+                response =>
+                {
+                    if (response.IsSuccess)
+                        Snackbar.Show(Resource.Stadium_Deleted_Successfully, Severity.Success);
+                    else
+                    {
+                        StadiumsList.Add(stadium);
+                        Snackbar.Show(Resource.Stadium_Deletion_Failure, Severity.Error);
+                        Snackbar.Show(response.Title, Severity.Error);
+                    }
+                    return Unit.Default;
+                },
+                ex =>
+                {
+                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                    return Unit.Default;
+                }
+            );
+        }
+    }
+}

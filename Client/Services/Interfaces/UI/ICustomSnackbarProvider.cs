@@ -1,7 +1,6 @@
-﻿
-using MudBlazor;
+﻿using MudBlazor;
 
-namespace Client.Services.Interfaces
+namespace Client.Services.Interfaces.UI
 {
     public interface ICustomSnackbarProvider
     {

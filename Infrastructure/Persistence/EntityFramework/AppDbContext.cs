@@ -19,7 +19,6 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
 
     protected IHttpContextAccessor? HttpContextAccessor { get; }
 
-    public AppDbContext() : base() { }
     [ActivatorUtilitiesConstructor]
     public AppDbContext(DbContextOptions<AppDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
     {
@@ -27,6 +26,9 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
         var httpContext = HttpContextAccessor?.HttpContext;
         _currentUserClaims = httpContext?.User.Claims ?? new List<Claim>();
     }
+
+    public AppDbContext() : base() { }
+
 
     public void SwitchSoftDeleteFilter(bool disabled = true) => _isSoftDeleteFilterDisabled = disabled;
 

@@ -1,10 +1,14 @@
-﻿<MudDialog>
+﻿<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+<MudDialog>
     <DialogContent>
-        <MudText>@ContentText</MudText>
+        <div class="pt-3">
+            @ContentText
+        </div>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">@Resource.Cancel</MudButton>
-        <MudButton Color="@Color" Variant="Variant.Filled" OnClick="Submit">@ButtonText</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">@ButtonText</MudButton>
     </DialogActions>
 </MudDialog>
 
