@@ -424,20 +424,20 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Descritpion.
-        /// </summary>
-        public static string Description {
-            get {
-                return ResourceManager.GetString("Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Delete_Tickets {
             get {
                 return ResourceManager.GetString("Delete_Tickets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Descritpion.
+        /// </summary>
+        public static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
             }
         }
         

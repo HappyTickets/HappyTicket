@@ -846,6 +846,10 @@
   <data name="Login_Success" xml:space="preserve">
     <value>لقد قمت بتسجيل الدخول بنجاح!</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Invoice_Email_Style" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="footeraboutus" xml:space="preserve">
     <value>من نحن</value>
   </data>
@@ -970,7 +974,6 @@
   <data name="Team_Updated" xml:space="preserve">
     <value>تم تعديل الفريق بنجاح</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Team_Update" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>

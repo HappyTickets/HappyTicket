@@ -9,9 +9,12 @@ using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using Shared.DTOs;
 using Shared.DTOs.MatchDtos;
+using Shared.Extensions;
 using Shared.ResourceFiles;
 using System.Linq.Expressions;
+using ZXing;
 
 namespace Application.Implementations
 {
@@ -133,26 +136,31 @@ namespace Application.Implementations
             }
         }
 
-        public async Task<Result<bool>> DeleteMatchByIdAsync(Guid id, bool useCache, CancellationToken cancellationToken = default)
+        public async Task<Result<MatchDto>> DeleteMatchWithNotTicketsByIdAsync(Guid id, bool useCache, CancellationToken cancellationToken = default)
         {
-          
+
             var result = await GetByIdAsync(id, useCache, cancellationToken: cancellationToken);
-
-            if (result.IsSuccess)
+           
+            var match = result.Match(
+                Succ: matchDto => matchDto,
+                Fail: ex => null
+            );
+            if((!match.Tickets.Any()) && !(DateTime.UtcNow >= match.EventDate))
+                return new(new Exception(Resource.Error_Occurred));
+            else
             {
-                var match = result.Match(
-                    Succ: matchDto => matchDto,
-                    Fail: ex => null
+                var response = await _unitOfWork.Repository<Match>().HardDeleteByIdAsync(id);
+                return await response.Match(
+                    async ma =>
+                    {
+                        await _unitOfWork.SaveChangesAsync();
+                        return _mapper.Map<MatchDto>(ma).ToResult();
+                    },
+                    async ex => await ex.ToResultAsync<MatchDto>()
                     );
-
-                if(match.Tickets.Any() && (DateTime.UtcNow < match.EventDate))
-                {
-                    await _unitOfWork.Repository<Match>().HardDeleteByIdAsync(id);
-                    return true;
-                }
             }
-
-            return false;
+           
         }
+        
     }
 }

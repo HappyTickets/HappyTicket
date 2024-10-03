@@ -2,6 +2,7 @@
 using LanguageExt.Common;
 using Shared.Common;
 using Shared.DTOs.MatchDtos;
+using Shared.Extensions;
 
 namespace Client.Services.Implementation
 {
@@ -45,9 +46,10 @@ namespace Client.Services.Implementation
             return await _httpClientHelper.PutBaseAsync<MatchDto, BaseResponse<MatchDto>>("api/Match/UpdateMatch", match);
         }
 
-        public async Task<bool> DeleteMatchAsync(Guid Id,CancellationToken cancellationToken = default)
+        public async Task<Result<BaseResponse<MatchDto>>> DeleteMatchWithNoTicketsAsync(Guid id,CancellationToken cancellationToken = default)
         {
-            return await _httpClientHelper.DeleteAsync(Id);
+            var result = await _httpClientHelper.GetBaseAsync<BaseResponse<MatchDto>>($"api/Match/DeleteMatchWithNoTickets/{id}");
+            return result;
         }
 
         //public async Task<ApiResponse> SoftDeleteMatchByIdAsync(Guid id, CancellationToken cancellationToken = default)

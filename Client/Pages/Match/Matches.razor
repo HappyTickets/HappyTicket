@@ -3,6 +3,7 @@
 @inject ICustomSnackbarProvider Snackbar
 @inject BIMatchService MatchService
 @inject NavigationManager NavigationManager
+@inject IDialogService DialogService
 @attribute [Authorize(Policy = "IsAdmin")]
 
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
@@ -57,23 +58,20 @@
                         }
                         else
                         {
-                            <MudText Color="Color.Success">@Resource.Ongoing</MudText>
+                            <MudTe Color="Color.Success">@Resource.Ongoing</MudTe xt>
                         }
                     </MudTd>
                     <MudTd>
                         <MudButton OnClick="@(() => NavigateTo("edit", context.Id))" Color="Color.Primary" Variant="Variant.Filled">@Resource.Edit @Resource.TheMatch</MudButton>
                         <MudButton OnClick="@(() => NavigateTo("edit-ticket-prices", context.Id))" Color="Color.Secondary" Variant="Variant.Filled">@Resource.Edit @Resource.Tickets</MudButton>
                         <MudButton OnClick="@(() => NavigateTo("ticket-prices", context.Id))" Color="Color.Tertiary" Variant="Variant.Filled">@Resource.TicketPrices</MudButton>
-                        <MudButton OnClick="@(() => Delete_Click(context))" Color="Color.Error" Variant="Variant.Filled">@Resource.Delete_Tickets</MudButton>
+                        <MudButton OnClick="@(() => OpenDialog(context))" Color="Color.Error" Variant="Variant.Filled">@Resource.Delete_Tickets</MudButton>
                      </MudTd>
                 </RowTemplate>
             </MudTable>
         }
     </MudCardContent>
 </MudCard>
-
-<p>@DeleteResult</p>
-<ConfirmDelete @ref="DeleteConfirmation"></ConfirmDelete>
 
 @code {
     private List<MatchDto>? matches;
@@ -116,24 +114,20 @@
         }
     }
 
-    public async Task Delete_Click(MatchDto match)
-    {
-        var result = await MatchService.DeleteMatchAsync(match.Id);
-
-        if (!result)
-        {
-            DeleteResult = "Match not allowed to be deleted";
-        }
-        else
-        {
-            DeleteResult = "Match is Deleted";
-            matches.Remove(match);
-        }
-        //  DeleteConfirmation.Show();
-    }
 
     private void NavigateTo(string action, Guid matchId)
     {
         NavigationManager.NavigateTo($"/match/{action}/{matchId}");
+    }
+
+    void OpenDialog(MatchDto match)
+    {
+        Guid guidId = match.Id;
+        var parameters = new DialogParameters();
+        parameters.Add("Id", guidId);  // Passing the ID to the dialog
+
+        DialogOptions options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Small };
+        DialogService.Show<ConfirmDelete>("Delete Confirmation", parameters, options);
+        matches.Remove(match);
     }
 }

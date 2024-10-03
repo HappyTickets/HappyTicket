@@ -12,7 +12,6 @@ namespace Client.Services.Interfaces
         Task<ApiResponse> GetAsync<T>(string Url, bool useAuth = true);
         Task<ApiResponse> PostAsync(object T, string Url, bool useAuth = true);
         Task<ApiResponse> PutAsync(object T, string Url, bool useAuth = true);
-        Task<bool> DeleteAsync(Guid Id);
 
         //Task<BaseResponse<Tout>> GetBaseAsync<Tout>(string url, Dictionary<string, string> queryParams, bool useAuth = true) where Tout : class;
         Task<Result<Tout>> GetBaseAsync<Tout>(string url, IDictionary<string, string>? queryParams = null, bool useAuth = true);

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Localization;
 using Shared.DTOs.MatchDtos;
 using Shared.ResourceFiles;
 using System.Net;
+using System.Threading;
 
 namespace API.Controllers;
 
@@ -164,22 +165,23 @@ public class MatchController : BaseController
         }
     }
 
-    [HttpDelete]
-    [Route("DeleteMatch")]
+    [HttpGet]
+    [Route("DeleteMatchWithNoTickets/{id:Guid}")]
     public async Task<ActionResult> DeleteMatchById(Guid id, CancellationToken cancellationToken = default)
     {
-
         try
         {
-            var result = await _matchService.DeleteMatchByIdAsync(id, cancellationToken: cancellationToken);
-
-            if (result == true)
-                return StatusCode((int)HttpStatusCode.OK, true);
-            return StatusCode((int)HttpStatusCode.BadRequest, false);
-        }catch(Exception ex)
-        {
-
+            if (ModelState.IsValid)
+            {
+                return ReturnResult(await _matchService.DeleteMatchWithNotTicketsByIdAsync(id, cancellationToken: cancellationToken));
+            }
+            return BadRequest(ModelState);
         }
-      
+        catch (Exception ex)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+        }
+
     }
+    
 }

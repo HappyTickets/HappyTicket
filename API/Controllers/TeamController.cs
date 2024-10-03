@@ -205,7 +205,7 @@ namespace API.Controllers
         }
         
         [HttpGet]
-        [Route("DeleteTeamWithNoMatches/{id:guid}")]
+        [Route("DeleteTeamWithNoMatches")]
         public async Task<ActionResult> DeleteTeamWithNoMatches(Guid id, CancellationToken cancellationToken = default)
         {
             try
