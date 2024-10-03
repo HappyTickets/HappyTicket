@@ -986,4 +986,7 @@
   <data name="Delete_Tickets" xml:space="preserve">
     <value>حذف التذكره</value>
   </data>
+  <data name="Match_Delete_Successfully" xml:space="preserve">
+    <value>تم حذف المباراة بنجاح</value>
+  </data>
 </root>

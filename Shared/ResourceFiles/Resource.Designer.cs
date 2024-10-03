@@ -1139,6 +1139,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Match has been deleted successfully.
+        /// </summary>
+        public static string Match_Delete_Successfully {
+            get {
+                return ResourceManager.GetString("Match_Delete_Successfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to load available matches.
         /// </summary>
         public static string Match_Load_Fail {

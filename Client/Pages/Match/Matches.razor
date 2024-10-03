@@ -65,7 +65,6 @@
                         <MudButton OnClick="@(() => NavigateTo("edit", context.Id))" Color="Color.Primary" Variant="Variant.Filled">@Resource.Edit @Resource.TheMatch</MudButton>
                         <MudButton OnClick="@(() => NavigateTo("edit-ticket-prices", context.Id))" Color="Color.Secondary" Variant="Variant.Filled">@Resource.Edit @Resource.Tickets</MudButton>
                         <MudButton OnClick="@(() => NavigateTo("ticket-prices", context.Id))" Color="Color.Tertiary" Variant="Variant.Filled">@Resource.TicketPrices</MudButton>
-                        <MudButton OnClick="@(() => OpenDialog(context))" Color="Color.Error" Variant="Variant.Filled">@Resource.Delete_Tickets</MudButton>
                      </MudTd>
                 </RowTemplate>
             </MudTable>
@@ -75,7 +74,6 @@
 
 @code {
     private List<MatchDto>? matches;
-    public ConfirmDelete DeleteConfirmation{ get; set; }
     private string DeleteResult{ get; set; }
     protected override async Task OnInitializedAsync()
     {
@@ -120,14 +118,47 @@
         NavigationManager.NavigateTo($"/match/{action}/{matchId}");
     }
 
-    void OpenDialog(MatchDto match)
+ private async Task DeleteAsync(MatchDto matchDto)
     {
-        Guid guidId = match.Id;
-        var parameters = new DialogParameters();
-        parameters.Add("Id", guidId);  // Passing the ID to the dialog
+        if (await ConfirmDeletion())
+        {
+            matches.Remove(matchDto);
 
-        DialogOptions options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Small };
-        DialogService.Show<ConfirmDelete>("Delete Confirmation", parameters, options);
-        matches.Remove(match);
+            var result = await MatchService.DeleteMatchWithNoTicketsAsync(matchDto.Id);
+            result.Match(
+                response =>
+                {
+                    if(response.IsSuccess)
+                        Snackbar.Show(Resource.Team_Deleted_Successfully, Severity.Success);
+                    else
+                    {
+                        matches.Add(matchDto);
+                        Snackbar.Show(Resource.Team_Deletion_Failure, Severity.Error);
+                        Snackbar.Show(response.Title, Severity.Error);
+                    }
+                    return Unit.Default;
+                },
+                ex =>
+                {
+                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                    return Unit.Default;
+                }
+            );
+        }
     }
+
+       private async Task<bool> ConfirmDeletion()
+    {
+        var parameters = new DialogParameters<AlertDialog>
+        {
+            { x => x.ContentText, Resource.Confirm_Deletion_Text },
+            { x => x.ButtonText, Resource.Delete },
+            { x => x.Color, Color.Error }
+        };
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        return !(await (await DialogService.ShowAsync<AlertDialog>(Resource.Delete, parameters, options)).Result).Canceled;
+    }
+
 }

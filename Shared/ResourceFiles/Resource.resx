@@ -1031,4 +1031,7 @@ For any questions or concerns regarding this Agreement, please contact [Customer
   <data name="Delete_Tickets" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="Match_Delete_Successfully" xml:space="preserve">
+    <value>Match has been deleted successfully</value>
+  </data>
 </root>
