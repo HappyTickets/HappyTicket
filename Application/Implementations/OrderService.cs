@@ -57,20 +57,7 @@ namespace Application.Implementations
                 };
 
                 var result = await GetPaginatedAsync(paginationParams, useCache, orderMap, cancellationToken: cancellationToken, includeDTOProperties: includeProperties);
-                //if (result.IsSuccess)
-                //{
-                //    List<OrderDto> orders = result.Match(
-                //       Succ: orders => orders.ToList(),
-                //       Fail: ex => new List<OrderDto>()
-                //       );
 
-                //    return orders;
-
-                //}
-                //else
-                //{
-                //    return result;
-                //}
                 return result;
             }
 
