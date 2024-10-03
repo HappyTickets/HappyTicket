@@ -7,7 +7,6 @@ using FluentValidation;
 using Humanizer;
 using LanguageExt;
 using LanguageExt.Common;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
@@ -215,7 +214,7 @@ public class BaseService<Tentity, Tdto> : IBaseService<Tentity, Tdto>
                 fail =>
                 {
                     return (fail is NotFoundException) ?
-                        new Result<IEnumerable<Tdto>>(new NotFoundException([new() { Title = Resource.NotFound, Message = Resource.NotFoundInDB_Message.ToString().Replace("{type}", _localizer[typeof(Tentity).Name.Pluralize()])  }])) :
+                        new Result<IEnumerable<Tdto>>(new NotFoundException([new() { Title = Resource.NotFound, Message = Resource.NotFoundInDB_Message.ToString().Replace("{type}", _localizer[typeof(Tentity).Name.Pluralize()]) }])) :
                             new(fail);
                 }
             );
@@ -330,9 +329,9 @@ public class BaseService<Tentity, Tdto> : IBaseService<Tentity, Tdto>
 
             var createdEntitiesResult = await _unitOfWork.Repository<Tentity>().CreateRangeAsync(dtos.Select(dto => dtoToEntityMapper != null ? dtoToEntityMapper(dto) : _mapper.Map<Tentity>(dto)), cancellationToken);
 
-                var result = await createdEntitiesResult.Match(
-                async createdEntitiesSucc => autoSave ? (await _unitOfWork.SaveChangesAsync(cancellationToken)).Map(saveSucc => createdEntitiesSucc) : createdEntitiesSucc,
-                async createdEntitiesFail => await createdEntitiesFail.ToResultAsync<Unit>(cancellationToken));
+            var result = await createdEntitiesResult.Match(
+            async createdEntitiesSucc => autoSave ? (await _unitOfWork.SaveChangesAsync(cancellationToken)).Map(saveSucc => createdEntitiesSucc) : createdEntitiesSucc,
+            async createdEntitiesFail => await createdEntitiesFail.ToResultAsync<Unit>(cancellationToken));
             return result;
         }
         catch (Exception ex)

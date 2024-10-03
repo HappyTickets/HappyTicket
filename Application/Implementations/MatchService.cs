@@ -62,8 +62,8 @@ namespace Application.Implementations
         {
             Expression<Func<IQueryable<MatchDto>, IIncludableQueryable<MatchDto, object>>>[] includeProperties =
             {
-        x => x.Include(m => m.TeamA).Include(m => m.TeamB).Include(m => m.Stadium).Include(m => m.Tickets)
-    };
+                 x => x.Include(m => m.TeamA).Include(m => m.TeamB).Include(m => m.Stadium).Include(m => m.Tickets)
+            };
 
             Expression<Func<MatchDto, bool>> matchFilter = m => m.Tickets.Any(t => t.DisplayForSale == true);
 
