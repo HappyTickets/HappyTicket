@@ -1,0 +1,118 @@
+﻿@page "/stadiums/details/{id:guid}"
+@inject ICustomSnackbarProvider Snackbar
+@inject BIStadiumService StadiumService
+@inject NavigationManager NavigationManager
+@inject IPopUpService PopUpService
+@* @attribute [Authorize(Policy = "IsAdmin")] *@
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+<PageTitle>@Resource.Stadium_Details</PageTitle>
+
+@if (IsLoading)
+{
+    <div class="d-flex justify-content-center mt-100">
+        <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
+    </div>
+}
+
+@if (!IsLoading && Stadium == null)
+{
+    <NotFound />
+}
+
+@if (Stadium != null)
+{
+    <MudCard>
+        <MudCardContent>
+            <div class="row g-4">
+                <div class="col-12 col-md-4">
+                    <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), Stadium.Photo))" alt="Stadium Logo" class="img-fluid w-100 rounded-3">
+                </div>
+                <div class="col-12 col-md">
+                    <div class="d-flex flex-column gap-2 justify-content-between h-100">
+                        <div>
+                            @if(Stadium.Location != null) {
+                                <h6 class="mb-3 mt-4">
+                                    <MudLink Href="@Stadium.LocationUrl">
+                                        <MudIcon Icon="@Icons.Material.Filled.LocationOn" Color="Color.Warning"></MudIcon>
+                                        @Stadium.Location
+                                    </MudLink>
+                                </h6>
+                            }
+                            <h1 class="mb-4">@Stadium.Name</h1>
+                            <p>@Stadium.Description</p>
+                        </div>
+                        <div class="d-flex gap-2 justify-content-end">
+                            <LoadingButton Variant="Variant.Filled" OnClick="DeleteAsync" Color="Color.Error">@Resource.Delete</LoadingButton>
+                            <LoadingButton Variant="Variant.Filled" OnClick="@(()=>NavigationManager.NavigateTo($"/stadiums/update/{Stadium.Id}"))" Color="Color.Primary">@Resource.Edit</LoadingButton>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </MudCardContent>
+    </MudCard>
+}
+
+
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+
+    private StadiumDto Stadium;
+    private bool IsLoading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsLoading = true;
+
+        await LoadStadiumAsync();
+
+        IsLoading = false;
+    }
+
+    private async Task LoadStadiumAsync()
+    {
+        var result = await StadiumService.GetStadiumByIdAsync(Id, false);
+        result.Match(
+            response =>
+            {
+                if (response.IsSuccess)
+                    Stadium = response.Data!;
+
+                return Unit.Default;
+            },
+            ex => Unit.Default);
+    }
+
+    private async Task DeleteAsync()
+    {
+        if (await PopUpService.ConfirmDeletionAsync())
+        {
+            var result = await StadiumService.HardDeleteStadiumByIdAsync(Stadium.Id);
+            result.Match(
+                response =>
+                {
+                    if (response.IsSuccess)
+                    {
+                        Snackbar.Show(Resource.Stadium_Deleted_Successfully, Severity.Success);
+                        NavigationManager.NavigateTo("/stadiums");
+                    }
+                    else
+                    {
+                        Snackbar.Show(Resource.Stadium_Deletion_Failure, Severity.Error);
+                        Snackbar.Show(response.Title, Severity.Error);
+                    }
+                    return Unit.Default;
+                },
+                ex =>
+                {
+                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                    return Unit.Default;
+                }
+            );
+        }
+    }
+
+}

@@ -1020,12 +1020,57 @@ For any questions or concerns regarding this Agreement, please contact [Customer
     <value>Team has been updated successfully</value>
   </data>
   <data name="Team_Update" xml:space="preserve">
-    <value>تعديل فريق</value>
+    <value>Team Update</value>
   </data>
   <data name="File_Upoad_Error" xml:space="preserve">
     <value>Failed to upload file</value>
   </data>
   <data name="File_Required" xml:space="preserve">
     <value>File field is required</value>
+  </data>
+  <data name="Team_Load_Failure" xml:space="preserve">
+    <value>Failed to load team data</value>
+  </data>
+  <data name="Team_Details" xml:space="preserve">
+    <value>Team Details</value>
+  </data>
+  <data name="Description_Not_Exists" xml:space="preserve">
+    <value>Currently, there’s no description for this team. Please add relevant details to enhance user experience.</value>
+  </data>
+  <data name="Not_Found" xml:space="preserve">
+    <value>Oops! We couldn’t find any data for this page. It may not be available or may have been removed. Please check back later or try a different section of the site!</value>
+  </data>
+  <data name="Max_size_10MB" xml:space="preserve">
+    <value>Max size 10MB</value>
+  </data>
+  <data name="Stadium_Deletion_Failure" xml:space="preserve">
+    <value>Failed to delete stadium</value>
+  </data>
+  <data name="Stadium_Deleted_Successfully" xml:space="preserve">
+    <value>Stadium has been deleted successfully</value>
+  </data>
+  <data name="Stadiums_All" xml:space="preserve">
+    <value>All Stadiums</value>
+  </data>
+  <data name="Photo" xml:space="preserve">
+    <value>Photo</value>
+  </data>
+  <data name="Stadium_Create" xml:space="preserve">
+    <value>Create Stadium</value>
+  </data>
+  <data name="Stadium_Update" xml:space="preserve">
+    <value>Update Stadium</value>
+  </data>
+  <data name="Stadium_Created" xml:space="preserve">
+    <value>Stadium has been created successfully</value>
+  </data>
+  <data name="Stadium_Updated" xml:space="preserve">
+    <value>Stadium has been updated successfully</value>
+  </data>
+  <data name="LocationUrl" xml:space="preserve">
+    <value>LocationUrl</value>
+  </data>
+  <data name="Stadium_Details" xml:space="preserve">
+    <value>Stadium Details</value>
   </data>
 </root>

@@ -3,16 +3,16 @@ using Blazored.LocalStorage;
 using Client;
 using Client.Services.Helper;
 using Client.Services.Implementation;
+using Client.Services.Implementation.UI;
 using Client.Services.Interfaces;
+using Client.Services.Interfaces.UI;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using MudBlazor;
 using MudBlazor.Services;
 using Shared.Common.General;
 using Shared.Common.Interfaces;
-using System.Net.Http.Json;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -59,6 +59,7 @@ builder.Services.AddScoped<IHttpClientHelper, HttpClientHelper>();
 
 builder.Services.AddScoped<IIdentityService, IdentityService>();
 builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IPopUpService, PopUpService>();
 
 builder.Services.AddMudServices();
 

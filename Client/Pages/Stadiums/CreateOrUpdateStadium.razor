@@ -1,66 +1,68 @@
-﻿@page "/teams/create"
-@page "/teams/update/{id:guid}"
+﻿@page "/stadiums/create"
+@page "/stadiums/update/{id:guid}"
 
 @inject ICustomSnackbarProvider Snackbar
-@inject BITeamService TeamService
+@inject BIStadiumService StadiumService
 @inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 @inject IFileService FileService
-@attribute [Authorize(Policy = "IsAdmin")]
+@* @attribute [Authorize(Policy = "IsAdmin")] *@
 
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
 <PageTitle>
-    @(IsUpdate() ? Resource.Team_Update : Resource.Team_Create)
+    @(IsUpdate() ? Resource.Stadium_Update : Resource.Stadium_Create)
 </PageTitle>
 
-<MudPaper Class="mt-2">
-    <MudGrid Class="pa-4 gap-2">
-        <MudItem xs="12">
-            <MudText Typo="Typo.h5" Style="font-weight:bold;">@(IsUpdate() ? Resource.Team_Update : Resource.Team_Create)</MudText>
-        </MudItem>
-        <MudItem xs="12">
-            <MudGrid>
-                <MudItem xs="12">
-                    <MudTextField @bind-Value=Team.Name For="()=>Team.Name" Label=@Resource.Name Variant="Variant.Text" Required />
-                </MudItem>
-                <MudItem xs="12">
-                    <MudTextField @bind-Value=Team.Description For="()=>Team.Description" Label=@Resource.Description Variant="Variant.Text" />
-                </MudItem>
-                <MudItem xs="12">
-                    <ImageUpload Label=@Resource.TeamLogo IsMultipleFiles="false" FilesChanged="OnFileChanged" Required="true" />
-                </MudItem>
-                <MudItem>
-                        <LoadingButton OnClick="HandleValidSubmit" Color="Color.Primary" Variant="Variant.Filled">@(IsUpdate() ? Resource.Team_Update : Resource.Team_Create)</LoadingButton>
-                </MudItem>
-            </MudGrid>
-        </MudItem>
-    </MudGrid>
-</MudPaper>
+<MudCard>
+    <MudCardContent>
+        <h1 class="fs-2 mb-5">@(IsUpdate() ? Resource.Stadium_Update : Resource.Stadium_Create)</h1>
+        <EditForm Model="Stadium">
+            <div class="mb-5">
+                <MudTextField @bind-Value=Stadium.Name For="()=>Stadium.Name" Label=@Resource.Name Variant="Variant.Text" Required />
+            </div>
+            <div class="mb-5">
+                <MudTextField @bind-Value=Stadium.Location For="()=>Stadium.Location" Label=@Resource.Location Variant="Variant.Text" />
+            </div>
+            <div class="mb-5">
+                <MudTextField @bind-Value=Stadium.LocationUrl For="()=>Stadium.Location" Label=@Resource.LocationUrl Variant="Variant.Text" />
+            </div>
+            <div class="mb-5">
+                <MudTextField @bind-Value=Stadium.Description For="()=>Stadium.Description" Label=@Resource.Description Variant="Variant.Text" />
+            </div>
+            <div class="mb-5 py-2">
+                <ImageUpload Label=@Resource.Logo IsMultipleFiles="false" FilesChanged="OnFileChanged" Required="true" />
+            </div>
+            <div class="d-flex justify-content-end">
+                <LoadingButton OnClick="HandleValidSubmit" Color="Color.Primary" Variant="Variant.Filled">@(IsUpdate() ? Resource.Stadium_Update : Resource.Stadium_Create)</LoadingButton>
+            </div>
+        </EditForm>
+    </MudCardContent>
+</MudCard>
 
 
 @code {
     [Parameter]
     public Guid? Id { get; set; }
 
-    private TeamDto Team = new();
+    private StadiumDto Stadium = new();
     KeyValuePair<string, string>? Logo = null;
 
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadTeamAsync();
+        await LoadStadiumAsync();
     }
 
-    private async Task LoadTeamAsync()
+    private async Task LoadStadiumAsync()
     {
-        if(IsUpdate())
+        if (IsUpdate())
         {
-            var result = await TeamService.GetTeamByIdAsync(Id!.Value, false);
+            var result = await StadiumService.GetStadiumByIdAsync(Id!.Value, false);
             result.Match(
                 response =>
                 {
                     if (response.Data != null)
-                        Team = response.Data;
+                        Stadium = response.Data;
 
                     return Unit.Default;
                 }
@@ -76,18 +78,18 @@
 
     private async Task HandleValidSubmit()
     {
-        if (Team.Name == null)
+        if (Stadium.Name == null)
             return;
 
         if (Logo != null)
             await UploadFileAsync();
 
-        if (Team.Logo != null)
+        if (Stadium.Photo != null)
         {
             if (IsUpdate())
-                await UpdateTeamAsync();
+                await UpdateStadiumAsync();
             else
-                await CreateTeamAsync();
+                await CreateStadiumAsync();
         }
         else
             Snackbar.Show(Resource.File_Required, Severity.Error);
@@ -97,7 +99,7 @@
     {
         var result = await FileService.UploadFileAsync(new()
             {
-                Path = $"/Images/Teams/{Team.Name}/{Logo?.Key}".Replace(" ", "_"),
+                Path = $"/Images/Stadiums/{Stadium.Name}/{Logo?.Key}".Replace(" ", "_"),
                 Base64EncodedString = Logo?.Value
             });
 
@@ -105,7 +107,7 @@
             response =>
             {
                 if (response.IsSuccess)
-                    Team.Logo = response.Data;
+                    Stadium.Photo = response.Data;
                 else
                     Snackbar.Show(Resource.File_Upoad_Error, Severity.Error);
 
@@ -119,16 +121,16 @@
         );
     }
 
-    private async Task CreateTeamAsync()
+    private async Task CreateStadiumAsync()
     {
-        var result = await TeamService.CreateTeamAsync(Team);
+        var result = await StadiumService.CreateStadiumAsync(Stadium);
         result.Match(
             response =>
             {
                 if (response.IsSuccess)
                 {
-                    Snackbar.Show(Resource.Team_Created, Severity.Success);
-                    NavigationManager.NavigateTo("/teams");
+                    Snackbar.Show(Resource.Stadium_Created, Severity.Success);
+                    NavigationManager.NavigateTo("/stadiums");
                 }
                 else
                 {
@@ -143,22 +145,22 @@
             },
             ex =>
             {
-                Snackbar.Show(Resource.Team_Updated, Severity.Error);
+                Snackbar.Show(Resource.Stadium_Updated, Severity.Error);
                 return Unit.Default;
             }
         );
     }
 
-    private async Task UpdateTeamAsync()
+    private async Task UpdateStadiumAsync()
     {
-        var result = await TeamService.UpdateTeamAsync(Team);
+        var result = await StadiumService.UpdateStadiumAsync(Stadium);
         result.Match(
             response =>
             {
                 if (response.IsSuccess)
                 {
-                    Snackbar.Show(Resource.Error_Occurred, Severity.Success);
-                    NavigationManager.NavigateTo("/teams");
+                    Snackbar.Show(Resource.Stadium_Updated, Severity.Success);
+                    NavigationManager.NavigateTo("/stadiums");
                 }
                 else
                 {

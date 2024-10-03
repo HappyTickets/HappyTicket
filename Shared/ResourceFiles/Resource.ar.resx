@@ -313,7 +313,7 @@
     <value>فشل استرجاع التذاكر</value>
   </data>
   <data name="Location" xml:space="preserve">
-    <value>موقع</value>
+    <value>الموقع</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>تسجيل دخول</value>
@@ -325,7 +325,7 @@
     <value>إعادة التوجيه إلى صفحة تسجيل الدخول...</value>
   </data>
   <data name="Logo" xml:space="preserve">
-    <value>شعار</value>
+    <value>الشعار</value>
   </data>
   <data name="Logout" xml:space="preserve">
     <value>تسجيل خروج</value>
@@ -361,7 +361,7 @@
     <value>رسالة</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>اسم</value>
+    <value>الاسم</value>
   </data>
   <data name="NewMatch" xml:space="preserve">
     <value>مباراة جديدة</value>
@@ -970,14 +970,58 @@
   <data name="Team_Updated" xml:space="preserve">
     <value>تم تعديل الفريق بنجاح</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Team_Update" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Team_Update" xml:space="preserve">
+    <value>تعديل الفريق</value>
   </data>
   <data name="File_Upoad_Error" xml:space="preserve">
     <value>تعذر تحميل الملف</value>
   </data>
   <data name="File_Required" xml:space="preserve">
     <value>الملف مطلوب</value>
+  </data>
+  <data name="Team_Load_Failure" xml:space="preserve">
+    <value>فشل في تحميل بيانات الفريق</value>
+  </data>
+  <data name="Team_Details" xml:space="preserve">
+    <value>تفاصيل الفريق</value>
+  </data>
+  <data name="Description_Not_Exists" xml:space="preserve">
+    <value>حاليًا، لا يوجد وصف لهذا الفريق. يرجى إضافة تفاصيل ذات صلة لتحسين تجربة المستخدم.</value>
+  </data>
+  <data name="Not_Found" xml:space="preserve">
+    <value>عذرًا! لم نتمكن من العثور على أي بيانات لهذه الصفحة. قد لا تكون متاحة أو ربما تمت إزالتها. يرجى التحقق لاحقًا أو تجربة قسم مختلف من الموقع!</value>
+  </data>
+  <data name="Max_size_10MB" xml:space="preserve">
+    <value>الحد الأقصى 10 ميغابايت</value>
+  </data>
+  <data name="Stadium_Deletion_Failure" xml:space="preserve">
+    <value>فشل في حذف الملعب</value>
+  </data>
+  <data name="Stadium_Deleted_Successfully" xml:space="preserve">
+    <value>تم حذف الملعب بنجاح</value>
+  </data>
+  <data name="Stadiums_All" xml:space="preserve">
+    <value>كل الملاعب</value>
+  </data>
+  <data name="Photo" xml:space="preserve">
+    <value>الصورة</value>
+  </data>
+  <data name="Stadium_Create" xml:space="preserve">
+    <value>اضافه ملعب</value>
+  </data>
+  <data name="Stadium_Update" xml:space="preserve">
+    <value>تعديل الملعب</value>
+  </data>
+  <data name="Stadium_Created" xml:space="preserve">
+    <value>تم إضافه الملعب بنجاح</value>
+  </data>
+  <data name="Stadium_Updated" xml:space="preserve">
+    <value>تم تعديل الملعب بنجاح</value>
+  </data>
+  <data name="LocationUrl" xml:space="preserve">
+    <value>رابط الموقع</value>
+  </data>
+  <data name="Stadium_Details" xml:space="preserve">
+    <value>تفاصيل الملعب</value>
   </data>
 </root>

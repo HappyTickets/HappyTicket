@@ -1,0 +1,105 @@
+﻿@page "/teams/details/{id:guid}"
+@inject ICustomSnackbarProvider Snackbar
+@inject BITeamService TeamService
+@inject NavigationManager NavigationManager
+@inject IPopUpService PopUpService
+@* @attribute [Authorize(Policy = "IsAdmin")] *@
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+<PageTitle>@Resource.Team_Details</PageTitle>
+
+@if(IsLoading)
+{
+    <div class="d-flex justify-content-center mt-100">
+        <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
+    </div>
+}
+
+@if(!IsLoading && Team == null)
+{
+    <NotFound />
+}
+
+@if(Team != null) {
+    <MudCard>
+        <MudCardContent>
+            <h1 class="text-center fs-2 mb-5">@Resource.Team_Details</h1>
+
+                <div class="d-flex flex-column flex-md-row gap-4">
+                    <div class="flex-fill">
+                        <h2 class="fs-2">@Team.Name</h2>
+                        <p class="mb-0 mt-5">@Team.Description</p>
+                    </div>
+                    <div class="text-center">
+                         <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), Team.Logo))" class="team-logo" style="width: auto; max-width: 125px;" />
+                    </div>
+                </div>
+
+            <div class="mt-4 d-flex gap-3">
+                <LoadingButton Variant="Variant.Filled" Class="flex-fill" OnClick="DeleteAsync" Color="Color.Error">@Resource.Delete</LoadingButton>
+                <LoadingButton Variant="Variant.Filled" Class="flex-fill" OnClick="@(()=>NavigationManager.NavigateTo($"/teams/update/{Team.Id}"))" Color="Color.Primary">@Resource.Edit</LoadingButton>
+            </div>
+        </MudCardContent>
+    </MudCard>
+}
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+
+    private TeamDto Team;
+    private bool IsLoading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsLoading = true;
+
+        await LoadTeamAsync();
+
+        IsLoading = false;
+    }
+
+    private async Task LoadTeamAsync()
+    {
+        var result = await TeamService.GetTeamByIdAsync(Id, false);
+        result.Match(
+            response =>
+            {
+                if (response.IsSuccess)
+                    Team = response.Data!;
+
+                return Unit.Default;
+            },
+            ex => Unit.Default);
+    }
+
+    private async Task DeleteAsync()
+    {
+        if (await PopUpService.ConfirmDeletionAsync())
+        {
+            var result = await TeamService.DeleteTeamWithNoMatchesAsync(Team.Id);
+            result.Match(
+                response =>
+                {
+                    if (response.IsSuccess) {
+                        Snackbar.Show(Resource.Team_Deleted_Successfully, Severity.Success);
+                        NavigationManager.NavigateTo("/teams");
+                    }
+                    else
+                    {
+                        Snackbar.Show(Resource.Team_Deletion_Failure, Severity.Error);
+                        Snackbar.Show(response.Title, Severity.Error);
+                    }
+                    return Unit.Default;
+                },
+                ex =>
+                {
+                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                    return Unit.Default;
+                }
+            );
+        }
+    }
+
+}
