@@ -63,6 +63,7 @@ namespace API.Extensions
             services.AddTransient<IFileService, FileService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IUserService, UserService>();
         }
     }
 }
