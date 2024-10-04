@@ -5,6 +5,14 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
+.spinner-container {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+    gap: 10px; 
+}
 
 .mud-height-full, .forms-mud-grid {
     min-height: calc(100vh - 60px);
