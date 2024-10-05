@@ -122,8 +122,8 @@
                         <TemplateColumn Title="@Resource.Price" HeaderClass="fw-bold">
                             <CellTemplate>
                                 @{
-                                    var priceInSAR = context.Item.Price;
-                                    var formattedPrice = priceInSAR.ToString("N2");
+                                    var priceInSar = context.Item.Price;
+                                    var formattedPrice = priceInSar.ToString("N2"); 
                                 }
                                 @formattedPrice @Resource.Sar 
                             </CellTemplate>
