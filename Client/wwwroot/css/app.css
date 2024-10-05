@@ -162,50 +162,6 @@ html, body {
 }
 
 
-/* General styles for smaller screens (mobile) */
-@media (max-width: 768px) {
-    .mud-card-content {
-        padding: 10px;
-    }
-
-    .mud-button, .loading-button {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-
-    .mud-grid {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .mud-item {
-        margin-bottom: 20px;
-    }
-
-    .team-logo {
-        width: 150px;
-        height: 150px;
-    }
-
-    h3, h4 {
-        font-size: 1.4em;
-    }
-
-    .flex-fill {
-        width: 100%;
-        text-align: center;
-    }
-
-    .mud-chip {
-        margin: 5px;
-    }
-}
-
-
-
-
-
-
 @keyframes draw {
     0% {
         stroke-dashoffset: 4500;
