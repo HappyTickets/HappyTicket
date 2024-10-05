@@ -13,7 +13,7 @@ namespace Shared.Common.General
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
         public string? OrderBy { get; set; }
-        public bool IsDescending { get; set; }
+        public bool IsDescending { get; set; } = true;
 
 
         public PaginationSearchModel GetPaginationModel(int index = 0, int size = 15, bool off = false)

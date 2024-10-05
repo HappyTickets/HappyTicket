@@ -10,5 +10,6 @@ namespace Application.Interfaces
     {
         Task<Result<IEnumerable<TicketDto>>> GetTicketsByUserIdAsync(string userId, bool useCache = false, CancellationToken cancellationToken = default);
         Task<Result<IEnumerable<OrderDto>>> GetPaginatedOrdersAsync(PaginationSearchModel paginationParams, bool useCache = false, Func<Order, OrderDto>? customMapper = null, CancellationToken cancellationToken = default);
+
     }
 }

@@ -69,19 +69,22 @@ namespace Application.Implementations
         //    }
 
         //}
-        public async Task<Result<IEnumerable<OrderDto>>> GetPaginatedOrdersAsync(PaginationSearchModel paginationSearchModel, bool useCache = false, Func<Order, OrderDto>? customMapper = null, CancellationToken cancellationToken = default)
+        public async Task<Result<IEnumerable<OrderDto>>> GetPaginatedOrdersAsync(
+    PaginationSearchModel paginationSearchModel,
+    bool useCache = false,
+    Func<Order, OrderDto>? customMapper = null,
+    CancellationToken cancellationToken = default)
         {
             try
             {
-                var query = _unitOfWork.Repository<Order>().Query();
-
-                if (!string.IsNullOrEmpty(paginationSearchModel.OrderBy))
+                // Define the properties to include in the user
+                Expression<Func<IQueryable<OrderDto>, IIncludableQueryable<OrderDto, object>>>[] includeProperties =
                 {
-                    query = paginationSearchModel.IsDescending
-                        ? query.OrderByDescending(GetSortExpression(paginationSearchModel.OrderBy))
-                        : query.OrderBy(GetSortExpression(paginationSearchModel.OrderBy));
-                }
-                var orderDtos = query.Select(order => new OrderDto
+            x => x.Include(o => o.User),
+        };
+
+                // Create a mapping function for converting Order to OrderDto
+                Func<Order, OrderDto> orderMap = order => new OrderDto
                 {
                     User = new ApplicationUserDTO
                     {
@@ -91,15 +94,38 @@ namespace Application.Implementations
                     },
                     TotalAmount = order.TotalAmount,
                     PaymentStatus = order.PaymentStatus,
-                    PaymentStatusString = order.PaymentStatus.HasValue ? ((PaymentStatusEnum)order.PaymentStatus.Value).ToString() : null,
+                    PaymentStatusString = order.PaymentStatus.HasValue
+                        ? ((PaymentStatusEnum)order.PaymentStatus.Value).ToString()//converting the number value of enum to string value
+                        : null,
                     CreatedDate = order.CreatedDate,
-                    ModifiedBy = order.ModifiedBy
-                }).ToList();
+                    ModifiedBy = order.ModifiedBy,
+                };
 
-                var orders = await query.Skip(paginationSearchModel.PageIndex * paginationSearchModel.PageSize)
-                                        .Take(paginationSearchModel.PageSize)
-                                        .ToListAsync();
+                // Get the queryable for orders and include related entities to do the sort logic
+                var query = _unitOfWork.Repository<Order>().Query();
+                query = query.Include(o => o.User);
+                // Sorting logic
+                if (!string.IsNullOrEmpty(paginationSearchModel.OrderBy))
+                {
+                    var sortExpression = GetSortExpression(paginationSearchModel.OrderBy);
+                    query = paginationSearchModel.IsDescending
+                        ? query.OrderByDescending(sortExpression)
+                        : query.OrderBy(sortExpression);
+                }
 
+                // Count total records for pagination
+                int totalCount = await query.CountAsync();
+
+                // Apply pagination
+                var orders = await query
+                    .Skip(paginationSearchModel.PageIndex * paginationSearchModel.PageSize)
+                    .Take(paginationSearchModel.PageSize)
+                    .ToListAsync();
+
+                // Map orders to DTOs
+                var orderDtos = orders.Select(orderMap).ToList();
+
+                // Return result
                 return new Result<IEnumerable<OrderDto>>(orderDtos);
             }
             catch (Exception ex)
@@ -108,14 +134,13 @@ namespace Application.Implementations
             }
         }
 
-        // Helper method for dynamic sorting
+        //function for creating sorting expressions based on the provided field name
         private Expression<Func<Order, object>> GetSortExpression(string sortBy)
         {
             return sortBy switch
             {
                 "UserName" => o => o.User.UserName,
                 "Email" => o => o.User.Email,
-                "PhoneNumber" => o => o.User.PhoneNumber,
                 "TotalAmount" => o => o.TotalAmount,
                 "PaymentStatus" => o => o.PaymentStatus,
                 "CreatedDate" => o => o.CreatedDate,

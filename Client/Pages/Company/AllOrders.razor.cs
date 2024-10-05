@@ -100,7 +100,7 @@ namespace Client.Pages.Company
                     if (success.IsSuccess)
                     {
                         OrdersTableData.Items = success.Data?.ToList() ?? new List<OrderDto>();
-                        OrdersTableData.TotalItems = success.Data?.Count() ?? 0; // Handle pagination and total items
+                        OrdersTableData.TotalItems = success.Data?.Count() ?? 0;
                         Counter = state.Page * state.PageSize;
                     }
 
