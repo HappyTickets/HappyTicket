@@ -2,25 +2,25 @@
 @attribute [Authorize(Policy = "IsAdmin")]
 
 
-<MudTable ServerData="ReloadServerDataAsync" Dense="true" Hover="true">
+<MudTable ServerData="ReloadServerDataAsync"  Dense="true" Hover="true">
     <ToolBarContent>
         <MudText Typo="Typo.h6" Class="mx-auto">@Resource.ClosedOrders</MudText>
     </ToolBarContent>
     <HeaderContent>
-        <MudTh><MudTableSortLabel SortLabel="Id" T="OrderDto">@Resource.Id</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="UserName" T="OrderDto">@Resource.DoneBy</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="Email" T="OrderDto">@Resource.UserEmail</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="PhoneNumber" T="OrderDto">@Resource.PhoneNumber</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="TotalAmount" T="OrderDto">@Resource.TotalPaid</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="PaymentStatus" T="OrderDto">@Resource.PaymentStatusString</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="CreatedDate" T="OrderDto">@Resource.CreatedDate</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="ModifiedBy" T="OrderDto">@Resource.ModifiedBy</MudTableSortLabel></MudTh>
+        @* <MudTh><MudTableSortLabel SortLabel="Id" T="OrderDto">@Resource.Id</MudTableSortLabel></MudTh> *@
+        <MudTh><MudTableSortLabel SortLabel="UserName" T="OrderDto" >@Resource.DoneBy</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="Email" T="OrderDto" >@Resource.UserEmail</MudTableSortLabel></MudTh>
+        <MudTh>@Resource.PhoneNumber</MudTh>
+        <MudTh><MudTableSortLabel SortLabel="TotalAmount" T="OrderDto" >@Resource.TotalPaid</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="PaymentStatus" T="OrderDto" >@Resource.PaymentStatusString</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="CreatedDate" T="OrderDto" >@Resource.CreatedDate</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="ModifiedBy" T="OrderDto" >@Resource.ModifiedBy</MudTableSortLabel></MudTh>
        
         
     </HeaderContent>
     <RowTemplate>
-       
-        <MudTd DataLabel="Id">@(++Counter)</MudTd>
+        @* <MudTd DataLabel="Id">@(++Counter)</MudTd> *@
+        @* <MudTd DataLabel="Id">@context.User.Id</MudTd> *@
         <MudTd DataLabel="User Name">@context.User.UserName</MudTd>
         <MudTd DataLabel="Email">@context.User.Email</MudTd>
         <MudTd DataLabel="Phone Number">@context.User.PhoneNumber</MudTd>
