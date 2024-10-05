@@ -119,8 +119,17 @@
                     <Columns>
                         <PropertyColumn Property="x => x.Class" Title=@Resource.Class HeaderClass="fw-bold" />
                         <PropertyColumn Property="x => x.Location" Title=@Resource.Location HeaderClass="fw-bold" />
-                        <PropertyColumn Property="x => x.Price" Format="C" Title=@Resource.Price HeaderClass="fw-bold" />
-                        <TemplateColumn CellClass="d-flex justify-start" Filterable=false Sortable=false Title="@Resource.BuyTicket" HeaderClass="fw-bold">
+
+                        <TemplateColumn Title="@Resource.Price" HeaderClass="fw-bold">
+                            <CellTemplate>
+                                @{
+                                    var priceInSar = context.Item.Price;
+                                    var formattedPrice = priceInSar.ToString("N2"); 
+                                }
+                                @formattedPrice @Resource.Sar 
+                            </CellTemplate>
+                        </TemplateColumn>
+                        <TemplateColumn CellClass="d-flex justify-start" Filterable="false" Sortable="false" Title="@Resource.BuyTicket" HeaderClass="fw-bold">
                             <CellTemplate>
                                 <MudTooltip Text=@Resource.Cart_Add>
                                     <LoadingIconButton Icon="@Icons.Material.Filled.AddShoppingCart" OnClick="@(() => AddToCart(context.Item))" Color="Color.Primary" />
