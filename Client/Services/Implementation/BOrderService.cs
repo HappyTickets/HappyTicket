@@ -17,9 +17,9 @@ namespace Client.Services.Implementation
             _httpClientHelper = httpClientHelper;
         }
 
-        public async Task<Result<BaseListResponse<IEnumerable<OrderDto>>>> GetPaginatedOrdersAsync(PaginationParams paginationParams, bool useCache, CancellationToken cancellationToken = default)
+        public async Task<Result<BaseListResponse<IEnumerable<OrderDto>>>> GetPaginatedOrdersAsync(PaginationSearchModel paginationParams, bool useCache, CancellationToken cancellationToken = default)
         {
-            var response = await _httpClientHelper.PostBaseAsync<PaginationParams, BaseListResponse<IEnumerable<OrderDto>>>($"api/Order/GetPaginatedOrders?useCache={useCache}&cancellationToken={cancellationToken}", paginationParams);
+            var response = await _httpClientHelper.PostBaseAsync<PaginationSearchModel, BaseListResponse<IEnumerable<OrderDto>>>($"api/Order/GetPaginatedOrders?useCache={useCache}&cancellationToken={cancellationToken}", paginationParams);
             return response;
         }
         public async Task<Result<BaseListResponse<IEnumerable<TicketDto>>>> GetMyOrdersAsync(CancellationToken cancellationToken = default)

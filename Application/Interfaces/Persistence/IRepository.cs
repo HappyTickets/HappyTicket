@@ -34,7 +34,7 @@ public interface IRepository<Tentity> where Tentity : BaseEntity
     Task<Result<Tentity>> LastOrDefaultAsync(Expression<Func<Tentity, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tentity>, IIncludableQueryable<Tentity, object>>>[] includeProperties);
     Task<Result<IEnumerable<Tentity>>> FindAsync(Expression<Func<Tentity, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tentity>, IIncludableQueryable<Tentity, object>>>[] includeProperties);
     Task<Result<IEnumerable<Tentity>>> GetAllAsync(CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tentity>, IIncludableQueryable<Tentity, object>>>[] includeProperties);
-    Task<Result<IEnumerable<Tentity>>> GetPaginatedAsync(PaginationParams paginationParams, CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tentity>, IIncludableQueryable<Tentity, object>>>[] includeProperties);
+    Task<Result<IEnumerable<Tentity>>> GetPaginatedAsync(PaginationSearchModel paginationParams, CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tentity>, IIncludableQueryable<Tentity, object>>>[] includeProperties);
     Task<Result<long>> GetLongCountAsync(CancellationToken cancellationToken = default);
 
     #endregion

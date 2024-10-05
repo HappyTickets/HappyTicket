@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Shared.Common.General;
 using Shared.DTOs;
 using Shared.DTOs.Identity.UserDTOs;
@@ -30,17 +31,57 @@ namespace Application.Implementations
             : base(unitOfWork, logger, cache, mapper, validator, localizer)
         {
         }
-        public async Task<Result<IEnumerable<OrderDto>>> GetPaginatedOrdersAsync(PaginationParams paginationParams, bool useCache = false, Func<Order, OrderDto>? customMapper = null, CancellationToken cancellationToken = default)
-        {
+        //public async Task<Result<IEnumerable<OrderDto>>> GetPaginatedOrdersAsync(PaginationParams paginationParams, bool useCache = false, Func<Order, OrderDto>? customMapper = null, CancellationToken cancellationToken = default)
+        //{
 
+        //    try
+        //    {
+        //        Expression<Func<IQueryable<OrderDto>, IIncludableQueryable<OrderDto, object>>>[] includeProperties =
+        //        {
+        //            x=>x.Include(o=>o.User),
+
+        //        };
+        //        Func<Order, OrderDto>? orderMap = order => new OrderDto
+        //        {
+        //            User = new ApplicationUserDTO
+        //            {
+        //                UserName = order.User.UserName,
+        //                Email = order.User.Email,
+        //                PhoneNumber = order.User.PhoneNumber,
+        //            },
+        //            TotalAmount = order.TotalAmount,
+        //            PaymentStatus = order.PaymentStatus,
+        //            PaymentStatusString = order.PaymentStatus.HasValue ? ((PaymentStatusEnum)order.PaymentStatus.Value).ToString() : null,
+        //            CreatedDate = order.CreatedDate,
+        //            ModifiedBy = order.ModifiedBy,
+
+        //        };
+
+        //        var result = await GetPaginatedAsync(paginationParams, useCache, orderMap, cancellationToken: cancellationToken, includeDTOProperties: includeProperties);
+
+        //        return result;
+        //    }
+
+
+        //    catch (Exception ex)
+        //    {
+        //        return new Result<IEnumerable<OrderDto>>(ex);
+        //    }
+
+        //}
+        public async Task<Result<IEnumerable<OrderDto>>> GetPaginatedOrdersAsync(PaginationSearchModel paginationSearchModel, bool useCache = false, Func<Order, OrderDto>? customMapper = null, CancellationToken cancellationToken = default)
+        {
             try
             {
-                Expression<Func<IQueryable<OrderDto>, IIncludableQueryable<OrderDto, object>>>[] includeProperties =
-                {
-                    x=>x.Include(o=>o.User),
+                var query = _unitOfWork.Repository<Order>().Query();
 
-                };
-                Func<Order, OrderDto>? orderMap = order => new OrderDto
+                if (!string.IsNullOrEmpty(paginationSearchModel.OrderBy))
+                {
+                    query = paginationSearchModel.IsDescending
+                        ? query.OrderByDescending(GetSortExpression(paginationSearchModel.OrderBy))
+                        : query.OrderBy(GetSortExpression(paginationSearchModel.OrderBy));
+                }
+                var orderDtos = query.Select(order => new OrderDto
                 {
                     User = new ApplicationUserDTO
                     {
@@ -52,21 +93,35 @@ namespace Application.Implementations
                     PaymentStatus = order.PaymentStatus,
                     PaymentStatusString = order.PaymentStatus.HasValue ? ((PaymentStatusEnum)order.PaymentStatus.Value).ToString() : null,
                     CreatedDate = order.CreatedDate,
-                    ModifiedBy = order.ModifiedBy,
+                    ModifiedBy = order.ModifiedBy
+                }).ToList();
 
-                };
+                var orders = await query.Skip(paginationSearchModel.PageIndex * paginationSearchModel.PageSize)
+                                        .Take(paginationSearchModel.PageSize)
+                                        .ToListAsync();
 
-                var result = await GetPaginatedAsync(paginationParams, useCache, orderMap, cancellationToken: cancellationToken, includeDTOProperties: includeProperties);
-
-                return result;
+                return new Result<IEnumerable<OrderDto>>(orderDtos);
             }
-
-
             catch (Exception ex)
             {
                 return new Result<IEnumerable<OrderDto>>(ex);
             }
+        }
 
+        // Helper method for dynamic sorting
+        private Expression<Func<Order, object>> GetSortExpression(string sortBy)
+        {
+            return sortBy switch
+            {
+                "UserName" => o => o.User.UserName,
+                "Email" => o => o.User.Email,
+                "PhoneNumber" => o => o.User.PhoneNumber,
+                "TotalAmount" => o => o.TotalAmount,
+                "PaymentStatus" => o => o.PaymentStatus,
+                "CreatedDate" => o => o.CreatedDate,
+                "ModifiedBy" => o => o.ModifiedBy,
+                _ => o => o.Id
+            };
         }
 
 

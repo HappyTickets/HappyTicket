@@ -2,7 +2,7 @@
 @attribute [Authorize(Policy = "IsAdmin")]
 
 
-<MudTable ServerData="ReloadServerDataAsync"  Dense="true" Hover="true">
+<MudTable ServerData="ReloadServerDataAsync" sortable="true" Dense="true" Hover="true">
     <ToolBarContent>
         <MudText Typo="Typo.h6" Class="mx-auto">@Resource.ClosedOrders</MudText>
     </ToolBarContent>
@@ -16,7 +16,6 @@
         <MudTh><MudTableSortLabel SortLabel="CreatedDate" T="OrderDto" >@Resource.CreatedDate</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="ModifiedBy" T="OrderDto" >@Resource.ModifiedBy</MudTableSortLabel></MudTh>
        
-        
     </HeaderContent>
     <RowTemplate>
         @* <MudTd DataLabel="Id">@(++Counter)</MudTd> *@

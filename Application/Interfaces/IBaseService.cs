@@ -19,7 +19,7 @@ namespace Application.Interfaces
         ValueTask<Result<Tdto>> FirstOrDefaultAsync(Expression<Func<Tdto, bool>> dtoPredicate, bool useCache = true, Func<Tentity, Tdto>? customMapper = null, CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tdto>, IIncludableQueryable<Tdto, object>>>[] includeDTOProperties);
         ValueTask<Result<IEnumerable<Tdto>>> FindAsync(Expression<Func<Tdto, bool>> dtoPredicate, bool useCache = true, Func<Tentity, Tdto>? customMapper = null, CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tdto>, IIncludableQueryable<Tdto, object>>>[] includeDTOProperties);
         ValueTask<Result<IEnumerable<Tdto>>> GetAllAsync(bool useCache = true, Func<Tentity, Tdto>? customMapper = null, CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tdto>, IIncludableQueryable<Tdto, object>>>[] includeDTOProperties);
-        ValueTask<Result<IEnumerable<Tdto>>> GetPaginatedAsync(PaginationParams paginationParams, bool useCache = true, Func<Tentity, Tdto>? customMapper = null, CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tdto>, IIncludableQueryable<Tdto, object>>>[] includeDTOProperties);
+        ValueTask<Result<IEnumerable<Tdto>>> GetPaginatedAsync(PaginationSearchModel paginationParams, bool useCache = true, Func<Tentity, Tdto>? customMapper = null, CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tdto>, IIncludableQueryable<Tdto, object>>>[] includeDTOProperties);
         ValueTask<Result<long>> GetLongCountAsync(CancellationToken cancellationToken = default);
         #endregion
 
