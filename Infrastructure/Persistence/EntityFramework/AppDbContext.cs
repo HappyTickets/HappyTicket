@@ -12,7 +12,7 @@ using System.Security.Claims;
 
 namespace Infrastructure.Persistence.EntityFramework;
 
-public class AppDbContext : IdentityDbContext<ApplicationUser>
+public class AppDbContext : IdentityDbContext<ApplicationUser, Role, string>
 {
     private bool _isSoftDeleteFilterDisabled;
     private IEnumerable<Claim> _currentUserClaims = new List<Claim>();
