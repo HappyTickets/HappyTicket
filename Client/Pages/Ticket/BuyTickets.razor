@@ -120,11 +120,15 @@
                         <PropertyColumn Property="x => x.Class" Title=@Resource.Class HeaderClass="fw-bold" />
                         <PropertyColumn Property="x => x.Location" Title=@Resource.Location HeaderClass="fw-bold" />
 
+
+                        <PropertyColumn Property="x => x.Price" Format="C" Title=@Resource.Price HeaderClass="fw-bold" />
+
+
                         <TemplateColumn Title="@Resource.Price" HeaderClass="fw-bold">
                             <CellTemplate>
                                 @{
-                                    var priceInSar = context.Item.Price;
-                                    var formattedPrice = priceInSar.ToString("N2"); 
+                                    var priceInSAR = context.Item.Price;
+                                    var formattedPrice = priceInSAR.ToString("N2");
                                 }
                                 @formattedPrice @Resource.Sar 
                             </CellTemplate>
