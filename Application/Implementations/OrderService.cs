@@ -4,20 +4,23 @@ using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
 using FluentValidation;
+using LanguageExt;
+using LanguageExt.ClassInstances;
 using LanguageExt.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using Shared.Common.General;
 using Shared.DTOs;
-using Shared.DTOs.CartDTOs;
 using Shared.DTOs.Identity.UserDTOs;
 using Shared.DTOs.MatchDtos;
 using Shared.DTOs.TicketDTOs;
-using Shared.Enums;
 using Shared.ResourceFiles;
 using System.Linq.Expressions;
+using System.Net;
+using ZXing;
 
 namespace Application.Implementations
 {
@@ -27,6 +30,45 @@ namespace Application.Implementations
             : base(unitOfWork, logger, cache, mapper, validator, localizer)
         {
         }
+        public async Task<Result<IEnumerable<OrderDto>>> GetPaginatedOrdersAsync(PaginationParams paginationParams, bool useCache = false, Func<Order, OrderDto>? customMapper = null, CancellationToken cancellationToken = default)
+        {
+
+            try
+            {
+                Expression<Func<IQueryable<OrderDto>, IIncludableQueryable<OrderDto, object>>>[] includeProperties =
+                {
+                    x=>x.Include(o=>o.User),
+
+                };
+                Func<Order, OrderDto>? orderMap = order => new OrderDto
+                {
+                    User = new ApplicationUserDTO
+                    {
+                        UserName = order.User.UserName,
+                        Email = order.User.Email,
+                        PhoneNumber = order.User.PhoneNumber,
+                    },
+                    TotalAmount = order.TotalAmount,
+                    PaymentStatus = order.PaymentStatus,
+                    PaymentStatusString = order.PaymentStatus.HasValue ? ((PaymentStatusEnum)order.PaymentStatus.Value).ToString() : null,
+                    CreatedDate = order.CreatedDate,
+                    ModifiedBy = order.ModifiedBy,
+
+                };
+
+                var result = await GetPaginatedAsync(paginationParams, useCache, orderMap, cancellationToken: cancellationToken, includeDTOProperties: includeProperties);
+
+                return result;
+            }
+
+
+            catch (Exception ex)
+            {
+                return new Result<IEnumerable<OrderDto>>(ex);
+            }
+
+        }
+
 
         public async Task<Result<IEnumerable<TicketDto>>> GetTicketsByUserIdAsync(string userId, bool useCache = false, CancellationToken cancellationToken = default)
         {
@@ -72,24 +114,24 @@ namespace Application.Implementations
                         // Map the tickets to DTOs
                         var ticketDtos = tickets.Select(ticket => new TicketDto
                         {
-                            Id=ticket.Id,
+                            Id = ticket.Id,
                             Location = ticket.Location,
                             Class = ticket.Class,
-                            TicketStatus = (TicketStatusDTO)ticket.TicketStatus,
-                            TeamId=ticket.TeamId,
-                            ExternalGate=ticket.ExternalGate,
-                            InternalGate=ticket.InternalGate,
+                            TicketStatus = ticket.TicketStatus,
+                            TeamId = ticket.TeamId,
+                            ExternalGate = ticket.ExternalGate,
+                            InternalGate = ticket.InternalGate,
                             Match = new MatchDto
                             {
-                                Stadium=ticket.Match.Stadium,
+                                Stadium = ticket.Match.Stadium,
                                 EventDate = ticket.Match?.EventDate,
                                 EventTime = ticket.Match?.EventTime,
-                                TeamAId=ticket.Match.TeamAId,
-                                TeamBId=ticket.Match.TeamBId,
+                                TeamAId = ticket.Match.TeamAId,
+                                TeamBId = ticket.Match.TeamBId,
                                 TeamA = new TeamDto
                                 {
                                     Name = ticket.Match?.TeamA?.Name,
-                                    Logo=ticket.Match?.TeamA?.Logo
+                                    Logo = ticket.Match?.TeamA?.Logo
                                 },
                                 TeamB = new TeamDto
                                 {

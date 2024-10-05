@@ -29,9 +29,10 @@ namespace API.Extensions
             services.AddAutoMapper(cfg => { cfg.AddExpressionMapping(); }, typeof(MappingProfile));
             services.AddMemoryCache();
             services.AddLogging(configure => configure.AddConsole());
+
+
+
             services.AddTransient<IValidator<TicketDto>, TicketDTOValidator>();
-
-
             services.AddTransient<IValidator<TicketDto>, TicketDTOValidator>();
             services.AddTransient<IValidator<MatchDto>, MatchValidator>();
             services.AddTransient<IValidator<MatchCommandDto>, MatchCommandValidator>();

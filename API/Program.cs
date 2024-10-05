@@ -8,6 +8,16 @@ using System.Text.Json.Serialization;
 using Serilog;
 using System.Diagnostics;
 
+
+var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables()
+    .Build();
+
 var builder = WebApplication.CreateBuilder(args);
 
 Console.WriteLine(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs/.log"));
