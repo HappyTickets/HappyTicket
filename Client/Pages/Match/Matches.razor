@@ -36,21 +36,24 @@
                     <MudTh>@Resource.TheActions</MudTh>
                 </HeaderContent>
                 <RowTemplate>
-                    <MudTd>
+                    <MudTd class="center-on-mobile">
                         <MudGrid>
-                            <MudItem xs="12" md="6">
-                                <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), context.TeamA?.Logo))" alt="@context.TeamA?.Name" class="team-logo" />
+                            <MudItem xs="6" md="6" class="team-item">
+                                <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), context.TeamA?.Logo))" alt="@context.TeamA?.Name"  class="team-logo" />
                                 <div>@context.TeamA?.Name</div>
                             </MudItem>
-                            <MudItem xs="12" md="6">
+                            <MudItem xs="6" md="6" class="team-item">
                                 <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), context.TeamB?.Logo))" alt="@context.TeamB?.Name" class="team-logo" />
                                 <div>@context.TeamB?.Name</div>
                             </MudItem>
                         </MudGrid>
                     </MudTd>
-                    <MudTd>@context.EventDate?.ToString("dd-MM-yyyy") @context.EventTime?.ToString(@"hh\:mm")</MudTd>
-                    <MudTd>@context.Stadium?.Name</MudTd>
-                    <MudTd>
+
+                    <MudTd class="center-on-mobile">@context.EventDate?.ToString("dd-MM-yyyy") @context.EventTime?.ToString(@"hh\:mm")</MudTd>
+
+                    <MudTd class="center-on-mobile">@context.Stadium?.Name</MudTd>
+
+                    <MudTd class="center-on-mobile">
                         @if (context.IsOver == true)
                         {
                             <MudText Color="Color.Error">@Resource.Over</MudText>
@@ -60,11 +63,33 @@
                             <MudText Color="Color.Success">@Resource.Ongoing</MudText>
                         }
                     </MudTd>
+
                     <MudTd>
-                        <MudButton OnClick="@(() => NavigateTo("edit", context.Id))" Color="Color.Primary" Variant="Variant.Filled">@Resource.Edit @Resource.TheMatch</MudButton>
-                        <MudButton OnClick="@(() => NavigateTo("edit-ticket-prices", context.Id))" Color="Color.Secondary" Variant="Variant.Filled">@Resource.Edit @Resource.Tickets</MudButton>
-                        <MudButton OnClick="@(() => NavigateTo("ticket-prices", context.Id))" Color="Color.Tertiary" Variant="Variant.Filled">@Resource.TicketPrices</MudButton>
+                        <div class="button-container">
+                            <MudButton OnClick="@(() => NavigateTo("edit", context.Id))"
+                                       Color="Color.Primary"
+                                       Variant="Variant.Filled"
+                                       Class="button-full-width">
+                                @Resource.Edit @Resource.TheMatch
+                            </MudButton>
+
+                            <MudButton OnClick="@(() => NavigateTo("edit-ticket-prices", context.Id))"
+                                       Color="Color.Secondary"
+                                       Variant="Variant.Filled"
+                                       Class="button-full-width">
+                                @Resource.Edit @Resource.Tickets
+                            </MudButton>
+
+                            <MudButton OnClick="@(() => NavigateTo("ticket-prices", context.Id))"
+                                       Color="Color.Tertiary"
+                                       Variant="Variant.Filled"
+                                       Class="button-full-width">
+                                @Resource.TicketPrices
+                            </MudButton>
+                        </div>
                     </MudTd>
+
+
                 </RowTemplate>
             </MudTable>
         }
