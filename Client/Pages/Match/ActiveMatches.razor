@@ -37,17 +37,25 @@
                             </MudItem>
                             <MudItem xs="12" md="6">
                                 <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), context.TeamB?.Logo))" alt="@context.TeamB?.Name" class="team-logo" />
-
                                 <div>@context.TeamB?.Name</div>
                             </MudItem>
                         </MudGrid>
                     </MudTd>
-                    <MudTd>@context.EventDate?.ToString("dd-MM-yyyy") @context.EventTime</MudTd>
+                    <MudTd>
+                        @context.EventDate?.ToString("dd-MM-yyyy") - 
+                        @{
+                            var formattedTime = DateTime.Today.Add(context.EventTime ?? TimeSpan.Zero).ToString("hh:mm tt");
+                        }
+                        @formattedTime
+                    </MudTd>
+
                     <MudTd>@context.Stadium?.Name</MudTd>
                     <MudTd>
                         <LoadingButton OnClick="@(() => NavigateToDetails(context.Id))" Color="Color.Primary" Variant="Variant.Filled">@Resource.Details_View</LoadingButton>
                     </MudTd>
                 </RowTemplate>
+
+
             </MudTable>
         }
     </MudCardContent>
