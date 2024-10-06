@@ -26,6 +26,8 @@ namespace Client.Pages.Company
         {
             PageIndex = 0,
             PageSize = 10,
+            SearchIn = string.Empty,
+            SearchKey = string.Empty,
         };
 
 

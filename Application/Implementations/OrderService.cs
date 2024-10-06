@@ -13,12 +13,14 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Shared.Common.Enums;
 using Shared.Common.General;
 using Shared.DTOs;
 using Shared.DTOs.Identity.UserDTOs;
 using Shared.DTOs.MatchDtos;
 using Shared.DTOs.TicketDTOs;
 using Shared.ResourceFiles;
+using System.Globalization;
 using System.Linq.Expressions;
 using System.Net;
 using ZXing;
@@ -75,6 +77,7 @@ namespace Application.Implementations
                      Func<Order, OrderDto>? customMapper = null,
                      CancellationToken cancellationToken = default)
         {
+
             try
             {
                 // Define the properties to include in the user
@@ -102,9 +105,45 @@ namespace Application.Implementations
                     ModifiedBy = order.ModifiedBy,
                 };
 
+
                 // Get the queryable for orders and include related entities to do the sort logic
                 var query = _unitOfWork.Repository<Order>().Query();
                 query = query.Include(o => o.User);
+                //filtering logic
+                if (!string.IsNullOrEmpty(paginationSearchModel.SearchKey) && !string.IsNullOrEmpty(paginationSearchModel.SearchIn))
+                {
+                    switch (paginationSearchModel.SearchIn.ToLower())
+                    {
+                        case "username":
+                            query = query.Where(o => o.User.UserName.Contains(paginationSearchModel.SearchKey));
+                            break;
+                        case "email":
+                            query = query.Where(o => o.User.Email.Contains(paginationSearchModel.SearchKey));
+                            break;
+                        case "phonenumber":
+                            query = query.Where(o => o.User.PhoneNumber.Contains(paginationSearchModel.SearchKey));
+                            break;
+                        case "paymentstatus":
+                            query = query.Where(o => o.PaymentStatus.Equals(paginationSearchModel.SearchKey));
+                            break;
+                        case "createddate":
+
+                            query = query.Where(o => o.CreatedDate.ToString().Contains(paginationSearchModel.SearchKey));
+
+                            break;
+
+                        case "modifiedby":
+                            query = query.Where(o => o.ModifiedBy.Equals(paginationSearchModel.SearchKey));
+                            break;
+                        case "totalamount":
+                            if (decimal.TryParse(paginationSearchModel.SearchKey, out var totalAmount))
+                            {
+                                query = query.Where(o => o.TotalAmount == totalAmount);
+                            }
+                            break;
+
+                    }
+                }
                 // Sorting logic
                 if (!string.IsNullOrEmpty(paginationSearchModel.OrderBy))
                 {
