@@ -66,12 +66,14 @@
             }
             <LanguagePicker CultureChanged=@LanguageChange />
 
-            <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
-                <MudTooltip Placement="Placement.Bottom" Text=@(_modePreferences == 1 ? @Resource.SystemPreference : _modePreferences == 2 ? @Resource.DarkMode : @Resource.LightMode)>
+            <MudHidden Breakpoint="Breakpoint.LgAndUp" >
+               @*  <MudTooltip Placement="Placement.Bottom" Text=@(_modePreferences == 1 ? @Resource.SystemPreference : _modePreferences == 2 ? @Resource.DarkMode : @Resource.LightMode)>
                     <MudIconButton Icon="@_iconTheme" Color="Color.Primary" OnClick="@ThemeToggle">
                         @(_modePreferences == 1 ? "SystemPreference" : _modePreferences == 2 ? @Resource.DarkMode : @Resource.LightMode)
                     </MudIconButton>
-                </MudTooltip>
+                </MudTooltip> *@
+                <MudIconButton Icon="@Icons.Material.Filled.ShoppingCart" Color="Color.Primary" OnClick="@GoToCart" />
+
             </MudHidden>
 @* 
             <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="false">
