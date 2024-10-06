@@ -70,18 +70,19 @@ namespace Application.Implementations
 
         //}
         public async Task<Result<IEnumerable<OrderDto>>> GetPaginatedOrdersAsync(
-    PaginationSearchModel paginationSearchModel,
-    bool useCache = false,
-    Func<Order, OrderDto>? customMapper = null,
-    CancellationToken cancellationToken = default)
+                     PaginationSearchModel paginationSearchModel,
+                     bool useCache = false,
+                     Func<Order, OrderDto>? customMapper = null,
+                     CancellationToken cancellationToken = default)
         {
             try
             {
                 // Define the properties to include in the user
+                //aslo avoid multiple database calls and retrieve related data in a single query
                 Expression<Func<IQueryable<OrderDto>, IIncludableQueryable<OrderDto, object>>>[] includeProperties =
                 {
-            x => x.Include(o => o.User),
-        };
+                    x => x.Include(o => o.User),
+                };
 
                 // Create a mapping function for converting Order to OrderDto
                 Func<Order, OrderDto> orderMap = order => new OrderDto
