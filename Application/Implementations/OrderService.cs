@@ -136,10 +136,9 @@ namespace Application.Implementations
                             query = query.Where(o => o.ModifiedBy.Equals(paginationSearchModel.SearchKey));
                             break;
                         case "totalamount":
-                            if (decimal.TryParse(paginationSearchModel.SearchKey, out var totalAmount))
-                            {
-                                query = query.Where(o => o.TotalAmount == totalAmount);
-                            }
+
+                            query = query.Where(o => o.TotalAmount.ToString().Contains(paginationSearchModel.SearchKey.ToString()));
+
                             break;
 
                     }
