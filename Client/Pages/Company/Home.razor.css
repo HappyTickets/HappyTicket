@@ -264,13 +264,13 @@
     .stat-box h2 {
         font-size: 2rem;
         margin: 0;
-        color: #333;
+        color: #1e4164;
     }
 
     .stat-box p {
         font-size: 1.2rem;
         margin: 0;
-        color: #666;
+        color: #1e4164;
     }
 
 .contact-btn {
@@ -283,3 +283,54 @@
     border-radius: 5px;
     font-size: 1.2rem;
 }
+
+/***About Us Section***/
+
+
+.about-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 50px;
+    font-family: Arial, sans-serif;
+}
+
+.about-image {
+    position: relative;
+    width: 30%;
+    align-items: center;
+    align-content: center;
+}
+
+    .about-image img {
+        width: 100%;
+        border-radius: 8px;
+    }
+
+
+.about-content {
+    width: 50%;
+    padding-left: 50px;
+}
+
+    .about-content h5 {
+        color: #607cfc;
+        font-size: 14px;
+        letter-spacing: 1px;
+    }
+
+    .about-content h1 {
+        color: #101010;
+        font-size: 36px;
+        font-weight: bold;
+    }
+
+    .about-content p {
+        color: #333;
+        line-height: 1.6;
+    }
+
+    .about-content .highlight {
+        color: #4a7ff0;
+        font-weight: 500;
+    }
