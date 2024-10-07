@@ -44,12 +44,18 @@
 
                     </MudTd>
                     <MudTd class="center-on-mobile">
-                        @context.EventDate?.ToString("dd-MM-yyyy") -
-                        @{
-                            var formattedTime = DateTime.Today.Add(context.EventTime ?? TimeSpan.Zero).ToString("hh:mm tt");
-                        }
-                        @formattedTime
+                        <div class="date-time-mobile">
+                            @context.EventDate?.ToString("dd-MM-yyyy") 
+                        </div>
+                        <div class="date-time-mobile time">
+                            @{
+                                var formattedTime = DateTime.Today.Add(context.EventTime ?? TimeSpan.Zero).ToString("hh:mm tt");
+                            }
+                            @formattedTime 
+                        </div>
                     </MudTd>
+
+
                     <MudTd class="center-on-mobile">
                         @context.Stadium?.Name
                     </MudTd>

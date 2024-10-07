@@ -250,6 +250,15 @@ html, body {
     }
 }
 
+.date-time-mobile {
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .date-time-mobile.time {
+        margin-top: 10px; 
+    }
+}
 
 
 .responsive-table {
