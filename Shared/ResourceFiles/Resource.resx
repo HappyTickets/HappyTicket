@@ -974,4 +974,22 @@ For any questions or concerns regarding this Agreement, please contact [Customer
   <data name="No_Tickets_To_Display" xml:space="preserve">
     <value>No Tickets To Display</value>
   </data>
+  <data name="KnowAboutUse" xml:space="preserve">
+    <value>Get to know about us</value>
+  </data>
+  <data name="UpcomingMatches" xml:space="preserve">
+    <value>Upcoming Matches</value>
+  </data>
+  <data name="slide1" xml:space="preserve">
+    <value>Live experiences worth sharing</value>
+  </data>
+  <data name="HomeAboutUs" xml:space="preserve">
+    <value>n the heart of the bustling world of sports and entertainment, our company stands as a beacon for fans seeking unforgettable experiences. We are not merely ticket sellers; we are custodians of excitement, catalysts of adventure, and architects of memory-making moments.
+
+Our mission is to bring fans closer to the action, creating opportunities for them to feel the adrenaline of a live game, the thrill of a concert, or the magic of a theatrical performance. We understand that every ticket represents a cherished memory waiting to be made, and we strive to deliver more than just access—we deliver the experience of a lifetime.
+
+With a passion for excellence and a commitment to customer satisfaction, we go beyond the ordinary, offering exclusive access, personalized service, and tailored packages. We believe in the power of shared moments, where every cheer, every beat, and every scene is part of a story that resonates long after the final curtain falls.
+
+Join us as we continue to redefine the way fans experience their favorite events. Together, let’s create memories that will be talked about for years to come.</value>
+  </data>
 </root>

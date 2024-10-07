@@ -3,11 +3,14 @@
 @inject IStringLocalizer<Resource> Localizer
 @inject BIMatchService MatchService
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
 
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
 <PageTitle>@Resource.CompanyName</PageTitle>
 
-<section class="mb-4">
+<!--Home banner-->
+<section class="mb-5">
     <MudCarousel Class="mud-width-75 mx-auto rounded-xl overflow-hidden" Style="height:500px;" ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object">
         <BulletTemplate Context="selected">
             <div Class="mud-button-root mud-icon-button mud-ripple mud-ripple-icon">
@@ -37,7 +40,7 @@
                     <MudImage Src="Imgs/1.jpg" Class="mx-auto my-auto" Style="width:100%; height:100%; object-fit:cover;" />
                     <div class="overlay position-absolute w-100 h-100" style="background-color: rgba(59, 86, 117, 0.6);"></div>
                     <div class="text-overlay position-absolute text-white text-center w-100" style="top:50%; transform:translateY(-50%);">
-                        <h3>Your Text Here</h3>
+                        <h3>@Resource.slide1</h3>
                     </div>
                 </div>
             </MudCarouselItem>
@@ -63,7 +66,33 @@
     </MudCarousel>
 </section>
 
-<div class="event-section">
+<!--About Us-->
+
+<MudContainer Class="d-flex flex-column justify-center mt-6">
+    <MudGrid>
+        <MudItem xs="12" md="5">
+            <MudText Typo="Typo.caption" Class="mb-2" Color="Color.Primary">
+                @Resource.GetToKnowUs
+            </MudText>
+            <MudText Typo="Typo.h3" Class="font-weight-bold pt-3">@Resource.GetToKnowUs @Resource.CompanyName</MudText>
+            <MudText Typo="Typo.body1" Class=" company-description pt-3">
+                @(new MarkupString(Resource.HomeAboutUs))
+
+            </MudText>
+        </MudItem>
+        <MudItem md="2"></MudItem>
+        <MudItem xs="12" md="5" Class="d-flex align-items-center">
+            <MudImage Src="logos/logo.svg" Alt="Office Meeting" Width="300" Style="border-radius: 8px;" />
+        </MudItem>
+    </MudGrid>
+
+   
+</MudContainer>
+
+
+
+<!--Events-->
+<div class="event-section pt-5 mt-5">
     <div class="section-header">
         <h2 class="section-title">المباريات القادمة</h2>
         <a href="#" class="view-all-link">عرض الكل</a>
@@ -130,20 +159,24 @@
 
     <div class="stats-container">
         <div class="stat-box">
-            <img src="customer-icon.png" alt="Customer Icon">
-            <h2 class="count" data-target="2000">0</h2>
-            <p>عميل يثق بستوكس</p>
+          
+            <MudIcon Icon="@Icons.Outlined.PersonOutline" Color="Color.Secondary" Size="Size.Large"/>
+
+            <h2 class="count mt-3" data-target="2000">0</h2>
+            <p>عميل يثق ينا</p>
         </div>
 
         <div class="stat-box">
-            <img src="events-icon.png" alt="Events Icon">
-            <h2 class="count" data-target="8000">0</h2>
+            <MudIcon Icon="@Icons.Material.Outlined.WhereToVote" Color="Color.Secondary" Size="Size.Large" />
+
+            <h2 class="count mt-3" data-target="8000">0</h2>
             <p>الفعاليات التي تم تنظيمها</p>
         </div>
 
         <div class="stat-box">
-            <img src="tickets-icon.png" alt="Tickets Icon">
-            <h2 class="count" data-target="400000">0</h2>
+            <MudIcon Icon="@Icons.TwoTone.BookOnline" Color="Color.Secondary" Size="Size.Large" />
+
+            <h2 class="count mt-3" data-target="400000">0</h2>
             <p>عدد التذاكر المباعة</p>
         </div>
     </div>
@@ -153,30 +186,7 @@
 
 
 
-@* <div class="title-with-lines mb-5">
-    <div class="line"></div>
-    <MudText Typo="Typo.h5" Color="Color.Primary" Align="Align.Center" Class="mt-5">@Resource.Rates</MudText>
-    <div class="line"></div>
-</div>
-<section class="mb-4">
-    <MudContainer>
-        <MudGrid>
-            <MudItem xs="12" md="4" Class="ps-md-5">
-                <PieChartComponent FillPercentage="70" ChartLabel="Users" InnerValue="50000" />
 
-            </MudItem>
-            <MudItem xs="12" md="4" Class="ps-md-5">
-                <PieChartComponent FillPercentage="60" ChartLabel="Sold Tickets" InnerValue="10000" />
-
-            </MudItem>
-            <MudItem xs="12" md="4" Class="ps-md-5">
-                <PieChartComponent FillPercentage="85" ChartLabel="Matches" InnerValue="5000" />
-            </MudItem>
-        </MudGrid>
-    </MudContainer>
-</section>
-
- *@
 @code {
     private bool arrows = true;
     private bool bullets = false;
@@ -190,7 +200,13 @@
     {
         await LoadActiveMatchesAsync();
     }
-
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("startCounting");
+        }
+    }
     private async Task LoadActiveMatchesAsync()
     {
         try

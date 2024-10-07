@@ -749,6 +749,17 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to n the heart of the bustling world of sports and entertainment, our company stands as a beacon for fans seeking unforgettable experiences. We are not merely ticket sellers; we are custodians of excitement, catalysts of adventure, and architects of memory-making moments.
+        ///
+        ///Our mission is to bring fans closer to the action, creating opportunities for them to feel the adrenaline of a live game, the thrill of a concert, or the magic of a theatrical performance. We understand that every ticket represents a cherish [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string HomeAboutUs {
+            get {
+                return ResourceManager.GetString("HomeAboutUs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home Team.
         /// </summary>
         public static string HomeTeam {
@@ -902,6 +913,15 @@ namespace Shared.ResourceFiles {
         public static string Item_Removed_Fail {
             get {
                 return ResourceManager.GetString("Item_Removed_Fail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get to know about us.
+        /// </summary>
+        public static string KnowAboutUse {
+            get {
+                return ResourceManager.GetString("KnowAboutUse", resourceCulture);
             }
         }
         
@@ -1616,6 +1636,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Live experiences worth sharing.
+        /// </summary>
+        public static string slide1 {
+            get {
+                return ResourceManager.GetString("slide1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stadia.
         /// </summary>
         public static string Stadia {
@@ -2116,6 +2145,15 @@ namespace Shared.ResourceFiles {
         public static string TryAgainLater {
             get {
                 return ResourceManager.GetString("TryAgainLater", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upcoming Matches.
+        /// </summary>
+        public static string UpcomingMatches {
+            get {
+                return ResourceManager.GetString("UpcomingMatches", resourceCulture);
             }
         }
         
