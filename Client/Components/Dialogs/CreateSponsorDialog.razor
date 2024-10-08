@@ -1,0 +1,129 @@
+﻿@inject ICustomSnackbarProvider Snackbar
+@inject ISponsorService SponsorService
+@inject IDialogService DialogService
+@inject IFileService FileService
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+<MudDialog IsVisible="IsVisible" IsVisibleChanged="IsVisibleChanged" Options="Options" >
+    <TitleContent>
+        @Resource.Sponsor_Create
+    </TitleContent>
+    <DialogContent>
+        <MudForm Model="Sponsor">
+            <div class="mb-5">
+                <MudTextField @bind-Value=Sponsor.Name Label=@Resource.Name Variant="Variant.Text" Required />
+            </div>
+            <div class="mb-5 py-2">
+                <ImageUpload Label=@Resource.Logo IsMultipleFiles="false" FilesChanged="OnFileChanged"  Required="true" />
+            </div>
+            <div class="mb-5 py-2">
+                <MudCheckBox @bind-Value=Sponsor.IsHappySponsor Label=@Resource.Is_Happy_Sponsor Color="@Color.Primary" UncheckedColor="@Color.Default"></MudCheckBox>
+            </div>
+        </MudForm>
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton OnClick="Close">@Resource.Cancel</MudButton>
+        <LoadingButton OnClick="HandleValidSubmit" Color="Color.Primary" Variant="Variant.Filled">@Resource.Sponsor_Create</LoadingButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> IsVisibleChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<SponsorDto> OnSponsorCreated { get; set; }
+
+    [Parameter]
+    public DialogOptions Options { get; set; } = new() { FullWidth = true };
+
+    private SponsorDto Sponsor = new();
+    KeyValuePair<string, string>? Logo = null;
+
+    private async Task Close()
+    {
+        IsVisible = false;
+        await IsVisibleChanged.InvokeAsync(false);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (Sponsor.Name == null)
+            return;
+
+        if (Logo != null)
+            await UploadFileAsync();
+
+        if (Sponsor.Logo != null)
+            await CreateSponsorAsync();
+        else
+            Snackbar.Show(Resource.File_Required, Severity.Error);
+    }
+
+    private async Task UploadFileAsync()
+    {
+        var result = await FileService.UploadFileAsync(new()
+            {
+                Path = $"/Images/Sponsors/{Sponsor.Name}/{Logo?.Key}".Replace(" ", "_"),
+                Base64EncodedString = Logo?.Value
+            });
+
+        result.Match(
+            response =>
+            {
+                if (response.IsSuccess)
+                    Sponsor.Logo = response.Data;
+                else
+                    Snackbar.Show(Resource.File_Upoad_Error, Severity.Error);
+
+                return Unit.Default;
+            },
+            ex =>
+            {
+                Snackbar.Show(Resource.File_Upoad_Error, Severity.Error);
+                return Unit.Default;
+            }
+        );
+    }
+
+    private async Task CreateSponsorAsync()
+    {
+        var result = await SponsorService.CreateSponsorAsync(Sponsor);
+        await result.Match(
+            async response =>
+            {
+                if (response.IsSuccess)
+                {
+                    Snackbar.Show(Resource.Sponsor_Created, Severity.Success);
+                    await OnSponsorCreated.InvokeAsync(Sponsor);
+                    await Close();
+                }
+                else
+                {
+                    Snackbar.Show(response.Title, Severity.Error);
+                    if (response.ErrorList != null)
+                    {
+                        foreach (var error in response.ErrorList)
+                            Snackbar.Show($"{error.Title}: {error.Message}", Severity.Error);
+                    }
+                }
+                return Unit.Default;
+            },
+            async ex =>
+            {
+                await Task.CompletedTask;
+                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                return Unit.Default;
+            }
+        );
+    }
+
+    private void OnFileChanged(Dictionary<string, string> files)
+        => Logo = files.FirstOrDefault();
+
+}

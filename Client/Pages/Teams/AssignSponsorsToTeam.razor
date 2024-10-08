@@ -1,0 +1,127 @@
+﻿@page "/teams/assign-sponsors-to-team"
+
+@inject ICustomSnackbarProvider Snackbar
+@inject BITeamService TeamService
+@inject ISponsorService SponsorService
+@inject IFileService FileService
+@* @attribute [Authorize(Policy = "IsAdmin")] *@
+
+<PageTitle>
+    @Resource.Assign_Sponsors_To_Team
+</PageTitle>
+
+<MudCard>
+    <MudCardContent>
+        <h1 class="fs-2 mb-5">
+            @Resource.Assign_Sponsors_To_Team
+        </h1>
+
+        <div class="mb-5">
+            <MudSelect T=TeamDto Label="@Resource.Team" MultiSelection="false" Value="@SelectedTeam" ValueChanged="OnSelectedTeamChanged" ToStringFunc="TeamToString">
+                @foreach (var team in Teams)
+                {
+                    <MudSelectItem T=TeamDto Value="@team">
+                        @team.Name
+                    </MudSelectItem>
+                }
+            </MudSelect>
+        </div>
+        <div class="mb-5">
+            <MudSelect T=Guid Label="@Resource.Sponsors" MultiSelection="true" @bind-SelectedValues="@CreateOrUpdateTeam.SponsorsIds" ToStringFunc="SponsorIdToString" Disabled="SelectedTeam == null">
+                @foreach (var sponsor in Sponsors)
+                {
+                    <MudSelectItem T=Guid Value="@sponsor.Id">
+                        @sponsor.Name
+                    </MudSelectItem>
+                }
+            </MudSelect>
+        </div>
+        <div class="d-flex justify-content-end">
+            <LoadingButton OnClick="HandleValidSubmit" Color="Color.Primary" Variant="Variant.Filled" Disabled="SelectedTeam == null">@Resource.Save</LoadingButton>
+        </div>
+    </MudCardContent>
+</MudCard>
+
+@code {
+    private List<SponsorDto> Sponsors = new();
+    private List<TeamDto> Teams = new();
+
+    private TeamDto? SelectedTeam;
+    private CreateOrUpdateTeamDto CreateOrUpdateTeam = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadTeamsAsync();
+        await LoadSponsorsAsync();
+    }
+
+    private async Task LoadTeamsAsync()
+    {
+        var result = await TeamService.GetTeamsAsync(false);
+        result.Match(
+            response =>
+            {
+                if (response.Data != null)
+                    Teams = response.Data.ToList();
+
+                return Unit.Default;
+            },
+            ex => Unit.Default
+        );
+    }
+
+    private async Task LoadSponsorsAsync()
+    {
+        var result = await SponsorService.GetSponsorsAsync(false);
+        result.Match(
+            response =>
+            {
+                if (response.Data != null)
+                    Sponsors = response.Data.ToList();
+
+                return Unit.Default;
+            },
+            ex => Unit.Default
+        );
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var result = await TeamService.UpdateTeamAsync(SelectedTeam!.Id, CreateOrUpdateTeam);
+        await result.Match(
+            async response =>
+            {
+                if (response.IsSuccess)
+                {
+                    Snackbar.Show(Resource.Assign_Sponsors_To_Team_Success, Severity.Success);
+                    await LoadTeamsAsync();
+                }
+                else
+                    Snackbar.Show(Resource.Assign_Sponsors_To_Team_Failure, Severity.Error);
+
+                return Unit.Default;
+            },
+            async ex =>
+            {
+                await Task.CompletedTask;
+                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                return Unit.Default;
+            }
+        );
+    }
+
+    private void OnSelectedTeamChanged(TeamDto team)
+    {
+        SelectedTeam = team;
+        CreateOrUpdateTeam.Name = team.Name;
+        CreateOrUpdateTeam.Logo = team.Logo;
+        CreateOrUpdateTeam.Description = team.Description;
+        CreateOrUpdateTeam.SponsorsIds = team.TeamSponsors?.Select(ts=>ts.SponsorId);
+    }
+
+    private string SponsorIdToString(Guid id)
+    => Sponsors.First(s => s.Id == id).Name;
+    
+    private string TeamToString(TeamDto team)
+        => team.Name;
+}

@@ -1,8 +1,6 @@
 ﻿using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 using Shared.DTOs;
-using Shared.ResourceFiles;
 using System.Net;
 
 namespace API.Controllers
@@ -134,6 +132,25 @@ namespace API.Controllers
                 if (ModelState.IsValid)
                 {
                     return ReturnResult(await _stadiumService.HardDeleteByIdAsync(id, cancellationToken: cancellationToken));
+                }
+
+                return BadRequest(ModelState);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        } 
+        
+        [HttpGet]
+        [Route("DeleteStadiumWithNoMatches")]
+        public async Task<ActionResult> DeleteStadiumWithNoMatches(Guid id, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    return ReturnResult(await _stadiumService.DeleteStadiumWithNoMatchesAsync(id, cancellationToken: cancellationToken));
                 }
 
                 return BadRequest(ModelState);

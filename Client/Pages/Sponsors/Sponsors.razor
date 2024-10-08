@@ -1,0 +1,108 @@
+﻿@page "/sponsors"
+
+@inject ICustomSnackbarProvider Snackbar
+@inject ISponsorService SponsorService
+@inject NavigationManager NavigationManager
+@inject IPopUpService PopUpService
+@* @attribute [Authorize(Policy = "IsAdmin")] *@
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+<PageTitle>@Resource.Sponsors_All</PageTitle>
+
+<MudTable Items="@SponsorsList" Loading="IsLoading"  Class="w-100">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">@Resource.Sponsors_All</MudText>
+        <MudSpacer />
+        <LoadingButton Variant="Variant.Filled" Color="Color.Primary" Href="/sponsors/create">@Resource.Sponsor_Create</LoadingButton>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>@Resource.Logo</MudTh>
+        <MudTh>@Resource.Name</MudTh>
+        <MudTh>@Resource.Is_Happy_Sponsor</MudTh>
+        <MudTh>@Resource.TheActions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd Class="justify-content-center">
+            <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), context?.Logo))" class="stadium-logo" style="width: 70px;" />
+        </MudTd>
+        <MudTd Class="justify-content-center text-nowrap">@context.Name</MudTd>
+        <MudTd Class="justify-content-center text-nowrap">
+            @(context.IsHappySponsor ? Resource.Yes : Resource.No)
+        </MudTd>
+        <MudTd Class="justify-content-center">
+            <div class="d-flex gap-2 flex-nowrap">
+                <MudButton OnClick="@(()=> NavigationManager.NavigateTo($"/sponsors/update/{context.Id}"))" Color="Color.Primary" Variant="Variant.Filled">@Resource.Edit</MudButton>
+                <MudButton OnClick="@(() => DeleteSponsorAsync(context))" Color="Color.Error" Variant="Variant.Filled">@Resource.Delete</MudButton>
+            </div>
+        </MudTd>
+    </RowTemplate>
+    <LoadingContent>
+        <MudText>@Resource.Loading...</MudText>
+    </LoadingContent>
+    <NoRecordsContent>
+        <MudText>@Resource.NoRecordsFound</MudText>
+    </NoRecordsContent>
+</MudTable>
+
+
+@code {
+    private List<SponsorDto> SponsorsList = new();
+    private bool IsLoading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsLoading = true;
+
+        await LoadSponsorsAsync();
+
+        IsLoading = false;
+    }
+
+    private async Task LoadSponsorsAsync()
+    {
+        var result = await SponsorService.GetSponsorsAsync(false);
+        result.Match(
+            response =>
+            {
+                if (response.Data != null)
+                    SponsorsList = response.Data.ToList();
+
+                return Unit.Default;
+            },
+            ex =>
+            {
+                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                return Unit.Default;
+            }
+        );
+    }
+
+    private async Task DeleteSponsorAsync(SponsorDto sponsor)
+    {
+        if (await PopUpService.ConfirmDeletionAsync())
+        {
+            SponsorsList.Remove(sponsor);
+
+            var result = await SponsorService.DeleteSponsorAsync(sponsor.Id);
+            result.Match(
+                response =>
+                {
+                    if(response.IsSuccess)
+                        Snackbar.Show(Resource.Sponsor_Deleted_Successfully, Severity.Success);
+                    else
+                    {
+                        SponsorsList.Add(sponsor);
+                        Snackbar.Show(Resource.Sponsor_Deletion_Failure, Severity.Error);
+                        Snackbar.Show(response.Title, Severity.Error);
+                    }
+                    return Unit.Default;
+                },
+                ex =>
+                {
+                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                    return Unit.Default;
+                }
+            );
+        }
+    }
+}

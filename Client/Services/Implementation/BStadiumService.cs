@@ -54,5 +54,10 @@ namespace Client.Services.Implementation
         {
             return await _httpClientHelper.GetBaseAsync<BaseResponse<StadiumDto>>($"api/Stadium/HardDeleteStadium?id={id}");
         }
+        
+        public async Task<Result<BaseResponse<StadiumDto>>> DeleteStadiumWithNoMatchesAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            return await _httpClientHelper.GetBaseAsync<BaseResponse<StadiumDto>>($"api/Stadium/DeleteStadiumWithNoMatches?id={id}");
+        }
     }
 }

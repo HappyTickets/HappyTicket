@@ -3,7 +3,6 @@ using LanguageExt.Common;
 using Shared.Common;
 using Shared.Common.General;
 using Shared.DTOs;
-using Shared.DTOs.CartDTOs;
 using Shared.DTOs.TicketDTOs;
 
 namespace Client.Services.Implementation

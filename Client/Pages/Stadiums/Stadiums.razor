@@ -86,7 +86,7 @@
         {
             StadiumsList.Remove(stadium);
 
-            var result = await StadiumService.HardDeleteStadiumByIdAsync(stadium.Id);
+            var result = await StadiumService.DeleteStadiumWithNoMatchesAsync(stadium.Id);
             result.Match(
                 response =>
                 {

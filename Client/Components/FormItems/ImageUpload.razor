@@ -31,7 +31,7 @@
                     @foreach (var image in IsMultipleFiles ? Files : Files.TakeLast(1))
                     {
                         <MudPaper Class="d-flex flex-column justify-content-center align-items-center gap-2 p-2" Style="width: fit-content">
-                            <MudImage Src=@image.Value Alt=@image.Key Height=50 Width=50 />
+                            <MudImage Src=@image.Value Alt=@image.Key Width=70 />
                             <MudText Typo=Typo.body2 Align=Align.Center>@image.Key</MudText>
                         </MudPaper>
                     }

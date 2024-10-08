@@ -2,11 +2,10 @@ using API.Extensions;
 using Application.Implementations;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
+using Serilog;
 using Shared.Common.General;
 using System.Globalization;
 using System.Text.Json.Serialization;
-using Serilog;
-using System.Diagnostics;
 
 
 var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";

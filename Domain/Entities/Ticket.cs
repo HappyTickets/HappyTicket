@@ -23,6 +23,6 @@ public class Ticket : BaseEntity
     public string Class { get; set; }
     public TicketStatus TicketStatus { get; set; }
     public int SeatNumber { get; set; }
-    public string ExternalGate { get; set; } 
+    public string ExternalGate { get; set; }
     public string InternalGate { get; set; }
 }

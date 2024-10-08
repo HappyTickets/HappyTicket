@@ -1,6 +1,6 @@
 ﻿using Domain.Entities.CartEntity;
-using LanguageExt.Common;
 using LanguageExt;
+using LanguageExt.Common;
 using Shared.DTOs.PaymentDTOs;
 
 namespace Application.Interfaces.PaymentServices

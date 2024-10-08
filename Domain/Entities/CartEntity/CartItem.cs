@@ -11,7 +11,7 @@ namespace Domain.Entities.CartEntity
         public virtual Cart Cart { get; set; }
 
         [ForeignKey(nameof(OrderId))]
-        public Guid? OrderId { get; set; } 
+        public Guid? OrderId { get; set; }
         public virtual Order Order { get; set; }
 
         [Required]

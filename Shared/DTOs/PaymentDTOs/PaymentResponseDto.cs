@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-using Shared.Common;
-
-namespace Shared.DTOs.PaymentDTOs
+﻿namespace Shared.DTOs.PaymentDTOs
 {
     public class PaymentResponseDto
     {

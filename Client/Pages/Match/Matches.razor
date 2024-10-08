@@ -3,7 +3,7 @@
 @inject ICustomSnackbarProvider Snackbar
 @inject BIMatchService MatchService
 @inject NavigationManager NavigationManager
-@attribute [Authorize(Policy = "IsAdmin")]
+@* @attribute [Authorize(Policy = "IsAdmin")] *@
 
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
 
@@ -30,6 +30,7 @@
             <MudTable Items="@matches" Striped="true" Bordered="true" Hover="true">
                 <HeaderContent>
                     <MudTh>@Resource.TheMatch</MudTh>
+                    <MudTh>@Resource.Champion</MudTh>
                     <MudTh>@Resource.Match_DateTime</MudTh>
                     <MudTh>@Resource.Stadium</MudTh>
                     <MudTh>@Resource.IsOver</MudTh>
@@ -48,6 +49,7 @@
                             </MudItem>
                         </MudGrid>
                     </MudTd>
+                    <MudTd>@context.Champion?.Name</MudTd>
                     <MudTd>@context.EventDate?.ToString("dd-MM-yyyy") @context.EventTime?.ToString(@"hh\:mm")</MudTd>
                     <MudTd>@context.Stadium?.Name</MudTd>
                     <MudTd>

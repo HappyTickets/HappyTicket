@@ -5,7 +5,6 @@ using Domain.Entities;
 using Domain.Enums;
 using FluentValidation;
 using LanguageExt;
-using LanguageExt.ClassInstances;
 using LanguageExt.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -16,11 +15,10 @@ using Shared.Common.General;
 using Shared.DTOs;
 using Shared.DTOs.Identity.UserDTOs;
 using Shared.DTOs.MatchDtos;
+using Shared.DTOs.Team;
 using Shared.DTOs.TicketDTOs;
 using Shared.ResourceFiles;
 using System.Linq.Expressions;
-using System.Net;
-using ZXing;
 
 namespace Application.Implementations
 {

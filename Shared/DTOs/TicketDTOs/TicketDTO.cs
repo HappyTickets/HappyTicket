@@ -1,4 +1,5 @@
 ﻿using Shared.DTOs.MatchDtos;
+using Shared.DTOs.Team;
 using Shared.Enums;
 
 namespace Shared.DTOs.TicketDTOs;
@@ -15,10 +16,10 @@ public class TicketDto
     public int TicketsCount { get; set; }
     public Guid MatchId { get; set; }
     public MatchDto? Match { get; set; }
-    public TicketStatusDTO TicketStatus{ get; set; }
+    public TicketStatusDTO TicketStatus { get; set; }
 
     public bool IsForAdmins { get; set; }
-    public string ExternalGate { get; set; } 
-    public string InternalGate { get; set; } 
+    public string ExternalGate { get; set; }
+    public string InternalGate { get; set; }
 
 }

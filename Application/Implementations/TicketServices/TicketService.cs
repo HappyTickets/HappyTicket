@@ -1,15 +1,15 @@
-﻿using Application.Interfaces.Persistence;
+﻿using Application.Interfaces.ITicketServices;
+using Application.Interfaces.Persistence;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 using FluentValidation;
+using LanguageExt.Common;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Shared.DTOs.TicketDTOs;
-using Application.Interfaces.ITicketServices;
-using Microsoft.Extensions.Localization;
 using Shared.ResourceFiles;
-using Domain.Enums;
-using LanguageExt.Common;
 
 namespace Application.Implementations.TicketServices
 {
@@ -47,7 +47,7 @@ namespace Application.Implementations.TicketServices
                             ticket.TicketStatus = TicketStatus.Used;
 
                             // Save the changes
-                             _unitOfWork.Repository<Ticket>().Update(ticket);
+                            _unitOfWork.Repository<Ticket>().Update(ticket);
                             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
                             // Return success message

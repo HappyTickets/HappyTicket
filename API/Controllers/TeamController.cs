@@ -1,9 +1,8 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Persistence;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 using Shared.DTOs;
-using Shared.ResourceFiles;
+using Shared.DTOs.Team;
 using System.Net;
 
 namespace API.Controllers
@@ -127,6 +126,24 @@ namespace API.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+        
+        [HttpPost]
+        public async Task<ActionResult> AddTeam([FromBody] CreateOrUpdateTeamDto team, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    return ReturnResult(await _teamService.CreateAsync(team, cancellationToken: cancellationToken));
+                }
+
+                return BadRequest(ModelState);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
 
         [HttpPut]
         [Route("EditTeam")]
@@ -137,6 +154,25 @@ namespace API.Controllers
                 if (ModelState.IsValid)
                 {
                     return ReturnResult(await _teamService.UpdateAsync(team, cancellationToken: cancellationToken));
+                }
+
+                return BadRequest(ModelState);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+        
+        [HttpPut]
+        [Route("EditTeam/{id:guid}")]
+        public async Task<ActionResult> EditTeam(Guid id, [FromBody] CreateOrUpdateTeamDto team, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    return ReturnResult(await _teamService.UpdateAsync(id, team, cancellationToken: cancellationToken));
                 }
 
                 return BadRequest(ModelState);
@@ -203,7 +239,7 @@ namespace API.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
-        
+
         [HttpGet]
         [Route("DeleteTeamWithNoMatches/{id:guid}")]
         public async Task<ActionResult> DeleteTeamWithNoMatches(Guid id, CancellationToken cancellationToken = default)

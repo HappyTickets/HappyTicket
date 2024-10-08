@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.UserEntities;
 
-public class UserFavoriteTeam: BaseEntity
+public class UserFavoriteTeam : BaseEntity
 {
     public Guid MatchId { get; set; }
     [ForeignKey(nameof(MatchId))]

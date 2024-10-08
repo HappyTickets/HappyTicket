@@ -2,17 +2,17 @@
 
 public enum TicketStatusDTO
 {
-        Active,
-        Used,
-        Canceled,
-        Pending,
-        Expired,
-        Reserved,
-        CheckedIn,
-        Refunded,
-        OnHold,
-        Sold,
-        Incart,
-        Lost,
-        ForAdmins
+    Active,
+    Used,
+    Canceled,
+    Pending,
+    Expired,
+    Reserved,
+    CheckedIn,
+    Refunded,
+    OnHold,
+    Sold,
+    Incart,
+    Lost,
+    ForAdmins
 }
