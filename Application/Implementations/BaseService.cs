@@ -225,7 +225,7 @@ public class BaseService<Tentity, Tdto> : IBaseService<Tentity, Tdto>
         }
     }
 
-    public virtual async ValueTask<Result<IEnumerable<Tdto>>> GetPaginatedAsync(PaginationParams paginationParams,
+    public virtual async ValueTask<Result<IEnumerable<Tdto>>> GetPaginatedAsync(PaginationSearchModel paginationParams,
                                                                                 bool useCache = true,
                                                                                 Func<Tentity, Tdto>? customMapper = null,
                                                                                 CancellationToken cancellationToken = default,

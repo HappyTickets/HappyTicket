@@ -93,7 +93,7 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("GetPaginatedOrders")]
-        public async Task<ActionResult<IEnumerable<OrderDto>>> GetPaginatedOrdersAsync([FromBody] PaginationParams paginationParams, bool useCache = false, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<IEnumerable<OrderDto>>> GetPaginatedOrdersAsync([FromBody] PaginationSearchModel paginationParams, bool useCache = false, CancellationToken cancellationToken = default)
         {
             try
             {

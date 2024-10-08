@@ -184,7 +184,7 @@ public class Repository<Tentity> : IRepository<Tentity> where Tentity : BaseEnti
     }
 
 
-    public async Task<Result<IEnumerable<Tentity>>> GetPaginatedAsync(PaginationParams paginationParams,
+    public async Task<Result<IEnumerable<Tentity>>> GetPaginatedAsync(PaginationSearchModel paginationParams,
                                                                       CancellationToken cancellationToken = default,
                                                                       params Expression<Func<IQueryable<Tentity>, IIncludableQueryable<Tentity, object>>>[] includeProperties)
     {

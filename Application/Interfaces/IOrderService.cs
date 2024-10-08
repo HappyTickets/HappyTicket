@@ -9,6 +9,7 @@ namespace Application.Interfaces
     public interface IOrderService : IBaseService<Order, OrderDto>
     {
         Task<Result<IEnumerable<TicketDto>>> GetTicketsByUserIdAsync(string userId, bool useCache = false, CancellationToken cancellationToken = default);
-        Task<Result<IEnumerable<OrderDto>>> GetPaginatedOrdersAsync(PaginationParams paginationParams, bool useCache = false, Func<Order, OrderDto>? customMapper = null, CancellationToken cancellationToken = default);
+        Task<Result<IEnumerable<OrderDto>>> GetPaginatedOrdersAsync(PaginationSearchModel paginationParams, bool useCache = false, Func<Order, OrderDto>? customMapper = null, CancellationToken cancellationToken = default);
+
     }
 }
