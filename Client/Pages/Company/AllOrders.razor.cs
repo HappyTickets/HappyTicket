@@ -60,8 +60,13 @@ namespace Client.Pages.Company
             PaginationSearchModel.SearchKey = searchKey;
             PaginationSearchModel.SearchIn = searchIn;
 
+            TableState tableState = new TableState
+            {
+                Page = PaginationSearchModel.PageIndex,
+                PageSize = PaginationSearchModel.PageSize
+            };
 
-            await ReloadServerDataAsync(new TableState());
+            await ReloadServerDataAsync(tableState);
         }
 
 
