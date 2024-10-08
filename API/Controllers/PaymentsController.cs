@@ -1,8 +1,6 @@
 ﻿using Application.Interfaces.PaymentServices;
 using Microsoft.AspNetCore.Mvc;
-using Shared.DTOs.CartDTOs;
 using Shared.DTOs.PaymentDTOs;
-using System.Threading;
 
 namespace API.Controllers
 {

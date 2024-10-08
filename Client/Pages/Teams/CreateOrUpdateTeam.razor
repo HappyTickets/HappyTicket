@@ -4,7 +4,7 @@
 @inject ICustomSnackbarProvider Snackbar
 @inject BITeamService TeamService
 @inject NavigationManager NavigationManager
-@inject IDialogService DialogService
+@inject ISponsorService SponsorService
 @inject IFileService FileService
 @* @attribute [Authorize(Policy = "IsAdmin")] *@
 
@@ -21,7 +21,17 @@
                 <MudTextField @bind-Value=Team.Name For="()=>Team.Name" Label=@Resource.Name Variant="Variant.Text" Required />
             </div>
             <div class="mb-5">
-                <MudTextField @bind-Value=Team.Description For="()=>Team.Description" Label=@Resource.Description Variant="Variant.Text" />
+                <MudSelect T=Guid Label="@Resource.Sponsors" MultiSelection="true" @bind-SelectedValues="@Team.SponsorsIds" ToStringFunc="SponsorIdToString">
+                    @foreach (var sponsor in Sponsors)
+                    {
+                        <MudSelectItem T=Guid Value="@sponsor.Id">
+                            @sponsor.Name
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+            </div>
+            <div class="mb-5">
+                <MudTextField @bind-Value=Team.Description For="()=>Team.Description" Label=@Resource.Description Variant="Variant.Text" AutoGrow />
             </div>
             <div class="mb-5 py-2">
                 <ImageUpload Label=@Resource.TeamLogo IsMultipleFiles="false" FilesChanged="OnFileChanged" Required="true" />
@@ -38,13 +48,31 @@
     [Parameter]
     public Guid? Id { get; set; }
 
-    private TeamDto Team = new();
+    private List<SponsorDto> Sponsors = new();
+
+    private CreateOrUpdateTeamDto Team = new();
     KeyValuePair<string, string>? Logo = null;
 
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadSponsorsAsync();
         await LoadTeamAsync();
+    }
+
+    private async Task LoadSponsorsAsync()
+    {
+        var result = await SponsorService.GetSponsorsAsync(false);
+        result.Match(
+            response =>
+            {
+                if (response.Data != null)
+                    Sponsors = response.Data.ToList();
+
+                return Unit.Default;
+            },
+            ex => Unit.Default
+        );
     }
 
     private async Task LoadTeamAsync()
@@ -56,7 +84,13 @@
                 response =>
                 {
                     if (response.Data != null)
-                        Team = response.Data;
+                        Team = new()
+                        {
+                                Name = response.Data.Name,
+                                Logo = response.Data.Logo,
+                                Description = response.Data.Description,
+                                SponsorsIds = response.Data.TeamSponsors?.Select(ts => ts.SponsorId)
+                        };
 
                     return Unit.Default;
                 }
@@ -139,7 +173,7 @@
             },
             ex =>
             {
-                Snackbar.Show(Resource.Team_Updated, Severity.Error);
+                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
                 return Unit.Default;
             }
         );
@@ -147,7 +181,7 @@
 
     private async Task UpdateTeamAsync()
     {
-        var result = await TeamService.UpdateTeamAsync(Team);
+        var result = await TeamService.UpdateTeamAsync(Id!.Value, Team);
         result.Match(
             response =>
             {
@@ -177,6 +211,9 @@
 
     private void OnFileChanged(Dictionary<string, string> files)
         => Logo = files.FirstOrDefault();
+
+    private string SponsorIdToString(Guid id)
+        => Sponsors.First(s => s.Id == id).Name;
 
     private bool IsUpdate()
         => Id != null;

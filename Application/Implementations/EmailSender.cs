@@ -37,8 +37,8 @@ public class EmailSender : IEmailSender
                 Credentials = new NetworkCredential(_emailConfig.From, _emailConfig.Password)
             };
             var mailMessage = new MailMessage(_emailConfig.From, recipient, subject, message) { IsBodyHtml = true };
-            
-            foreach(var attachment in attachments)
+
+            foreach (var attachment in attachments)
             {
                 mailMessage.Attachments.Add(attachment);
             }

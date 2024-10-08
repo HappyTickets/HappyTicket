@@ -1,0 +1,112 @@
+﻿@page "/champions"
+@using Shared.DTOs.Champion
+
+@inject ICustomSnackbarProvider Snackbar
+@inject IChampionService ChampionService
+@inject NavigationManager NavigationManager
+@inject IPopUpService PopUpService
+@* @attribute [Authorize(Policy = "IsAdmin")] *@
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+<PageTitle>@Resource.Champions_All</PageTitle>
+
+<MudTable Items="@ChampionsList" Loading="IsLoading"  Class="w-100">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">@Resource.Champions_All</MudText>
+        <MudSpacer />
+        <LoadingButton Variant="Variant.Filled" Color="Color.Primary" Href="/champions/create">@Resource.Champion_Create</LoadingButton>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>@Resource.Logo</MudTh>
+        <MudTh>@Resource.Name</MudTh>
+        <MudTh>@Resource.Sponsors</MudTh>
+        <MudTh>@Resource.TheActions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd Class="justify-content-center">
+            <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), context?.Logo))" class="stadium-logo" style="width: 70px;" />
+        </MudTd>
+        <MudTd Class="justify-content-center text-nowrap">@context.Name</MudTd>
+        <MudTd Class="justify-content-center text-nowrap">
+            @if (context.ChampionSponsors != null) 
+            {
+                @(string.Join(", ", context.ChampionSponsors.Select(cs => cs.Sponsor.Name)))
+            }
+            </MudTd>
+        <MudTd Class="justify-content-center">
+            <div class="d-flex gap-2 flex-nowrap">
+                <MudButton OnClick="@(()=> NavigationManager.NavigateTo($"/champions/update/{context.Id}"))" Color="Color.Primary" Variant="Variant.Filled">@Resource.Edit</MudButton>
+                <MudButton OnClick="@(() => DeleteChampionAsync(context))" Color="Color.Error" Variant="Variant.Filled">@Resource.Delete</MudButton>
+            </div>
+        </MudTd>
+    </RowTemplate>
+    <LoadingContent>
+        <MudText>@Resource.Loading...</MudText>
+    </LoadingContent>
+    <NoRecordsContent>
+        <MudText>@Resource.NoRecordsFound</MudText>
+    </NoRecordsContent>
+</MudTable>
+
+
+@code {
+    private List<ChampionDto> ChampionsList = new();
+    private bool IsLoading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsLoading = true;
+
+        await LoadChampionsAsync();
+
+        IsLoading = false;
+    }
+
+    private async Task LoadChampionsAsync()
+    {
+        var result = await ChampionService.GetChampionsAsync(false);
+        result.Match(
+            response =>
+            {
+                if (response.Data != null)
+                    ChampionsList = response.Data.ToList();
+
+                return Unit.Default;
+            },
+            ex =>
+            {
+                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                return Unit.Default;
+            }
+        );
+    }
+
+    private async Task DeleteChampionAsync(ChampionDto champion)
+    {
+        if (await PopUpService.ConfirmDeletionAsync())
+        {
+            ChampionsList.Remove(champion);
+
+            var result = await ChampionService.DeleteChampionAsync(champion.Id);
+            result.Match(
+                response =>
+                {
+                    if(response.IsSuccess)
+                        Snackbar.Show(Resource.Champion_Deleted_Successfully, Severity.Success);
+                    else
+                    {
+                        ChampionsList.Add(champion);
+                        Snackbar.Show(Resource.Champion_Deletion_Failure, Severity.Error);
+                        Snackbar.Show(response.Title, Severity.Error);
+                    }
+                    return Unit.Default;
+                },
+                ex =>
+                {
+                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                    return Unit.Default;
+                }
+            );
+        }
+    }
+}

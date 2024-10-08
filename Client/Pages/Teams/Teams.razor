@@ -18,6 +18,7 @@
     <HeaderContent>
         <MudTh>@Resource.Logo</MudTh>
         <MudTh>@Resource.Name</MudTh>
+        <MudTh>@Resource.Sponsors</MudTh>
         <MudTh>@Resource.Description</MudTh>
         <MudTh>@Resource.TheActions</MudTh>
     </HeaderContent>
@@ -26,6 +27,12 @@
             <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), context?.Logo))" class="team-logo" style="width: 70px;" />
         </MudTd>
         <MudTd Class="justify-content-center text-nowrap">@context.Name</MudTd>
+        <MudTd Class="justify-content-center text-nowrap">
+            @if (context.TeamSponsors != null) 
+            {
+                @(string.Join(", ", context.TeamSponsors.Select(ts => ts.Sponsor.Name)))
+            }
+        </MudTd>
         <MudTd Class="justify-content-center">@context.Description </MudTd>
         <MudTd Class="justify-content-center">
             <div class="d-flex gap-2 flex-nowrap">

@@ -1,7 +1,7 @@
 ﻿using Client.Services.Interfaces;
 using LanguageExt.Common;
 using Shared.Common;
-using Shared.DTOs;
+using Shared.DTOs.Team;
 
 
 namespace Client.Services.Implementation
@@ -35,10 +35,20 @@ namespace Client.Services.Implementation
         {
             return await _httpClientHelper.PostBaseAsync<TeamDto, BaseResponse<TeamDto>>("api/Team/AddTeam", team);
         }
+        
+        public async Task<Result<BaseResponse<TeamDto>>> CreateTeamAsync(CreateOrUpdateTeamDto team, CancellationToken cancellationToken = default)
+        {
+            return await _httpClientHelper.PostBaseAsync<CreateOrUpdateTeamDto, BaseResponse<TeamDto>>("api/Team", team);
+        }
 
         public async Task<Result<BaseResponse<TeamDto>>> UpdateTeamAsync(TeamDto team, CancellationToken cancellationToken = default)
         {
             return await _httpClientHelper.PutBaseAsync<TeamDto, BaseResponse<TeamDto>>("api/Team/EditTeam", team);
+        } 
+        
+        public async Task<Result<BaseResponse<TeamDto>>> UpdateTeamAsync(Guid id, CreateOrUpdateTeamDto team, CancellationToken cancellationToken = default)
+        {
+            return await _httpClientHelper.PutBaseAsync<CreateOrUpdateTeamDto, BaseResponse<TeamDto>>($"api/Team/EditTeam/{id}", team);
         }
 
         public async Task<Result<BaseResponse<TeamDto>>> RecoverTeamByIdAsync(Guid id, CancellationToken cancellationToken = default)
@@ -55,7 +65,7 @@ namespace Client.Services.Implementation
         {
             return await _httpClientHelper.GetBaseAsync<BaseResponse<TeamDto>>($"api/Team/HardDeleteTeam?id={id}");
         }
-        
+
         public async Task<Result<BaseResponse<TeamDto>>> DeleteTeamWithNoMatchesAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _httpClientHelper.GetBaseAsync<BaseResponse<TeamDto>>($"api/Team/DeleteTeamWithNoMatches/{id}");

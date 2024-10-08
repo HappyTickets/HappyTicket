@@ -1,7 +1,5 @@
 ﻿using API.Helper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
-using Shared.ResourceFiles;
 
 namespace API.Controllers;
 
@@ -25,7 +23,7 @@ public class CountryController : BaseController
     [Route("GetCountriesPhoneInfo")]
     public ObjectResult GetCountriesPhoneInfo()
     {
-        return ReturnListRequest<IEnumerable<Phone>>(new() { Data = _countryInfoService.Countries.Select(x => new Phone(){ Name = x.Info.Alpha2, FullName = string.IsNullOrWhiteSpace(x.Info.LongName) ? x.Info.ShortName : x.Info.LongName, CountryCode = x.Phone.CountryCode, MobileBeginWith = x.Phone.Mobile_Begin_With, PhoneNumberLengths = x.Phone.Phone_Number_Lengths }).ToList() });
+        return ReturnListRequest<IEnumerable<Phone>>(new() { Data = _countryInfoService.Countries.Select(x => new Phone() { Name = x.Info.Alpha2, FullName = string.IsNullOrWhiteSpace(x.Info.LongName) ? x.Info.ShortName : x.Info.LongName, CountryCode = x.Phone.CountryCode, MobileBeginWith = x.Phone.Mobile_Begin_With, PhoneNumberLengths = x.Phone.Phone_Number_Lengths }).ToList() });
     }
 
     private class Phone

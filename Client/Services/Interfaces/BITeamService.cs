@@ -1,6 +1,6 @@
 ﻿using LanguageExt.Common;
 using Shared.Common;
-using Shared.DTOs;
+using Shared.DTOs.Team;
 
 namespace Client.Services.Interfaces
 {
@@ -14,5 +14,7 @@ namespace Client.Services.Interfaces
         Task<Result<BaseResponse<TeamDto>>> SoftDeleteTeamByIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task<Result<BaseResponse<TeamDto>>> HardDeleteTeamByIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task<Result<BaseResponse<TeamDto>>> DeleteTeamWithNoMatchesAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<Result<BaseResponse<TeamDto>>> CreateTeamAsync(CreateOrUpdateTeamDto team, CancellationToken cancellationToken = default);
+        Task<Result<BaseResponse<TeamDto>>> UpdateTeamAsync(Guid id, CreateOrUpdateTeamDto team, CancellationToken cancellationToken = default);
     }
 }

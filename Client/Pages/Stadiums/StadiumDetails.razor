@@ -90,7 +90,7 @@
     {
         if (await PopUpService.ConfirmDeletionAsync())
         {
-            var result = await StadiumService.HardDeleteStadiumByIdAsync(Stadium.Id);
+            var result = await StadiumService.DeleteStadiumWithNoMatchesAsync(Stadium.Id);
             result.Match(
                 response =>
                 {

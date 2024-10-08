@@ -37,7 +37,7 @@ public class IdentityController : BaseController
             return ReturnException(ex);
         }
     }
-    
+
     [HttpPost]
     [Route("SendEmailConfirmation")]
     [AllowAnonymous]

@@ -5,7 +5,7 @@ using Shared.DTOs;
 
 namespace Client.Services.Implementation
 {
-    public class FileService: IFileService
+    public class FileService : IFileService
     {
         private readonly IHttpClientHelper _httpClientHelper;
 
@@ -16,7 +16,7 @@ namespace Client.Services.Implementation
 
         public async Task<Result<BaseResponse<string>>> UploadFileAsync(FileInfoDTO file, CancellationToken cancellationToken = default)
         {
-            return await _httpClientHelper.PostBaseAsync<FileInfoDTO ,BaseResponse<string>>($"api/File/UploadFile", file);
+            return await _httpClientHelper.PostBaseAsync<FileInfoDTO, BaseResponse<string>>($"api/File/UploadFile", file);
         }
     }
 }

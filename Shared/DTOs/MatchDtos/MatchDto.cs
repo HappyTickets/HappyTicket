@@ -1,4 +1,6 @@
-﻿using Shared.DTOs.TicketDTOs;
+﻿using Shared.DTOs.Champion;
+using Shared.DTOs.Team;
+using Shared.DTOs.TicketDTOs;
 
 namespace Shared.DTOs.MatchDtos
 {
@@ -15,8 +17,12 @@ namespace Shared.DTOs.MatchDtos
         public TeamDto? TeamB { get; set; }
         public Guid StadiumId { get; set; }
         public StadiumDto? Stadium { get; set; } = null;
+        public Guid ChampionId { get; set; }
+        public ChampionDto? Champion { get; set; }
+
+
         public bool? IsActive { get; set; }
-        public bool IsOver { get; set; } 
+        public bool IsOver { get; set; }
         public List<TicketDto> Tickets { get; set; }
     }
 }

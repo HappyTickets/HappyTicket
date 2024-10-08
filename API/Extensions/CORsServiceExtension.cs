@@ -1,6 +1,4 @@
-﻿using Shared.Common.General;
-
-namespace API.Extensions
+﻿namespace API.Extensions
 {
     public static class CORsServiceExtension
     {

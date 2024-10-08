@@ -3,6 +3,7 @@ using LanguageExt;
 using LanguageExt.Common;
 using Microsoft.EntityFrameworkCore.Query;
 using Shared.Common.General;
+using Shared.DTOs.Champion;
 using System.Linq.Expressions;
 
 namespace Application.Interfaces
@@ -46,7 +47,6 @@ namespace Application.Interfaces
         Task<Result<Tdto>> HardDeleteByIdAsync(Guid id, bool autoSave = true, Func<Tentity, Tdto>? entityToDTOMapper = null, CancellationToken cancellationToken = default);
         Task<Result<Tdto>> HardDeleteFirstAsync(Expression<Func<Tdto, bool>> dtoPredicate, bool autoSave = true, Func<Tentity, Tdto>? entityToDTOMapper = null, CancellationToken cancellationToken = default);
         Task<Result<Unit>> HardDeleteRangeAsync(Expression<Func<Tdto, bool>> dtoPredicate, bool autoSave = true, CancellationToken cancellationToken = default);
-
         #endregion
     }
 }

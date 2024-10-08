@@ -2,7 +2,7 @@
 {
     public static class UrlHelper
     {
-        private static string BlazorBase  = string.Empty;
+        private static string BlazorBase = string.Empty;
 
         private static string APIBase = string.Empty;
 

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Shared.DTOs;
+using Shared.DTOs.Team;
 using Shared.Exceptions;
 using Shared.Extensions;
 using Shared.ResourceFiles;
@@ -19,15 +20,20 @@ namespace Application.Implementations
 {
     public class TeamService : BaseService<Team, TeamDto>, ITeamService
     {
+        private readonly IValidator<CreateOrUpdateTeamDto> _createOrUpdateValidator;
+
         public TeamService(
             IUnitOfWork unitOfWork,
             ILogger<Team> logger,
             IMemoryCache cache,
             IMapper mapper,
             IValidator<TeamDto> validator,
-            IStringLocalizer<Resource> localizer) :
+            IStringLocalizer<Resource> localizer,
+            IValidator<CreateOrUpdateTeamDto> createOrUpdateValidator) :
             base(unitOfWork, logger, cache, mapper, validator, localizer)
-        { }
+        {
+            _createOrUpdateValidator = createOrUpdateValidator;
+        }
 
         public async Task<Result<TeamDto?>> GetUserFavTeam(string userId, Guid matchId, bool useCache = true, CancellationToken cancellationToken = default)
         {
@@ -112,7 +118,7 @@ namespace Application.Implementations
             }
         }
 
-        public async Task<Result<TeamDto>> DeleteTeamWithNoMatchesAsync(Guid id, CancellationToken cancellationToken = default) 
+        public async Task<Result<TeamDto>> DeleteTeamWithNoMatchesAsync(Guid id, CancellationToken cancellationToken = default)
         {
             var matchesRepo = _unitOfWork.Repository<Match>();
             var teamsRepo = _unitOfWork.Repository<Team>();
@@ -122,11 +128,114 @@ namespace Application.Implementations
 
             var result = await teamsRepo.HardDeleteByIdAsync(id, cancellationToken);
             return await result.Match(
-                async team => {
+                async team =>
+                {
                     await _unitOfWork.SaveChangesAsync();
                     return _mapper.Map<TeamDto>(team).ToResult();
                 },
                 async ex => await ex.ToResultAsync<TeamDto>());
+        }
+
+        public async Task<Result<TeamDto>> CreateAsync(CreateOrUpdateTeamDto dto, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var validationResult = _createOrUpdateValidator.Validate(dto);
+                if (!validationResult.IsValid)
+                    return new(new ValidationException(validationResult.Errors));
+
+                var teamRepo = _unitOfWork.Repository<Team>();
+
+                var team = _mapper.Map<Team>(dto);
+                if (dto.SponsorsIds != null)
+                {
+                    team.TeamSponsors = dto.SponsorsIds.Select(id => new TeamSponsor
+                    {
+                        SponsorId = id
+                    }).ToArray();
+                }
+
+                var result = await teamRepo.CreateAsync(team);
+                return await result.Match(
+                    async team =>
+                    {
+                        await _unitOfWork.SaveChangesAsync();
+                        return _mapper.Map<TeamDto>(team).ToResult();
+                    },
+                    async ex => await ex.ToResultAsync<TeamDto>());
+            }
+            catch (Exception ex)
+            {
+                return new(ex);
+            }
+        }
+
+        public async Task<Result<TeamDto>> UpdateAsync(Guid id, CreateOrUpdateTeamDto dto, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var validationResult = _createOrUpdateValidator.Validate(dto);
+                if (!validationResult.IsValid)
+                    return new(new ValidationException(validationResult.Errors));
+
+                var teamRepo = _unitOfWork.Repository<Team>();
+                var teamSponsorRepo = _unitOfWork.Repository<TeamSponsor>();
+                var teamResult = await teamRepo.GetByIdAsync(id, cancellationToken);
+                return await teamResult.Match(
+                    async team =>
+                    {
+                        _mapper.Map(dto, team);
+                        var result = teamRepo.Update(team);
+                        return await result.Match(
+                            async team =>
+                            {
+                                teamSponsorRepo.HardDeleteRange(cs => cs.TeamId == id);
+                                if (dto.SponsorsIds != null)
+                                {
+                                    var teamSponsors = dto.SponsorsIds.Select(i => new TeamSponsor
+                                    {
+                                        TeamId = id,
+                                        SponsorId = i
+                                    });
+                                    await teamSponsorRepo.CreateRangeAsync(teamSponsors);
+                                }
+                                await _unitOfWork.SaveChangesAsync();
+                                return _mapper.Map<TeamDto>(team).ToResult();
+                            },
+                            async ex => await ex.ToResultAsync<TeamDto>());
+                    },
+                    async ex => await ex.ToResultAsync<TeamDto>()
+                    );
+            }
+            catch (Exception ex)
+            {
+                return new(ex);
+            }
+        }
+
+
+        public async Task<Result<TeamDto>> GetByIdAsync(Guid id, bool useCache = true, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await base.GetByIdAsync(id: id, useCache: useCache, cancellationToken: cancellationToken, includeDTOProperties: q => q.Include(c => c.TeamSponsors).ThenInclude(cs => cs.Sponsor));
+            }
+            catch (Exception ex)
+            {
+                return new(ex);
+            }
+        }
+
+        public async Task<Result<IEnumerable<TeamDto>>> GetAllAsync(bool useCache = true, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await base.GetAllAsync(useCache: useCache, cancellationToken: cancellationToken, includeDTOProperties: q => q.Include(c => c.TeamSponsors).ThenInclude(cs => cs.Sponsor));
+            }
+            catch (Exception ex)
+            {
+                return new(ex);
+            }
         }
     }
 

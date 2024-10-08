@@ -1033,4 +1033,97 @@
   <data name="PaymentStatus" xml:space="preserve">
     <value>حالة الدفع</value>
   </data>
+  <data name="Sponsors_All" xml:space="preserve">
+    <value>كل الرعاة</value>
+  </data>
+  <data name="Sponsor_Create" xml:space="preserve">
+    <value>اضافه راعى</value>
+  </data>
+  <data name="Sponsor_Update" xml:space="preserve">
+    <value>تعديل الراعى</value>
+  </data>
+  <data name="Sponsor_Created" xml:space="preserve">
+    <value>تم إنشاء الراعي بنجاح</value>
+  </data>
+  <data name="Sponsor_Updated" xml:space="preserve">
+    <value>تم تحديث الراعي بنجاح</value>
+  </data>
+  <data name="Sponsor_Deletion_Failure" xml:space="preserve">
+    <value>فشل في حذف الراعي</value>
+  </data>
+  <data name="Sponsor_Deleted_Successfully" xml:space="preserve">
+    <value>تم حذف الراعي بنجاح</value>
+  </data>
+  <data name="Champion_With_Match_Deletion_Failure" xml:space="preserve">
+    <value>لا يمكن حذف بطولة لديها مباراة معينة</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>نعم</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>لا</value>
+  </data>
+  <data name="Is_Happy_Sponsor" xml:space="preserve">
+    <value>هل هو راعى لهابى؟</value>
+  </data>
+  <data name="Champions_All" xml:space="preserve">
+    <value>كل البطولات</value>
+  </data>
+  <data name="Champion_Create" xml:space="preserve">
+    <value>انشاء بطوله</value>
+  </data>
+  <data name="Champion_Deleted_Successfully" xml:space="preserve">
+    <value>تم مسح البطوله بنجاح</value>
+  </data>
+  <data name="Champion_Deletion_Failure" xml:space="preserve">
+    <value>فشل فى مسح البطوله</value>
+  </data>
+  <data name="Champion_Update" xml:space="preserve">
+    <value>تعديل البطوله</value>
+  </data>
+  <data name="Champion_Created" xml:space="preserve">
+    <value>تم اضافه البطوله بنجاح</value>
+  </data>
+  <data name="Champion_Updated" xml:space="preserve">
+    <value>تم تعديل البطوله بنجاح</value>
+  </data>
+  <data name="Sponsors" xml:space="preserve">
+    <value>الرعاة</value>
+  </data>
+  <data name="Nothing_Selected" xml:space="preserve">
+    <value>لم يتم تحديد أي شيء</value>
+  </data>
+  <data name="Add_New_Item" xml:space="preserve">
+    <value>إضافة عنصر جديد</value>
+  </data>
+  <data name="Champion" xml:space="preserve">
+    <value>البطوله</value>
+  </data>
+  <data name="NewChampion" xml:space="preserve">
+    <value>بطوله جديده</value>
+  </data>
+  <data name="Assign_Sponsors_To_Team" xml:space="preserve">
+    <value>تعيين الرعاة للفريق</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>حفظ</value>
+  </data>
+  <data name="Assign_Sponsors_To_Team_Success" xml:space="preserve">
+    <value>تمت إضافة الرعاة بنجاح إلى فريقك!</value>
+  </data>
+  <data name="Assign_Sponsors_To_Team_Failure" xml:space="preserve">
+    <value>فشل إضافة الرعاة إلى فريقك. يرجى المحاولة مرة أخرى</value>
+  </data>
+  <data name="Assign_Sponsors_To_Champion" xml:space="preserve">
+    <value>تعيين الرعاة للبطوله</value>
+  </data>
+  <data name="Assign_Sponsors_To_Champion_Success" xml:space="preserve">
+    <value>تمت إضافة الرعاة بنجاح إلى البطوله</value>
+  </data>
+  <data name="Assign_Sponsors_To_Champion_Failure" xml:space="preserve">
+    <value>فشل إضافة الرعاة إلى البطوله</value>
+  </data>
+  <data name="Stadium_With_Match_Deletion_Failure" xml:space="preserve">
+    <value>فشل حذف الملعب لأنه يحتوي على مباراة مخصصة.</value>
+  </data>
 </root>

@@ -1,5 +1,4 @@
-﻿using Application.Implementations.TicketServices;
-using Application.Interfaces;
+﻿using Application.Interfaces;
 using Application.Interfaces.ITicketServices;
 using Application.Interfaces.PaymentServices;
 using Application.Interfaces.Persistence;
@@ -16,13 +15,9 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Shared.Common.General;
 using Shared.DTOs.CartDTOs;
-using Shared.DTOs.PaymentDTOs;
-using Shared.DTOs.TicketDTOs;
-using Shared.Enums;
 using Shared.Exceptions;
 using Shared.Extensions;
 using Shared.ResourceFiles;
-using System.ComponentModel.DataAnnotations;
 
 namespace Application.Implementations
 {

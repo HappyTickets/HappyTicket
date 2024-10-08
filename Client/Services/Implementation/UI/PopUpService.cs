@@ -5,7 +5,7 @@ using Shared.ResourceFiles;
 
 namespace Client.Services.Implementation.UI
 {
-    public class PopUpService: IPopUpService
+    public class PopUpService : IPopUpService
     {
         private readonly IDialogService _dialogService;
 
@@ -23,7 +23,7 @@ namespace Client.Services.Implementation.UI
                 { x => x.Color, Color.Error }
             };
 
-            var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Small, FullWidth = true};
+            var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Small, FullWidth = true };
 
             var dialog = await _dialogService.ShowAsync<AlertDialog>(Resource.Delete, parameters, options);
 

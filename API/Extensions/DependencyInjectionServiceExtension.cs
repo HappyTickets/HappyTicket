@@ -14,11 +14,6 @@ using FluentValidation;
 using Infrastructure.Persistence.EntityFramework;
 using Infrastructure.Persistence.File;
 using Infrastructure.Persistence.Identity;
-using Shared.DTOs;
-using Shared.DTOs.CartDTOs;
-using Shared.DTOs.MatchDtos;
-using Shared.DTOs.TicketDTOs;
-using static Application.Validation.TicketDtoValidator;
 
 namespace API.Extensions
 {
@@ -29,19 +24,20 @@ namespace API.Extensions
             services.AddAutoMapper(cfg => { cfg.AddExpressionMapping(); }, typeof(MappingProfile));
             services.AddMemoryCache();
             services.AddLogging(configure => configure.AddConsole());
+            services.AddValidatorsFromAssembly(typeof(TicketDTOValidator).Assembly);
 
 
-
-            services.AddTransient<IValidator<TicketDto>, TicketDTOValidator>();
-            services.AddTransient<IValidator<TicketDto>, TicketDTOValidator>();
-            services.AddTransient<IValidator<MatchDto>, MatchValidator>();
-            services.AddTransient<IValidator<MatchCommandDto>, MatchCommandValidator>();
-            services.AddTransient<IValidator<TeamDto>, TeamValidator>();
-            services.AddTransient<IValidator<StadiumDto>, StadiumValidator>();
-            services.AddTransient<IValidator<BlockDto>, BlockValidator>();
-            services.AddTransient<IValidator<SeatDto>, SeatValidator>();
-            services.AddTransient<IValidator<CartDto>, CartValidator>();
-            services.AddTransient<IValidator<OrderDto>, OrderValidator>();
+            //services.AddTransient<IValidator<TicketDto>, TicketDTOValidator>();
+            //services.AddTransient<IValidator<TicketDto>, TicketDTOValidator>();
+            //services.AddTransient<IValidator<MatchDto>, MatchValidator>();
+            //services.AddTransient<IValidator<MatchCommandDto>, MatchCommandValidator>();
+            //services.AddTransient<IValidator<TeamDto>, TeamValidator>();
+            //services.AddTransient<IValidator<StadiumDto>, StadiumValidator>();
+            //services.AddTransient<IValidator<BlockDto>, BlockValidator>();
+            //services.AddTransient<IValidator<SeatDto>, SeatValidator>();
+            //services.AddTransient<IValidator<CartDto>, CartValidator>();
+            //services.AddTransient<IValidator<OrderDto>, OrderValidator>();
+            //services.AddTransient<IValidator<SponsorDto>, SponsorValidator>();
 
             services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
             services.AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork<AppDbContext>));
@@ -65,6 +61,8 @@ namespace API.Extensions
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ISponsorService, SponsorService>();
+            services.AddScoped<IChampionService, ChampionService>();
         }
     }
 }

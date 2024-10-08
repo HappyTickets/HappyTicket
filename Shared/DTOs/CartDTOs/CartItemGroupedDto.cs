@@ -2,8 +2,8 @@
 {
     public class CartItemGroupedDto
     {
-        public Guid Id { get; set; } 
-        public Guid ItemId { get; set; } 
+        public Guid Id { get; set; }
+        public Guid ItemId { get; set; }
         public Guid MatchId { get; set; }
         public string MatchName { get; set; }
         public string TeamName { get; set; }

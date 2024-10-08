@@ -3,10 +3,8 @@ using Client.Services.Interfaces;
 using LanguageExt;
 using Microsoft.AspNetCore.Components.Authorization;
 using Newtonsoft.Json;
-using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
-using static System.Net.WebRequestMethods;
 
 namespace Client.Services.Implementation
 {
@@ -38,7 +36,7 @@ namespace Client.Services.Implementation
         {
             string? token = await _localStorage.GetItemAsStringAsync("jwtToken");
 
-           
+
             var claims = ParseClaimsFromJwt(token);
             var identity = claims.Any() ? new ClaimsIdentity(claims, "jwt") : new();
             var user = new ClaimsPrincipal(identity);

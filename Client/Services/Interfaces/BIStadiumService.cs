@@ -1,6 +1,5 @@
 ﻿using LanguageExt.Common;
 using Shared.Common;
-using Shared.Common.General;
 using Shared.DTOs;
 
 namespace Client.Services.Interfaces
@@ -14,5 +13,6 @@ namespace Client.Services.Interfaces
         Task<Result<BaseResponse<StadiumDto>>> RecoverStadiumByIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task<Result<BaseResponse<StadiumDto>>> SoftDeleteStadiumByIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task<Result<BaseResponse<StadiumDto>>> HardDeleteStadiumByIdAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<Result<BaseResponse<StadiumDto>>> DeleteStadiumWithNoMatchesAsync(Guid id, CancellationToken cancellationToken = default);
     }
 }
