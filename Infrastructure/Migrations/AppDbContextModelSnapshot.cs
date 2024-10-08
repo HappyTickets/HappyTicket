@@ -51,7 +51,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BaseEntity");
+                    b.ToTable("BaseEntity", (string)null);
 
                     b.UseTpcMappingStrategy();
                 });
@@ -291,7 +291,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("StadiumId");
 
-                    b.ToTable("Blocks");
+                    b.ToTable("Blocks", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.CartEntity.Cart", b =>
@@ -305,7 +305,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Cart");
+                    b.ToTable("Cart", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.CartEntity.CartItem", b =>
@@ -330,7 +330,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TicketId");
 
-                    b.ToTable("CartItems");
+                    b.ToTable("CartItems", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Champion", b =>
@@ -344,7 +344,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Champions");
+                    b.ToTable("Champions", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.ChampionSponsor", b =>
@@ -361,7 +361,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("SponsorId");
 
-                    b.ToTable("ChampionSponsors");
+                    b.ToTable("ChampionSponsors", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Match", b =>
@@ -397,7 +397,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TeamBId");
 
-                    b.ToTable("Matches");
+                    b.ToTable("Matches", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Order", b =>
@@ -422,7 +422,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Seat", b =>
@@ -438,7 +438,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("BlockId");
 
-                    b.ToTable("Seats");
+                    b.ToTable("Seats", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Sponsor", b =>
@@ -455,7 +455,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Sponsors");
+                    b.ToTable("Sponsors", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Stadium", b =>
@@ -478,7 +478,7 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Photo")
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Stadiums");
+                    b.ToTable("Stadiums", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Team", b =>
@@ -495,7 +495,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Teams", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.TeamSponsor", b =>
@@ -512,7 +512,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("TeamSponsors");
+                    b.ToTable("TeamSponsors", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Ticket", b =>
@@ -576,7 +576,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Tickets", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.UserEntities.AuthEntities.RefreshToken", b =>
@@ -632,7 +632,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserFavoriteTeams");
+                    b.ToTable("UserFavoriteTeams", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationUser", b =>
