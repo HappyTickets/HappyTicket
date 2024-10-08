@@ -1,0 +1,334 @@
+﻿@page "/Users-Roles"
+
+@using Shared.DTOs.Authorization.Request
+@using Shared.DTOs.Authorization.Response
+@inject ICustomSnackbarProvider Snackbar
+@attribute [Authorize(Policy = "IsAdmin")]
+
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+<MudDataGrid @bind-SelectedItems="selectedUsers" MultiSelection="true" @ref="dataGrid" T="UserWithRolesDto" Items="usersList" QuickFilter="_quickFilter" Filterable="false">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">@Resource.AssignUsersToRoles</MudText>
+        <MudSpacer />
+        <MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder="@Resource.SearchUsers" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+
+    <Columns>
+        <SelectColumn ShowInFooter="false" T="UserWithRolesDto" />
+        <PropertyColumn SortBy="x=>x.UserName" Property="x => x.UserName" Title="@Resource.Username" />
+        <PropertyColumn SortBy="x=>x.Email" Property="x => x.Email" Title="@Resource.Email">
+
+            <FooterTemplate>
+                <MudSelect T="string" @bind-Value="selectedRoleId" Placeholder="@Resource.SelectRole"
+                           AdornmentIcon="@Icons.Material.Filled.Key" Class="w-100">
+                    @foreach (var role in rolesList)
+                    {
+                        <MudSelectItem T="string" Value="@role.RoleId">
+                            @role.RoleName
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+            </FooterTemplate>
+
+        </PropertyColumn>
+
+        <TemplateColumn Title="@Resource.AssignRoles" Sortable="false">
+            <CellTemplate>
+                <div style="display:flex; align-items:center;">
+                    <MudSelect T="string" @bind-SelectedValues="@context.Item.AssignedRoles" Placeholder="@Resource.SelectMultiRoles"
+                               AdornmentIcon="@Icons.Material.Filled.Key" MultiSelection="true" Class="w-100">
+                        @foreach (var role in rolesList)
+                        {
+                            <MudSelectItem T="string" Value="@role.RoleName">
+                                @role.RoleName
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                    <!-- Button for assigning roles next to the select list -->
+                    <MudButton EndIcon="@Icons.Material.Filled.Send" Disabled="@(!context.IsSelected)"
+                               OnClick="() => AssignRolesToUser(context.Item)" Color="Color.Primary" Variant="Variant.Filled"
+                               Class="ml-2">
+                    </MudButton>
+                </div>
+            </CellTemplate>
+            <FooterTemplate>
+                <MudButton StartIcon="@Icons.Material.Filled.Groups" EndIcon="@Icons.Material.Filled.Send"
+                           Disabled="string.IsNullOrEmpty(selectedRoleId) || selectedUsers.Count()<2" OnClick="AssignRoleToSelectedUsers" Color="Color.Primary" Variant="Variant.Filled">
+                    @Resource.AssignRoleToSelectedUsers
+                </MudButton>
+            </FooterTemplate>
+        </TemplateColumn>
+
+
+
+    </Columns>
+
+    <PagerContent>
+        <MudDataGridPager T="UserWithRolesDto" />
+    </PagerContent>
+</MudDataGrid>
+
+
+
+@code {
+    MudDataGrid<UserWithRolesDto> dataGrid;
+    string searchString;
+    List<UserWithRolesDto> usersList = new List<UserWithRolesDto>();
+    System.Collections.Generic.HashSet<UserWithRolesDto> selectedUsers = new(); // Property to hold selected rows
+    string selectedRoleId;
+
+    // List<UserWithRolesDto> usersList = new();
+    List<RoleDto> rolesList = new();
+
+    [Inject] BIAuthorizationService AuthorizationService { get; set; }
+
+    private bool IsRoleAssignedToUser(List<string> assignedRoles, string roleId)
+    {
+        return assignedRoles.Contains(roleId);
+    }
+
+    #region server side loading
+    // private async Task<GridData<UserWithRolesDto>> ServerReload(GridState<UserWithRolesDto> state)
+    //   {
+
+    //       List<UserWithRolesDto> usersList = new List<UserWithRolesDto>();
+
+    //       try
+    //       {
+    //           var response = await AuthorizationService.GetUsersWithRolesAsync();
+
+    //           _ = response.Match(
+    //           succ =>
+    //           {
+    //               usersList = succ.Data?.ToList() ?? new List<UserWithRolesDto>();
+
+    //               if (!succ.IsSuccess)
+    //               {
+    //                   Snackbar.Show(Resource.Users_Load_Fail, Severity.Error);
+    //               }
+    //               else
+    //               {
+    //                   Snackbar.Show(succ.Title, Severity.Info);
+    //               }
+
+    //               // Display errors if any
+    //               succ.ErrorList?.ToList().ForEach(x =>
+    //                           Snackbar.Show($"{x.Title}: {x.Message}", Severity.Error)
+    //                           );
+
+    //               return new Unit();
+    //           },
+    //           fail =>
+    //           {
+    //               Snackbar.Show(Resource.Users_Load_Fail, Severity.Error);
+    //               return new Unit();
+    //           }
+    //           );
+    //       }
+    //       catch (Exception ex)
+    //       {
+    //           Snackbar.Show(Resource.Users_Load_Fail, Severity.Error);
+    //       }
+
+
+    //       // Apply search filtering if searchString is present
+    //       if (!string.IsNullOrEmpty(searchString))
+    //       {
+    //           usersList = usersList.Where(u => u.UserName.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+    //           u.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+    //       }
+
+    //       var pagedData = usersList.Skip(state.Page * state.PageSize).Take(state.PageSize).ToList();
+
+    //       return new GridData<UserWithRolesDto>
+    //           {
+    //               TotalItems = usersList.Count,
+    //               Items = pagedData
+    //           };
+    //   }
+    #endregion
+
+    private Func<UserWithRolesDto, bool> _quickFilter => x =>
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+
+        if (x.UserName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if (x.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        return false;
+    };
+
+    private async Task AssignRolesToUser(UserWithRolesDto userWithRolesDto)
+    {
+        try
+        {
+            var requestDto = new AssignUserToRolesDto
+                {
+                    Roles = userWithRolesDto.AssignedRoles.ToList(),
+                    UserId = userWithRolesDto.UserId
+
+                };
+
+            var response = await AuthorizationService.AssignUserToRolesAsync(requestDto);
+            _ = response.Match(
+            succ =>
+            {
+                if (!succ.IsSuccess)
+                {
+                    Snackbar.Show(Resource.AssignRoleFailed, Severity.Error);
+                }
+                else
+                {
+                    Snackbar.Show(Resource.RolesAssignedSuccessfully, Severity.Success);
+
+                }
+                return new Unit();
+            },
+            fail =>
+            {
+                Snackbar.Show(Resource.AssignRoleFailed, Severity.Error);
+                return new Unit();
+            }
+            );
+
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show(Resource.AssignRoleFailed, Severity.Error);
+        }
+    }
+    private async Task AssignRoleToSelectedUsers()
+    {
+
+        if (string.IsNullOrEmpty(selectedRoleId) || !selectedUsers.Any())
+        {
+            Snackbar.Show("Please select a role and at least one user.", Severity.Warning);
+            return;
+        }
+
+        var requestDto = new AssignUsersToRoleDto
+            {
+                Role = selectedRoleId,
+                UserIds = selectedUsers.Select(u => u.UserId).ToList() // List of selected user IDs
+            };
+
+        try
+        {
+            var response = await AuthorizationService.AssignUsersToRoleAsync(requestDto);
+            _ = response.Match(
+                 succ =>
+                {
+                    if (succ.IsSuccess)
+                    {
+                        Snackbar.Show(Resource.RoleAssignedSuccessfully, Severity.Success);
+                    }
+                    else
+                    {
+                        Snackbar.Show(Resource.AssignRoleFailed, Severity.Error);
+                    }
+                    return new Unit();
+                },
+                fail =>
+                {
+                    Snackbar.Show(Resource.AssignRoleFailed, Severity.Error);
+                    return new Unit();
+                }
+            );
+
+            if (response.IsSuccess)
+                await LoadUsersAsync();
+
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show("An error occurred while assigning roles.", Severity.Error);
+        }
+    }
+
+    private async Task OnSearch(string text)
+    {
+        searchString = text;
+        await dataGrid.ReloadServerData();
+    }
+
+    private async Task LoadUsersAsync()
+    {
+        try
+        {
+            var response = await AuthorizationService.GetUsersWithRolesAsync();
+
+            _ = response.Match(
+            succ =>
+            {
+                usersList = succ.Data?.ToList() ?? new List<UserWithRolesDto>();
+
+                if (!succ.IsSuccess)
+                {
+                    Snackbar.Show(Resource.Users_Load_Fail, Severity.Error);
+                }
+                else
+                {
+                    Snackbar.Show(succ.Title, Severity.Info);
+                }
+
+                // Display errors if any
+                succ.ErrorList?.ToList().ForEach(x =>
+                            Snackbar.Show($"{x.Title}: {x.Message}", Severity.Error)
+                            );
+
+                return new Unit();
+            },
+            fail =>
+            {
+                Snackbar.Show(Resource.Users_Load_Fail, Severity.Error);
+                return new Unit();
+            }
+            );
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show(Resource.Users_Load_Fail, Severity.Error);
+        }
+    }
+    private async Task LoadRolesAsync()
+    {
+        try
+        {
+            var response = await AuthorizationService.GetRolesList();
+            _ = response.Match(
+            succ =>
+            {
+                rolesList = succ.Data?.ToList() ?? [];
+                if (!succ.IsSuccess)
+                {
+                    Snackbar.Show(Resource.Roles_Load_Fail, Severity.Error);
+                }
+                return new Unit();
+            },
+            fail =>
+            {
+                Snackbar.Show(Resource.Roles_Load_Fail, Severity.Error);
+                return new Unit();
+            }
+            );
+
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show(Resource.Roles_Load_Fail, Severity.Error);
+        }
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.WhenAll(LoadUsersAsync(), LoadRolesAsync());
+    }
+}

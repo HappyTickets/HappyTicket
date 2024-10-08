@@ -1121,6 +1121,90 @@ For any questions or concerns regarding this Agreement, please contact [Customer
   <data name="UserRemovedFromRole" xml:space="preserve">
     <value>User successfully removed from role</value>
   </data>
+  <data name="Roles_NotAvailable" xml:space="preserve">
+    <value>There are no available roles</value>
+  </data>
+  <data name="RoleName" xml:space="preserve">
+    <value>Role Name</value>
+  </data>
+  <data name="RoleDesc" xml:space="preserve">
+    <value>Role Description</value>
+  </data>
+  <data name="Roles_Load_Fail" xml:space="preserve">
+    <value>Failed to load roles</value>
+  </data>
+  <data name="TheRole" xml:space="preserve">
+    <value>The Role</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="TheRoles" xml:space="preserve">
+    <value>The Roles</value>
+  </data>
+  <data name="RoleCreatedSuccessfully" xml:space="preserve">
+    <value>Role '{0}' created successfully!</value>
+  </data>
+  <data name="RoleDeletedSuccessfully" xml:space="preserve">
+    <value>Role Deleted Successfully!</value>
+  </data>
+  <data name="ConfirmRoleDeletion" xml:space="preserve">
+    <value>Do you really want to delete this role ? This process cannot be undone.</value>
+  </data>
+  <data name="RoleEditedSuccessfully" xml:space="preserve">
+    <value>Role Edited Successfully!</value>
+  </data>
+  <data name="LoadRoleFailed" xml:space="preserve">
+    <value>Load Role Failed!</value>
+  </data>
+  <data name="AssignUsersToRoles" xml:space="preserve">
+    <value>Users To Roles Asigning</value>
+  </data>
+  <data name="SearchUsers" xml:space="preserve">
+    <value>Search for users.</value>
+  </data>
+  <data name="AssignRoles" xml:space="preserve">
+    <value>Assign Roles</value>
+  </data>
+  <data name="SelectRole" xml:space="preserve">
+    <value>Select Role</value>
+  </data>
+  <data name="Users_Load_Fail" xml:space="preserve">
+    <value>Failed to Load Users </value>
+  </data>
+  <data name="RolesAssignedSuccessfully" xml:space="preserve">
+    <value>Roles Assigned Successfully</value>
+  </data>
+  <data name="Assign" xml:space="preserve">
+    <value>Assign</value>
+  </data>
+  <data name="UserRemovedFromRoleFailed" xml:space="preserve">
+    <value>Failed to remove user form role</value>
+  </data>
+  <data name="AssignRoleToSelectedUsers" xml:space="preserve">
+    <value> Assign Many</value>
+  </data>
+  <data name="SelectMultiRoles" xml:space="preserve">
+    <value>Select Multi Roles</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="UsersAssigned" xml:space="preserve">
+    <value>Users Assigned</value>
+  </data>
+  <data name="Unassign" xml:space="preserve">
+    <value>Evict</value>
+  </data>
+  <data name="UnassignUsersSuccessfully" xml:space="preserve">
+    <value>Users have been unassigned successfully</value>
+  </data>
+  <data name="UnassignUsersFailed" xml:space="preserve">
+    <value>Failed To Unassign Users</value>
+  </data>
+  <data name="AssignedUsers" xml:space="preserve">
+    <value>Assigned Users</value>
+  </data>
   <data name="Sponsors_All" xml:space="preserve">
     <value>All Sponsors</value>
   </data>

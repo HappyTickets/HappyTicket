@@ -133,11 +133,56 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Assign.
+        /// </summary>
+        public static string Assign {
+            get {
+                return ResourceManager.GetString("Assign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assigned Users.
+        /// </summary>
+        public static string AssignedUsers {
+            get {
+                return ResourceManager.GetString("AssignedUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to assign role.
         /// </summary>
         public static string AssignRoleFailed {
             get {
                 return ResourceManager.GetString("AssignRoleFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assign Roles.
+        /// </summary>
+        public static string AssignRoles {
+            get {
+                return ResourceManager.GetString("AssignRoles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Assign Many.
+        /// </summary>
+        public static string AssignRoleToSelectedUsers {
+            get {
+                return ResourceManager.GetString("AssignRoleToSelectedUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users To Roles Asigning.
+        /// </summary>
+        public static string AssignUsersToRoles {
+            get {
+                return ResourceManager.GetString("AssignUsersToRoles", resourceCulture);
             }
         }
         
@@ -466,6 +511,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to delete this role ? This process cannot be undone..
+        /// </summary>
+        public static string ConfirmRoleDeletion {
+            get {
+                return ResourceManager.GetString("ConfirmRoleDeletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact Us.
         /// </summary>
         public static string ContactUs {
@@ -609,6 +663,15 @@ namespace Shared.ResourceFiles {
         public static string Description_Not_Exists {
             get {
                 return ResourceManager.GetString("Description_Not_Exists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Details.
+        /// </summary>
+        public static string Details {
+            get {
+                return ResourceManager.GetString("Details", resourceCulture);
             }
         }
         
@@ -1234,6 +1297,15 @@ namespace Shared.ResourceFiles {
         public static string Loading {
             get {
                 return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load Role Failed!.
+        /// </summary>
+        public static string LoadRoleFailed {
+            get {
+                return ResourceManager.GetString("LoadRoleFailed", resourceCulture);
             }
         }
         
@@ -1976,6 +2048,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Role.
+        /// </summary>
+        public static string Role {
+            get {
+                return ResourceManager.GetString("Role", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Role {0} already exists.
         /// </summary>
         public static string RoleAlreadyExists {
@@ -2003,6 +2084,24 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Role &apos;{0}&apos; created successfully!.
+        /// </summary>
+        public static string RoleCreatedSuccessfully {
+            get {
+                return ResourceManager.GetString("RoleCreatedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Role Deleted Successfully!.
+        /// </summary>
+        public static string RoleDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("RoleDeletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Role deletion failed.
         /// </summary>
         public static string RoleDeletionFailed {
@@ -2012,11 +2111,65 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Role Description.
+        /// </summary>
+        public static string RoleDesc {
+            get {
+                return ResourceManager.GetString("RoleDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Role Edited Successfully!.
+        /// </summary>
+        public static string RoleEditedSuccessfully {
+            get {
+                return ResourceManager.GetString("RoleEditedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Role Name.
+        /// </summary>
+        public static string RoleName {
+            get {
+                return ResourceManager.GetString("RoleName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Role removed successfully.
         /// </summary>
         public static string RoleRemovedSuccessfully {
             get {
                 return ResourceManager.GetString("RoleRemovedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to load roles.
+        /// </summary>
+        public static string Roles_Load_Fail {
+            get {
+                return ResourceManager.GetString("Roles_Load_Fail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no available roles.
+        /// </summary>
+        public static string Roles_NotAvailable {
+            get {
+                return ResourceManager.GetString("Roles_NotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Roles Assigned Successfully.
+        /// </summary>
+        public static string RolesAssignedSuccessfully {
+            get {
+                return ResourceManager.GetString("RolesAssignedSuccessfully", resourceCulture);
             }
         }
         
@@ -2048,11 +2201,38 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search for users..
+        /// </summary>
+        public static string SearchUsers {
+            get {
+                return ResourceManager.GetString("SearchUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Seat Number.
         /// </summary>
         public static string SeatNumber {
             get {
                 return ResourceManager.GetString("SeatNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Multi Roles.
+        /// </summary>
+        public static string SelectMultiRoles {
+            get {
+                return ResourceManager.GetString("SelectMultiRoles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Role.
+        /// </summary>
+        public static string SelectRole {
+            get {
+                return ResourceManager.GetString("SelectRole", resourceCulture);
             }
         }
         
@@ -2534,6 +2714,24 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Role.
+        /// </summary>
+        public static string TheRole {
+            get {
+                return ResourceManager.GetString("TheRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Roles.
+        /// </summary>
+        public static string TheRoles {
+            get {
+                return ResourceManager.GetString("TheRoles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ticket.
         /// </summary>
         public static string TheTicket {
@@ -2813,6 +3011,33 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Evict.
+        /// </summary>
+        public static string Unassign {
+            get {
+                return ResourceManager.GetString("Unassign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed To Unassign Users.
+        /// </summary>
+        public static string UnassignUsersFailed {
+            get {
+                return ResourceManager.GetString("UnassignUsersFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users have been unassigned successfully.
+        /// </summary>
+        public static string UnassignUsersSuccessfully {
+            get {
+                return ResourceManager.GetString("UnassignUsersSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User successfully assigned to role.
         /// </summary>
         public static string UserAssignedToRole {
@@ -2863,6 +3088,33 @@ namespace Shared.ResourceFiles {
         public static string UserRemovedFromRole {
             get {
                 return ResourceManager.GetString("UserRemovedFromRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to remove user form role.
+        /// </summary>
+        public static string UserRemovedFromRoleFailed {
+            get {
+                return ResourceManager.GetString("UserRemovedFromRoleFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to Load Users .
+        /// </summary>
+        public static string Users_Load_Fail {
+            get {
+                return ResourceManager.GetString("Users_Load_Fail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users Assigned.
+        /// </summary>
+        public static string UsersAssigned {
+            get {
+                return ResourceManager.GetString("UsersAssigned", resourceCulture);
             }
         }
         

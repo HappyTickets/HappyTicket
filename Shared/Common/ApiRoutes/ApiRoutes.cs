@@ -2,20 +2,29 @@
 {
     public static class ApiRoutes
     {
+
+        public const string API = "api";
         public static class User
         {
             public const string GetAll = "GetAll";
         }
         public static class Authorization
         {
-            public const string Roles = "/Roles";
-            public const string Create = Roles + "/Create";
-            public const string Edit = Roles + "/Edit";
-            public const string Delete = Roles + "/Delete/{id}";
-            public const string RolesList = Roles + "/RoleList";
-            public const string GetRoleById = Roles + "/RoleById/{id}";
-            public const string ManageUserRoles = Roles + "/ManageUserRoles/{userId}";
-            public const string UpdateUserRoles = Roles + "/UpdateUserRoles";
+            public const string Base = API + "/Authorization/";
+
+            public const string CreateRole = "CreateRole";
+            public const string EditRole = "EditRole";
+            public const string DeleteRole = "DeleteRole/{id}";
+            public const string RolesList = "RolesList";
+            public const string GetRoleById = "Role-by-id/{id}";
+
+            public const string AssignUserToRoles = "assign-user-to-roles";
+            public const string AssignUsersToRole = "assign-users-to-role";
+            public const string RemoveUsersFromRole = "remove-users-from-role";
+            public const string GetUserWithRoles = "get-user-with-roles/{userId}";
+            public const string GetUsersWithRoles = "get-users-with-roles";
+            public const string GetRoleWithUsers = "get-role-with-users/{roleId}";
         }
+
     }
 }
