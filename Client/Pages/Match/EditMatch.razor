@@ -179,13 +179,13 @@
         }
 
         match.ChampionId = championId!.Value;
+        match.Champion = null;
     }
 
     private async Task UpdateMatch()
     {
         if (ValidateForm())
         {
-            
             var response = await MatchService.UpdateMatchAsync(match);
             response.Match(
                 succ =>
