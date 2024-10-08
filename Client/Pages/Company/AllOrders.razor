@@ -8,13 +8,34 @@
     </ToolBarContent>
     <HeaderContent>
         @* <MudTh><MudTableSortLabel SortLabel="Id" T="OrderDto">@Resource.Id</MudTableSortLabel></MudTh> *@
-        <MudTh><MudTableSortLabel SortLabel="UserName" T="OrderDto" >@Resource.DoneBy</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="Email" T="OrderDto" >@Resource.UserEmail</MudTableSortLabel></MudTh>
-        <MudTh>@Resource.PhoneNumber</MudTh>
-        <MudTh><MudTableSortLabel SortLabel="TotalAmount" T="OrderDto" >@Resource.TotalPaid</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="PaymentStatus" T="OrderDto" >@Resource.PaymentStatusString</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="CreatedDate" T="OrderDto" >@Resource.CreatedDate</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="ModifiedBy" T="OrderDto" >@Resource.ModifiedBy</MudTableSortLabel></MudTh>
+        <MudTh>
+            <MudTextField Placeholder="Search" ValueChanged="@(async (string e) => await OnSearchKeyChanged(e, @Resource.Username.Replace(" ", "")))" />
+            <MudTableSortLabel SortLabel="UserName" T="OrderDto">@Resource.DoneBy</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTextField Placeholder="Search"  ValueChanged="@(async (string e) => await OnSearchKeyChanged(e, @Resource.UserEmail.Replace(" ", "")))" />
+            <MudTableSortLabel SortLabel="Email" T="OrderDto" >@Resource.UserEmail</MudTableSortLabel>
+            </MudTh>
+        <MudTh>
+            <MudTextField Placeholder="Search"  ValueChanged="@(async (string e) => await OnSearchKeyChanged(e, @Resource.PhoneNumber.Replace(" ", "")))" />
+            @Resource.PhoneNumber
+            </MudTh>
+        <MudTh>
+            <MudTextField Placeholder="Search"  ValueChanged="@(async (string e) => await OnSearchKeyChanged(e, @Resource.TotalPaid.Replace(" ", "")))" />
+            <MudTableSortLabel SortLabel="TotalAmount" T="OrderDto" >@Resource.TotalPaid</MudTableSortLabel>
+            </MudTh>
+        <MudTh>
+            <MudTextField Placeholder="Search"  ValueChanged="@(async (string e) => await OnSearchKeyChanged(e, @Resource.PaymentStatus.Replace(" ", "")))" />
+            <MudTableSortLabel SortLabel="PaymentStatus" T="OrderDto" >@Resource.PaymentStatusString</MudTableSortLabel>
+            </MudTh>
+        <MudTh>
+            <MudTextField Placeholder="Search" ValueChanged="@(async (string e) => await OnSearchKeyChanged(e, @Resource.CreatedDate.Replace(" ", "")))" />
+            <MudTableSortLabel SortLabel="CreatedDate" T="OrderDto" >@Resource.CreatedDate</MudTableSortLabel>
+            </MudTh>
+        <MudTh>
+            <MudTextField Placeholder="Search"  ValueChanged="@(async (string e) => await OnSearchKeyChanged(e, @Resource.ModifiedBy.Replace(" ", "")))" />
+            <MudTableSortLabel SortLabel="ModifiedBy" T="OrderDto" >@Resource.ModifiedBy</MudTableSortLabel>
+            </MudTh>
        
     </HeaderContent>
     <RowTemplate>
@@ -49,3 +70,4 @@
         <MudTablePager />
     </PagerContent>
 </MudTable>
+

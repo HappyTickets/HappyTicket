@@ -105,7 +105,6 @@ namespace Application.Implementations
                     ModifiedBy = order.ModifiedBy,
                 };
 
-
                 // Get the queryable for orders and include related entities to do the sort logic
                 var query = _unitOfWork.Repository<Order>().Query();
                 query = query.Include(o => o.User);
@@ -117,14 +116,17 @@ namespace Application.Implementations
                         case "username":
                             query = query.Where(o => o.User.UserName.Contains(paginationSearchModel.SearchKey));
                             break;
-                        case "email":
+                        case "useremail":
                             query = query.Where(o => o.User.Email.Contains(paginationSearchModel.SearchKey));
                             break;
                         case "phonenumber":
                             query = query.Where(o => o.User.PhoneNumber.Contains(paginationSearchModel.SearchKey));
                             break;
                         case "paymentstatus":
-                            query = query.Where(o => o.PaymentStatus.Equals(paginationSearchModel.SearchKey));
+                            query = query.Where(o => ((PaymentStatusEnum)o.PaymentStatus.Value).ToString().ToLower().Contains(paginationSearchModel.SearchKey));
+                            //query = query.AsEnumerable() // Moves the query to be executed in memory
+                            //             .Where(o => ((PaymentStatusEnum)o.PaymentStatus).ToString().ToLower()
+                            //             .Contains(paginationSearchModel.SearchKey.ToLower())).AsQueryable();
                             break;
                         case "createddate":
 
@@ -135,7 +137,7 @@ namespace Application.Implementations
                         case "modifiedby":
                             query = query.Where(o => o.ModifiedBy.Equals(paginationSearchModel.SearchKey));
                             break;
-                        case "totalamount":
+                        case "totalpaid":
 
                             query = query.Where(o => o.TotalAmount.ToString().Contains(paginationSearchModel.SearchKey.ToString()));
 
@@ -143,6 +145,7 @@ namespace Application.Implementations
 
                     }
                 }
+
                 // Sorting logic
                 if (!string.IsNullOrEmpty(paginationSearchModel.OrderBy))
                 {
@@ -155,7 +158,11 @@ namespace Application.Implementations
                 // Count total records for pagination
                 int totalCount = await query.CountAsync();
 
-                // Apply pagination
+                //Apply pagination
+                //var orders = await query
+                //    .Skip(paginationSearchModel.PageIndex * 10)
+                //    .Take(10)
+                //    .ToListAsync();
                 var orders = await query
                     .Skip(paginationSearchModel.PageIndex * paginationSearchModel.PageSize)
                     .Take(paginationSearchModel.PageSize)

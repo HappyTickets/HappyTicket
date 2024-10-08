@@ -55,6 +55,17 @@ namespace Client.Pages.Company
             );
         }
 
+        private async Task OnSearchKeyChanged(string searchKey, string searchIn)
+        {
+            PaginationSearchModel.SearchKey = searchKey;
+            PaginationSearchModel.SearchIn = searchIn;
+
+
+            await ReloadServerDataAsync(new TableState());
+        }
+
+
+
         private async Task<TableData<OrderDto>> ReloadServerDataAsync(TableState state)
         {
 
@@ -88,6 +99,7 @@ namespace Client.Pages.Company
 
             PaginationSearchModel.PageIndex = state.Page;
             PaginationSearchModel.PageSize = state.PageSize;
+            //PaginationSearchModel.PageSize = state.PageSize != 0 ? state.PageSize : 10;
 
             PaginationSearchModel.OrderBy = state.SortLabel;  // Capture the sorted column name
             PaginationSearchModel.IsDescending = state.SortDirection == SortDirection.Descending; // Set sorting direction
