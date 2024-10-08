@@ -31,9 +31,7 @@ namespace Application.Validation.RolesValidator
                  .NotEmpty().WithMessage(_stringLocalizer[Resource.RequiredFields])
                  .NotNull().WithMessage(_stringLocalizer[Resource.RequiredFields]);
 
-            RuleFor(x => x.RoleDescription)
-                .NotEmpty()
-                .WithMessage(_stringLocalizer[Resource.RequiredFields]);
+
         }
 
 

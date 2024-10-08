@@ -1,0 +1,278 @@
+﻿@page "/role/details/{roleId}"
+@using Client.Components.Dialogs.Permessions
+@using Shared.DTOs.Authorization.Request
+@using Shared.DTOs.Authorization.Response
+@using Shared.DTOs.Identity.UserDTOs
+
+@inject BIAuthorizationService AuthorizationService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@inject NavigationManager NavManager
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+<MudCard Outlined="true">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">@roleDetails.RoleName</MudText>
+        </CardHeaderContent>
+        <CardHeaderActions>
+            <MudIconButton Size="Size.Large" Icon="@Icons.Material.Filled.Key" Color="Color.Primary" />
+        </CardHeaderActions>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudText Typo="Typo.body1">@roleDetails.Description</MudText>
+        <MudText Typo="Typo.body2">@($"{usersList.Count} {Resource.UsersAssigned}")</MudText>
+    </MudCardContent>
+    <MudCardActions>
+
+        <MudButton StartIcon="@Icons.Material.Filled.Edit" Variant="Variant.Outlined" Color="Color.Warning" OnClick="OpenEditModal">@Resource.Edit</MudButton>
+
+        <MudButton OnClick="OpenConfirmationDeleteDialog" Disabled="usersList.Count != 0" StartIcon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Error" >@Resource.Delete</MudButton>
+    </MudCardActions>
+</MudCard>
+
+
+
+<MudDataGrid @bind-SelectedItems="selectedUsers" MultiSelection="true" T="ApplicationUserDTO" Items="usersList" QuickFilter="_quickFilter" Filterable="false">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">@Resource.AssignedUsers</MudText>
+        <MudSpacer />
+        <MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder="@Resource.SearchUsers" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+
+    <Columns>
+        <SelectColumn ShowInFooter="false" T="ApplicationUserDTO" />
+
+        <PropertyColumn SortBy="x => x.UserName" Property="x => x.UserName" Title="@Resource.Username">
+            <FooterTemplate>
+
+                <MudButton Disabled="selectedUsers.Count < 2 " StartIcon="@Icons.Material.Filled.People" EndIcon="@Icons.Material.Filled.Output"
+                           OnClick="@(async () => await UnAssignUsersAsync())" Color="Color.Error" Variant="Variant.Filled">
+                    @Resource.Unassign
+                </MudButton>
+
+
+            </FooterTemplate>
+        </PropertyColumn>
+        <PropertyColumn SortBy="x => x.Email" Property="x => x.Email" Title="@Resource.Email" />
+
+        <TemplateColumn Title="@Resource.Action" Sortable="false">
+
+            <CellTemplate>
+
+                <MudButton EndIcon="@Icons.Material.Filled.Output"
+                           OnClick="() => UnAssignUserAsync(context.Item.Id)" Color="Color.Error" Variant="Variant.Filled"
+                           Class="ml-2">
+                    @Resource.Unassign
+                </MudButton>
+            </CellTemplate>
+
+
+        </TemplateColumn>
+
+    </Columns>
+
+    <PagerContent>
+        <MudDataGridPager T="ApplicationUserDTO" />
+    </PagerContent>
+</MudDataGrid>
+
+<EditRoleDialog RoleId="@roleId" OnRoleEdited="ReloadRole" @bind-IsVisible=isEditModalVisible />
+
+@code {
+    [Parameter] public string roleId { get; set; }
+    private RoleWithUsersDto roleDetails = new();
+    private List<ApplicationUserDTO> usersList = new();
+    private System.Collections.Generic.HashSet<ApplicationUserDTO> selectedUsers = new();
+
+    private List<RoleDto> rolesList = new();
+    private string searchString;
+    private bool isEditModalVisible;
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadRoleDetails();
+    }
+
+    private async Task LoadRoleDetails()
+    {
+        try
+        {
+            var response = await AuthorizationService.GetRoleWithUsersAsync(roleId);
+
+            response.Match(
+                succ =>
+                {
+                    if (succ.Data is null)
+                    {
+                        foreach (var err in succ.ErrorList)
+                        {
+                            Snackbar.Add(err.Title, Severity.Error);
+                        }
+                        NavManager.NavigateTo("/roles");
+                    }
+                    else
+                    {
+
+                        roleDetails = succ.Data;
+                        usersList = roleDetails.AssignedUsers.Select(user => new ApplicationUserDTO
+                            {
+                                Id = user.Id,
+                                UserName = user.UserName,
+                                Email = user.Email,
+                            }).ToList();
+                    }
+                    return new Unit();
+                },
+                fail =>
+                {
+                    Snackbar.Add(Resource.LoadRoleFailed, Severity.Error);
+                    return new Unit();
+                }
+            );
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(Resource.LoadRoleFailed, Severity.Error);
+        }
+    }
+
+
+    private void OnSearch(string searchText)
+    {
+        searchString = searchText;
+        // usersList = usersList.Where(u => u.UserName.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+        //                                   u.Email.Contains(searchText, StringComparison.OrdinalIgnoreCase)).ToList();
+    }
+
+    private void OpenEditModal()
+    {
+        isEditModalVisible = true;
+    }
+
+    private async Task OpenConfirmationDeleteDialog()
+    {
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
+
+        var parameters = new DialogParameters<DeleteRoleDialog>
+    {
+        { x=>x.RoleId, roleId },
+        { x=>x.OnRoleDeleted, EventCallback.Factory.Create(this, ()=>{NavManager.NavigateTo("/roles");}) }
+    };
+
+        var dialog = DialogService.Show<DeleteRoleDialog>(Resource.Delete + " " + Resource.Role, parameters, options);
+    }
+    private async Task ReloadRole()
+    {
+        try
+        {
+            var response = await AuthorizationService.GetRoleById(roleId);
+
+            response.Match(
+                succ =>
+                {
+                    roleDetails.RoleName = succ.Data.RoleName;
+                    roleDetails.Description = succ.Data.RoleDescription;
+                    usersList = roleDetails.AssignedUsers.Select(user => new ApplicationUserDTO
+                        {
+                            Id = user.Id,
+                            UserName = user.UserName,
+                            Email = user.Email,
+                        }).ToList();
+
+                    return new Unit();
+                },
+                fail =>
+                {
+                    Snackbar.Add(Resource.LoadRoleFailed, Severity.Error);
+                    return new Unit();
+                }
+            );
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(Resource.LoadRoleFailed, Severity.Error);
+        }
+    }
+    private Func<ApplicationUserDTO, bool> _quickFilter => x =>
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+
+        if (x.UserName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if (x.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        return false;
+    };
+    private async Task UnAssignUserAsync(string userId)
+    {
+        try
+        {
+            var requestDto = new RemoveUsersFromRoleDto
+                {
+                    RoleId = roleId,
+                    UserIds = [userId]
+                };
+            var response = await AuthorizationService.RemoveUsersFromRoleAsync(requestDto);
+            response.Match(
+                succ =>
+                {
+                    var deletedDto = usersList.Find(x => x.Id == userId);
+                    usersList.Remove(deletedDto);
+
+                    Snackbar.Add(Resource.UnassignUsersSuccessfully, Severity.Success);
+                    return new Unit();
+                },
+                fail =>
+                {
+                    Snackbar.Add(Resource.UnassignUsersSuccessfully, Severity.Error);
+                    return new Unit();
+                }
+            );
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(Resource.UnassignUsersSuccessfully, Severity.Error);
+        }
+    }
+    private async Task UnAssignUsersAsync()
+    {
+        try
+        {
+            var requestDto = new RemoveUsersFromRoleDto
+                {
+                    RoleId = roleId,
+                    UserIds = selectedUsers.Select(u => u.Id).ToList()
+                };
+            var response = await AuthorizationService.RemoveUsersFromRoleAsync(requestDto);
+            response.Match(
+                succ =>
+                {
+                    foreach (var user in selectedUsers)
+                    {
+                        usersList.Remove(user);
+                    }
+                    selectedUsers.Clear();
+                    Snackbar.Add(Resource.UnassignUsersSuccessfully, Severity.Success);
+                    return new Unit();
+                },
+                fail =>
+                {
+                    Snackbar.Add(Resource.UnassignUsersSuccessfully, Severity.Error);
+                    return new Unit();
+                }
+            );
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(Resource.UnassignUsersSuccessfully, Severity.Error);
+        }
+    }
+}

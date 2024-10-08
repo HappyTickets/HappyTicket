@@ -129,8 +129,10 @@ namespace Application.Implementations.IdentityServices
                     return new(roleNotFoundExp);
                 }
 
-                // Proceed with role update logic
-                role.Name = editRoleDto.RoleName;
+                if (editRoleDto.RoleName != null)
+                {
+                    role.Name = editRoleDto.RoleName;
+                }
                 role.Description = editRoleDto.RoleDescription;
 
                 var result = await _roleManager.UpdateAsync(role);
@@ -204,62 +206,146 @@ namespace Application.Implementations.IdentityServices
 
         #region User-Role Assigning Operations
 
-        // Assign a single user to a specific role
-        public async Task<Result<Unit>> AssignUserToRoleAsync(AssignUserToRoleDto assignUserToRoleDto)
+        public async Task<Result<Unit>> AssignUserToRolesAsync(AssignUserToRolesDto assignUserToRolesDto)
         {
-            await _transactionRepository.BeginTransactionAsync();
             try
             {
-                // Check if the role exists
-                var role = await _roleManager.FindByIdAsync(assignUserToRoleDto.RoleId);
-                if (role is null)
-                {
-                    var roleNotFoundExp = new NotFoundException(
-                    [
-                        new(){ Title = Resource.AssignRoleFailed, Message = string.Format(Resource.NotFound, assignUserToRoleDto.RoleId) }
-                    ]);
-                    return new(roleNotFoundExp);
-                }
-
                 // Find the user by ID
-                var user = await _userManager.FindByIdAsync(assignUserToRoleDto.UserId);
-                if (user is null)
+                var user = await _userManager.FindByIdAsync(assignUserToRolesDto.UserId);
+                if (user == null)
                 {
                     var userNotFoundExp = new NotFoundException(
                     [
-                        new(){ Title = Resource.AssignRoleFailed, Message = string.Format(Resource.NotFound, assignUserToRoleDto.UserId) }
+
+                new() { Title = Resource.AssignRoleFailed, Message = string.Format(Resource.NotFound, assignUserToRolesDto.UserId) }
                     ]);
                     return new(userNotFoundExp);
                 }
 
-                // Check if the user is already in the role
-                if (!(await _userManager.IsInRoleAsync(user, role.Name)))
+                // Fetch current roles of the user
+                var currentRoles = await _userManager.GetRolesAsync(user);
+
+                var rolesToRemove = currentRoles.Except(assignUserToRolesDto.Roles).ToList();
+                var rolesToAdd = assignUserToRolesDto.Roles.Except(currentRoles).ToList();
+
+                // Remove roles if necessary
+                if (rolesToRemove.Any())
                 {
-                    var result = await _userManager.AddToRoleAsync(user, role.Name);
-                    if (!result.Succeeded)
+                    var removeResult = await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
+                    if (!removeResult.Succeeded)
                     {
-                        var addUserToRoleFailedExp = new BaseException(
+                        var errorMessages = string.Join(", ", removeResult.Errors.Select(e => e.Description));
+                        var removeRoleFailedExp = new BaseException(
                         [
-                            new(){ Title = Resource.AssignRoleFailed, Message = string.Join(", ", result.Errors.Select(e => e.Description)) }
+                    new() { Title = Resource.UserRemovedFromRoleFailed, Message = errorMessages }
                         ]);
-                        return new(addUserToRoleFailedExp);
+                        return new(removeRoleFailedExp);
                     }
                 }
 
-                await _transactionRepository.CommitTransactionAsync();
+                // Assign new roles if any
+                if (rolesToAdd.Any())
+                {
+                    var addResult = await _userManager.AddToRolesAsync(user, rolesToAdd);
+                    if (!addResult.Succeeded)
+                    {
+                        var errorMessages = string.Join(", ", addResult.Errors.Select(e => e.Description));
+                        var addRoleFailedExp = new BaseException(
+                        [
+
+                    new() { Title = Resource.AssignRoleFailed, Message = errorMessages }
+                        ]);
+                        return new(addRoleFailedExp);
+                    }
+                }
+
+                // Success if roles were added or removed correctly
                 return new(Unit.Default);
             }
             catch (Exception ex)
             {
-                await _transactionRepository.RollbackTransactionAsync(); // Rollback in case of error
                 return new(ex);
             }
         }
 
-
-        public async Task<Result<Unit>> RemoveUserFromRoleAsync(RemoveUserFromRoleDto removeUserFromRoleDto)
+        public async Task<Result<Unit>> AssignUsersToRoleAsync(AssignUsersToRoleDto assignUsersToRoleDto)
         {
-            await _transactionRepository.BeginTransactionAsync();
+            var res = new Result<Unit>();
+
+            try
+            {
+                // Validate input
+                if (assignUsersToRoleDto == null || string.IsNullOrEmpty(assignUsersToRoleDto.Role) || !assignUsersToRoleDto.UserIds.Any())
+                {
+                    var validationExp = new BaseException(
+                        [
+                            new() { Title = Resource.AssignRoleFailed, Message = "Invalid input data." }
+                        ]);
+                    return new(validationExp);
+                }
+
+                // Find the role by ID (assuming Role is an ID; if it's a name, use FindByNameAsync)
+                var role = await _roleManager.FindByIdAsync(assignUsersToRoleDto.Role);
+                if (role == null)
+                {
+                    var roleNotFoundExp = new NotFoundException(
+                        [
+                            new() { Title = Resource.AssignRoleFailed, Message = string.Format(Resource.NotFound, assignUsersToRoleDto.Role) }
+                        ]);
+                    return new(roleNotFoundExp);
+                }
+
+                // Retrieve all users in one DB call
+                var users = await _userManager.Users
+                    .Where(u => assignUsersToRoleDto.UserIds.Contains(u.Id))
+                    .ToListAsync();
+
+                // Create a list to hold any errors encountered
+                var errors = new List<string>();
+
+                // Iterate through the users and assign the role
+                foreach (var user in users)
+                {
+                    try
+                    {
+                        var isInRole = await _userManager.IsInRoleAsync(user, role.Name);
+                        if (!isInRole)
+                        {
+                            var result = await _userManager.AddToRoleAsync(user, role.Name);
+                            if (!result.Succeeded)
+                            {
+                                errors.AddRange(result.Errors.Select(e => e.Description));
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        errors.Add(ex.Message);
+                    }
+                }
+
+                // If there are any errors, return them in the response
+                if (errors.Count > 0)
+                {
+                    var assignRoleFailedExp = new BaseException(
+                        [
+                            new() { Title = Resource.AssignRoleFailed, Message = "See Details", Details = errors }
+                        ]);
+
+                    return new(assignRoleFailedExp);
+                }
+
+                return new(Unit.Default); // Return success if no errors occurred
+            }
+            catch (Exception ex)
+            {
+                return new(ex); // Return a general error if something unexpected occurs
+            }
+        }
+
+
+        public async Task<Result<Unit>> RemoveUsersFromRoleAsync(RemoveUsersFromRoleDto removeUserFromRoleDto)
+        {
             try
             {
                 // Check if the role exists
@@ -272,38 +358,35 @@ namespace Application.Implementations.IdentityServices
                     ]);
                     return new(roleNotFoundExp);
                 }
-
-                // Find the user by ID
-                var user = await _userManager.FindByIdAsync(removeUserFromRoleDto.UserId);
-                if (user is null)
+                var users = await _userManager.Users
+                    .Where(u => removeUserFromRoleDto.UserIds.Contains(u.Id))
+                    .ToListAsync();
+                var errors = new List<string>();
+                foreach (var user in users)
                 {
-                    var userNotFoundExp = new NotFoundException(
-                    [
-                        new(){ Title = Resource.RemoveRoleFailed, Message = string.Format(Resource.NotFound, removeUserFromRoleDto.UserId) }
-                    ]);
-                    return new(userNotFoundExp);
-                }
 
-                // Check if the user is in the role
-                if (await _userManager.IsInRoleAsync(user, role.Name))
-                {
-                    var result = await _userManager.RemoveFromRoleAsync(user, role.Name);
-                    if (!result.Succeeded)
+                    if (await _userManager.IsInRoleAsync(user, role.Name))
                     {
-                        var removeUserFromRoleFailedExp = new BaseException(
-                        [
-                            new(){ Title = Resource.RemoveRoleFailed, Message = string.Join(", ", result.Errors.Select(e => e.Description)) }
-                        ]);
-                        return new(removeUserFromRoleFailedExp);
+                        var result = await _userManager.RemoveFromRoleAsync(user, role.Name);
+                        if (!result.Succeeded)
+                        {
+                            errors.Add(result.Errors.First().Description);
+                        }
                     }
                 }
+                if (errors.Any())
+                {
+                    var removeUsersFromRoleFailedExp = new BaseException(
+                    [
+                                new(){ Title = Resource.RemoveRoleFailed,Message= "",Details=errors }
+                            ]);
 
-                await _transactionRepository.CommitTransactionAsync(); // Commit the transaction after successful role removal
+                    return new(removeUsersFromRoleFailedExp);
+                }
                 return new(Unit.Default);
             }
             catch (Exception ex)
             {
-                await _transactionRepository.RollbackTransactionAsync(); // Rollback in case of error
                 return new(ex);
             }
         }
@@ -379,6 +462,35 @@ namespace Application.Implementations.IdentityServices
             }
         }
 
+        public async Task<Result<List<UserWithRolesDto>>> GetUsersWithRolesAsync()
+        {
+            try
+            {
+                var users = _userManager.Users.ToList();
+
+                var usersWithRoles = new List<UserWithRolesDto>();
+
+                foreach (var user in users)
+                {
+                    var rolesNames = await _userManager.GetRolesAsync(user);
+
+                    var userWithRolesDto = new UserWithRolesDto
+                    {
+                        UserId = user.Id,
+                        UserName = user.UserName,
+                        Email = user.Email,
+                        AssignedRoles = rolesNames.ToList()
+                    };
+                    usersWithRoles.Add(userWithRolesDto);
+                }
+
+                return new(usersWithRoles);
+            }
+            catch (Exception ex)
+            {
+                return new(ex);
+            }
+        }
 
 
 

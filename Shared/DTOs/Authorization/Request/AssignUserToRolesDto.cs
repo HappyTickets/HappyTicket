@@ -1,8 +1,8 @@
 ﻿namespace Shared.DTOs.Authorization.Request
 {
-    public class RemoveUserFromRoleDto
+    public class AssignUserToRolesDto
     {
-        public string RoleId { get; set; }
+        public List<string> Roles { get; set; }
         public string UserId { get; set; }
     }
 }

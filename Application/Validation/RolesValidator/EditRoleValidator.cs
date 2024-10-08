@@ -31,24 +31,24 @@ namespace Application.Validation.RolesValidator
                 .NotEmpty()
                 .NotNull()
                 .WithMessage(_stringLocalizer[Resource.RequiredFields]);
-
-
-            RuleFor(x => x.RoleName)
-                 .NotEmpty().WithMessage(_stringLocalizer[Resource.RequiredFields])
-                 .NotNull().WithMessage(_stringLocalizer[Resource.RequiredFields]);
-
-            RuleFor(x => x.RoleDescription)
-                .NotEmpty()
-                .WithMessage(_stringLocalizer[Resource.RequiredFields]);
         }
 
 
         public void ApplyCustomValidationsRules()
         {
             RuleFor(x => x.RoleName)
-                .MustAsync(async (roleName, cancellationToken) => !await _roleManager.RoleExistsAsync(roleName))
-                .WithMessage(_stringLocalizer[Resource.RoleAlreadyExists]);
+             .NotEmpty().WithMessage(_stringLocalizer[Resource.RequiredFields])
+             .When(x => !string.IsNullOrEmpty(x.RoleName))
+             .MustAsync(async (dto, roleName, cancellationToken) =>
+             {
+                 var role = await _roleManager.FindByNameAsync(roleName);
+                 return role == null || role.Id == dto.RoleId;
+             })
+             .WithMessage(_stringLocalizer[Resource.RoleAlreadyExists])
+             .When(x => !string.IsNullOrEmpty(x.RoleName));
+
         }
+
 
 
         #endregion

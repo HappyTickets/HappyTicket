@@ -15,10 +15,13 @@ namespace Application.Interfaces.IIdentityServices
         Task<Result<List<RoleDto>>> GetRolesList();
         Task<Result<RoleDto>> GetRoleById(string id);
 
-        Task<Result<Unit>> AssignUserToRoleAsync(AssignUserToRoleDto assignUserToRoleDto);
-        Task<Result<Unit>> RemoveUserFromRoleAsync(RemoveUserFromRoleDto removeUserFromRoleDto);
+        Task<Result<Unit>> AssignUserToRolesAsync(AssignUserToRolesDto assignUserToRolesDto);
+        Task<Result<Unit>> AssignUsersToRoleAsync(AssignUsersToRoleDto assignUsersToRoleDto);
+        Task<Result<Unit>> RemoveUsersFromRoleAsync(RemoveUsersFromRoleDto removeUserFromRoleDto);
 
         Task<Result<UserWithRolesDto>> GetUserWithRolesAsync(string userId);
         Task<Result<RoleWithUsersDto>> GetRoleWithUsersAsync(string roleId);
+        Task<Result<List<UserWithRolesDto>>> GetUsersWithRolesAsync();
+
     }
 }
