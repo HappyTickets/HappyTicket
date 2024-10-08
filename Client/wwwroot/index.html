@@ -19,11 +19,38 @@
 
 <body>
     <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
+        <!--Custom Happy Loader-->
+        <div class="loading-page">
+            <svg id="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path d="M100 512V0h80v212h152V0h80v512h-80V292H180v220H100z" />
+            </svg>
+
+            <div class="name-container">
+                <div class="logo-name">
+                    <span class="letter">H</span>
+                    <span class="letter">a</span>
+                    <span class="letter">p</span>
+                    <span class="letter">p</span>
+                    <span class="letter">y</span>
+                    <span class="letter space">&nbsp;</span>
+                    <span class="letter">T</span>
+                    <span class="letter">i</span>
+                    <span class="letter">c</span>
+                    <span class="letter">k</span>
+                    <span class="letter">e</span>
+                    <span class="letter">t</span>
+                    <span class="letter">s</span>
+                </div>
+            </div>
+            <div class="mustache-container">
+                <svg id="mustache" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 256">
+                    <path d="M0 100c70 50 150-50 180 0 20 30 60 30 90 0 30-50 110 50 180 0v40c-70 50-150-50-180 0-20 30-60 30-90 0-30-50-110 50-180 0v-40z" />
+                </svg>
+            </div>
+        </div>
+
+
+
     </div>
 
     <div id="blazor-error-ui">

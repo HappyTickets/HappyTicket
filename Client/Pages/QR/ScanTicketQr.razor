@@ -13,7 +13,7 @@
 {
     <BarcodeReader ScanResult="(e => HandleScanResult(e))" DecodeAllFormats Options=@(new() { ShowSelectFile = true, Screenshot = scannerFromScreenShot }) ScanBtnTitle="Scan" ResetBtnTitle="Reset" SelectDeviceBtnTitle="Select" CloseBtnTitle="Close" UseBuiltinDiv="false" @ref="barcodeReaderCustom" 
         Close=@(() => { scannerFromScreenShot = false; }) />
-    
+
     <div @ref="barcodeReaderCustom.Element">
         <div style="width: 480px; max-width: 100%">
             <MudButton data-action="startButton">Scan</MudButton>
@@ -27,10 +27,11 @@
                 </select>
             </div>
             <div>
-                <video id="video" playsinline autoplay style="height:480px;width: 640px;border: 1px solid red"></video>
+                <video id="video" playsinline autoplay class="center-video" style="height:480px;width: 640px;border: 1px solid red"></video>
             </div>
         </div>
     </div>
+
 }
 
 

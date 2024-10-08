@@ -6,6 +6,351 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+
+
+
+.container {
+    background-color: black;
+    color: #fff;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.loading-page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(to right, #2c5364, #203a43, #0f2027);
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    color: #191654;
+    z-index: 9999;
+}
+
+#svg {
+    height: 150px;
+    width: 150px;
+    stroke: white;
+    fill-opacity: 0;
+    stroke-width: 3px;
+    stroke-dasharray: 4500;
+    stroke-dashoffset: 500;
+    transition: stroke-dashoffset 2s ease;
+    animation: draw 8s ease forwards;
+}
+
+@keyframes draw {
+    0% {
+        stroke-dashoffset: 500;
+    }
+
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+.name-container {
+    height: 30px;
+    overflow: hidden;
+}
+
+.logo-name {
+    display: flex;
+}
+
+.letter {
+    opacity: 0;
+    font-size: 20px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    font-weight: bolder;
+    color: white;
+    animation: fadeInLetter 0.5s ease forwards;
+}
+
+.space {
+    width: 10px;
+}
+
+.letter:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.letter:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.letter:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.letter:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.letter:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.letter:nth-child(7) {
+    animation-delay: 0.6s;
+}
+.letter:nth-child(8) {
+    animation-delay: 0.7s;
+}
+
+.letter:nth-child(9) {
+    animation-delay: 0.8s;
+}
+
+.letter:nth-child(10) {
+    animation-delay: 0.9s;
+}
+
+.letter:nth-child(11) {
+    animation-delay: 1s;
+}
+
+.letter:nth-child(12) {
+    animation-delay: 1.1s;
+}
+
+.letter:nth-child(13) {
+    animation-delay: 1.2s;
+}
+
+@keyframes fadeInLetter {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mustache-container {
+    margin-top: 2px; 
+    animation: mustacheBounce 1.5s ease infinite;
+}
+
+#mustache {
+    height: 100px;
+    width: 200px;
+    fill: orange;
+}
+
+@keyframes mustacheBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+.button-container div {
+    margin-bottom: 10px; 
+}
+.button-container {
+    margin: 0; 
+}
+
+    .button-container .mud-button {
+        margin-bottom: 10px;
+    }
+
+.center-on-mobile {
+    text-align: left; 
+}
+
+@media (max-width: 768px) {
+    .center-on-mobile {
+        text-align: center; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column; 
+    }
+    .team-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column; 
+    }
+}
+.center-on-mobile {
+    text-align: left; 
+    display: block; 
+}
+
+@media (max-width: 768px) {
+    .center-on-mobile {
+        text-align: center; 
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        flex-direction: column; 
+    }
+    .team-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column; 
+    }
+}
+@media (max-width: 768px) {
+    .button-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .button-full-width {
+        width: 100%;
+        margin-bottom: 10px; 
+    }
+}
+
+@media (min-width: 769px) {
+    .button-container {
+        display: flex;
+        width: 100%;
+    }
+
+    .button-full-width {
+        width: auto; 
+        margin-right: 10px;
+    }
+
+        .button-full-width:last-child {
+            margin-right: 0; 
+        }
+}
+.team-logo {
+    width: auto;
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    .team-logo {
+        width: 80px !important; 
+        height: auto; 
+    }
+}
+
+.date-time-mobile {
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .date-time-mobile.time {
+        margin-top: 10px; 
+    }
+}
+
+
+.responsive-table {
+    display: table;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .responsive-table thead {
+        display: none !important; 
+    }
+
+    .responsive-table {
+        display: block;
+        width: 100%;
+    }
+
+        .responsive-table tbody {
+            display: block; 
+        }
+
+        .responsive-table tr {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 100%;
+        }
+
+        .responsive-table td {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 5px;
+            align-items: center;
+        }
+
+            .responsive-table td:before {
+                content: attr(data-label); 
+                font-weight: bold;
+                flex-basis: 40%;
+                text-align: left;
+                padding-right: 10px;
+            }
+
+        .responsive-table td {
+            flex-basis: 60%;
+            text-align: right;
+        }
+}
+
+
+
+
+
+
+@keyframes draw {
+    0% {
+        stroke-dashoffset: 4500;
+    }
+
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .center-video {
+        display: block;
+        margin: 0 auto; 
+        width: 100%; 
+        max-width: 100%; 
+        height: auto; 
+    }
+}
+
+
+
+.name-container {
+    height: 30px;
+    overflow: hidden;
+}
+
+.logo-name {
+    color: #fff;
+    font-size: 20px;
+    letter-spacing: 12px;
+    text-transform: uppercase;
+    margin-left: 20px;
+    font-weight: bolder;
+}
+
 .mud-height-full, .forms-mud-grid {
     min-height: calc(100vh - 60px);
 }

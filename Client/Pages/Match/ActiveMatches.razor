@@ -31,20 +31,35 @@
                 <RowTemplate>
                     <MudTd>
                         <MudGrid>
-                            <MudItem xs="12" md="6">
+                            <MudItem xs="6" md="6" class="team-item">
                                 <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), context.TeamA?.Logo))" alt="@context.TeamA?.Name" class="team-logo" />
                                 <div>@context.TeamA?.Name</div>
                             </MudItem>
-                            <MudItem xs="12" md="6">
+                            <MudItem xs="6" md="6" class="team-item">
                                 <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), context.TeamB?.Logo))" alt="@context.TeamB?.Name" class="team-logo" />
-
                                 <div>@context.TeamB?.Name</div>
                             </MudItem>
                         </MudGrid>
+
+
                     </MudTd>
-                    <MudTd>@context.EventDate?.ToString("dd-MM-yyyy") @context.EventTime</MudTd>
-                    <MudTd>@context.Stadium?.Name</MudTd>
-                    <MudTd>
+                    <MudTd class="center-on-mobile">
+                        <div class="date-time-mobile">
+                            @context.EventDate?.ToString("dd-MM-yyyy") 
+                        </div>
+                        <div class="date-time-mobile time">
+                            @{
+                                var formattedTime = DateTime.Today.Add(context.EventTime ?? TimeSpan.Zero).ToString("hh:mm tt");
+                            }
+                            @formattedTime 
+                        </div>
+                    </MudTd>
+
+
+                    <MudTd class="center-on-mobile">
+                        @context.Stadium?.Name
+                    </MudTd>
+                    <MudTd class="center-on-mobile">
                         <LoadingButton OnClick="@(() => NavigateToDetails(context.Id))" Color="Color.Primary" Variant="Variant.Filled">@Resource.Details_View</LoadingButton>
                     </MudTd>
                 </RowTemplate>

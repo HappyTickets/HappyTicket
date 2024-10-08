@@ -23,7 +23,7 @@
         }
         else
         {
-            <MudTable Items="@cart.CartItemsGrouped" Striped="true" Bordered="true" Hover="true">
+            <MudTable Items="@cart.CartItemsGrouped" Striped="true" Bordered="true" Hover="true" Class="responsive-table">
                 <HeaderContent>
                     <MudTh>@Resource.Match</MudTh>
                     <MudTh>@Resource.TeamName</MudTh>
@@ -34,27 +34,40 @@
                     <MudTh>@Resource.TheActions</MudTh>
                 </HeaderContent>
                 <RowTemplate>
-                    <MudTd>@context.MatchName</MudTd>
-                    <MudTd>@context.TeamName</MudTd>
-                    <MudTd>@context.Class</MudTd>
-                    <MudTd>@context.Location</MudTd>
-                    <MudTd>@context.TotalQuantity</MudTd>
-                    <MudTd>@context.TotalPrice.ToString("C")</MudTd>
-                    <MudTd>
+                    <MudTd data-label="@Resource.Match">@context.MatchName</MudTd>
+                    <MudTd data-label="@Resource.TeamName">@context.TeamName</MudTd>
+                    <MudTd data-label="@Resource.Class">@context.Class</MudTd>
+                    <MudTd data-label="@Resource.Location">@context.Location</MudTd>
+                    <MudTd data-label="@Resource.Quantity">@context.TotalQuantity</MudTd>
+                    <MudTd data-label="@Resource.Price">
+                        @{
+                            var totalPriceInSar = context.TotalPrice;
+                            var formattedTotalPrice = totalPriceInSar.ToString("N2");
+                        }
+                        @formattedTotalPrice @Resource.Sar
+                    </MudTd>
+                    <MudTd data-label="@Resource.TheActions">
                         <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => RemoveItem(context.Id)" />
                     </MudTd>
                 </RowTemplate>
             </MudTable>
+
             <MudSpacer />
 
-            <MudText Typo="Typo.h6" Align="Align.Right" Class="mt-3 mb-3">
+            <MudText Typo="Typo.h6" Align="Align.Center" Class="mt-3 mb-3">
                 <MudChip T="string" Color="Color.Secondary" Class="ms-0">
                     @Resource.Total
                 </MudChip>
                 <MudChip T="string" Color="Color.Primary">
-                    @cart.Total.ToString("C")
-                </MudChip> 
+                    @{
+                        var formattedTotal = cart.Total.ToString("N2");  
+                    }
+                    @formattedTotal @Resource.Sar 
+                </MudChip>
+
+
             </MudText>
+
             <MudButton Disabled="@_processing" OnClick="ProceedToCheckout" Variant="Variant.Outlined" Color="Color.Primary" FullWidth>
                 @if (_processing)
                 {
