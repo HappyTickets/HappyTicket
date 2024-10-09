@@ -3,6 +3,7 @@ using LanguageExt;
 using LanguageExt.Common;
 using Shared.Common;
 using Shared.Common.ApiRoutes;
+using Shared.Common.General;
 using Shared.DTOs.Authorization.Request;
 using Shared.DTOs.Authorization.Response;
 
@@ -33,7 +34,7 @@ namespace Client.Services.Implementation
             return await _httpClient.GetBaseAsync<BaseResponse<Unit>>(BASE + ApiRoutes.Authorization.DeleteRole.Replace("{id}", roleId));
         }
 
-        public async Task<Result<BaseResponse<List<RoleDto>>>> GetRolesList()
+        public async Task<Result<BaseResponse<List<RoleDto>>>> GetRolesList(CancellationToken cancellationToken)
         {
             return await _httpClient.GetBaseAsync<BaseResponse<List<RoleDto>>>(BASE + ApiRoutes.Authorization.RolesList);
         }
@@ -47,11 +48,11 @@ namespace Client.Services.Implementation
         {
             return await _httpClient.PostBaseAsync<AssignUserToRolesDto, BaseResponse<Unit>>(BASE + ApiRoutes.Authorization.AssignUserToRoles, assignUserToRoleDto);
         }
-        public async Task<Result<BaseResponse<Unit>>> AssignUsersToRoleAsync(AssignUsersToRoleDto assignUsersToRoleDto)
+        public async Task<Result<BaseResponse<Unit>>> AssignUsersToRoleAsync(AssignUsersToRoleDto assignUsersToRoleDto, CancellationToken cancellationToken)
         {
             return await _httpClient.PostBaseAsync<AssignUsersToRoleDto, BaseResponse<Unit>>(BASE + ApiRoutes.Authorization.AssignUsersToRole, assignUsersToRoleDto);
         }
-        public async Task<Result<BaseResponse<Unit>>> RemoveUsersFromRoleAsync(RemoveUsersFromRoleDto removeUserFromRoleDto)
+        public async Task<Result<BaseResponse<Unit>>> RemoveUsersFromRoleAsync(RemoveUsersFromRoleDto removeUserFromRoleDto, CancellationToken cancellationToken)
         {
             return await _httpClient.PostBaseAsync<RemoveUsersFromRoleDto, BaseResponse<Unit>>(BASE + ApiRoutes.Authorization.RemoveUsersFromRole, removeUserFromRoleDto);
         }
@@ -61,16 +62,20 @@ namespace Client.Services.Implementation
             return await _httpClient.GetBaseAsync<BaseResponse<UserWithRolesDto>>(BASE + ApiRoutes.Authorization.GetUserWithRoles.Replace("{userId}", userId));
         }
 
-        public async Task<Result<BaseResponse<RoleWithUsersDto>>> GetRoleWithUsersAsync(string roleId)
+        public async Task<Result<BaseResponse<RoleWithUsersDto>>> GetRoleWithUsersAsync(string roleId, PaginationSearchModel paginationSearchModel, CancellationToken cancellationToken = default)
         {
-            return await _httpClient.GetBaseAsync<BaseResponse<RoleWithUsersDto>>(BASE + ApiRoutes.Authorization.GetRoleWithUsers.Replace("{roleId}", roleId));
+            var queryParameters = paginationSearchModel.AsDictionary();
+
+            return await _httpClient.GetBaseAsync<BaseResponse<RoleWithUsersDto>>(BASE + ApiRoutes.Authorization.GetRoleWithUsers.Replace("{roleId}", roleId), queryParameters);
         }
 
-        public async Task<Result<BaseResponse<List<UserWithRolesDto>>>> GetUsersWithRolesAsync()
+        public async Task<Result<BaseResponse<PaginatedList<UserWithRolesDto>>>> GetUsersWithRolesAsync(PaginationSearchModel paginationSearchModel, CancellationToken cancellationToken)
         {
-            return await _httpClient.GetBaseAsync<BaseResponse<List<UserWithRolesDto>>>
+            var queryParameters = paginationSearchModel.AsDictionary();
 
-                (BASE + ApiRoutes.Authorization.GetUsersWithRoles);
+            return await _httpClient.GetBaseAsync<BaseResponse<PaginatedList<UserWithRolesDto>>>
+
+                (BASE + ApiRoutes.Authorization.GetUsersWithRoles, queryParameters);
         }
 
 

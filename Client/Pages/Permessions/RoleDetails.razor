@@ -1,17 +1,17 @@
-﻿@page "/role/details/{roleId}"
+﻿@page "/role/unassign/{roleId}"
 @using Client.Components.Dialogs.Permessions
 @using Shared.DTOs.Authorization.Request
 @using Shared.DTOs.Authorization.Response
 @using Shared.DTOs.Identity.UserDTOs
 
 @inject BIAuthorizationService AuthorizationService
-@inject ISnackbar Snackbar
+@inject ICustomSnackbarProvider Snackbar
 @inject IDialogService DialogService
 @inject NavigationManager NavManager
 
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
 
-<MudCard Outlined="true">
+@* <MudCard Outlined="true">
     <MudCardHeader>
         <CardHeaderContent>
             <MudText Typo="Typo.h6">@roleDetails.RoleName</MudText>
@@ -30,22 +30,48 @@
 
         <MudButton OnClick="OpenConfirmationDeleteDialog" Disabled="usersList.Count != 0" StartIcon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Error" >@Resource.Delete</MudButton>
     </MudCardActions>
-</MudCard>
+</MudCard> *@
 
 
 
-<MudDataGrid @bind-SelectedItems="selectedUsers" MultiSelection="true" T="ApplicationUserDTO" Items="usersList" QuickFilter="_quickFilter" Filterable="false">
+<MudDataGrid @ref="dataGrid" ServerData="LoadRoleDetails" @bind-SelectedItems="selectedUsers" MultiSelection="true" T="ApplicationUserDTO" Filterable="false">
+
+
     <ToolBarContent>
-        <MudText Typo="Typo.h6">@Resource.AssignedUsers</MudText>
-        <MudSpacer />
-        <MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder="@Resource.SearchUsers" Adornment="Adornment.Start"
-                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        <MudText Style="text-wrap: nowrap;" Typo="Typo.h6">@Resource.AssignedUsers</MudText>
+        <MudGrid Style="align-items:end" Justify="Justify.FlexEnd">
+
+            <MudItem>
+                <MudFab OnClick="OnSearch" Size="Size.Small" Disabled="string.IsNullOrEmpty(searchKey)" Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Search" />
+            </MudItem>
+
+            <MudItem xs="6">
+                <MudTextField T="string"
+                              @bind-Value="searchString"
+                              Placeholder="@Resource.SearchUsers"
+                              Adornment="Adornment.Start"
+                              IconSize="Size.Medium"
+                              EndAdornmentIcon="@Icons.Material.Filled.ArrowDropDown">
+
+                </MudTextField>
+            </MudItem>
+
+            <MudItem xs="4">
+                <MudSelect @bind-Value="searchKey" Placeholder="@Resource.SelectSearchKey">
+                    @foreach (var key in searchKeys)
+                    {
+                        <MudSelectItem Value="@key">@key</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+
+        </MudGrid>
     </ToolBarContent>
 
     <Columns>
         <SelectColumn ShowInFooter="false" T="ApplicationUserDTO" />
 
-        <PropertyColumn SortBy="x => x.UserName" Property="x => x.UserName" Title="@Resource.Username">
+        <PropertyColumn Sortable="false" Property="x => x.UserName" Title="@Resource.Username">
             <FooterTemplate>
 
                 <MudButton Disabled="selectedUsers.Count < 2 " StartIcon="@Icons.Material.Filled.People" EndIcon="@Icons.Material.Filled.Output"
@@ -56,7 +82,7 @@
 
             </FooterTemplate>
         </PropertyColumn>
-        <PropertyColumn SortBy="x => x.Email" Property="x => x.Email" Title="@Resource.Email" />
+        <PropertyColumn Sortable="false" Property="x => x.Email" Title="@Resource.Email" />
 
         <TemplateColumn Title="@Resource.Action" Sortable="false">
 
@@ -79,30 +105,47 @@
     </PagerContent>
 </MudDataGrid>
 
-<EditRoleDialog RoleId="@roleId" OnRoleEdited="ReloadRole" @bind-IsVisible=isEditModalVisible />
+@* <EditRoleDialog RoleId="@roleId" OnRoleEdited="ReloadRole" @bind-IsVisible=isEditModalVisible /> *@
 
 @code {
+    MudDataGrid<ApplicationUserDTO> dataGrid;
     [Parameter] public string roleId { get; set; }
     private RoleWithUsersDto roleDetails = new();
     private List<ApplicationUserDTO> usersList = new();
     private System.Collections.Generic.HashSet<ApplicationUserDTO> selectedUsers = new();
-
+    private PaginationSearchModel paginationSearchModel;
     private List<RoleDto> rolesList = new();
     private string searchString;
-    private bool isEditModalVisible;
+    private string searchKey;
+    private List<string> searchKeys = new();
 
-
-
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await LoadRoleDetails();
+        searchKeys = GetUserSearchKeys();
     }
-
-    private async Task LoadRoleDetails()
+    private List<string> GetUserSearchKeys()
+    {
+        return typeof(SearchInKey.ApplicationUser)
+             .GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
+             .Select(f => f.GetValue(null).ToString())
+             .ToList();
+    }
+    private async Task<GridData<ApplicationUserDTO>> LoadRoleDetails(GridState<ApplicationUserDTO> state)
     {
         try
         {
-            var response = await AuthorizationService.GetRoleWithUsersAsync(roleId);
+            // Update pagination and search model based on the grid state
+            paginationSearchModel = new PaginationSearchModel
+                {
+                    PageIndex = state.Page,
+                    PageSize = state.PageSize,
+                    SearchIn = searchString,
+                    SearchKey = searchKey
+                };
+
+            var response = await AuthorizationService.GetRoleWithUsersAsync(roleId, paginationSearchModel);
+
+            GridData<ApplicationUserDTO> data = new GridData<ApplicationUserDTO>();
 
             response.Match(
                 succ =>
@@ -111,48 +154,54 @@
                     {
                         foreach (var err in succ.ErrorList)
                         {
-                            Snackbar.Add(err.Title, Severity.Error);
+                            Snackbar.Show(err.Title, Severity.Error);
                         }
                         NavManager.NavigateTo("/roles");
                     }
                     else
                     {
-
                         roleDetails = succ.Data;
-                        usersList = roleDetails.AssignedUsers.Select(user => new ApplicationUserDTO
+
+                        // Map users from the response to the ApplicationUserDTO list
+                        usersList = roleDetails.AssignedUsers.Items.Select(user => new ApplicationUserDTO
                             {
                                 Id = user.Id,
                                 UserName = user.UserName,
                                 Email = user.Email,
                             }).ToList();
+
+                        data.Items = usersList.AsQueryable();
+                        data.TotalItems = roleDetails.AssignedUsers.TotalItems;
                     }
-                    return new Unit();
+                    return data; // Return the populated data
                 },
                 fail =>
                 {
-                    Snackbar.Add(Resource.LoadRoleFailed, Severity.Error);
-                    return new Unit();
+                    Snackbar.Show(Resource.LoadRoleFailed, Severity.Error);
+                    return data;
                 }
             );
+
+            return data;
         }
         catch (Exception ex)
         {
-            Snackbar.Add(Resource.LoadRoleFailed, Severity.Error);
+            Snackbar.Show(Resource.LoadRoleFailed, Severity.Error);
+            return new GridData<ApplicationUserDTO> // Return empty data in case of exception
+                {
+                    Items = Enumerable.Empty<ApplicationUserDTO>().AsQueryable(),
+                    TotalItems = 0
+                };
         }
     }
 
 
-    private void OnSearch(string searchText)
+    private Task OnSearch()
     {
-        searchString = searchText;
-        // usersList = usersList.Where(u => u.UserName.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
-        //                                   u.Email.Contains(searchText, StringComparison.OrdinalIgnoreCase)).ToList();
+        return dataGrid.ReloadServerData();
     }
 
-    private void OpenEditModal()
-    {
-        isEditModalVisible = true;
-    }
+
 
     private async Task OpenConfirmationDeleteDialog()
     {
@@ -177,7 +226,7 @@
                 {
                     roleDetails.RoleName = succ.Data.RoleName;
                     roleDetails.Description = succ.Data.RoleDescription;
-                    usersList = roleDetails.AssignedUsers.Select(user => new ApplicationUserDTO
+                    usersList = roleDetails.AssignedUsers.Items.Select(user => new ApplicationUserDTO
                         {
                             Id = user.Id,
                             UserName = user.UserName,
@@ -188,29 +237,29 @@
                 },
                 fail =>
                 {
-                    Snackbar.Add(Resource.LoadRoleFailed, Severity.Error);
+                    Snackbar.Show(Resource.LoadRoleFailed, Severity.Error);
                     return new Unit();
                 }
             );
         }
         catch (Exception ex)
         {
-            Snackbar.Add(Resource.LoadRoleFailed, Severity.Error);
+            Snackbar.Show(Resource.LoadRoleFailed, Severity.Error);
         }
     }
-    private Func<ApplicationUserDTO, bool> _quickFilter => x =>
-    {
-        if (string.IsNullOrWhiteSpace(searchString))
-            return true;
+    // private Func<ApplicationUserDTO, bool> _quickFilter => x =>
+    // {
+    //     if (string.IsNullOrWhiteSpace(searchString))
+    //         return true;
 
-        if (x.UserName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
+    //     if (x.UserName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+    //         return true;
 
-        if (x.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
+    //     if (x.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+    //         return true;
 
-        return false;
-    };
+    //     return false;
+    // };
     private async Task UnAssignUserAsync(string userId)
     {
         try
@@ -227,19 +276,19 @@
                     var deletedDto = usersList.Find(x => x.Id == userId);
                     usersList.Remove(deletedDto);
 
-                    Snackbar.Add(Resource.UnassignUsersSuccessfully, Severity.Success);
+                    Snackbar.Show(Resource.UnassignUsersSuccessfully, Severity.Success);
                     return new Unit();
                 },
                 fail =>
                 {
-                    Snackbar.Add(Resource.UnassignUsersSuccessfully, Severity.Error);
+                    Snackbar.Show(Resource.UnassignUsersSuccessfully, Severity.Error);
                     return new Unit();
                 }
             );
         }
         catch (Exception ex)
         {
-            Snackbar.Add(Resource.UnassignUsersSuccessfully, Severity.Error);
+            Snackbar.Show(Resource.UnassignUsersSuccessfully, Severity.Error);
         }
     }
     private async Task UnAssignUsersAsync()
@@ -260,19 +309,19 @@
                         usersList.Remove(user);
                     }
                     selectedUsers.Clear();
-                    Snackbar.Add(Resource.UnassignUsersSuccessfully, Severity.Success);
+                    Snackbar.Show(Resource.UnassignUsersSuccessfully, Severity.Success);
                     return new Unit();
                 },
                 fail =>
                 {
-                    Snackbar.Add(Resource.UnassignUsersSuccessfully, Severity.Error);
+                    Snackbar.Show(Resource.UnassignUsersSuccessfully, Severity.Error);
                     return new Unit();
                 }
             );
         }
         catch (Exception ex)
         {
-            Snackbar.Add(Resource.UnassignUsersSuccessfully, Severity.Error);
+            Snackbar.Show(Resource.UnassignUsersSuccessfully, Severity.Error);
         }
     }
 }

@@ -56,6 +56,7 @@ namespace API.Extensions
             services.AddTransient(typeof(ITokenService<>), typeof(TokenService<>));
             services.AddTransient(typeof(IBaseService<,>), typeof(BaseService<,>));
             services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<IAuthorizationRepository, AuthorizationRepository>();
             services.AddTransient<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IAuthorizationService, AuthorizationService>();
             services.AddTransient<ITicketService, TicketService>();

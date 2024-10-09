@@ -1149,7 +1149,7 @@
     <value>المستخدمين المعينين</value>
   </data>
   <data name="Unassign" xml:space="preserve">
-    <value>طرد</value>
+    <value>الغاء تعيين</value>
   </data>
   <data name="UnassignUsersSuccessfully" xml:space="preserve">
     <value>تم سحب الدور من المستخدمين</value>
@@ -1159,6 +1159,12 @@
   </data>
   <data name="AssignedUsers" xml:space="preserve">
     <value>المستخدمون المعينون</value>
+  </data>
+  <data name="UnassignUsers" xml:space="preserve">
+    <value>ازالة المستخدمين</value>
+  </data>
+  <data name="SelectSearchKey" xml:space="preserve">
+    <value>حدد مفتاح البحث</value>
   </data>
   <data name="Sponsors_All" xml:space="preserve">
     <value>كل الرعاة</value>

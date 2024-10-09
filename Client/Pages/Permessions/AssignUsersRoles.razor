@@ -8,18 +8,44 @@
 
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
 
-<MudDataGrid @bind-SelectedItems="selectedUsers" MultiSelection="true" @ref="dataGrid" T="UserWithRolesDto" Items="usersList" QuickFilter="_quickFilter" Filterable="false">
+<MudDataGrid ServerData="ServerReload" @bind-SelectedItems="selectedUsers" MultiSelection="true" @ref="dataGrid" T="UserWithRolesDto" Filterable="false">
+
     <ToolBarContent>
-        <MudText Typo="Typo.h6">@Resource.AssignUsersToRoles</MudText>
-        <MudSpacer />
-        <MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder="@Resource.SearchUsers" Adornment="Adornment.Start"
-                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        <MudText Style="text-wrap: nowrap;" Typo="Typo.h6">@Resource.AssignUsersToRoles</MudText>
+        <MudGrid Style="align-items:end" Justify="Justify.FlexEnd">
+
+            <MudItem>
+                <MudFab OnClick="OnSearch" Size="Size.Small" Disabled="string.IsNullOrEmpty(searchKey)" Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Search" />
+            </MudItem>
+
+            <MudItem xs="6">
+                <MudTextField T="string"
+                              @bind-Value="searchString"
+                              Placeholder="@Resource.SearchUsers"
+                              Adornment="Adornment.Start"
+                              IconSize="Size.Medium"
+                              EndAdornmentIcon="@Icons.Material.Filled.ArrowDropDown">
+
+                </MudTextField>
+            </MudItem>
+
+            <MudItem xs="4">
+                <MudSelect @bind-Value="searchKey" Placeholder="@Resource.SelectSearchKey">
+                    @foreach (var key in searchKeys)
+                    {
+                        <MudSelectItem Value="@key">@key</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+
+        </MudGrid>
     </ToolBarContent>
+
 
     <Columns>
         <SelectColumn ShowInFooter="false" T="UserWithRolesDto" />
-        <PropertyColumn SortBy="x=>x.UserName" Property="x => x.UserName" Title="@Resource.Username" />
-        <PropertyColumn SortBy="x=>x.Email" Property="x => x.Email" Title="@Resource.Email">
+        <PropertyColumn Property="x => x.UserName" Title="@Resource.Username" />
+        <PropertyColumn Property="x => x.Email" Title="@Resource.Email">
 
             <FooterTemplate>
                 <MudSelect T="string" @bind-Value="selectedRoleId" Placeholder="@Resource.SelectRole"
@@ -37,7 +63,7 @@
 
         <TemplateColumn Title="@Resource.AssignRoles" Sortable="false">
             <CellTemplate>
-                <div style="display:flex; align-items:center;">
+                <div style="display:flex; align-items:center;" dir="auto">
                     <MudSelect T="string" @bind-SelectedValues="@context.Item.AssignedRoles" Placeholder="@Resource.SelectMultiRoles"
                                AdornmentIcon="@Icons.Material.Filled.Key" MultiSelection="true" Class="w-100">
                         @foreach (var role in rolesList)
@@ -75,13 +101,24 @@
 
 @code {
     MudDataGrid<UserWithRolesDto> dataGrid;
-    string searchString;
-    List<UserWithRolesDto> usersList = new List<UserWithRolesDto>();
     System.Collections.Generic.HashSet<UserWithRolesDto> selectedUsers = new(); // Property to hold selected rows
     string selectedRoleId;
 
-    // List<UserWithRolesDto> usersList = new();
+    private PaginationSearchModel paginationSearchModel;
+    private string searchString;
+    private List<string> searchKeys = new();
+    private string searchKey;
     List<RoleDto> rolesList = new();
+
+
+
+    private List<string> GetUserSearchKeys()
+    {
+        return typeof(SearchInKey.ApplicationUser)
+             .GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
+             .Select(f => f.GetValue(null).ToString())
+             .ToList();
+    }
 
     [Inject] BIAuthorizationService AuthorizationService { get; set; }
 
@@ -91,79 +128,62 @@
     }
 
     #region server side loading
-    // private async Task<GridData<UserWithRolesDto>> ServerReload(GridState<UserWithRolesDto> state)
-    //   {
+    private async Task<GridData<UserWithRolesDto>> ServerReload(GridState<UserWithRolesDto> state)
+    {
+        try
+        {
+            // Update pagination and search model based on the grid state
+            paginationSearchModel = new PaginationSearchModel
+                {
+                    PageIndex = state.Page,
+                    PageSize = state.PageSize,
+                    SearchIn = searchString,
+                    SearchKey = searchKey
+                };
 
-    //       List<UserWithRolesDto> usersList = new List<UserWithRolesDto>();
+            var response = await AuthorizationService.GetUsersWithRolesAsync(paginationSearchModel);
 
-    //       try
-    //       {
-    //           var response = await AuthorizationService.GetUsersWithRolesAsync();
+            GridData<UserWithRolesDto> data = new GridData<UserWithRolesDto>();
 
-    //           _ = response.Match(
-    //           succ =>
-    //           {
-    //               usersList = succ.Data?.ToList() ?? new List<UserWithRolesDto>();
+            response.Match(
+                succ =>
+                {
+                    if (succ.Data is null)
+                    {
+                        foreach (var err in succ.ErrorList)
+                        {
+                            Snackbar.Show(err.Title, Severity.Error);
+                        }
+                    }
+                    else
+                    {
+                        data.Items = succ.Data.Items.AsQueryable();
+                        data.TotalItems = succ.Data.TotalItems;
+                    }
+                    return data;
+                },
+                fail =>
+                {
+                    Snackbar.Show(Resource.Users_Load_Fail, Severity.Error);
+                    return data;
+                }
+            );
 
-    //               if (!succ.IsSuccess)
-    //               {
-    //                   Snackbar.Show(Resource.Users_Load_Fail, Severity.Error);
-    //               }
-    //               else
-    //               {
-    //                   Snackbar.Show(succ.Title, Severity.Info);
-    //               }
-
-    //               // Display errors if any
-    //               succ.ErrorList?.ToList().ForEach(x =>
-    //                           Snackbar.Show($"{x.Title}: {x.Message}", Severity.Error)
-    //                           );
-
-    //               return new Unit();
-    //           },
-    //           fail =>
-    //           {
-    //               Snackbar.Show(Resource.Users_Load_Fail, Severity.Error);
-    //               return new Unit();
-    //           }
-    //           );
-    //       }
-    //       catch (Exception ex)
-    //       {
-    //           Snackbar.Show(Resource.Users_Load_Fail, Severity.Error);
-    //       }
-
-
-    //       // Apply search filtering if searchString is present
-    //       if (!string.IsNullOrEmpty(searchString))
-    //       {
-    //           usersList = usersList.Where(u => u.UserName.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
-    //           u.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
-    //       }
-
-    //       var pagedData = usersList.Skip(state.Page * state.PageSize).Take(state.PageSize).ToList();
-
-    //       return new GridData<UserWithRolesDto>
-    //           {
-    //               TotalItems = usersList.Count,
-    //               Items = pagedData
-    //           };
-    //   }
+            return data;
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show(Resource.Users_Load_Fail, Severity.Error);
+            return new GridData<UserWithRolesDto> // Return empty data in case of exception
+                {
+                    Items = Enumerable.Empty<UserWithRolesDto>().AsQueryable(),
+                    TotalItems = 0
+                };
+        }
+    }
     #endregion
 
-    private Func<UserWithRolesDto, bool> _quickFilter => x =>
-    {
-        if (string.IsNullOrWhiteSpace(searchString))
-            return true;
 
-        if (x.UserName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-
-        if (x.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-
-        return false;
-    };
 
     private async Task AssignRolesToUser(UserWithRolesDto userWithRolesDto)
     {
@@ -215,7 +235,7 @@
 
         var requestDto = new AssignUsersToRoleDto
             {
-                Role = selectedRoleId,
+                RoleId = selectedRoleId,
                 UserIds = selectedUsers.Select(u => u.UserId).ToList() // List of selected user IDs
             };
 
@@ -241,62 +261,59 @@
                     return new Unit();
                 }
             );
-
-            if (response.IsSuccess)
-                await LoadUsersAsync();
+            await dataGrid.ReloadServerData();
 
         }
         catch (Exception ex)
         {
-            Snackbar.Show("An error occurred while assigning roles.", Severity.Error);
+            Snackbar.Show(Resource.AssignRoleFailed, Severity.Error);
         }
     }
 
-    private async Task OnSearch(string text)
+    private async Task OnSearch()
     {
-        searchString = text;
         await dataGrid.ReloadServerData();
     }
 
-    private async Task LoadUsersAsync()
-    {
-        try
-        {
-            var response = await AuthorizationService.GetUsersWithRolesAsync();
+    // private async Task LoadUsersAsync()
+    // {
+    //     try
+    //     {
+    //         var response = await AuthorizationService.GetUsersWithRolesAsync();
 
-            _ = response.Match(
-            succ =>
-            {
-                usersList = succ.Data?.ToList() ?? new List<UserWithRolesDto>();
+    //         _ = response.Match(
+    //         succ =>
+    //         {
+    //             usersList = succ.Data?.ToList() ?? new List<UserWithRolesDto>();
 
-                if (!succ.IsSuccess)
-                {
-                    Snackbar.Show(Resource.Users_Load_Fail, Severity.Error);
-                }
-                else
-                {
-                    Snackbar.Show(succ.Title, Severity.Info);
-                }
+    //             if (!succ.IsSuccess)
+    //             {
+    //                 Snackbar.Show(Resource.Users_Load_Fail, Severity.Error);
+    //             }
+    //             else
+    //             {
+    //                 Snackbar.Show(succ.Title, Severity.Info);
+    //             }
 
-                // Display errors if any
-                succ.ErrorList?.ToList().ForEach(x =>
-                            Snackbar.Show($"{x.Title}: {x.Message}", Severity.Error)
-                            );
+    //             // Display errors if any
+    //             succ.ErrorList?.ToList().ForEach(x =>
+    //                         Snackbar.Show($"{x.Title}: {x.Message}", Severity.Error)
+    //                         );
 
-                return new Unit();
-            },
-            fail =>
-            {
-                Snackbar.Show(Resource.Users_Load_Fail, Severity.Error);
-                return new Unit();
-            }
-            );
-        }
-        catch (Exception ex)
-        {
-            Snackbar.Show(Resource.Users_Load_Fail, Severity.Error);
-        }
-    }
+    //             return new Unit();
+    //         },
+    //         fail =>
+    //         {
+    //             Snackbar.Show(Resource.Users_Load_Fail, Severity.Error);
+    //             return new Unit();
+    //         }
+    //         );
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         Snackbar.Show(Resource.Users_Load_Fail, Severity.Error);
+    //     }
+    // }
     private async Task LoadRolesAsync()
     {
         try
@@ -329,6 +346,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Task.WhenAll(LoadUsersAsync(), LoadRolesAsync());
+        searchKeys = GetUserSearchKeys();
+
+        await LoadRolesAsync();
     }
+
 }

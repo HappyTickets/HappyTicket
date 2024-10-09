@@ -6,7 +6,6 @@
         public string UserName { get; set; }
         public string Email { get; set; }
 
-        public IEnumerable<string> TempRoles { get; set; }
         public IEnumerable<string> AssignedRoles { get; set; }
 
     }

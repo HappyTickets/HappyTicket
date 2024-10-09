@@ -2237,6 +2237,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select a Search Key.
+        /// </summary>
+        public static string SelectSearchKey {
+            get {
+                return ResourceManager.GetString("SelectSearchKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Send.
         /// </summary>
         public static string Send {
@@ -3011,11 +3020,20 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Evict.
+        ///   Looks up a localized string similar to Unassign.
         /// </summary>
         public static string Unassign {
             get {
                 return ResourceManager.GetString("Unassign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unassign Users.
+        /// </summary>
+        public static string UnassignUsers {
+            get {
+                return ResourceManager.GetString("UnassignUsers", resourceCulture);
             }
         }
         

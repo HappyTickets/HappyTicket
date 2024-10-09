@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces.IIdentityServices;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Common.ApiRoutes;
+using Shared.Common.General;
 using Shared.DTOs.Authorization.Request;
 using System.Net;
 
@@ -22,7 +23,6 @@ namespace API.Controllers
                     return BadRequest(ModelState);
                 }
                 return ReturnResult(await _authorizationService.AddRoleAsync(addRoleDto));
-
             }
             catch (Exception ex)
             {
@@ -47,19 +47,21 @@ namespace API.Controllers
             }
         }
 
+
         [HttpGet(ApiRoutes.Authorization.DeleteRole)]
         public async Task<IActionResult> Delete([FromRoute] string id)
         {
             try
             {
                 return ReturnResult(await _authorizationService.DeleteRoleAsync(id));
-
             }
             catch (Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+
 
         [HttpGet(ApiRoutes.Authorization.RolesList)]
         public async Task<IActionResult> GetRolesList()
@@ -88,7 +90,7 @@ namespace API.Controllers
         }
 
         [HttpPost(ApiRoutes.Authorization.AssignUsersToRole)]
-        public async Task<IActionResult> AssignUsersToRole([FromBody] AssignUsersToRoleDto assignUsersToRoleDto)
+        public async Task<IActionResult> AssignUsersToRole([FromBody] AssignUsersToRoleDto assignUsersToRoleDto, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -96,13 +98,14 @@ namespace API.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                return ReturnResult(await _authorizationService.AssignUsersToRoleAsync(assignUsersToRoleDto));
+                return ReturnResult(await _authorizationService.AssignUsersToRoleAsync(assignUsersToRoleDto, cancellationToken));
             }
             catch (Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
 
         [HttpPost(ApiRoutes.Authorization.AssignUserToRoles)]
         public async Task<IActionResult> AssignUserToRoles([FromBody] AssignUserToRolesDto assignUserToRoleDto)
@@ -121,13 +124,13 @@ namespace API.Controllers
             }
         }
 
-        // Remove a user from a role
+
         [HttpPost(ApiRoutes.Authorization.RemoveUsersFromRole)]
-        public async Task<IActionResult> RemoveUsersFromRole([FromBody] RemoveUsersFromRoleDto removeUserFromRoleDto)
+        public async Task<IActionResult> RemoveUsersFromRole([FromBody] RemoveUsersFromRoleDto removeUserFromRoleDto, CancellationToken cancellationToken = default)
         {
             try
             {
-                return ReturnResult(await _authorizationService.RemoveUsersFromRoleAsync(removeUserFromRoleDto));
+                return ReturnResult(await _authorizationService.RemoveUsersFromRoleAsync(removeUserFromRoleDto, cancellationToken));
             }
             catch (Exception ex)
             {
@@ -135,7 +138,6 @@ namespace API.Controllers
             }
         }
 
-        // Get a user with their roles
         [HttpGet(ApiRoutes.Authorization.GetUserWithRoles)]
         public async Task<IActionResult> GetUserWithRoles([FromRoute] string userId)
         {
@@ -149,12 +151,13 @@ namespace API.Controllers
             }
         }
 
+
         [HttpGet(ApiRoutes.Authorization.GetUsersWithRoles)]
-        public async Task<IActionResult> GetUsersWithRoles()
+        public async Task<IActionResult> GetUsersWithRoles([FromQuery] PaginationSearchModel paginationSearchModel, CancellationToken cancellationToken = default)
         {
             try
             {
-                return ReturnListResult(await _authorizationService.GetUsersWithRolesAsync());
+                return ReturnResult(await _authorizationService.GetUsersWithRolesAsync(paginationSearchModel, cancellationToken));
             }
             catch (Exception ex)
             {
@@ -162,18 +165,21 @@ namespace API.Controllers
             }
         }
 
-        // Get a role with its users
+
         [HttpGet(ApiRoutes.Authorization.GetRoleWithUsers)]
-        public async Task<IActionResult> GetRoleWithUsers([FromRoute] string roleId)
+        public async Task<IActionResult> GetRoleWithUsers([FromRoute] string roleId, [FromQuery] PaginationSearchModel paginationSearchModel, CancellationToken cancellationToken)
         {
             try
             {
-                return ReturnResult(await _authorizationService.GetRoleWithUsersAsync(roleId));
+                var result = await _authorizationService.GetRoleWithUsersAsync(roleId, paginationSearchModel, cancellationToken);
+                return ReturnResult(result);
             }
             catch (Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+
     }
 }

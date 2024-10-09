@@ -9,6 +9,7 @@ using LanguageExt.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using Shared.Common.General;
 using Shared.DTOs.Authorization.Request;
 using Shared.DTOs.Authorization.Response;
 using Shared.DTOs.Identity.UserDTOs;
@@ -23,13 +24,15 @@ namespace Application.Implementations.IdentityServices
                                       IMapper mapper,
                                       ITransactionRepository transactionRepository,
                                       IValidator<AddRoleDto> addValidator,
-                                      IValidator<EditRoleDto> editValidator) : IAuthorizationService
+                                      IValidator<EditRoleDto> editValidator,
+                                      IAuthorizationRepository authorizationRepository) : IAuthorizationService
     {
         #region Fields
         private readonly IMapper _mapper = mapper;
         private readonly ITransactionRepository _transactionRepository = transactionRepository;
         private readonly IValidator<AddRoleDto> _addValidator = addValidator;
         private readonly IValidator<EditRoleDto> _editValidator = editValidator;
+        private readonly IAuthorizationRepository _authorizationRepository = authorizationRepository;
         private readonly RoleManager<Role> _roleManager = roleManager;
         private readonly UserManager<ApplicationUser> _userManager = userManager;
         private readonly IStringLocalizer<Resource> _localizer = localizer;
@@ -82,17 +85,16 @@ namespace Application.Implementations.IdentityServices
                 return new(notFoundExp);
             }
 
-            // Check if users are assigned to the role
-            var users = await _userManager.GetUsersInRoleAsync(role.Name);
+            //var users = await _userManager.GetUsersInRoleAsync(role.Name);
 
-            if (users != null && users.Any())
-            {
-                var roleInUseExp = new BaseException(
-                [
-                    new(){ Title = Resource.RoleDeletionFailed, Message = Resource.RoleAssignedToUsers }
-                ]);
-                return new(roleInUseExp);
-            }
+            //if (users != null && users.Any())
+            //{
+            //    var roleInUseExp = new BaseException(
+            //    [
+            //        new(){ Title = Resource.RoleDeletionFailed, Message = Resource.RoleAssignedToUsers }
+            //    ]);
+            //    return new(roleInUseExp);
+            //}
 
             // Delete the role
             var result = await _roleManager.DeleteAsync(role);
@@ -177,11 +179,11 @@ namespace Application.Implementations.IdentityServices
             }
         }
 
-        public async Task<Result<List<RoleDto>>> GetRolesList()
+        public async Task<Result<List<RoleDto>>> GetRolesList(CancellationToken cancellationToken)
         {
             try
             {
-                var roles = await _roleManager.Roles.ToListAsync();
+                var roles = await _roleManager.Roles.ToListAsync(cancellationToken);
                 var rolesDto = _mapper.Map<List<RoleDto>>(roles);
                 return new(rolesDto);
             }
@@ -268,122 +270,41 @@ namespace Application.Implementations.IdentityServices
             }
         }
 
-        public async Task<Result<Unit>> AssignUsersToRoleAsync(AssignUsersToRoleDto assignUsersToRoleDto)
+        public async Task<Result<Unit>> AssignUsersToRoleAsync(AssignUsersToRoleDto assignUsersToRoleDto, CancellationToken cancellationToken = default)
         {
-            var res = new Result<Unit>();
-
             try
             {
                 // Validate input
-                if (assignUsersToRoleDto == null || string.IsNullOrEmpty(assignUsersToRoleDto.Role) || !assignUsersToRoleDto.UserIds.Any())
+                if (assignUsersToRoleDto is null || string.IsNullOrEmpty(assignUsersToRoleDto.RoleId) || !assignUsersToRoleDto.UserIds.Any())
                 {
                     var validationExp = new BaseException(
-                        [
-                            new() { Title = Resource.AssignRoleFailed, Message = "Invalid input data." }
+                        [ new (){ Title = Resource.AssignRoleFailed, Message = "Invalid input data." }
                         ]);
                     return new(validationExp);
                 }
 
-                // Find the role by ID (assuming Role is an ID; if it's a name, use FindByNameAsync)
-                var role = await _roleManager.FindByIdAsync(assignUsersToRoleDto.Role);
-                if (role == null)
-                {
-                    var roleNotFoundExp = new NotFoundException(
-                        [
-                            new() { Title = Resource.AssignRoleFailed, Message = string.Format(Resource.NotFound, assignUsersToRoleDto.Role) }
-                        ]);
-                    return new(roleNotFoundExp);
-                }
-
-                // Retrieve all users in one DB call
-                var users = await _userManager.Users
-                    .Where(u => assignUsersToRoleDto.UserIds.Contains(u.Id))
-                    .ToListAsync();
-
-                // Create a list to hold any errors encountered
-                var errors = new List<string>();
-
-                // Iterate through the users and assign the role
-                foreach (var user in users)
-                {
-                    try
-                    {
-                        var isInRole = await _userManager.IsInRoleAsync(user, role.Name);
-                        if (!isInRole)
-                        {
-                            var result = await _userManager.AddToRoleAsync(user, role.Name);
-                            if (!result.Succeeded)
-                            {
-                                errors.AddRange(result.Errors.Select(e => e.Description));
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        errors.Add(ex.Message);
-                    }
-                }
-
-                // If there are any errors, return them in the response
-                if (errors.Count > 0)
-                {
-                    var assignRoleFailedExp = new BaseException(
-                        [
-                            new() { Title = Resource.AssignRoleFailed, Message = "See Details", Details = errors }
-                        ]);
-
-                    return new(assignRoleFailedExp);
-                }
-
-                return new(Unit.Default); // Return success if no errors occurred
+                return await _authorizationRepository.AssignUsersToRoleAsync(assignUsersToRoleDto, cancellationToken);
             }
             catch (Exception ex)
             {
-                return new(ex); // Return a general error if something unexpected occurs
+                return new(ex); // Return general error if something unexpected occurs
             }
         }
 
-
-        public async Task<Result<Unit>> RemoveUsersFromRoleAsync(RemoveUsersFromRoleDto removeUserFromRoleDto)
+        public async Task<Result<Unit>> RemoveUsersFromRoleAsync(RemoveUsersFromRoleDto removeUsersFromRoleDto, CancellationToken cancellationToken = default)
         {
             try
             {
-                // Check if the role exists
-                var role = await _roleManager.FindByIdAsync(removeUserFromRoleDto.RoleId);
-                if (role == null)
+                if (removeUsersFromRoleDto == null || string.IsNullOrEmpty(removeUsersFromRoleDto.RoleId) || !removeUsersFromRoleDto.UserIds.Any())
                 {
-                    var roleNotFoundExp = new NotFoundException(
-                    [
-                        new(){ Title = Resource.RemoveRoleFailed, Message = string.Format(Resource.NotFound, removeUserFromRoleDto.RoleId) }
-                    ]);
-                    return new(roleNotFoundExp);
+                    var validationExp = new BaseException(
+                        [
+                        new () { Title = Resource.RemoveRoleFailed, Message = "Invalid input data." }
+                        ]);
+                    return new(validationExp);
                 }
-                var users = await _userManager.Users
-                    .Where(u => removeUserFromRoleDto.UserIds.Contains(u.Id))
-                    .ToListAsync();
-                var errors = new List<string>();
-                foreach (var user in users)
-                {
 
-                    if (await _userManager.IsInRoleAsync(user, role.Name))
-                    {
-                        var result = await _userManager.RemoveFromRoleAsync(user, role.Name);
-                        if (!result.Succeeded)
-                        {
-                            errors.Add(result.Errors.First().Description);
-                        }
-                    }
-                }
-                if (errors.Any())
-                {
-                    var removeUsersFromRoleFailedExp = new BaseException(
-                    [
-                                new(){ Title = Resource.RemoveRoleFailed,Message= "",Details=errors }
-                            ]);
-
-                    return new(removeUsersFromRoleFailedExp);
-                }
-                return new(Unit.Default);
+                return await _authorizationRepository.UnassignUsersFromRoleAsync(removeUsersFromRoleDto, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -391,11 +312,10 @@ namespace Application.Implementations.IdentityServices
             }
         }
 
-        public async Task<Result<RoleWithUsersDto>> GetRoleWithUsersAsync(string roleId)
+        public async Task<Result<RoleWithUsersDto>> GetRoleWithUsersAsync(string roleId, PaginationSearchModel paginationSearchModel, CancellationToken cancellationToken)
         {
             try
             {
-                // Find the role by ID
                 var role = await _roleManager.FindByIdAsync(roleId);
                 if (role?.Name is null)
                 {
@@ -406,25 +326,28 @@ namespace Application.Implementations.IdentityServices
                     return new(roleNotFoundExp);
                 }
 
-                // Get the users assigned to this role
-                var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name);
+                // Use repository to fetch users and apply pagination
+                var usersInRoleQuery = _authorizationRepository.GetUsersInRole(roleId);
+                var filterdUsers = SearchFilterPagination.Filter(usersInRoleQuery, paginationSearchModel);
+                var usersCount = await filterdUsers.CountAsync();
+                var paginatedUserList = await SearchFilterPagination.PaginateData(filterdUsers, paginationSearchModel);
 
-                var roleAppUsers = _mapper.Map<List<ApplicationUserDTO>>(usersInRole);
+                // Map the paginated users to DTO
+                var roleAppUsers = _mapper.Map<List<ApplicationUserDTO>>(paginatedUserList);
 
-                // Map the role and assigned users to the DTO
                 var roleWithUsersDto = new RoleWithUsersDto
                 {
                     RoleId = role.Id,
                     RoleName = role.Name,
                     Description = role.Description,
-                    AssignedUsers = roleAppUsers
+                    AssignedUsers = new(roleAppUsers, usersCount, paginationSearchModel.PageIndex, paginationSearchModel.PageSize),
                 };
 
-                return new Result<RoleWithUsersDto>(roleWithUsersDto);
+                return new(roleWithUsersDto);
             }
             catch (Exception ex)
             {
-                return new Result<RoleWithUsersDto>(ex);
+                return new(ex);
             }
         }
 
@@ -462,38 +385,24 @@ namespace Application.Implementations.IdentityServices
             }
         }
 
-        public async Task<Result<List<UserWithRolesDto>>> GetUsersWithRolesAsync()
+        public async Task<Result<PaginatedList<UserWithRolesDto>>> GetUsersWithRolesAsync(PaginationSearchModel paginationSearchModel, CancellationToken cancellationToken)
         {
             try
             {
-                var users = _userManager.Users.ToList();
+                var filteredUsersQuery = SearchFilterPagination.Filter(_userManager.Users, paginationSearchModel);
 
-                var usersWithRoles = new List<UserWithRolesDto>();
+                var totalItems = await filteredUsersQuery.CountAsync(cancellationToken);
 
-                foreach (var user in users)
-                {
-                    var rolesNames = await _userManager.GetRolesAsync(user);
+                var items = _authorizationRepository.GetUsersWithRolesAsync(filteredUsersQuery, cancellationToken);
 
-                    var userWithRolesDto = new UserWithRolesDto
-                    {
-                        UserId = user.Id,
-                        UserName = user.UserName,
-                        Email = user.Email,
-                        AssignedRoles = rolesNames.ToList()
-                    };
-                    usersWithRoles.Add(userWithRolesDto);
-                }
-
-                return new(usersWithRoles);
+                var paginatedList = PaginatedList<UserWithRolesDto>.Create(items, totalItems, paginationSearchModel.PageIndex, paginationSearchModel.PageSize);
+                return new(paginatedList);
             }
             catch (Exception ex)
             {
                 return new(ex);
             }
         }
-
-
-
         #endregion
     }
 }

@@ -1194,7 +1194,7 @@ For any questions or concerns regarding this Agreement, please contact [Customer
     <value>Users Assigned</value>
   </data>
   <data name="Unassign" xml:space="preserve">
-    <value>Evict</value>
+    <value>Unassign</value>
   </data>
   <data name="UnassignUsersSuccessfully" xml:space="preserve">
     <value>Users have been unassigned successfully</value>
@@ -1204,6 +1204,12 @@ For any questions or concerns regarding this Agreement, please contact [Customer
   </data>
   <data name="AssignedUsers" xml:space="preserve">
     <value>Assigned Users</value>
+  </data>
+  <data name="UnassignUsers" xml:space="preserve">
+    <value>Unassign Users</value>
+  </data>
+  <data name="SelectSearchKey" xml:space="preserve">
+    <value>Select a Search Key</value>
   </data>
   <data name="Sponsors_All" xml:space="preserve">
     <value>All Sponsors</value>
