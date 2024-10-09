@@ -61,7 +61,7 @@ namespace Application.Implementations
                 return result;
             }
         }
-      
+
         public async Task<Result<IEnumerable<MatchDto>>> GetActiveMatchesAsync(bool useCache, CancellationToken cancellationToken = default)
         {
             Expression<Func<IQueryable<MatchDto>, IIncludableQueryable<MatchDto, object>>>[] includeProperties =
@@ -140,12 +140,12 @@ namespace Application.Implementations
         {
 
             var result = await GetByIdAsync(id, useCache, cancellationToken: cancellationToken);
-           
+
             var match = result.Match(
                 Succ: matchDto => matchDto,
                 Fail: ex => null
             );
-            if((!match.Tickets.Any()) && !(DateTime.UtcNow >= match.EventDate))
+            if ((match.Tickets.Any()) && (DateTime.UtcNow <= match.EventDate))
                 return new(new Exception(Resource.Error_Occurred));
             else
             {
@@ -159,8 +159,8 @@ namespace Application.Implementations
                     async ex => await ex.ToResultAsync<MatchDto>()
                     );
             }
-           
+
         }
-        
+
     }
 }
