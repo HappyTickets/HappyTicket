@@ -14,6 +14,7 @@ namespace Client.Services.Interfaces
         //Task<BaseResponse<bool>> IsRoleExistById(string roleId);
         //Task<BaseResponse<bool>> IsRoleExist(string roleName);
         Task<Result<BaseResponse<Unit>>> EditRoleAsync(EditRoleDto request);
+
         Task<Result<BaseResponse<Unit>>> DeleteRoleAsync(string roleId);
         Task<Result<BaseResponse<List<RoleDto>>>> GetRolesList(CancellationToken cancellationToken = default);
         Task<Result<BaseResponse<RoleDto>>> GetRoleById(string id);

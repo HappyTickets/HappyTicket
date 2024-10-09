@@ -50,6 +50,9 @@ namespace API.Extensions
             services.AddTransient<IValidator<AddRoleDto>, AddRoleValidator>();
             services.AddTransient<IValidator<EditRoleDto>, EditRoleValidator>();
 
+            services.AddTransient<IValidator<AddRoleDto>, AddRoleValidator>();
+            services.AddTransient<IValidator<EditRoleDto>, EditRoleValidator>();
+
             services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
             services.AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork<AppDbContext>));
             services.AddTransient(typeof(IUserRepository<>), typeof(UserRepository<>));

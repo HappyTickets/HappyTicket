@@ -63,7 +63,7 @@ namespace Infrastructure.Persistence.Identity
                 return new(Unit.Default); // Return success result
             }
             catch (Exception ex)
-            {
+        {
                 return new(ex); // Return failure result if something goes wrong
             }
         }

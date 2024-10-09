@@ -101,6 +101,8 @@
 
 @code {
     MudDataGrid<UserWithRolesDto> dataGrid;
+    string searchString;
+    List<UserWithRolesDto> usersList = new List<UserWithRolesDto>();
     System.Collections.Generic.HashSet<UserWithRolesDto> selectedUsers = new(); // Property to hold selected rows
     string selectedRoleId;
 
@@ -183,7 +185,19 @@
     }
     #endregion
 
+    private Func<UserWithRolesDto, bool> _quickFilter => x =>
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
 
+        if (x.UserName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if (x.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        return false;
+    };
 
     private async Task AssignRolesToUser(UserWithRolesDto userWithRolesDto)
     {
@@ -272,6 +286,7 @@
 
     private async Task OnSearch()
     {
+        searchString = text;
         await dataGrid.ReloadServerData();
     }
 

@@ -654,6 +654,16 @@ namespace Infrastructure.Migrations
                     b.HasDiscriminator().HasValue("Role");
                 });
 
+            modelBuilder.Entity("Domain.Entities.UserEntities.AuthEntities.Role", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("Role");
+                });
+
             modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationUser", b =>
                 {
                     b.HasOne("Domain.Entities.CartEntity.Cart", "Cart")

@@ -23,6 +23,7 @@ namespace API.Controllers
                     return BadRequest(ModelState);
                 }
                 return ReturnResult(await _authorizationService.AddRoleAsync(addRoleDto));
+
             }
             catch (Exception ex)
             {
@@ -54,6 +55,7 @@ namespace API.Controllers
             try
             {
                 return ReturnResult(await _authorizationService.DeleteRoleAsync(id));
+
             }
             catch (Exception ex)
             {
@@ -138,6 +140,7 @@ namespace API.Controllers
             }
         }
 
+        // Get a user with their roles
         [HttpGet(ApiRoutes.Authorization.GetUserWithRoles)]
         public async Task<IActionResult> GetUserWithRoles([FromRoute] string userId)
         {

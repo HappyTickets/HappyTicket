@@ -272,6 +272,8 @@ namespace Application.Implementations.IdentityServices
 
         public async Task<Result<Unit>> AssignUsersToRoleAsync(AssignUsersToRoleDto assignUsersToRoleDto, CancellationToken cancellationToken = default)
         {
+            var res = new Result<Unit>();
+
             try
             {
                 // Validate input
@@ -284,27 +286,63 @@ namespace Application.Implementations.IdentityServices
                 }
 
                 return await _authorizationRepository.AssignUsersToRoleAsync(assignUsersToRoleDto, cancellationToken);
-            }
-            catch (Exception ex)
-            {
+                    }
+                    catch (Exception ex)
+                    {
                 return new(ex); // Return general error if something unexpected occurs
+                }
+
+                // If there are any errors, return them in the response
+                if (errors.Count > 0)
+                {
+                    var assignRoleFailedExp = new BaseException(
+                        [
+                            new() { Title = Resource.AssignRoleFailed, Message = "See Details", Details = errors }
+                        ]);
+
+                    return new(assignRoleFailedExp);
+                }
+
+        public async Task<Result<Unit>> RemoveUsersFromRoleAsync(RemoveUsersFromRoleDto removeUsersFromRoleDto, CancellationToken cancellationToken = default)
+            {
+                return new(ex); // Return a general error if something unexpected occurs
             }
         }
 
-        public async Task<Result<Unit>> RemoveUsersFromRoleAsync(RemoveUsersFromRoleDto removeUsersFromRoleDto, CancellationToken cancellationToken = default)
+
+        public async Task<Result<Unit>> RemoveUsersFromRoleAsync(RemoveUsersFromRoleDto removeUserFromRoleDto)
         {
             try
             {
                 if (removeUsersFromRoleDto == null || string.IsNullOrEmpty(removeUsersFromRoleDto.RoleId) || !removeUsersFromRoleDto.UserIds.Any())
                 {
                     var validationExp = new BaseException(
-                        [
+                    [
                         new () { Title = Resource.RemoveRoleFailed, Message = "Invalid input data." }
-                        ]);
+                    ]);
                     return new(validationExp);
                 }
+                var users = await _userManager.Users
+                    .Where(u => removeUserFromRoleDto.UserIds.Contains(u.Id))
+                    .ToListAsync();
+                var errors = new List<string>();
+                foreach (var user in users)
+                {
 
                 return await _authorizationRepository.UnassignUsersFromRoleAsync(removeUsersFromRoleDto, cancellationToken);
+                        }
+                    }
+                }
+                if (errors.Any())
+                {
+                    var removeUsersFromRoleFailedExp = new BaseException(
+                    [
+                                new(){ Title = Resource.RemoveRoleFailed,Message= "",Details=errors }
+                            ]);
+
+                    return new(removeUsersFromRoleFailedExp);
+                }
+                return new(Unit.Default);
             }
             catch (Exception ex)
             {
@@ -316,6 +354,7 @@ namespace Application.Implementations.IdentityServices
         {
             try
             {
+                // Find the role by ID
                 var role = await _roleManager.FindByIdAsync(roleId);
                 if (role?.Name is null)
                 {
@@ -335,6 +374,7 @@ namespace Application.Implementations.IdentityServices
                 // Map the paginated users to DTO
                 var roleAppUsers = _mapper.Map<List<ApplicationUserDTO>>(paginatedUserList);
 
+                // Map the role and assigned users to the DTO
                 var roleWithUsersDto = new RoleWithUsersDto
                 {
                     RoleId = role.Id,
@@ -403,6 +443,9 @@ namespace Application.Implementations.IdentityServices
                 return new(ex);
             }
         }
+
+
+
         #endregion
     }
 }
