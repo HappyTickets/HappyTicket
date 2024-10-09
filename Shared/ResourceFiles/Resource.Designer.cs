@@ -124,6 +124,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Admin Panel.
+        /// </summary>
+        public static string Admin_Panel {
+            get {
+                return ResourceManager.GetString("Admin_Panel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string All {
@@ -345,6 +354,15 @@ namespace Shared.ResourceFiles {
         public static string Champion_With_Match_Deletion_Failure {
             get {
                 return ResourceManager.GetString("Champion_With_Match_Deletion_Failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Champions.
+        /// </summary>
+        public static string Champions {
+            get {
+                return ResourceManager.GetString("Champions", resourceCulture);
             }
         }
         
@@ -2335,6 +2353,15 @@ namespace Shared.ResourceFiles {
         public static string StadiumName {
             get {
                 return ResourceManager.GetString("StadiumName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stadiums.
+        /// </summary>
+        public static string Stadiums {
+            get {
+                return ResourceManager.GetString("Stadiums", resourceCulture);
             }
         }
         

@@ -340,7 +340,7 @@
     <value>تفاصيل المباراة</value>
   </data>
   <data name="Matches" xml:space="preserve">
-    <value>مباريات</value>
+    <value>المباريات</value>
   </data>
   <data name="Matches_Settings" xml:space="preserve">
     <value>إعدادات المباريات</value>
@@ -490,7 +490,7 @@
     <value>اسم الفريق</value>
   </data>
   <data name="Teams" xml:space="preserve">
-    <value>فرق</value>
+    <value>الفرق</value>
   </data>
   <data name="TheAction" xml:space="preserve">
     <value>الإجراء</value>
@@ -1178,7 +1178,13 @@
   <data name="Stadium_With_Match_Deletion_Failure" xml:space="preserve">
     <value>فشل حذف الملعب لأنه يحتوي على مباراة مخصصة.</value>
   </data>
-  <data name="UpcomingMatches" xml:space="preserve">
-    <value>المباريات القادمة</value>
+  <data name="Admin_Panel" xml:space="preserve">
+    <value>لوحة الإدارة</value>
+  </data>
+  <data name="Stadiums" xml:space="preserve">
+    <value>الملاعب</value>
+  </data>
+  <data name="Champions" xml:space="preserve">
+    <value>البطولات</value>
   </data>
 </root>
