@@ -220,7 +220,7 @@
 
 /****Statistics section******/
 .stats-section {
-    background: url('/Imgs/download.jpeg') no-repeat center center/cover;
+    background: url('/Imgs/studiam.png') no-repeat center center/cover;
     color: #fff;
     text-align: center;
     padding: 50px 20px;
@@ -229,14 +229,25 @@
 
     .stats-section h1 {
         margin: 0;
-        font-size: 2rem;
-        color: white;
+        color: #FFFFFF;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+        font-size: 40px;
+        font-weight: bold;
     }
 
-    .stats-section p {
-        font-size: 1.5rem;
+    .stats-section .largest-network {
+        /* font-size: 1.5rem;*/
         margin-bottom: 40px;
-        color: white;
+        color: #FFFFFF;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+        font-size: 23px;
+        font-weight: bold;
+    }
+    .stats-section p {
+        /* font-size: 1.5rem;*/
+        padding-top:15px;
+        font-size: 23px;
+        font-weight: bold;
     }
 
 .stats-container {
@@ -334,3 +345,8 @@
         color: #4a7ff0;
         font-weight: 500;
     }
+
+.count::before {
+    content: "+";
+    margin-right: 5px;
+}

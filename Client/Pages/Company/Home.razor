@@ -38,19 +38,26 @@
             <MudCarouselItem Transition="Transition.Fade" Color="@Color.Primary">
                 <div class="position-relative d-flex w-100" style="height:100%;">
                     <MudImage Src="Imgs/1.jpg" Class="mx-auto my-auto" Style="width:100%; height:100%; object-fit:cover;" />
-                    <div class="overlay position-absolute w-100 h-100" style="background-color: rgba(59, 86, 117, 0.6);"></div>
-                    <div class="text-overlay position-absolute text-white text-center w-100" style="top:50%; transform:translateY(-50%);">
-                        <h3>@Resource.slide1</h3>
+                    <!--  overlay -->
+                    <div class="overlay position-absolute w-100 h-100" style="background-color: rgba(59, 86, 117, 0.4);"></div>
+
+                    <div class="text-overlay position-absolute w-100" style="top:40%; left: 5%; transform:translateY(-50%); text-align: left;">
+                        <h3 style="font-size: 3.5rem; font-weight: bold; color: #fc5c04; margin-bottom: 33px; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);">
+                            @Resource.slide1
+                        </h3>
+                        <p style="font-size: 1.5rem; color:whitesmoke; margin-top: 10px; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);font-weight:bold">@Resource.slide1Text1</p>
+                        <p style="font-size: 1.5rem; color:whitesmoke; margin-top: 10px; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);font-weight:bold">@Resource.slide1Text2</p>
                     </div>
                 </div>
             </MudCarouselItem>
-            <MudCarouselItem Transition="Transition.Fade" Color="@Color.Primary">
+           @*  <MudCarouselItem Transition="Transition.Fade" Color="@Color.Primary">
                 <div class="position-relative d-flex w-100" style="height:100%;">
                     <MudImage Src="Imgs/2.jpg" Class="mx-auto my-auto" Style="width:100%; height:100%; object-fit:cover;" />
                     <div class="overlay position-absolute w-100 h-100" style="background-color: rgba(59, 86, 117, 0.6);"></div>
                     <div class="text-overlay position-absolute text-white text-center w-100" style="top:50%; transform:translateY(-50%);">
-                        <h3>Your Text Here</h3>
-                    </div>
+                      @*   <h3>@Resource.slide2</h3>
+                        <p>@Resource.slide2Text</p> *@
+              @*      </div>
                 </div>
             </MudCarouselItem>
             <MudCarouselItem Transition="Transition.Fade" Color="@Color.Primary">
@@ -58,31 +65,36 @@
                     <MudImage Src="Imgs/3.jpg" Class="mx-auto my-auto" Style="width:100%; height:100%; object-fit:cover;" />
                     <div class="overlay position-absolute w-100 h-100" style="background-color: rgba(59, 86, 117, 0.6);"></div>
                     <div class="text-overlay position-absolute text-white text-center w-100" style="top:50%; transform:translateY(-50%);">
-                        <h3>Your Text Here</h3>
-                    </div>
+                       @*  <h3>@Resource.slide3</h3>
+                        <p>@Resource.slide3Text</p> *@
+                 @*   </div>
                 </div>
-            </MudCarouselItem>
+            </MudCarouselItem> *@
         </ChildContent>
     </MudCarousel>
 </section>
 
 <!--About Us-->
 
-<MudContainer Class="d-flex flex-column justify-center mt-6">
+<MudContainer Class="d-flex flex-column justify-center mt-6" Style="padding-top:70px;">
     <MudGrid>
-        <MudItem xs="12" md="5">
-            <MudText Typo="Typo.caption" Class="mb-2" Color="Color.Primary">
+        <MudItem xs="12" md="6">
+            <MudText Typo="Typo.body2" Class="mb-2" Color="Color.Primary">
                 @Resource.GetToKnowUs
             </MudText>
             <MudText Typo="Typo.h3" Class="font-weight-bold pt-3">@Resource.GetToKnowUs @Resource.CompanyName</MudText>
             <MudText Typo="Typo.body1" Class=" company-description pt-3">
-                @(new MarkupString(Resource.HomeAboutUs))
+                @(new MarkupString(Resource.HomeAboutUs1))
+              
+            </MudText>
+            <MudText Typo="Typo.body1" Class=" company-description pt-3">
+                @(new MarkupString(Resource.HomeAboutUs2))
 
             </MudText>
         </MudItem>
-        <MudItem md="2"></MudItem>
+        <MudItem md="1"></MudItem>
         <MudItem xs="12" md="5" Class="d-flex align-items-center">
-            <MudImage Src="logos/logo.svg" Alt="Office Meeting" Width="300" Style="border-radius: 8px;" />
+            <MudImage Src="Imgs/aboutUsHappy.png" Alt="aboutus" Style="border-radius: 12px;width:90%;    margin-top: 60px;" />
         </MudItem>
     </MudGrid>
 
@@ -92,10 +104,10 @@
 
 
 <!--Events-->
-<div class="event-section pt-5 mt-5">
+<div class="event-section mt-5" style="padding-top:70px !important; padding-bottom:90px !important;">
     <div class="section-header">
-        <h2 class="section-title">المباريات القادمة</h2>
-        <a href="#" class="view-all-link">عرض الكل</a>
+        <h2 class="section-title">@Resource.UpcomingMatches</h2>
+        <a href="#" class="view-all-link">@Resource.ShowAll</a>
     </div>
 
     <div class="events-container">
@@ -154,8 +166,8 @@
 
 <!---Statistics Section-->
 <section class="stats-section">
-    <h1>دع الارقام تتكلم</h1>
-    <p>أكبر شبكة حجز تذاكر في المملكة</p>
+    <h1>@Resource.LetTheNumberTalk</h1>
+    <p class="largest-network">@Resource.LargestNetwork</p>
 
     <div class="stats-container">
         <div class="stat-box">
@@ -163,25 +175,27 @@
             <MudIcon Icon="@Icons.Outlined.PersonOutline" Color="Color.Secondary" Size="Size.Large"/>
 
             <h2 class="count mt-3" data-target="2000">0</h2>
-            <p>عميل يثق ينا</p>
+
+
+            <p>@Resource.ClientTrustUs</p>
         </div>
 
         <div class="stat-box">
             <MudIcon Icon="@Icons.Material.Outlined.WhereToVote" Color="Color.Secondary" Size="Size.Large" />
 
             <h2 class="count mt-3" data-target="8000">0</h2>
-            <p>الفعاليات التي تم تنظيمها</p>
+            <p>@Resource.Eventsthatwereorganized</p>
         </div>
 
         <div class="stat-box">
             <MudIcon Icon="@Icons.TwoTone.BookOnline" Color="Color.Secondary" Size="Size.Large" />
 
             <h2 class="count mt-3" data-target="400000">0</h2>
-            <p>عدد التذاكر المباعة</p>
+            <p>@Resource.NumberOfTickets</p>
         </div>
     </div>
 
-    <a href="#" class="contact-btn">تواصل معنا</a>
+    <a href="#" class="contact-btn">@Resource.ContactUs</a>
 </section>
 
 
