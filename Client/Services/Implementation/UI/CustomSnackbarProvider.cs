@@ -1,5 +1,4 @@
 ﻿using Client.Services.Interfaces.UI;
-using Humanizer;
 using MudBlazor;
 
 namespace Client.Services.Implementation.UI

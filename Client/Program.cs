@@ -60,6 +60,8 @@ builder.Services.AddScoped<IHttpClientHelper, HttpClientHelper>();
 builder.Services.AddScoped<IIdentityService, IdentityService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IPopUpService, PopUpService>();
+builder.Services.AddScoped<ISponsorService, SponsorService>();
+builder.Services.AddScoped<IChampionService, ChampionService>();
 
 builder.Services.AddMudServices();
 

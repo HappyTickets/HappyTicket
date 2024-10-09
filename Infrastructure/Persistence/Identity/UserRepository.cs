@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Shared.Common.General;
 using Shared.Exceptions;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace Infrastructure.Persistence.Identity;

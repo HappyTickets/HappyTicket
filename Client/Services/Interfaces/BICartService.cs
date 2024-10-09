@@ -2,8 +2,6 @@
 using Shared.Common;
 using Shared.DTOs.CartDTOs;
 using Shared.DTOs.PaymentDTOs;
-using Shared.DTOs.TicketDTOs;
-using System.Threading.Tasks;
 
 namespace Client.Services.Interfaces
 {

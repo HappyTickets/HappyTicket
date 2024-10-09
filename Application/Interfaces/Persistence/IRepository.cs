@@ -1,10 +1,8 @@
 ﻿using Domain.Entities;
 using LanguageExt;
 using LanguageExt.Common;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Shared.Common.General;
-using Shared.Exceptions;
 using System.Linq.Expressions;
 
 namespace Application.Interfaces.Persistence;

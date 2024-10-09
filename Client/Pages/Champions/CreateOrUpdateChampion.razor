@@ -1,0 +1,215 @@
+﻿@page "/champions/create"
+@page "/champions/update/{id:guid}"
+@using Shared.DTOs.Champion
+
+@inject ICustomSnackbarProvider Snackbar
+@inject IChampionService ChampionService
+@inject ISponsorService SponsorService
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+@inject IFileService FileService
+@* @attribute [Authorize(Policy = "IsAdmin")] *@
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+<PageTitle>
+    @(IsUpdate() ? Resource.Champion_Update : Resource.Champion_Create)
+</PageTitle>
+
+<MudCard>
+    <MudCardContent>
+        <h1 class="fs-2 mb-5">@(IsUpdate() ? Resource.Champion_Update : Resource.Champion_Create)</h1>
+        <EditForm Model="Champion">
+            <div class="mb-5">
+                <MudTextField @bind-Value=Champion.Name  Label=@Resource.Name Variant="Variant.Text" Required />
+            </div>
+            <MudSelect T=Guid Label="@Resource.Sponsors" MultiSelection="true" @bind-SelectedValues="@Champion.SponsorsIds" ToStringFunc="SponsorIdToString">
+                @foreach (var sponsor in Sponsors)
+                {
+                   <MudSelectItem T=Guid Value="@sponsor.Id">
+                       @sponsor.Name
+                   </MudSelectItem>
+                }
+            </MudSelect>
+            <div class="mb-5 py-2">
+                <ImageUpload Label=@Resource.Logo IsMultipleFiles="false" FilesChanged="OnFileChanged" Required="true" />
+            </div>
+            <div class="d-flex justify-content-end">
+                <LoadingButton OnClick="HandleValidSubmit" Color="Color.Primary" Variant="Variant.Filled">@(IsUpdate() ? Resource.Champion_Update : Resource.Champion_Create)</LoadingButton>
+            </div>
+        </EditForm>
+    </MudCardContent>
+</MudCard>
+
+@code {
+    [Parameter]
+    public Guid? Id { get; set; }
+
+    private List<SponsorDto> Sponsors = new();
+
+    private CreateOrUpdateChampionDto Champion = new();
+    KeyValuePair<string, string>? Logo = null;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadSponsorsAsync();
+        await LoadChampionAsync();
+    }
+
+    private async Task LoadSponsorsAsync()
+    {
+        var result = await SponsorService.GetSponsorsAsync(false);
+        result.Match(
+            response =>
+            {
+                if (response.Data != null)
+                    Sponsors = response.Data.ToList();
+
+                return Unit.Default;
+            },
+            ex => Unit.Default
+        );
+    }
+
+    private async Task LoadChampionAsync()
+    {
+        if(IsUpdate())
+        {
+            var result = await ChampionService.GetChampionByIdAsync(Id!.Value, false);
+            result.Match(
+                response =>
+                {
+                    if (response.Data != null)
+                        Champion = new CreateOrUpdateChampionDto
+                        {
+                                Name = response.Data.Name,
+                                Logo = response.Data.Logo,
+                                SponsorsIds = response.Data.ChampionSponsors?.Select(cs=>cs.SponsorId).ToList()
+                        };
+
+                    return Unit.Default;
+                }
+                ,
+                ex =>
+                {
+                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                    return Unit.Default;
+                }
+            );
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (Champion.Name == null)
+            return;
+
+        if (Logo != null)
+            await UploadFileAsync();
+
+        if (Champion.Logo != null)
+        {
+            if (IsUpdate())
+                await UpdateChampionAsync();
+            else
+                await CreateChampionAsync();
+        }
+        else
+            Snackbar.Show(Resource.File_Required, Severity.Error);
+    }
+
+    private async Task UploadFileAsync()
+    {
+        var result = await FileService.UploadFileAsync(new()
+            {
+                Path = $"/Images/Champions/{Champion.Name}/{Logo?.Key}".Replace(" ", "_"),
+                Base64EncodedString = Logo?.Value
+            });
+
+        result.Match(
+            response =>
+            {
+                if (response.IsSuccess)
+                    Champion.Logo = response.Data;
+                else
+                    Snackbar.Show(Resource.File_Upoad_Error, Severity.Error);
+
+                return Unit.Default;
+            },
+            ex =>
+            {
+                Snackbar.Show(Resource.File_Upoad_Error, Severity.Error);
+                return Unit.Default;
+            }
+        );
+    }
+
+    private async Task CreateChampionAsync()
+    {
+        var result = await ChampionService.CreateChampionAsync(Champion);
+        result.Match(
+            response =>
+            {
+                if (response.IsSuccess)
+                {
+                    Snackbar.Show(Resource.Champion_Created, Severity.Success);
+                    NavigationManager.NavigateTo("/champions");
+                }
+                else
+                {
+                    Snackbar.Show(response.Title, Severity.Error);
+                    if (response.ErrorList != null)
+                    {
+                        foreach (var error in response.ErrorList)
+                            Snackbar.Show($"{error.Title}: {error.Message}", Severity.Error);
+                    }
+                }
+                return Unit.Default;
+            },
+            ex =>
+            {
+                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                return Unit.Default;
+            }
+        );
+    }
+
+    private async Task UpdateChampionAsync()
+    {
+        var result = await ChampionService.UpdateChampionAsync(Id.Value, Champion);
+        result.Match(
+            response =>
+            {
+                if (response.IsSuccess)
+                {
+                    Snackbar.Show(Resource.Champion_Updated, Severity.Success);
+                    NavigationManager.NavigateTo("/champions");
+                }
+                else
+                {
+                    Snackbar.Show(response.Title, Severity.Error);
+                    if (response.ErrorList != null)
+                    {
+                        foreach (var error in response.ErrorList)
+                            Snackbar.Show($"{error.Title}: {error.Message}", Severity.Error);
+                    }
+                }
+                return Unit.Default;
+            },
+            ex =>
+            {
+                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                return Unit.Default;
+            }
+        );
+    }
+
+    private void OnFileChanged(Dictionary<string, string> files)
+        => Logo = files.FirstOrDefault();
+
+    private string SponsorIdToString(Guid id)
+    => Sponsors.First(s => s.Id == id).Name;
+
+    private bool IsUpdate()
+        => Id != null;
+}

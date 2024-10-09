@@ -1,8 +1,6 @@
 ﻿using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 using Shared.DTOs;
-using Shared.ResourceFiles;
 using System.Net;
 
 namespace API.Controllers;

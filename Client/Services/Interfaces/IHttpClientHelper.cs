@@ -1,5 +1,4 @@
 ﻿using LanguageExt.Common;
-using Shared.Common;
 using Shared.Common.General;
 using System.Security.Claims;
 
@@ -18,5 +17,6 @@ namespace Client.Services.Interfaces
         Task<Result<Tout>> PostBaseAsync<Tin, Tout>(string url, Tin entity, bool useAuth = true);
         Task<Result<Tout>> PutBaseAsync<Tin, Tout>(string url, Tin entity, bool useAuth = true);
         Task<ClaimsIdentity> GetUserCurrentIdentityAsync();
+        Task<Result<Tout>> DeleteBaseAsync<Tout>(string url, bool useAuth = true);
     }
 }

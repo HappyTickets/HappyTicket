@@ -198,7 +198,7 @@ public class Repository<Tentity> : IRepository<Tentity> where Tentity : BaseEnti
             }
 
             List<Tentity> entities = await dbQuery.Skip((paginationParams.PageIndex - 0) * paginationParams.PageSize).Take(paginationParams.PageSize).ToListAsync(cancellationToken);
-            
+
             return entities.Any() ? new Result<IEnumerable<Tentity>>(entities) : new Result<IEnumerable<Tentity>>(new NotFoundException());
         }
         catch (Exception ex)

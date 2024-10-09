@@ -1,10 +1,8 @@
 ﻿using Application.Interfaces.ITicketServices;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 using Shared.Common;
 using Shared.DTOs.TicketDTOs;
 using Shared.Enums;
-using Shared.ResourceFiles;
 using System.Net;
 
 namespace API.Controllers
@@ -52,7 +50,7 @@ namespace API.Controllers
         {
             try
             {
-                var result = await _ticketService.FindAsync(x => x.MatchId == id && x.TeamId == selectedTeamId &&(x.TicketStatus==TicketStatusDTO.Active|| x.TicketStatus == TicketStatusDTO.Incart), useCache, cancellationToken: cancellationToken);
+                var result = await _ticketService.FindAsync(x => x.MatchId == id && x.TeamId == selectedTeamId && (x.TicketStatus == TicketStatusDTO.Active || x.TicketStatus == TicketStatusDTO.Incart), useCache, cancellationToken: cancellationToken);
                 return ReturnListResult(result);
             }
             catch (Exception ex)

@@ -9,7 +9,7 @@ public class BaseResponse
     public string? Title { get; set; }
     public HttpStatusCode Status { get; set; } = HttpStatusCode.OK;
     public IEnumerable<ResponseError>? ErrorList { get; set; }
-    public bool IsSuccess => (int)Status < 400 ;
+    public bool IsSuccess => (int)Status < 400;
 }
 public class BaseResponse<T>
 {
@@ -23,7 +23,7 @@ public class BaseResponse<T>
     public string? Title { get; set; }
     public HttpStatusCode Status { get; set; } = HttpStatusCode.OK;
     public IEnumerable<ResponseError>? ErrorList { get; set; }
-    public bool IsSuccess => (int)Status < 400 ;
+    public bool IsSuccess => (int)Status < 400;
 }
 public class BaseListResponse<T> where T : IEnumerable
 {
@@ -42,7 +42,7 @@ public class BaseListResponse<T> where T : IEnumerable
 
 public class ResponseError
 {
-    public ResponseError() {}
+    public ResponseError() { }
     public ResponseError(string title, string message)
     {
         Title = title;

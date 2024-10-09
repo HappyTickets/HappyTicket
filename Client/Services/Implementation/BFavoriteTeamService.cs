@@ -2,11 +2,12 @@
 using LanguageExt.Common;
 using Shared.Common;
 using Shared.DTOs;
+using Shared.DTOs.Team;
 
 
 namespace Client.Services.Implementation
 {
-    public class BFavoriteTeamService: BIFavoriteTeamService
+    public class BFavoriteTeamService : BIFavoriteTeamService
     {
         private readonly IHttpClientHelper _httpClientHelper;
 
@@ -19,12 +20,12 @@ namespace Client.Services.Implementation
         {
             UserFavoriteTeamDto requestBody = new UserFavoriteTeamDto()
             {
-                    UserId = userId,
-                    TeamId = teamId,
-                    MatchId = matchId
-                };
+                UserId = userId,
+                TeamId = teamId,
+                MatchId = matchId
+            };
 
-                return await _httpClientHelper.PostBaseAsync<UserFavoriteTeamDto, BaseResponse<TeamDto>>("api/Team/AddFavoriteTeam", requestBody);
+            return await _httpClientHelper.PostBaseAsync<UserFavoriteTeamDto, BaseResponse<TeamDto>>("api/Team/AddFavoriteTeam", requestBody);
         }
 
         public async Task<Result<BaseResponse<TeamDto>>> RemoveFavoriteTeamAsync(string userId, Guid matchId, CancellationToken cancellationToken = default)

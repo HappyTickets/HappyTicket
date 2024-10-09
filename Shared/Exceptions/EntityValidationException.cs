@@ -1,5 +1,4 @@
 ﻿using FluentValidation.Results;
-using System.ComponentModel.DataAnnotations;
 using System.Net;
 
 namespace Shared.Exceptions;

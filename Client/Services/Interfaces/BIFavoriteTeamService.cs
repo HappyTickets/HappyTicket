@@ -1,6 +1,6 @@
 ﻿using LanguageExt.Common;
 using Shared.Common;
-using Shared.DTOs;
+using Shared.DTOs.Team;
 
 namespace Client.Services.Interfaces
 {

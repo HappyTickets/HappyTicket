@@ -1,0 +1,183 @@
+﻿@page "/sponsors/create"
+@page "/sponsors/update/{id:guid}"
+
+@inject ICustomSnackbarProvider Snackbar
+@inject ISponsorService SponsorService
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+@inject IFileService FileService
+@* @attribute [Authorize(Policy = "IsAdmin")] *@
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+<PageTitle>
+    @(IsUpdate() ? Resource.Sponsor_Update : Resource.Sponsor_Create)
+</PageTitle>
+
+<MudCard>
+    <MudCardContent>
+        <h1 class="fs-2 mb-5">@(IsUpdate() ? Resource.Sponsor_Update : Resource.Sponsor_Create)</h1>
+        <EditForm Model="Sponsor">
+            <div class="mb-5">
+                <MudTextField @bind-Value=Sponsor.Name  Label=@Resource.Name Variant="Variant.Text" Required />
+            </div>
+            <div class="mb-5 py-2">
+                <ImageUpload Label=@Resource.Logo IsMultipleFiles="false" FilesChanged="OnFileChanged" Required="true" />
+            </div>
+            <div class="mb-5 py-2">
+                <MudCheckBox @bind-Value=Sponsor.IsHappySponsor Label=@Resource.Is_Happy_Sponsor Color="@Color.Primary" UncheckedColor="@Color.Default"></MudCheckBox>
+            </div>
+            <div class="d-flex justify-content-end">
+                <LoadingButton OnClick="HandleValidSubmit" Color="Color.Primary" Variant="Variant.Filled">@(IsUpdate() ? Resource.Sponsor_Update : Resource.Sponsor_Create)</LoadingButton>
+            </div>
+        </EditForm>
+    </MudCardContent>
+</MudCard>
+
+
+@code {
+    [Parameter]
+    public Guid? Id { get; set; }
+
+    private SponsorDto Sponsor = new();
+    KeyValuePair<string, string>? Logo = null;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadSponsorAsync();
+    }
+
+    private async Task LoadSponsorAsync()
+    {
+        if(IsUpdate())
+        {
+            var result = await SponsorService.GetSponsorByIdAsync(Id!.Value, false);
+            result.Match(
+                response =>
+                {
+                    if (response.Data != null)
+                        Sponsor = response.Data;
+
+                    return Unit.Default;
+                }
+                ,
+                ex =>
+                {
+                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                    return Unit.Default;
+                }
+            );
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (Sponsor.Name == null)
+            return;
+
+        if (Logo != null)
+            await UploadFileAsync();
+
+        if (Sponsor.Logo != null)
+        {
+            if (IsUpdate())
+                await UpdateSponsorAsync();
+            else
+                await CreateSponsorAsync();
+        }
+        else
+            Snackbar.Show(Resource.File_Required, Severity.Error);
+    }
+
+    private async Task UploadFileAsync()
+    {
+        var result = await FileService.UploadFileAsync(new()
+            {
+                Path = $"/Images/Sponsors/{Sponsor.Name}/{Logo?.Key}".Replace(" ", "_"),
+                Base64EncodedString = Logo?.Value
+            });
+
+        result.Match(
+            response =>
+            {
+                if (response.IsSuccess)
+                    Sponsor.Logo = response.Data;
+                else
+                    Snackbar.Show(Resource.File_Upoad_Error, Severity.Error);
+
+                return Unit.Default;
+            },
+            ex =>
+            {
+                Snackbar.Show(Resource.File_Upoad_Error, Severity.Error);
+                return Unit.Default;
+            }
+        );
+    }
+
+    private async Task CreateSponsorAsync()
+    {
+        var result = await SponsorService.CreateSponsorAsync(Sponsor);
+        result.Match(
+            response =>
+            {
+                if (response.IsSuccess)
+                {
+                    Snackbar.Show(Resource.Sponsor_Created, Severity.Success);
+                    NavigationManager.NavigateTo("/sponsors");
+                }
+                else
+                {
+                    Snackbar.Show(response.Title, Severity.Error);
+                    if (response.ErrorList != null)
+                    {
+                        foreach (var error in response.ErrorList)
+                            Snackbar.Show($"{error.Title}: {error.Message}", Severity.Error);
+                    }
+                }
+                return Unit.Default;
+            },
+            ex =>
+            {
+                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                return Unit.Default;
+            }
+        );
+    }
+
+    private async Task UpdateSponsorAsync()
+    {
+        var result = await SponsorService.UpdateSponsorAsync(Sponsor);
+        result.Match(
+            response =>
+            {
+                if (response.IsSuccess)
+                {
+                    Snackbar.Show(Resource.Sponsor_Updated, Severity.Success);
+                    NavigationManager.NavigateTo("/sponsors");
+                }
+                else
+                {
+                    Snackbar.Show(response.Title, Severity.Error);
+                    if (response.ErrorList != null)
+                    {
+                        foreach (var error in response.ErrorList)
+                            Snackbar.Show($"{error.Title}: {error.Message}", Severity.Error);
+                    }
+                }
+                return Unit.Default;
+            },
+            ex =>
+            {
+                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                return Unit.Default;
+            }
+        );
+    }
+
+    private void OnFileChanged(Dictionary<string, string> files)
+        => Logo = files.FirstOrDefault();
+
+    private bool IsUpdate()
+        => Id != null;
+}

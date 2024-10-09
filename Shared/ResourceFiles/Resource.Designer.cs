@@ -106,6 +106,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add new item.
+        /// </summary>
+        public static string Add_New_Item {
+            get {
+                return ResourceManager.GetString("Add_New_Item", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Address.
         /// </summary>
         public static string Address {
@@ -120,6 +129,60 @@ namespace Shared.ResourceFiles {
         public static string All {
             get {
                 return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assign Sponsors To Champion.
+        /// </summary>
+        public static string Assign_Sponsors_To_Champion {
+            get {
+                return ResourceManager.GetString("Assign_Sponsors_To_Champion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to assign sponsors to champion..
+        /// </summary>
+        public static string Assign_Sponsors_To_Champion_Failure {
+            get {
+                return ResourceManager.GetString("Assign_Sponsors_To_Champion_Failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sponsors have been successfully assigned to champion.
+        /// </summary>
+        public static string Assign_Sponsors_To_Champion_Success {
+            get {
+                return ResourceManager.GetString("Assign_Sponsors_To_Champion_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assign Sponsors To Team.
+        /// </summary>
+        public static string Assign_Sponsors_To_Team {
+            get {
+                return ResourceManager.GetString("Assign_Sponsors_To_Team", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to assign sponsors to your team. Please try again..
+        /// </summary>
+        public static string Assign_Sponsors_To_Team_Failure {
+            get {
+                return ResourceManager.GetString("Assign_Sponsors_To_Team_Failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sponsors have been successfully assigned to your team!.
+        /// </summary>
+        public static string Assign_Sponsors_To_Team_Success {
+            get {
+                return ResourceManager.GetString("Assign_Sponsors_To_Team_Success", resourceCulture);
             }
         }
         
@@ -210,6 +273,87 @@ namespace Shared.ResourceFiles {
         public static string Cart_Loading_Fail {
             get {
                 return ResourceManager.GetString("Cart_Loading_Fail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Champion.
+        /// </summary>
+        public static string Champion {
+            get {
+                return ResourceManager.GetString("Champion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Champion.
+        /// </summary>
+        public static string Champion_Create {
+            get {
+                return ResourceManager.GetString("Champion_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Champion is created successfully.
+        /// </summary>
+        public static string Champion_Created {
+            get {
+                return ResourceManager.GetString("Champion_Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Champion has been deleted successfully.
+        /// </summary>
+        public static string Champion_Deleted_Successfully {
+            get {
+                return ResourceManager.GetString("Champion_Deleted_Successfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to delete champion.
+        /// </summary>
+        public static string Champion_Deletion_Failure {
+            get {
+                return ResourceManager.GetString("Champion_Deletion_Failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Champion.
+        /// </summary>
+        public static string Champion_Update {
+            get {
+                return ResourceManager.GetString("Champion_Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Champion updated successfully.
+        /// </summary>
+        public static string Champion_Updated {
+            get {
+                return ResourceManager.GetString("Champion_Updated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can not delete a champion with an assigned match.
+        /// </summary>
+        public static string Champion_With_Match_Deletion_Failure {
+            get {
+                return ResourceManager.GetString("Champion_With_Match_Deletion_Failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Champions.
+        /// </summary>
+        public static string Champions_All {
+            get {
+                return ResourceManager.GetString("Champions_All", resourceCulture);
             }
         }
         
@@ -978,6 +1122,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is Sponsor For Happy?.
+        /// </summary>
+        public static string Is_Happy_Sponsor {
+            get {
+                return ResourceManager.GetString("Is_Happy_Sponsor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Is Over?.
         /// </summary>
         public static string IsOver {
@@ -1346,6 +1499,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Champion.
+        /// </summary>
+        public static string NewChampion {
+            get {
+                return ResourceManager.GetString("NewChampion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Match.
         /// </summary>
         public static string NewMatch {
@@ -1378,6 +1540,15 @@ namespace Shared.ResourceFiles {
         public static string NewTicket {
             get {
                 return ResourceManager.GetString("NewTicket", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
             }
         }
         
@@ -1441,6 +1612,15 @@ namespace Shared.ResourceFiles {
         public static string NotFoundInDB_Message {
             get {
                 return ResourceManager.GetString("NotFoundInDB_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nothing selected.
+        /// </summary>
+        public static string Nothing_Selected {
+            get {
+                return ResourceManager.GetString("Nothing_Selected", resourceCulture);
             }
         }
         
@@ -1760,6 +1940,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scan QR.
         /// </summary>
         public static string ScanQr {
@@ -1783,6 +1972,78 @@ namespace Shared.ResourceFiles {
         public static string Send {
             get {
                 return ResourceManager.GetString("Send", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Sponsor.
+        /// </summary>
+        public static string Sponsor_Create {
+            get {
+                return ResourceManager.GetString("Sponsor_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sponsor has been created successfully.
+        /// </summary>
+        public static string Sponsor_Created {
+            get {
+                return ResourceManager.GetString("Sponsor_Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sponsor has been deleted successfully.
+        /// </summary>
+        public static string Sponsor_Deleted_Successfully {
+            get {
+                return ResourceManager.GetString("Sponsor_Deleted_Successfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to delete sponsor.
+        /// </summary>
+        public static string Sponsor_Deletion_Failure {
+            get {
+                return ResourceManager.GetString("Sponsor_Deletion_Failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Sponsor.
+        /// </summary>
+        public static string Sponsor_Update {
+            get {
+                return ResourceManager.GetString("Sponsor_Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sponsor has been updated successfully.
+        /// </summary>
+        public static string Sponsor_Updated {
+            get {
+                return ResourceManager.GetString("Sponsor_Updated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sponsors.
+        /// </summary>
+        public static string Sponsors {
+            get {
+                return ResourceManager.GetString("Sponsors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Sponsors.
+        /// </summary>
+        public static string Sponsors_All {
+            get {
+                return ResourceManager.GetString("Sponsors_All", resourceCulture);
             }
         }
         
@@ -1882,6 +2143,15 @@ namespace Shared.ResourceFiles {
         public static string Stadium_Updated {
             get {
                 return ResourceManager.GetString("Stadium_Updated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to delete stadium with assigned match.
+        /// </summary>
+        public static string Stadium_With_Match_Deletion_Failure {
+            get {
+                return ResourceManager.GetString("Stadium_With_Match_Deletion_Failure", resourceCulture);
             }
         }
         
@@ -2557,6 +2827,15 @@ namespace Shared.ResourceFiles {
         public static string X {
             get {
                 return ResourceManager.GetString("X", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
         

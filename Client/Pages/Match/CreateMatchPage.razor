@@ -1,12 +1,14 @@
 ﻿@page "/match/create"
+@using Shared.DTOs.Champion
 
 @inject ICustomSnackbarProvider Snackbar
 @inject BITeamService TeamService
 @inject BIMatchService MatchService
 @inject IDialogService DialogService
+@inject IChampionService ChampionService
 @inject BIStadiumService StadiumService
 @inject NavigationManager NavigationManager
-@attribute [Authorize(Policy = "IsAdmin")]
+@* @attribute [Authorize(Policy = "IsAdmin")] *@
 
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
 <PageTitle>@Resource.Create @Resource.Match</PageTitle>
@@ -54,6 +56,15 @@
                         </MudSelect>
                     </MudItem>
                     <MudItem xs="12">
+                        <MudSelect T="Guid?" Label=@Resource.Champion Value="match.ChampionId" ValueChanged="ChangeChampion" ToStringFunc="@(x => (x == null || x == Guid.Empty) ? $"{Resource.Add} {Resource.NewChampion}" : champions.FirstOrDefault(y => y.Id == x)?.Name)" Required>
+                            @foreach (var champion in champions.Where(x => x.Id != Guid.Empty))
+                            {
+                                <MudSelectItem T="Guid?" Value="@champion.Id">@champion.Name</MudSelectItem>
+                            }
+                            <MudSelectItem T="Guid?" Value="null">@Resource.Add @Resource.NewChampion</MudSelectItem>
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem xs="12">
                         <MudNumericField @bind-Value=match.MaxPerUser Label=@Resource.TicketPerCustomer Variant="Variant.Text" Min="1" Required />
                     </MudItem>
                     <MudItem xs="12">
@@ -79,15 +90,18 @@
 
 <CreateTeamDialog OnTeamCreated="ReloadTeams" @bind-IsVisible=showCreateTeamDialog />
 <CreateStadiumDialog OnStadiumCreated="ReloadStadiums" @bind-IsVisible=showCreateStadiumDialog />
+<CreateChampionDialog OnChampionCreated="ReloadChampions" @bind-IsVisible=showCreateChampionDialog />
 
 @code {
     private MatchCommandDto match = new MatchCommandDto();
     private List<TeamDto> teams = new List<TeamDto>();
     private List<StadiumDto> stadiums = new List<StadiumDto>();
+    private List<ChampionDto> champions = new List<ChampionDto>();
     private MudDialog createTeamDialog;
     private MudDialog createStadiumDialog;
     private bool showCreateTeamDialog;
     private bool showCreateStadiumDialog;
+    private bool showCreateChampionDialog;
 
     protected override async Task OnInitializedAsync()
     {
@@ -98,6 +112,7 @@
     {
         await ReloadTeams();
         await ReloadStadiums();
+        await ReloadChampions();
     }
 
 
@@ -126,7 +141,18 @@
             showCreateStadiumDialog = true;
             return;
         }
+
         match.StadiumId = stadiumId!.Value;
+    }
+    private void ChangeChampion(Guid? championId)
+    {
+        if (championId == null || championId == Guid.Empty)
+        {
+            showCreateChampionDialog = true;
+            return;
+        }
+
+        match.ChampionId = championId!.Value;
     }
 
     private async Task CreateMatch()
@@ -221,9 +247,34 @@
         );
         StateHasChanged();
     }
+    private async Task ReloadChampions()
+    {
+        var championResponse = await ChampionService.GetChampionsAsync(false);
+        _ = championResponse.Match(
+            succ =>
+            {
+                champions = succ.Data?.ToList() ?? [];
+                if (!succ.IsSuccess)
+                {
+                    Snackbar.Show(Resource.Stadia_Load_Fail, Severity.Error);
+                }
+                succ.ErrorList?.ToList().ForEach(x => Snackbar.Show($"{x.Title}: {x.Message}", Severity.Error));
+                // Snackbar.Show(succ.Title, Severity.Info);
+                return new Unit();
+            },
+            fail =>
+            {
+                stadiums ??= [];
+                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+                Console.WriteLine(fail.Message);
+                return new Unit();
+            }
+        );
+        StateHasChanged();
+    }
 
     private bool ValidateForm()
     {
-        return match.TeamAId != Guid.Empty && match.TeamBId != Guid.Empty && match.StadiumId != Guid.Empty && match.EventDate != null && match.EventTime != null;
+        return match.TeamAId != Guid.Empty && match.TeamBId != Guid.Empty && match.StadiumId != Guid.Empty && match.EventDate != null && match.EventTime != null && match.ChampionId != Guid.Empty;
     }
 }

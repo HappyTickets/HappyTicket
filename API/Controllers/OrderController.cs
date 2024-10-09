@@ -1,17 +1,12 @@
 ﻿using Application.Interfaces;
-using Domain.Entities;
 using LanguageExt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using Shared.Common;
 using Shared.Common.General;
 using Shared.DTOs;
-using Shared.DTOs.Identity.UserDTOs;
 using Shared.DTOs.TicketDTOs;
 using Shared.Extensions;
-using System.Linq.Expressions;
 using System.Net;
 
 namespace API.Controllers

@@ -93,6 +93,10 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Order> Orders { get; set; }
     public DbSet<CartItem> CartItems { get; set; }
     public DbSet<UserFavoriteTeam> UserFavoriteTeams { get; set; }
+    public DbSet<Sponsor> Sponsors { get; set; }
+    public DbSet<Champion> Champions { get; set; }
+    public DbSet<ChampionSponsor> ChampionSponsors { get; set; }
+    public DbSet<TeamSponsor> TeamSponsors { get; set; }
 
     public void PrepareEntity()
     {

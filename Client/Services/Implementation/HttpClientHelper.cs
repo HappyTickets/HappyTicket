@@ -12,7 +12,6 @@ using Shared.DTOs.Identity.Logout;
 using Shared.DTOs.Identity.RefreshAuthToken;
 using Shared.DTOs.Identity.TokenDTOs;
 using Shared.Exceptions;
-using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -31,7 +30,7 @@ namespace Client.Services.Implementation
         private readonly IAuthStateProvider _authStateProvider;
         public HttpClient _ScopedHttpClient { get; set; }
 
-        
+
 
         public HttpClientHelper(ILocalStorageService localStorage, HttpClient httpClient, AuthenticationStateProvider authenticationStateProvider, IApiResponse apiResponse)
         {
@@ -195,7 +194,7 @@ namespace Client.Services.Implementation
 
                 var content = JsonConvert.SerializeObject(entity);
                 var response = await _httpClient.PostAsync(url, new StringContent(content, Encoding.UTF8, "application/json"));
-                
+
                 var responseContent = await response.Content.ReadAsStringAsync();
                 var deserializedResponse = JsonConvert.DeserializeObject<Tout>(responseContent);
                 if (deserializedResponse != null)
@@ -216,6 +215,25 @@ namespace Client.Services.Implementation
 
                 var content = JsonConvert.SerializeObject(entity);
                 var response = await _httpClient.PutAsync(url, new StringContent(content, Encoding.UTF8, "application/json"));
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var deserializedResponse = JsonConvert.DeserializeObject<Tout>(responseContent);
+                if (deserializedResponse != null)
+                    return deserializedResponse;
+                return new(new Exception($"Couldn't deserialize the response to {typeof(Tout).Name}"));
+            }
+            catch (Exception ex)
+            {
+                return new(ex);
+            }
+        }
+
+        public async Task<Result<Tout>> DeleteBaseAsync<Tout>(string url, bool useAuth = true)
+        {
+            try
+            {
+                if (useAuth) _ = await GetUserCurrentIdentityAsync();
+
+                var response = await _httpClient.DeleteAsync(url);
                 var responseContent = await response.Content.ReadAsStringAsync();
                 var deserializedResponse = JsonConvert.DeserializeObject<Tout>(responseContent);
                 if (deserializedResponse != null)

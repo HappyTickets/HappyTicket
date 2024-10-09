@@ -7,10 +7,10 @@ namespace Domain.Entities
     public class Order : BaseEntity
     {
         [ForeignKey("User")]
-        public string UserId { get; set; } 
+        public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
 
-        public decimal TotalAmount { get; set; } 
+        public decimal TotalAmount { get; set; }
 
         // Payment Fields
         public int? PaymentStatus { get; set; }
@@ -18,7 +18,7 @@ namespace Domain.Entities
         public string? PaymentUrl { get; set; }
 
         // Navigation property for Cart Items
-        public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>(); 
+        public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
     }
 
 }
