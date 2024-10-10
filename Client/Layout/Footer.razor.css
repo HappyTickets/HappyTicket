@@ -1,0 +1,83 @@
+﻿.curved-section {
+    position: relative;
+    height: 600px;
+    text-align: center;
+    overflow: hidden;
+}
+
+    .curved-section img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 1;
+    }
+
+    .curved-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(59, 86, 117, 0.6); /* Black overlay with 40% opacity */
+        z-index: 2; /* Position the overlay above the image */
+    }
+
+    .curved-section::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 180px; /* Increase the height to make the curve more pronounced */
+        background-color: white;
+        z-index: 3; /* Bring the curve in front of the overlay */
+        border-bottom-left-radius: 100% 150px; /* Increase curve */
+        border-bottom-right-radius: 100% 150px; /* Increase curve */
+    }
+
+.content {
+    position: relative;
+    z-index: 4; /* Ensure the content is on top of everything */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: white;
+}
+
+.description {
+    font-size: 24px;
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.social-icons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    
+}
+
+    .social-icons a {
+        color: white;
+        margin: 0 10px;
+        font-size: 24px;
+        bottom:0;
+        
+    }
+
+.footer {
+    margin-top: 20px;
+    font-size: 14px;
+    text-align: center;
+}
+
+
+

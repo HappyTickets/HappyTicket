@@ -1172,10 +1172,70 @@ For any questions or concerns regarding this Agreement, please contact [Customer
   <data name="Assign_Sponsors_To_Champion_Success" xml:space="preserve">
     <value>Sponsors have been successfully assigned to champion</value>
   </data>
+  <data name="slide1" xml:space="preserve">
+    <value>Get Closer to the Action</value>
+  </data>
   <data name="Assign_Sponsors_To_Champion_Failure" xml:space="preserve">
     <value>Failed to assign sponsors to champion.</value>
   </data>
+  <data name="HomeAboutUs1" xml:space="preserve">
+    <value>In the heart of the bustling world of sports and entertainment, our company stands as a beacon for fans seeking unforgettable experiences. We are not merely ticket sellers; we are custodians of excitement, catalysts of adventure, and architects of memory-making moments.
+
+Our mission is to bring fans closer to the action, creating opportunities for them to feel the adrenaline of a live game, the thrill of a concert, or the magic of a theatrical performance. We understand that every ticket represents a cherished memory waiting to be made, and we strive to deliver more than just access—we deliver the experience of a lifetime.</value>
+  </data>
+  <data name="HomeAboutUs2" xml:space="preserve">
+    <value> With a passion for excellence and a commitment to customer satisfaction, we go beyond the ordinary, offering exclusive access, personalized service, and tailored packages. We believe in the power of shared moments, where every cheer, every beat, and every scene is part of a story that resonates long after the final curtain falls.
+ Join us as we continue to redefine the way fans experience their favorite events. Together, let’s create memories that will be talked about for years to come.</value>
+  </data>
+  <data name="slide1Text1" xml:space="preserve">
+    <value>Experience the thrill of live football like never before.</value>
+  </data>
+  <data name="slide2" xml:space="preserve">
+    <value>Secure Your Spot, Join the Roar!</value>
+  </data>
+  <data name="slide2Text1" xml:space="preserve">
+    <value>Don’t miss a moment of the match. </value>
+  </data>
+  <data name="slide3" xml:space="preserve">
+    <value>Score Big with Exclusive Offers!</value>
+  </data>
+  <data name="slide3Text1" xml:space="preserve">
+    <value>Enjoy unbeatable prices and exclusive packages for football's biggest games. </value>
+  </data>
+  <data name="LetTheNumberTalk" xml:space="preserve">
+    <value>Let The Number Talk About Us </value>
+  </data>
+  <data name="LargestNetwork" xml:space="preserve">
+    <value>The largest ticket booking network in Saudi Arabia.</value>
+  </data>
+  <data name="ClientTrustUs" xml:space="preserve">
+    <value>Client Trust Us.</value>
+  </data>
+  <data name="Eventsthatwereorganized" xml:space="preserve">
+    <value>Events That Were Organized.</value>
+  </data>
+  <data name="NumberOfTickets" xml:space="preserve">
+    <value>Number Of Soled Tickets.</value>
+  </data>
+  <data name="ShowAll" xml:space="preserve">
+    <value>Show All</value>
+  </data>
+  <data name="sliderText2" xml:space="preserve">
+    <value> Book your tickets now and feel the excitement firsthand.</value>
+  </data>
+  <data name="slide3Text2" xml:space="preserve">
+    <value>Your perfect matchday awaits.</value>
+  </data>
+  <data name="slide2Text2" xml:space="preserve">
+    <value>Reserve your seat today and be part of the ultimate fan experience.</value>
+  </data>
+  <data name="footerContent" xml:space="preserve">
+    <value>Selling tickets for matches, concerts, and organizing events. We offer our clients unforgettable experiences through exclusive tickets to the best sports, music, and art events</value>
+  </data>
   <data name="Stadium_With_Match_Deletion_Failure" xml:space="preserve">
     <value>Failed to delete stadium with assigned match</value>
+  </data>
+  <data name="UpcomingMatches" xml:space="preserve">
+    <value>Upcoming Matches</value>
   </data>
 </root>
