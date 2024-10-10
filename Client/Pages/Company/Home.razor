@@ -39,37 +39,86 @@
                 <div class="position-relative d-flex w-100" style="height:100%;">
                     <MudImage Src="Imgs/1.jpg" Class="mx-auto my-auto" Style="width:100%; height:100%; object-fit:cover;" />
                     <!--  overlay -->
+
                     <div class="overlay position-absolute w-100 h-100" style="background-color: rgba(59, 86, 117, 0.4);"></div>
 
-                    <div class="text-overlay position-absolute w-100" style="top:40%; left: 5%; transform:translateY(-50%); text-align: left;">
-                        <h3 style="font-size: 3.5rem; font-weight: bold; color: #fc5c04; margin-bottom: 33px; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);">
-                            @Resource.slide1
-                        </h3>
-                        <p style="font-size: 1.5rem; color:whitesmoke; margin-top: 10px; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);font-weight:bold">@Resource.slide1Text1</p>
-                        <p style="font-size: 1.5rem; color:whitesmoke; margin-top: 10px; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);font-weight:bold">@Resource.slide1Text2</p>
-                    </div>
+                    <MudItem>
+                        <div class="text-overlay position-absolute w-100" style="top:40%; left: 5%;right:10%; transform:translateY(-50%);">
+
+
+                            <MudText Typo="Typo.h3" style="font-size: 3.5rem; font-weight: bold; color: #fc5c04; margin-bottom: 33px; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);">
+                                @Resource.slide1
+                            </MudText>
+
+                            <MudText Typo="Typo.body1" style="font-size: 1.5rem; color:whitesmoke; margin-top: 10px; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);font-weight:bold">
+                                @Resource.slide1Text1
+                            </MudText>
+
+                            <MudText Typo="Typo.body1" style="font-size: 1.5rem; color:whitesmoke; margin-top: 10px; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);font-weight:bold">
+                                @Resource.sliderText2
+                            </MudText>
+
+                        </div>
+
+                    </MudItem>
+
                 </div>
             </MudCarouselItem>
-           @*  <MudCarouselItem Transition="Transition.Fade" Color="@Color.Primary">
+
+
+            <MudCarouselItem Transition="Transition.Fade" Color="@Color.Primary">
                 <div class="position-relative d-flex w-100" style="height:100%;">
                     <MudImage Src="Imgs/2.jpg" Class="mx-auto my-auto" Style="width:100%; height:100%; object-fit:cover;" />
                     <div class="overlay position-absolute w-100 h-100" style="background-color: rgba(59, 86, 117, 0.6);"></div>
-                    <div class="text-overlay position-absolute text-white text-center w-100" style="top:50%; transform:translateY(-50%);">
-                      @*   <h3>@Resource.slide2</h3>
-                        <p>@Resource.slide2Text</p> *@
-              @*      </div>
+                    <MudItem>
+                        <div class="text-overlay position-absolute w-100" style="top:40%; left: 5%;right:10%; transform:translateY(-50%);">
+
+
+                            <MudText Typo="Typo.h3" style="font-size: 3.5rem; font-weight: bold; color: #fc5c04; margin-bottom: 33px; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);">
+                                @Resource.slide2
+                            </MudText>
+
+                            <MudText Typo="Typo.body1" style="font-size: 1.5rem; color:whitesmoke; margin-top: 10px; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);font-weight:bold">
+                                @Resource.slide2Text1
+                            </MudText>
+
+                            <MudText Typo="Typo.body1" style="font-size: 1.5rem; color:whitesmoke; margin-top: 10px; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);font-weight:bold">
+                                @Resource.slide2Text2
+                            </MudText>
+
+                        </div>
+
+                    </MudItem>
+
                 </div>
             </MudCarouselItem>
+
             <MudCarouselItem Transition="Transition.Fade" Color="@Color.Primary">
                 <div class="position-relative d-flex w-100" style="height:100%;">
                     <MudImage Src="Imgs/3.jpg" Class="mx-auto my-auto" Style="width:100%; height:100%; object-fit:cover;" />
                     <div class="overlay position-absolute w-100 h-100" style="background-color: rgba(59, 86, 117, 0.6);"></div>
-                    <div class="text-overlay position-absolute text-white text-center w-100" style="top:50%; transform:translateY(-50%);">
-                       @*  <h3>@Resource.slide3</h3>
-                        <p>@Resource.slide3Text</p> *@
-                 @*   </div>
+                    <MudItem>
+                        <div class="text-overlay position-absolute w-100" style="top:40%; left: 5%;right:10%; transform:translateY(-50%);">
+
+
+                            <MudText Typo="Typo.h3" style="font-size: 3.5rem; font-weight: bold; color: #fc5c04; margin-bottom: 33px; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);">
+                                @Resource.slide3
+                            </MudText>
+
+                            <MudText Typo="Typo.body1" style="font-size: 1.5rem; color:whitesmoke; margin-top: 10px; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);font-weight:bold">
+                                @Resource.slide3Text1
+                            </MudText>
+
+                            <MudText Typo="Typo.body1" style="font-size: 1.5rem; color:whitesmoke; margin-top: 10px; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);font-weight:bold">
+                                @Resource.slide3Text2
+                            </MudText>
+
+                        </div>
+
+                    </MudItem>
+
                 </div>
-            </MudCarouselItem> *@
+            </MudCarouselItem>
         </ChildContent>
     </MudCarousel>
 </section>
@@ -85,7 +134,7 @@
             <MudText Typo="Typo.h3" Class="font-weight-bold pt-3">@Resource.GetToKnowUs @Resource.CompanyName</MudText>
             <MudText Typo="Typo.body1" Class=" company-description pt-3">
                 @(new MarkupString(Resource.HomeAboutUs1))
-              
+
             </MudText>
             <MudText Typo="Typo.body1" Class=" company-description pt-3">
                 @(new MarkupString(Resource.HomeAboutUs2))
@@ -94,11 +143,11 @@
         </MudItem>
         <MudItem md="1"></MudItem>
         <MudItem xs="12" md="5" Class="d-flex align-items-center">
-            <MudImage Src="Imgs/aboutUsHappy.png" Alt="aboutus" Style="border-radius: 12px;width:90%;    margin-top: 60px;" />
+            <MudImage Src="Imgs/aboutus.png" Alt="aboutus" Style="border-radius: 12px;width:90%;    margin-top: 60px;" />
         </MudItem>
     </MudGrid>
 
-   
+
 </MudContainer>
 
 
@@ -171,8 +220,8 @@
 
     <div class="stats-container">
         <div class="stat-box">
-          
-            <MudIcon Icon="@Icons.Outlined.PersonOutline" Color="Color.Secondary" Size="Size.Large"/>
+
+            <MudIcon Icon="@Icons.Outlined.PersonOutline" Color="Color.Secondary" Size="Size.Large" />
 
             <h2 class="count mt-3" data-target="2000">0</h2>
 
@@ -209,9 +258,16 @@
     private Transition transition = Transition.Slide;
     private List<MatchDto> ActiveMatches = new();
     private bool IsCarouselShown { get; set; }
+    private CultureInfo Culture => CultureInfo.CurrentUICulture;
+
+    private bool isArabic { get; set; } = false;
+
 
     protected override async Task OnInitializedAsync()
     {
+        if (Culture.Name == "ar")
+            isArabic = true;
+
         await LoadActiveMatchesAsync();
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)

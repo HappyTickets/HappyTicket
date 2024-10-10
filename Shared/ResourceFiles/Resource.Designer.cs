@@ -902,6 +902,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Selling tickets for matches, concerts, and organizing events. We offer our clients unforgettable experiences through exclusive tickets to the best sports, music, and art events.
+        /// </summary>
+        public static string footerContent {
+            get {
+                return ResourceManager.GetString("footerContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to For Admins.
         /// </summary>
         public static string ForAdmin {
@@ -2069,7 +2078,7 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Experience the thrill of live football like never before. Book your tickets now and feel the excitement firsthand..
+        ///   Looks up a localized string similar to Experience the thrill of live football like never before..
         /// </summary>
         public static string slide1Text1 {
             get {
@@ -2087,11 +2096,20 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Don’t miss a moment of the match. Reserve your seat today and be part of the ultimate fan experience..
+        ///   Looks up a localized string similar to Don’t miss a moment of the match. .
         /// </summary>
-        public static string slide2Text {
+        public static string slide2Text1 {
             get {
-                return ResourceManager.GetString("slide2Text", resourceCulture);
+                return ResourceManager.GetString("slide2Text1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reserve your seat today and be part of the ultimate fan experience..
+        /// </summary>
+        public static string slide2Text2 {
+            get {
+                return ResourceManager.GetString("slide2Text2", resourceCulture);
             }
         }
         
@@ -2105,11 +2123,29 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enjoy unbeatable prices and exclusive packages for football&apos;s biggest games. Your perfect matchday awaits..
+        ///   Looks up a localized string similar to Enjoy unbeatable prices and exclusive packages for football&apos;s biggest games. .
         /// </summary>
-        public static string slide3Text {
+        public static string slide3Text1 {
             get {
-                return ResourceManager.GetString("slide3Text", resourceCulture);
+                return ResourceManager.GetString("slide3Text1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your perfect matchday awaits..
+        /// </summary>
+        public static string slide3Text2 {
+            get {
+                return ResourceManager.GetString("slide3Text2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Book your tickets now and feel the excitement firsthand..
+        /// </summary>
+        public static string sliderText2 {
+            get {
+                return ResourceManager.GetString("sliderText2", resourceCulture);
             }
         }
         
