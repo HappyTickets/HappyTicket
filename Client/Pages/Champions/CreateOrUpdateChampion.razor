@@ -8,7 +8,7 @@
 @inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 @inject IFileService FileService
-@* @attribute [Authorize(Policy = "IsAdmin")] *@
+@attribute [Authorize(Policy = "IsAdmin")]
 
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
 <PageTitle>

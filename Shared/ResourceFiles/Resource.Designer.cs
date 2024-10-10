@@ -1565,6 +1565,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to My Tickets.
+        /// </summary>
+        public static string MyTickets {
+            get {
+                return ResourceManager.GetString("MyTickets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {

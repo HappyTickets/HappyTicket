@@ -10,8 +10,6 @@ html, body {
 
 
 .container {
-    background-color: black;
-    color: #fff;
     height: 100%;
     width: 100%;
     display: flex;
@@ -738,6 +736,7 @@ code {
 .ticket-body {
     grid-column: 1 / 2;
     display: flex;
+    color: #333;
     flex-direction: column;
     justify-content: space-around;
     padding: 15px;

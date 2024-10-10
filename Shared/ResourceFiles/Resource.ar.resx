@@ -1187,4 +1187,7 @@
   <data name="Champions" xml:space="preserve">
     <value>البطولات</value>
   </data>
+  <data name="MyTickets" xml:space="preserve">
+    <value>تذاكري</value>
+  </data>
 </root>

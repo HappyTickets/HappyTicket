@@ -1244,7 +1244,7 @@ Our mission is to bring fans closer to the action, creating opportunities for th
   <data name="Champions" xml:space="preserve">
     <value>Champions</value>
   </data>
-  <data name="UpcomingMatches" xml:space="preserve">
-    <value>Upcoming Matches</value>
+  <data name="MyTickets" xml:space="preserve">
+    <value>My Tickets</value>
   </data>
 </root>

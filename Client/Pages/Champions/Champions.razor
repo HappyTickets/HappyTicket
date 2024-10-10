@@ -5,7 +5,7 @@
 @inject IChampionService ChampionService
 @inject NavigationManager NavigationManager
 @inject IPopUpService PopUpService
-@* @attribute [Authorize(Policy = "IsAdmin")] *@
+@attribute [Authorize(Policy = "IsAdmin")]
 
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
 <PageTitle>@Resource.Champions_All</PageTitle>
