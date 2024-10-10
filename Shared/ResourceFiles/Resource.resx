@@ -1174,6 +1174,7 @@ For any questions or concerns regarding this Agreement, please contact [Customer
   </data>
   <data name="slide1" xml:space="preserve">
     <value>Get Closer to the Action</value>
+  </data>
   <data name="Assign_Sponsors_To_Champion_Failure" xml:space="preserve">
     <value>Failed to assign sponsors to champion.</value>
   </data>
@@ -1230,5 +1231,11 @@ Our mission is to bring fans closer to the action, creating opportunities for th
   </data>
   <data name="footerContent" xml:space="preserve">
     <value>Selling tickets for matches, concerts, and organizing events. We offer our clients unforgettable experiences through exclusive tickets to the best sports, music, and art events</value>
+  </data>
+  <data name="Stadium_With_Match_Deletion_Failure" xml:space="preserve">
+    <value>Failed to delete stadium with assigned match</value>
+  </data>
+  <data name="UpcomingMatches" xml:space="preserve">
+    <value>Upcoming Matches</value>
   </data>
 </root>
