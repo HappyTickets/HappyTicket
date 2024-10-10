@@ -150,6 +150,7 @@
             return;
         }
         match.TeamAId = teamId!.Value;
+        match.TeamA = null;
     }
     private void ChangeTeamB(Guid? teamId)
     {
@@ -159,6 +160,7 @@
             return;
         }
         match.TeamBId = teamId!.Value;
+        match.TeamB = null;
     }
     private void ChangeStadium(Guid? stadiumId)
     {
@@ -168,6 +170,8 @@
             return;
         }
         match.StadiumId = stadiumId!.Value;
+        match.Stadium = null;
+
     }
 
     private void ChangeChampion(Guid? championId)
