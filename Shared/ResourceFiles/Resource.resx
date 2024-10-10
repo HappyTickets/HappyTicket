@@ -993,19 +993,19 @@ Our mission is to bring fans closer to the action, creating opportunities for th
  Join us as we continue to redefine the way fans experience their favorite events. Together, let’s create memories that will be talked about for years to come.</value>
   </data>
   <data name="slide1Text1" xml:space="preserve">
-    <value>Experience the thrill of live football like never before. Book your tickets now and feel the excitement firsthand.</value>
+    <value>Experience the thrill of live football like never before.</value>
   </data>
   <data name="slide2" xml:space="preserve">
     <value>Secure Your Spot, Join the Roar!</value>
   </data>
-  <data name="slide2Text" xml:space="preserve">
-    <value>Don’t miss a moment of the match. Reserve your seat today and be part of the ultimate fan experience.</value>
+  <data name="slide2Text1" xml:space="preserve">
+    <value>Don’t miss a moment of the match. </value>
   </data>
   <data name="slide3" xml:space="preserve">
     <value>Score Big with Exclusive Offers!</value>
   </data>
-  <data name="slide3Text" xml:space="preserve">
-    <value>Enjoy unbeatable prices and exclusive packages for football's biggest games. Your perfect matchday awaits.</value>
+  <data name="slide3Text1" xml:space="preserve">
+    <value>Enjoy unbeatable prices and exclusive packages for football's biggest games. </value>
   </data>
   <data name="LetTheNumberTalk" xml:space="preserve">
     <value>Let The Number Talk About Us </value>
@@ -1024,5 +1024,17 @@ Our mission is to bring fans closer to the action, creating opportunities for th
   </data>
   <data name="ShowAll" xml:space="preserve">
     <value>Show All</value>
+  </data>
+  <data name="sliderText2" xml:space="preserve">
+    <value> Book your tickets now and feel the excitement firsthand.</value>
+  </data>
+  <data name="slide3Text2" xml:space="preserve">
+    <value>Your perfect matchday awaits.</value>
+  </data>
+  <data name="slide2Text2" xml:space="preserve">
+    <value>Reserve your seat today and be part of the ultimate fan experience.</value>
+  </data>
+  <data name="footerContent" xml:space="preserve">
+    <value>Selling tickets for matches, concerts, and organizing events. We offer our clients unforgettable experiences through exclusive tickets to the best sports, music, and art events</value>
   </data>
 </root>

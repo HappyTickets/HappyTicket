@@ -942,19 +942,19 @@
     <value>نحن ندرك أن كل تذكرة تمثل ذكرى عزيزة تنتظر أن تُصنع، ونسعى جاهدين لتقديم ما هو أكثر من مجرد وصول – نحن نقدم تجربة العمر. بشغفنا نحو التميز والتزامنا برضا العملاء، نتجاوز العادي، لنقدم وصولاً حصريًا وخدمة شخصية وباقات مخصصة. نحن نؤمن بقوة اللحظات المشتركة، حيث أن كل هتاف، وكل نبضة، وكل مشهد هو جزء من قصة تظل حية في الذاكرة طويلاً بعد إسدال الستار. انضم إلينا ونحن نواصل إعادة تعريف كيفية تجربة المشجعين لفعالياتهم المفضلة. معًا، دعونا نصنع ذكريات سيجري الحديث عنها لسنوات قادمة.</value>
   </data>
   <data name="slide1Text1" xml:space="preserve">
-    <value>عِش الإثارة كأنك في قلب الملعب. .</value>
+    <value>عِش الإثارة كأنك في قلب الملعب.</value>
   </data>
   <data name="slide2" xml:space="preserve">
     <value>احجز مكانك وانضم إلى هتاف الجماهير!</value>
   </data>
-  <data name="slide2Text" xml:space="preserve">
-    <value>لا تفوّت أي لحظة من المباراة. احجز مقعدك اليوم وكن جزءًا من تجربة المشجع المثالية.</value>
+  <data name="slide2Text1" xml:space="preserve">
+    <value>لا تفوّت أي لحظة من المباراة.</value>
   </data>
   <data name="slide3" xml:space="preserve">
     <value>احصل على عروض حصرية بأسعار مميزة!</value>
   </data>
-  <data name="slide3Text" xml:space="preserve">
-    <value>استمتع بأسعار لا تقاوم وحزم حصرية لأكبر المباريات. يوم المباراة المثالي في انتظارك.</value>
+  <data name="slide3Text1" xml:space="preserve">
+    <value>استمتع بأسعار لا تقاوم وحزم حصرية لأكبر المباريات.</value>
   </data>
   <data name="LetTheNumberTalk" xml:space="preserve">
     <value>دع الارقام تتكلم عنا</value>
@@ -976,5 +976,14 @@
   </data>
   <data name="sliderText2" xml:space="preserve">
     <value>احجز تذاكرك الآن واستمتع بتجربة فريدة</value>
+  </data>
+  <data name="slide3Text2" xml:space="preserve">
+    <value> يوم المباراة المثالي في انتظارك</value>
+  </data>
+  <data name="slide2Text2" xml:space="preserve">
+    <value>. احجز مقعدك اليوم وكن جزءًا من تجربة المشجع المثالية</value>
+  </data>
+  <data name="footerContent" xml:space="preserve">
+    <value>                بيع تذاكر المباريات والحفلات وتنظيم الفعاليات نقدم لعملائنا تجارب لا تُنسى من خلال تذاكر حصرية لأفضل الأحداث الرياضية والموسيقية والفنية</value>
   </data>
 </root>
