@@ -9,11 +9,19 @@ using Application.Interfaces.PaymentServices;
 using Application.Interfaces.Persistence;
 using Application.Mapper;
 using Application.Validation;
+using Application.Validation.RolesValidator;
 using AutoMapper.Extensions.ExpressionMapping;
 using FluentValidation;
 using Infrastructure.Persistence.EntityFramework;
 using Infrastructure.Persistence.File;
 using Infrastructure.Persistence.Identity;
+using Infrastructure.Persistence.Transaction;
+using Shared.DTOs;
+using Shared.DTOs.Authorization.Request;
+using Shared.DTOs.CartDTOs;
+using Shared.DTOs.MatchDtos;
+using Shared.DTOs.TicketDTOs;
+using static Application.Validation.TicketDtoValidator;
 
 namespace API.Extensions
 {
@@ -39,12 +47,21 @@ namespace API.Extensions
             //services.AddTransient<IValidator<OrderDto>, OrderValidator>();
             //services.AddTransient<IValidator<SponsorDto>, SponsorValidator>();
 
+            services.AddTransient<IValidator<AddRoleDto>, AddRoleValidator>();
+            services.AddTransient<IValidator<EditRoleDto>, EditRoleValidator>();
+
+            services.AddTransient<IValidator<AddRoleDto>, AddRoleValidator>();
+            services.AddTransient<IValidator<EditRoleDto>, EditRoleValidator>();
+
             services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
             services.AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork<AppDbContext>));
             services.AddTransient(typeof(IUserRepository<>), typeof(UserRepository<>));
             services.AddTransient(typeof(ITokenService<>), typeof(TokenService<>));
             services.AddTransient(typeof(IBaseService<,>), typeof(BaseService<,>));
             services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<IAuthorizationRepository, AuthorizationRepository>();
+            services.AddTransient<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IAuthorizationService, AuthorizationService>();
             services.AddTransient<ITicketService, TicketService>();
             //services.AddSingleton<CountryInfoService>();
             //services.AddTransient<ITicketService, TicketService>();
