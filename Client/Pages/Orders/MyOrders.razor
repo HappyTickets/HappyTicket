@@ -38,7 +38,7 @@
                                                         </div>
                                                         <div class="match-info">
                                                             <p><strong>Stadium:</strong> @match.Stadium?.Name</p>
-                                                            <p><strong>Date:</strong> @match.EventDate?.ToString("yyyy/MM/dd")</p>
+                                                            <p><strong>Date:</strong> @match.EventDate?.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture)</p>
                                                             <p><strong>Time:</strong> @match.EventTime?.ToString(@"hh\:mm")</p>
                                                         </div>
                                                     </div>

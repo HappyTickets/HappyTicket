@@ -3,7 +3,7 @@
 @inject ICustomSnackbarProvider Snackbar
 @inject BIMatchService MatchService
 @inject NavigationManager NavigationManager
-@* @attribute [Authorize(Policy = "IsAdmin")] *@
+@attribute [Authorize(Policy = "IsAdmin")]
 
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
 

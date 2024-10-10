@@ -6,7 +6,7 @@
 @inject NavigationManager NavigationManager
 @inject ISponsorService SponsorService
 @inject IFileService FileService
-@* @attribute [Authorize(Policy = "IsAdmin")] *@
+@attribute [Authorize(Policy = "IsAdmin")]
 
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
 <PageTitle>

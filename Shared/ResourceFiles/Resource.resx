@@ -1235,7 +1235,16 @@ Our mission is to bring fans closer to the action, creating opportunities for th
   <data name="Stadium_With_Match_Deletion_Failure" xml:space="preserve">
     <value>Failed to delete stadium with assigned match</value>
   </data>
-  <data name="UpcomingMatches" xml:space="preserve">
-    <value>Upcoming Matches</value>
+  <data name="Admin_Panel" xml:space="preserve">
+    <value>Admin Panel</value>
+  </data>
+  <data name="Stadiums" xml:space="preserve">
+    <value>Stadiums</value>
+  </data>
+  <data name="Champions" xml:space="preserve">
+    <value>Champions</value>
+  </data>
+  <data name="MyTickets" xml:space="preserve">
+    <value>My Tickets</value>
   </data>
 </root>

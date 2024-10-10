@@ -10,8 +10,6 @@ html, body {
 
 
 .container {
-    background-color: black;
-    color: #fff;
     height: 100%;
     width: 100%;
     display: flex;
@@ -738,6 +736,7 @@ code {
 .ticket-body {
     grid-column: 1 / 2;
     display: flex;
+    color: #333;
     flex-direction: column;
     justify-content: space-around;
     padding: 15px;
@@ -1075,4 +1074,55 @@ code {
 
 .stadium-logo:hover {
    transform: scale(1.1);
+}
+
+/* admin-panel */
+
+.admin-panel-card {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.admin-panel-card:hover {
+    background-color: #1e4164;
+}
+
+.admin-panel-card .text {
+    color: #1e4164;
+    font-weight: bold;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.admin-panel-card:hover .text {
+    color: #fff;
+}
+
+.admin-panel-card .icon-wrapper {
+    margin: 8px;
+    padding: 10px;
+    background-color: #1e4164;
+    outline: 3px solid #1e4164;
+    outline-offset: 5px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.admin-panel-card:hover .icon-wrapper {
+    background-color: #fff;
+    outline-color: #fff;
+}
+
+.admin-panel-card .icon-wrapper .icon {
+    color: #fff;
+    font-size: 2.3rem;
+    transition: color 0.3s ease;
+}
+
+.admin-panel-card:hover .icon-wrapper .icon {
+    color: #1e4164;
 }

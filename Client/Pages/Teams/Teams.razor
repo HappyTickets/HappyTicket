@@ -4,7 +4,7 @@
 @inject BITeamService TeamService
 @inject NavigationManager NavigationManager
 @inject IPopUpService PopUpService
-@* @attribute [Authorize(Policy = "IsAdmin")] *@
+@attribute [Authorize(Policy = "IsAdmin")]
 
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
 <PageTitle>@Resource.Teams_All</PageTitle>

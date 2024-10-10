@@ -1,0 +1,125 @@
+﻿@page "/admin-panel"
+@attribute [Authorize(Policy = "IsAdmin")]
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
+    
+    <div class="col">
+        <a href="/matches">
+            <MudCard Class="overflow-hidden">
+                <MudCardContent Class="admin-panel-card">
+                    <div class="icon-wrapper">
+                        <MudIcon Icon="@Icons.Material.Filled.SportsSoccer" Class="icon" />
+                    </div>
+                    <h5 class="mb-0 text">@Resource.Matches</h5>
+                </MudCardContent>
+            </MudCard>
+        </a>
+    </div>
+        
+    <div class="col">
+        <a href="/teams">
+            <MudCard Class="overflow-hidden">
+                <MudCardContent Class="admin-panel-card">
+                        <div class="icon-wrapper">
+                            <MudIcon Icon="@Icons.Material.Filled.Groups" Class="icon" />
+                        </div>
+                    <h5 class="mb-0 text">@Resource.Teams</h5>
+                </MudCardContent>
+            </MudCard>
+        </a>
+    </div>
+    
+    <div class="col">
+        <a href="/stadiums">
+            <MudCard Class="overflow-hidden">
+                <MudCardContent Class="admin-panel-card">
+                        <div class="icon-wrapper">
+                            <MudIcon Icon="@Icons.Material.Filled.Stadium" Class="icon" />
+                        </div>
+                    <h5 class="mb-0 text">@Resource.Stadiums</h5>
+                </MudCardContent>
+            </MudCard>
+        </a>
+    </div>
+    
+    <div class="col">
+        <a href="/champions">
+            <MudCard Class="overflow-hidden">
+                <MudCardContent Class="admin-panel-card">
+                        <div class="icon-wrapper">
+                            <MudIcon Icon="@Icons.Material.Filled.SportsSoccer" Class="icon" />
+                        </div>
+                    <h5 class="mb-0 text">@Resource.Champions</h5>
+                </MudCardContent>
+            </MudCard>
+        </a>
+    </div>
+    
+    <div class="col">
+        <a href="/sponsors">
+            <MudCard Class="overflow-hidden">
+                <MudCardContent Class="admin-panel-card">
+                        <div class="icon-wrapper">
+                            <MudIcon Icon="@Icons.Material.Filled.Handshake" Class="icon" />
+                        </div>
+                    <h5 class="mb-0 text">@Resource.Sponsors</h5>
+                </MudCardContent>
+            </MudCard>
+        </a>
+    </div>
+
+    <div class="col">
+        <a href="/champions/assign-sponsors-to-champion">
+            <MudCard Class="overflow-hidden">
+                <MudCardContent Class="admin-panel-card">
+                    <div class="icon-wrapper">
+                        <MudIcon Icon="@Icons.Material.Filled.Assignment" Class="icon" />
+                    </div>
+                    <h5 class="mb-0 text">@Resource.Assign_Sponsors_To_Champion</h5>
+                </MudCardContent>
+            </MudCard>
+        </a>
+    </div>
+
+    <div class="col">
+        <a href="/teams/assign-sponsors-to-team">
+            <MudCard Class="overflow-hidden">
+                <MudCardContent Class="admin-panel-card">
+                        <div class="icon-wrapper">
+                        <MudIcon Icon="@Icons.Material.Filled.Assignment" Class="icon" />
+                        </div>
+                    <h5 class="mb-0 text">@Resource.Assign_Sponsors_To_Team</h5>
+                </MudCardContent>
+            </MudCard>
+        </a>
+    </div>
+    
+    <div class="col">
+        <a href="/scan-qr-ticket">
+            <MudCard Class="overflow-hidden">
+                <MudCardContent Class="admin-panel-card">
+                        <div class="icon-wrapper">
+                        <MudIcon Icon="@Icons.Material.Filled.QrCodeScanner" Class="icon" />
+                        </div>
+                    <h5 class="mb-0 text">@Resource.ScanQr</h5>
+                </MudCardContent>
+            </MudCard>
+        </a>
+    </div>
+    
+    <div class="col">
+        <a href="/all-orders">
+            <MudCard Class="overflow-hidden">
+                <MudCardContent Class="admin-panel-card">
+                        <div class="icon-wrapper">
+                        <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" Class="icon" />
+                        </div>
+                    <h5 class="mb-0 text">@Resource.Orders</h5>
+                </MudCardContent>
+            </MudCard>
+        </a>
+    </div>
+</div>
