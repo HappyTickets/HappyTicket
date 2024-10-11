@@ -1190,4 +1190,7 @@
   <data name="MyTickets" xml:space="preserve">
     <value>تذاكري</value>
   </data>
+  <data name="UpcomingMatches" xml:space="preserve">
+    <value>المباريات القادمة</value>
+  </data>
 </root>

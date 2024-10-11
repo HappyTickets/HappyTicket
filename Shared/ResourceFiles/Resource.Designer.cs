@@ -2924,6 +2924,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Upcoming Matches.
+        /// </summary>
+        public static string UpcomingMatches {
+            get {
+                return ResourceManager.GetString("UpcomingMatches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Email.
         /// </summary>
         public static string UserEmail {
