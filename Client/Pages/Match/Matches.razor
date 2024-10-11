@@ -50,6 +50,9 @@
                         </MudGrid>
                     </MudTd>
 
+                    <MudTd class="center-on-mobile">@context.Champion?.Name</MudTd>
+
+
                     <MudTd class="center-on-mobile">
                         <div class="date-time-mobile">
                             @context.EventDate?.ToString("dd-MM-yyyy")
@@ -92,7 +95,7 @@
                             </MudButton>
 
                             <MudButton OnClick="@(() => NavigateTo("ticket-prices", context.Id))"
-                                       Color="Color.Tertiary"
+                                       Color="Color.Success"
                                        Variant="Variant.Filled"
                                        Class="button-full-width">
                                 @Resource.TicketPrices

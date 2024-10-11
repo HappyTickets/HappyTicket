@@ -215,7 +215,14 @@ namespace Application.Implementations
                 .Include(o => o.CartItems)
                     .ThenInclude(ci => ci.Ticket)
                         .ThenInclude(t => t.Match)
-                            .ThenInclude(m => m.Stadium)
+                            .ThenInclude(m => m.Stadium),
+            orderDto => orderDto
+                .Include(o => o.CartItems)
+                    .ThenInclude(ci => ci.Ticket)
+                        .ThenInclude(t => t.Match)
+                            .ThenInclude(m => m.Champion)
+                            .ThenInclude(m => m.ChampionSponsors)
+                            .ThenInclude(m => m.Sponsor)
 
             };
 
@@ -245,12 +252,14 @@ namespace Application.Implementations
                             TeamId = ticket.TeamId,
                             ExternalGate = ticket.ExternalGate,
                             InternalGate = ticket.InternalGate,
+
                             Match = new MatchDto
                             {
                                 Stadium = ticket.Match.Stadium,
                                 EventDate = ticket.Match?.EventDate,
                                 EventTime = ticket.Match?.EventTime,
                                 TeamAId = ticket.Match.TeamAId,
+                                Champion = ticket.Match.Champion,
                                 TeamBId = ticket.Match.TeamBId,
                                 TeamA = new TeamDto
                                 {

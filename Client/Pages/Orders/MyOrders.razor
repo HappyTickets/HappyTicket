@@ -27,10 +27,10 @@
                                             <div class="ticket-container">
                                                 <div class="ticket">
                                                     <div class="ticket-header">
-                                                        <h4>ROSHN Saudi League | RSL </h4>
+                                                        <h4>@match.Champion.Name</h4>
                                                     </div>
                                                     <div class="ticket-body">
-                                                        <div class="ticket-background" style="background-image: url('logos/rsl-logo.svg');"></div>
+                                                        <div class="ticket-background" style="background-image: url('@(new Uri(new Uri(UrlHelper.GetAPIBase()), match.Champion.Logo))');"></div>
                                                         <div class="teams">
                                                             <img src="@(new Uri(new Uri(UrlHelper.GetAPIBase()), match.TeamA?.Logo))" alt="@match.TeamA?.Name" class="team-logo @(ticket.TeamId == match.TeamAId ? "highlight-team" : "")" />
                                                             <span class="vs">VS</span>
@@ -50,7 +50,22 @@
                                                             <p><strong>External Gate:</strong> @ticket.ExternalGate</p>
                                                             <p><strong>Internal Gate:</strong> @ticket.InternalGate</p>
                                                             <p><strong>Class:</strong> @ticket.Class</p>
+
+                                                            @if (ticket.Match?.Champion?.ChampionSponsors != null && ticket.Match.Champion.ChampionSponsors.Any())
+                                                            {
+                                                                <div class="sponsors-logos">
+                                                                    @foreach (var sponsor in ticket.Match.Champion.ChampionSponsors)
+                                                                    {
+                                                                        <img src="@sponsor.Sponsor.Logo" alt="@sponsor.Sponsor.Name" class="sponsor-logo" />
+                                                                    }
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p>No sponsors available.</p>
+                                                            }
                                                         </div>
+
                                                         <div class="ticket-logo-status">
                                                             @if (ticket.TicketStatus == TicketStatusDTO.Used)
                                                             {
