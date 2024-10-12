@@ -18,6 +18,7 @@
                 </MudCardContent>
             </MudCard>
         </MudPaper>
+
         <MudPaper Class="mb-5">
             <MudCard>
                 <MudCardContent>
@@ -30,18 +31,7 @@
                 </MudCardContent>
             </MudCard>
         </MudPaper>
-        
-      @*   <MudPaper>
-            <MudCard>
-                <MudCardContent>
-                    <MudText Class="fs-5 mb-2">@Resource.Address</MudText>
-                    <MudText Typo="Typo.subtitle1">
-                        <MudIcon Icon="@Icons.Material.Filled.LocationOn" Size="Size.Large" Color="Color.Primary" Title="Address" />
-                        @Resource.KSA_Riyadh
-                    </MudText>
-                </MudCardContent>
-            </MudCard>
-        </MudPaper> *@
+
     </MudItem>
     <MudItem xs="12" md="8" Class="py-2 d-flex flex-1">
         <MudPaper Elevation="1" Class="pa-4 my-2 contact-paper" Width="100%">
@@ -56,30 +46,3 @@
         </MudPaper>
     </MudItem>
 </MudGrid>
-
-
-@code {
-    private CustomerInfoDto CustomerInfoDto { get; set; } = new();
-
-    [CascadingParameter]
-    public Task<AuthenticationState>? AuthenticationState { get; set; }
-
-    protected override async Task OnParametersSetAsync()
-    {
-        var user = (await AuthenticationState!).User;
-    }
-
-    private bool IsFormValidToProceedWith()
-    {
-        var result = !string.IsNullOrWhiteSpace(CustomerInfoDto.Name) &&
-                     !string.IsNullOrWhiteSpace(CustomerInfoDto.Email) &&
-                     !string.IsNullOrWhiteSpace(CustomerInfoDto.Message);
-
-        return result;
-    }
-
-    private async Task SendCustomerRequest()
-    {
-        Console.WriteLine("Message Sent!");
-    }
-}
