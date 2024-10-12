@@ -1,6 +1,7 @@
 ﻿using Client.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using MudBlazor;
 using Shared.DTOs;
 using Shared.DTOs.ContactDto;
 
@@ -32,20 +33,19 @@ namespace Client.Pages.Company
         {
             if (IsFormValidToProceedWith())
             {
-                try
+                var result = await ContactService.SendMessageAsync(new Contact
                 {
-                    await ContactService.SendMessageAsync(new Contact
-                    {
-                        Username = CustomerInfoDto.Name,
-                        Email = CustomerInfoDto.Email,
-                        Note = CustomerInfoDto.Message
-                    });
-
-                    Console.WriteLine("Message Sent!");
+                    Username = CustomerInfoDto.Name,
+                    Email = CustomerInfoDto.Email,
+                    Note = CustomerInfoDto.Message
+                });
+                if (result != null)
+                {
+                    Snackbar.Add("Failed To Send The Message Please Try Again", Severity.Error);
                 }
-                catch (Exception ex)
+                else
                 {
-                    Console.WriteLine($"Error sending message: {ex.Message}");
+                    Snackbar.Add("Message Sent Successfully", Severity.Success);
                 }
             }
         }

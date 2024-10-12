@@ -1,4 +1,5 @@
 ﻿@page "/Contactus"
+@inject ISnackbar Snackbar
 
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
 <h1 class="text-center mt-3">@Resource.ContactUsHeadline</h1>
@@ -30,16 +31,16 @@
         </MudPaper>
     </MudItem>
 
-    <MudItem xs="12" md="8" Class="py-2 d-flex flex-1">
-        <MudPaper Elevation="1" Class="pa-4 my-2 contact-paper" Width="100%">
-            <MudText Typo="Typo.h5" Class="text-center">@Resource.ContactUs</MudText>
-            <EditForm Model="CustomerInfoDto" Class="contact-form">
-                <DataAnnotationsValidator />
-                <MudTextField T="string" Label=@Resource.Name Variant="Variant.Text" FullWidth @bind-Value="CustomerInfoDto.Name" Class="mb-2" For="@(() => CustomerInfoDto.Name)" Immediate="true" Required />
-                <MudTextField T="string" Label=@Resource.Email Variant="Variant.Text" FullWidth @bind-Value="CustomerInfoDto.Email" Class="mb-2" For="@(() => CustomerInfoDto.Email)" Immediate="true" Required />
-                <MudTextField T="string" Label=@Resource.Message Variant="Variant.Text" FullWidth Multiline Rows="4" @bind-Value="CustomerInfoDto.Message" Class="mb-2" For="@(() => CustomerInfoDto.Message)" Immediate="true" Required />
-                <LoadingButton OnClick="SendCustomerRequest" Disabled="!IsFormValidToProceedWith()">@Resource.Send</LoadingButton>
-            </EditForm>
-        </MudPaper>
-    </MudItem>
+        <MudItem xs="12" md="8" Class="py-2 d-flex flex-1">
+            <MudPaper Elevation="1" Class="pa-4 my-2 contact-paper" Width="100%">
+                <MudText Typo="Typo.h5" Class="text-center">@Resource.ContactUs</MudText>
+                <EditForm Model="CustomerInfoDto" Class="contact-form">
+                    <DataAnnotationsValidator />
+                    <MudTextField T="string" Label=@Resource.Name Variant="Variant.Text" FullWidth @bind-Value="CustomerInfoDto.Name" Class="mb-2" For="@(() => CustomerInfoDto.Name)" Immediate="true" Required />
+                    <MudTextField T="string" Label=@Resource.Email Variant="Variant.Text" FullWidth @bind-Value="CustomerInfoDto.Email" Class="mb-2" For="@(() => CustomerInfoDto.Email)" Immediate="true" Required />
+                    <MudTextField T="string" Label=@Resource.Message Variant="Variant.Text" FullWidth Multiline Rows="4" @bind-Value="CustomerInfoDto.Message" Class="mb-2" For="@(() => CustomerInfoDto.Message)" Immediate="true" Required />
+                    <LoadingButton OnClick="SendCustomerRequest" Disabled="!IsFormValidToProceedWith()">@Resource.Send</LoadingButton>
+                </EditForm>
+            </MudPaper>
+        </MudItem>
 </MudGrid>
