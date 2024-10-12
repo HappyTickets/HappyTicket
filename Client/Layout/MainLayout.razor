@@ -45,9 +45,9 @@
                         <AppNavLink Href="/Matches" BeforeIcon="@Icons.Material.Filled.SportsSoccer" Style="width: 170px; height: 100%" Text=@Resource.Matches_Settings />
                         <AppNavLink Href="/all-orders" BeforeIcon="@Icons.Material.Filled.Sell" Text="@Resource.Orders" />
                         <AppNavLink Href="/scan-qr-ticket" BeforeIcon="@Icons.Material.Filled.QrCodeScanner" Text="@Resource.ScanQr" />
-
-                    }
                         <AppNavLink Href="/my-orders" BeforeIcon="@Icons.Material.Filled.Sell" Text="@Resource.MyOrders" />
+                    }
+                       
                     @if (!string.IsNullOrWhiteSpace(userName) && CurrentBreakpoint >= Breakpoint.Lg)
                     {
                         <div class="vr align-self-center" style="height: 45px; margin-right: 30px"></div>
