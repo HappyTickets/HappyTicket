@@ -17,7 +17,7 @@ namespace Application.Implementations.ContactServices
         {
             string toEmail = "tm76498@gmail.com";
             string subject = $"Contact Us Message from {contact.Username}";
-            string body = $"Name: {contact.Username}\nEmail: {contact.Email}\n\nMessage: {contact.Note}";
+            string body = $"Name: {contact.Username}\nEmail: {contact.Email}\nMessage: {contact.Note}";
 
             using (MailMessage mail = new MailMessage())
             {
