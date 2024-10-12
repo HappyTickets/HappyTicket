@@ -17,7 +17,7 @@ namespace Application.Implementations.ContactServices
         {
             string toEmail = "tm76498@gmail.com";
             string subject = $"Contact Us Message from {contact.Username}";
-            string body = $"Name: {contact.Username}Email: {contact.Email}Message: {contact.Note}";
+            string body = $"Name: {contact.Username}\nEmail: {contact.Email}\n\nMessage: {contact.Note}";
 
             using (MailMessage mail = new MailMessage())
             {
@@ -38,7 +38,7 @@ namespace Application.Implementations.ContactServices
                     }
                     catch (Exception ex)
                     {
-                        throw new InvalidOperationException("Error Sending Email Please Try Again", ex);
+                        throw new InvalidOperationException("Error Sending Email Please Send Again", ex);
                     }
                 }
             }
