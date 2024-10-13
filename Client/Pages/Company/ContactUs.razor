@@ -37,9 +37,16 @@
                 <MudText Typo="Typo.h5" Class="text-center">@Resource.ContactUs</MudText>
                 <EditForm Model="CustomerInfoDto" Class="contact-form">
                     <DataAnnotationsValidator />
-                    <MudTextField T="string" Label=@Resource.Name Variant="Variant.Text" FullWidth @bind-Value="CustomerInfoDto.Name" Class="mb-2" For="@(() => CustomerInfoDto.Name)" Immediate="true" Required />
-                    <MudTextField T="string" Label=@Resource.Email Variant="Variant.Text" FullWidth @bind-Value="CustomerInfoDto.Email" Class="mb-2" For="@(() => CustomerInfoDto.Email)" Immediate="true" Required />
-                    <MudTextField T="string" Label=@Resource.Message Variant="Variant.Text" FullWidth Multiline Rows="4" @bind-Value="CustomerInfoDto.Message" Class="mb-2" For="@(() => CustomerInfoDto.Message)" Immediate="true" Required />
+                <MudTextField T="string" Label=@Resource.Name Variant="Variant.Outlined" FullWidth @bind-Value="CustomerInfoDto.Name" Class="mb-2" For="@(() => CustomerInfoDto.Name)" Immediate="true" Required />
+                <MudTextField T="string" Label=@Resource.Email Variant="Variant.Outlined" FullWidth @bind-Value="CustomerInfoDto.Email" Class="mb-2" For="@(() => CustomerInfoDto.Email)" Immediate="true" Required />
+                <MudTextField T="string" Label=@Resource.Message Variant="Variant.Outlined" FullWidth Multiline Rows="4" @bind-Value="CustomerInfoDto.Message" Class="mb-2" For="@(() => CustomerInfoDto.Message)" Immediate="true" Required Lines="3" />
+
+                @* <MudTextField Label="Description"
+                              @bind-Value="model.Description"
+                              For="@(() => model.Description)"
+                              Variant="Variant.Outlined"  /> *@
+
+
                     <LoadingButton OnClick="SendCustomerRequest" Disabled="!IsFormValidToProceedWith()">@Resource.Send</LoadingButton>
                 </EditForm>
             </MudPaper>
