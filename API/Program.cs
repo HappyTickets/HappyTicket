@@ -1,5 +1,6 @@
 using API.Extensions;
 using Application.Implementations;
+using Domain.Entities.ContactEntity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using Serilog;
@@ -62,6 +63,8 @@ builder.Services.AddControllers().AddJsonOptions(opt => { opt.JsonSerializerOpti
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<WarmUpService>();
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
     var supportedCulture = new[] { new CultureInfo("ar-SA"), new CultureInfo("ar-EG"), new CultureInfo("en-GB"), new CultureInfo("en-US") };

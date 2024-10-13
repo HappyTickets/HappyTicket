@@ -42,6 +42,12 @@
                     <AppNavLink Href="/Active-Matches" BeforeIcon="@Icons.Material.Filled.SportsSoccer" Text=@Resource.Matches />
                     @if (user != null && user.Claims.Any(x => x.Type == "Role" && x.Value == "Admin"))
                     {
+                        <AppNavLink Href="/Matches" BeforeIcon="@Icons.Material.Filled.SportsSoccer" Style="width: 170px; height: 100%" Text=@Resource.Matches_Settings />
+                        <AppNavLink Href="/all-orders" BeforeIcon="@Icons.Material.Filled.Sell" Text="@Resource.Orders" />
+                        <AppNavLink Href="/scan-qr-ticket" BeforeIcon="@Icons.Material.Filled.QrCodeScanner" Text="@Resource.ScanQr" />
+                        <AppNavLink Href="/my-orders" BeforeIcon="@Icons.Material.Filled.Sell" Text="@Resource.MyOrders" />
+                    }
+                       
                        @*  <AppNavLink Href="/Matches" BeforeIcon="@Icons.Material.Filled.SportsSoccer" Style="width: 170px; height: 100%" Text=@Resource.Matches_Settings /> *@
                         @* <AppNavLink Href="/all-orders" BeforeIcon="@Icons.Material.Filled.Sell" Text="@Resource.Orders" /> *@
                         @* <AppNavLink Href="/scan-qr-ticket" BeforeIcon="@Icons.Material.Filled.QrCodeScanner" Text="@Resource.ScanQr" /> *@

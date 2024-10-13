@@ -1,8 +1,10 @@
 ﻿using Application.Implementations;
+using Application.Implementations.ContactServices;
 using Application.Implementations.IdentityServices;
 using Application.Implementations.PaymentServices;
 using Application.Implementations.TicketServices;
 using Application.Interfaces;
+using Application.Interfaces.IContactService;
 using Application.Interfaces.IIdentityServices;
 using Application.Interfaces.ITicketServices;
 using Application.Interfaces.PaymentServices;
@@ -63,6 +65,7 @@ namespace API.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ISponsorService, SponsorService>();
             services.AddScoped<IChampionService, ChampionService>();
+            services.AddScoped<IContactService, ContactService>();
         }
     }
 }
