@@ -12,7 +12,7 @@ namespace Client.Pages.Company
         private CustomerInfoDto CustomerInfoDto { get; set; } = new();
 
         [Inject]
-        private BIContactService ContactService { get; set; } = null!; // Inject the contact service
+        private BIContactService ContactService { get; set; } = null!;
 
         [CascadingParameter]
         public Task<AuthenticationState>? AuthenticationState { get; set; }
@@ -46,6 +46,7 @@ namespace Client.Pages.Company
                 else
                 {
                     Snackbar.Add("Message Sent Successfully", Severity.Success);
+                    Navigation.NavigateTo("/");
                 }
             }
         }
