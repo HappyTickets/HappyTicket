@@ -1,0 +1,115 @@
+﻿@using Shared.DTOs.Authorization.Request
+@inject IHttpClientHelper HttpHelper
+@inject BIAuthorizationService AuthService
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+<BaseFormDialog T="EditRoleDto" Submit=HandleValidSubmit Entity="editRoleDto"
+                Title=@($"{Resource.Edit} {Resource.Role}") IsVisible="IsVisible" IsVisibleChanged="IsVisibleChanged">
+    <MudGrid Class="mx-4 my-1 gap-2">
+
+        <MudItem xs="12">
+            <MudTextField Label=@Resource.RoleName @bind-Value="editRoleDto.RoleName" FullWidth Required />
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudTextField Label=@Resource.RoleDesc @bind-Value="editRoleDto.RoleDescription" FullWidth />
+        </MudItem>
+
+    </MudGrid>
+</BaseFormDialog>
+
+@code {
+
+    [Parameter]
+    public EventCallback OnRoleEdited { get; set; }
+    [Parameter]
+    public EventCallback<bool> IsVisibleChanged { get; set; }
+    [Parameter]
+    public bool IsVisible { get; set; }
+    [Parameter]
+    public string RoleId { get; set; } // This will be used to load the role by ID
+
+    private EditRoleDto editRoleDto = new();
+
+    [Inject] private ICustomSnackbarProvider Snackbar { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!string.IsNullOrEmpty(RoleId) && editRoleDto.RoleId != RoleId)
+        {
+            editRoleDto.RoleId = RoleId;
+            await LoadRoleById(editRoleDto.RoleId);
+        }
+
+    }
+
+    private async Task LoadRoleById(string roleId)
+    {
+        try
+        {
+            var response = await AuthService.GetRoleById(roleId);
+
+            _ = response.Match(
+                res =>
+                {
+                    if (res != null)
+                    {
+                        editRoleDto.RoleName = res.Data.RoleName;
+                        editRoleDto.RoleDescription = res.Data.RoleDescription;
+                    };
+                    return new Unit();
+                },
+        ex =>
+        {
+
+            Snackbar.Show(Resource.LoadRoleFailed, Severity.Error);
+            return new Unit();
+        }
+            );
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show("انا في الايديت ", Severity.Error);
+            Snackbar.Show(Resource.LoadRoleFailed, Severity.Error);
+        }
+    }
+
+    private async Task HandleValidSubmit(EditRoleDto roleDto)
+    {
+        try
+        {
+            var response = await AuthService.EditRoleAsync(roleDto);
+
+            _ = response.Match(
+                  res =>
+                    {
+                        if (res.IsSuccess)
+                        {
+                            Snackbar.Show(string.Format(Resource.RoleEditedSuccessfully, roleDto.RoleName), Severity.Success);
+                        }
+                        else
+                        {
+                            Snackbar.Show(Resource.EditRoleFailed, Severity.Error);
+                        }
+                        return new Unit();
+                    },
+                ex =>
+                {
+                    Snackbar.Show(Resource.EditRoleFailed, Severity.Error);
+                    return new Unit();
+                }
+            );
+
+            await OnRoleEdited.InvokeAsync();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show(Resource.EditRoleFailed, Severity.Error);
+        }
+        finally
+        {
+            editRoleDto = new();
+        }
+    }
+}

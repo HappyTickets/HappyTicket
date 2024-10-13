@@ -29,7 +29,7 @@ namespace Shared.Common.General
         private static IQueryable<T> ApplySearchFilters<T>(IQueryable<T> data, PaginationSearchModel pagination)
         {
             var parameter = Expression.Parameter(typeof(T), "x");
-            var searchKey = Expression.Constant(pagination.SearchKey);
+            var searchIn = Expression.Constant(pagination.SearchIn);
             var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
             string orderByProperty = string.Empty;
 
@@ -41,17 +41,17 @@ namespace Shared.Common.General
             // Check if T is ApplicationUser
             if (typeof(T).Name == typeof(ApplicationUser).Name)
             {
-                switch (pagination.SearchIn)
+                switch (pagination.SearchKey)
                 {
                     case ApplicationUser.UserName:
                         var userNameProperty = Expression.Property(parameter, nameof(ApplicationUser.UserName));
-                        var userNameContainsExpression = Expression.Call(userNameProperty, containsMethod, searchKey);
+                        var userNameContainsExpression = Expression.Call(userNameProperty, containsMethod, searchIn);
                         finalExpression = userNameContainsExpression;
                         break;
 
                     case ApplicationUser.Email:
                         var emailProperty = Expression.Property(parameter, nameof(ApplicationUser.Email));
-                        var emailContainsExpression = Expression.Call(emailProperty, containsMethod, searchKey);
+                        var emailContainsExpression = Expression.Call(emailProperty, containsMethod, searchIn);
                         if (finalExpression == null)
                         {
                             finalExpression = emailContainsExpression;
@@ -64,7 +64,7 @@ namespace Shared.Common.General
 
                     case ApplicationUser.PhoneNumber:
                         var phoneNumberProperty = Expression.Property(parameter, nameof(ApplicationUser.PhoneNumber));
-                        var phoneNumberContainsExpression = Expression.Call(phoneNumberProperty, containsMethod, searchKey);
+                        var phoneNumberContainsExpression = Expression.Call(phoneNumberProperty, containsMethod, searchIn);
                         if (finalExpression == null)
                         {
                             finalExpression = phoneNumberContainsExpression;
