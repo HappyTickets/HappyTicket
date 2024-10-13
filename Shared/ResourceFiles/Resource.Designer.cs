@@ -178,6 +178,60 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Assign.
+        /// </summary>
+        public static string Assign {
+            get {
+                return ResourceManager.GetString("Assign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assigned Users.
+        /// </summary>
+        public static string AssignedUsers {
+            get {
+                return ResourceManager.GetString("AssignedUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to assign role.
+        /// </summary>
+        public static string AssignRoleFailed {
+            get {
+                return ResourceManager.GetString("AssignRoleFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assign Roles.
+        /// </summary>
+        public static string AssignRoles {
+            get {
+                return ResourceManager.GetString("AssignRoles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Assign Many.
+        /// </summary>
+        public static string AssignRoleToSelectedUsers {
+            get {
+                return ResourceManager.GetString("AssignRoleToSelectedUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users To Roles Asigning.
+        /// </summary>
+        public static string AssignUsersToRoles {
+            get {
+                return ResourceManager.GetString("AssignUsersToRoles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  Assign Many.
         /// </summary>
         public static string AssignRoleToSelectedUsers {
@@ -3217,6 +3271,51 @@ namespace Shared.ResourceFiles {
         public static string TryAgainLater {
             get {
                 return ResourceManager.GetString("TryAgainLater", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unassign.
+        /// </summary>
+        public static string Unassign {
+            get {
+                return ResourceManager.GetString("Unassign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unassign Users.
+        /// </summary>
+        public static string UnassignUsers {
+            get {
+                return ResourceManager.GetString("UnassignUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed To Unassign Users.
+        /// </summary>
+        public static string UnassignUsersFailed {
+            get {
+                return ResourceManager.GetString("UnassignUsersFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users have been unassigned successfully.
+        /// </summary>
+        public static string UnassignUsersSuccessfully {
+            get {
+                return ResourceManager.GetString("UnassignUsersSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User successfully assigned to role.
+        /// </summary>
+        public static string UserAssignedToRole {
+            get {
+                return ResourceManager.GetString("UserAssignedToRole", resourceCulture);
             }
         }
         
