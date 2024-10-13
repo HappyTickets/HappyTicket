@@ -13,14 +13,10 @@ namespace Client.Pages.Identity
     public partial class Register
     {
         private RegisterRequest registerRequest = new RegisterRequest();
-
-        private string SelectedCountryPrefix { get; set; } = string.Empty;
-
+        private string SelectedCountryPrefix { get; set; }
+        private string SearchText { get; set; } = string.Empty;
         private string CurrentPhoneNumberRegex { get; set; } = string.Empty;
-
         private bool IsPhoneNumberRegexErrorShown { get; set; }
-
-        private List<CountryDetailsDto> Countries { get; set; } = [];
 
         private InputType passwordInputType = InputType.Password;
 
@@ -29,9 +25,11 @@ namespace Client.Pages.Identity
         private string passwordIcon = Icons.Material.Filled.VisibilityOff;
 
         private string confirmingPasswordIcon = Icons.Material.Filled.VisibilityOff;
-
         private bool TermsAndConditionsAccepted { get; set; }
 
+        private List<CountryDetailsDto> Countries { get; set; } = new();
+        private List<CountryDetailsDto> FilteredCountries => Countries
+            .Where(c => c.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) || c.Prefix.Contains(SearchText)).ToList();
         protected override async Task OnInitializedAsync()
         {
             await GetCountriesDetailsAsync();
@@ -103,11 +101,9 @@ namespace Client.Pages.Identity
             Countries = JsonSerializer.Deserialize<List<CountryDetailsDto>>(stringifiedCountriesDetails, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             var ksa = Countries.FirstOrDefault(c => c.Prefix == "+966");
-
             if (ksa is not null)
             {
                 SelectedCountryPrefix = ksa.Prefix;
-
                 CurrentPhoneNumberRegex = ksa.PhoneNumberRegex;
             }
         }
@@ -115,14 +111,12 @@ namespace Client.Pages.Identity
         private void GetSelectedCountryPrefix(string prefix)
         {
             SelectedCountryPrefix = prefix;
-
             CurrentPhoneNumberRegex = Countries.FirstOrDefault(c => c.Prefix == SelectedCountryPrefix)?.PhoneNumberRegex ?? string.Empty;
         }
 
         private void ValidatePhoneNumberFormat(string value)
         {
             IsPhoneNumberRegexErrorShown = !Regex.IsMatch(value, CurrentPhoneNumberRegex);
-
             registerRequest.PhoneNumber = value;
         }
 

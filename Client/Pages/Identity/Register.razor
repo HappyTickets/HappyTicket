@@ -59,27 +59,29 @@
                         </MudItem>
                         <MudItem xs="6" md="5">
 
+                            <MudTextField T="string"
+                                          @bind-Value="SearchText"
+                                          Label="Search Country"
+                                          Immediate="true"
+                                          Placeholder="Type to search..." />
 
-
-                            <MudSelect Value="SelectedCountryPrefix"
+                            <MudSelect T="string"
+                                       Value="@SelectedCountryPrefix"
                                        ValueChanged="@(new Action<string>(GetSelectedCountryPrefix))"
                                        Label="@(Resource.CountryCode)"
                                        Immediate="true"
                                        Required>
-                                @foreach (var country in Countries)
+                                @foreach (var country in FilteredCountries)
                                 {
-                                    <MudSelectItem Value="@(country.Prefix)" Class="text-nowrap">
-                                        <img src="@($"https://upload.wikimedia.org/wikipedia/commons/{country.FlagLinkSegment}")"
-                                             height="14"
-                                             class="mr-1" />
-                                        &nbsp;@country.Prefix&nbsp;(@country.Name)
+                                    <MudSelectItem Value="@country.Prefix" Class="text-nowrap">
+                                        <div class="d-flex align-items-center">
+                                            <img src="@($"https://upload.wikimedia.org/wikipedia/commons/{country.FlagLinkSegment}")"
+                                                 height="20" alt="Flag of @country.Name" class="mr-1" />
+                                            <span>@country.Prefix (@country.Name)</span>
+                                        </div>
                                     </MudSelectItem>
                                 }
                             </MudSelect>
-
-
-
-
 
                         </MudItem>
                         <MudItem xs="6" md="7">
