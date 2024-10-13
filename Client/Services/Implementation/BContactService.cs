@@ -15,7 +15,7 @@ namespace Client.Services.Implementation
         }
         public async Task<Result<BaseResponse<bool>>> SendMessageAsync(Contact contactModel, CancellationToken cancellationToken = default)
         {
-            return await _httpClientHelper.PostBaseAsync<Contact, BaseResponse<bool>>("api/Contact/SendMessage", contactModel);
+            return await _httpClientHelper.PostBaseAsync<Contact, BaseResponse<bool>>("api/Contact/SendMessage", contactModel).ConfigureAwait(false);
         }
 
     }

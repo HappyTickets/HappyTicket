@@ -37,7 +37,7 @@ namespace Client.Pages.Company
                 {
                     Username = CustomerInfoDto.Name,
                     Email = CustomerInfoDto.Email,
-                    Note = CustomerInfoDto.Message
+                    Message = CustomerInfoDto.Message
                 });
                 if (result != null)
                 {
