@@ -340,7 +340,7 @@
     <value>تفاصيل المباراة</value>
   </data>
   <data name="Matches" xml:space="preserve">
-    <value>مباريات</value>
+    <value>المباريات</value>
   </data>
   <data name="Matches_Settings" xml:space="preserve">
     <value>إعدادات المباريات</value>
@@ -490,7 +490,7 @@
     <value>اسم الفريق</value>
   </data>
   <data name="Teams" xml:space="preserve">
-    <value>فرق</value>
+    <value>الفرق</value>
   </data>
   <data name="TheAction" xml:space="preserve">
     <value>الإجراء</value>
@@ -866,7 +866,7 @@
     <value>رؤيتنا</value>
   </data>
   <data name="GetToKnowUs" xml:space="preserve">
-    <value>أعرف أكثر عن</value>
+    <value>أعرف أكثر عنا</value>
   </data>
   <data name="ClosedOrders" xml:space="preserve">
     <value>الطلبات المغلقة</value>
@@ -1120,10 +1120,77 @@
   <data name="Assign_Sponsors_To_Champion_Success" xml:space="preserve">
     <value>تمت إضافة الرعاة بنجاح إلى البطوله</value>
   </data>
-  <data name="Assign_Sponsors_To_Champion_Failure" xml:space="preserve">
-    <value>فشل إضافة الرعاة إلى البطوله</value>
+  <data name="slide1" xml:space="preserve">
+    <value>اقترب أكثر من الحدث !</value>
+  </data>
+  <data name="HomeAboutUs1" xml:space="preserve">
+    <value> التجارب الفريدة. نحن لا نقتصر على بيع التذاكر؛ بل نحن شغوفون بتحقيق الأحلام، وصانعو المغامرات، ومهندسو اللحظات التي تترك بصمة في الذاكرة. نحن هنا لنوفر لك ليس مجرد مقعد في الحفل أو المباراة، بل فرصة لعيش لحظات لا تُنسى، وتجارب تلامس القلوب، وتبقى محفورة في الأذهان.
+مهمتنا هي تقريب المشجعين من أحداثهم المفضلة، لنمنحهم القدرة على الشعور بأدرينالين اللحظة، وسط صخب المدرجات، أو وسط إيقاع الموسيقى الحية، أو في سحر العرض المسرحي المباشر. نفهم أن كل تذكرة تحمل في طياتها قصة تنتظر أن تُكتب، وذكرى تنتظر أن تُصنع. لذلك، نسعى دائماً لتقديم أكثر من مجرد وصول إلى الفعالية؛ نحن نقدم تجربة متكاملة، مليئة بالإثارة والتشويق، لتتحول كل لحظة إلى ذكرى خالدة.</value>
+  </data>
+  <data name="HomeAboutUs2" xml:space="preserve">
+    <value>نحن ندرك أن كل تذكرة تمثل ذكرى عزيزة تنتظر أن تُصنع، ونسعى جاهدين لتقديم ما هو أكثر من مجرد وصول – نحن نقدم تجربة العمر. بشغفنا نحو التميز والتزامنا برضا العملاء، نتجاوز العادي، لنقدم وصولاً حصريًا وخدمة شخصية وباقات مخصصة. نحن نؤمن بقوة اللحظات المشتركة، حيث أن كل هتاف، وكل نبضة، وكل مشهد هو جزء من قصة تظل حية في الذاكرة طويلاً بعد إسدال الستار. انضم إلينا ونحن نواصل إعادة تعريف كيفية تجربة المشجعين لفعالياتهم المفضلة. معًا، دعونا نصنع ذكريات سيجري الحديث عنها لسنوات قادمة.</value>
+  </data>
+  <data name="slide1Text1" xml:space="preserve">
+    <value>عِش الإثارة كأنك في قلب الملعب.</value>
+  </data>
+  <data name="slide2" xml:space="preserve">
+    <value>احجز مكانك وانضم إلى هتاف الجماهير!</value>
+  </data>
+  <data name="slide2Text1" xml:space="preserve">
+    <value>لا تفوّت أي لحظة من المباراة.</value>
+  </data>
+  <data name="slide3" xml:space="preserve">
+    <value>احصل على عروض حصرية بأسعار مميزة!</value>
+  </data>
+  <data name="slide3Text1" xml:space="preserve">
+    <value>استمتع بأسعار لا تقاوم وحزم حصرية لأكبر المباريات.</value>
+  </data>
+  <data name="LetTheNumberTalk" xml:space="preserve">
+    <value>دع الارقام تتكلم عنا</value>
+  </data>
+  <data name="LargestNetwork" xml:space="preserve">
+    <value>أكبر شبكة حجز تذاكر في المملكة العربيه السعودية</value>
+  </data>
+  <data name="ClientTrustUs" xml:space="preserve">
+    <value>عميل يثق ينا</value>
+  </data>
+  <data name="Eventsthatwereorganized" xml:space="preserve">
+    <value>الفعاليات التي تم تنظيمها</value>
+  </data>
+  <data name="NumberOfTickets" xml:space="preserve">
+    <value>عدد التذاكر المباعة</value>
+  </data>
+  <data name="ShowAll" xml:space="preserve">
+    <value>عرض الكل</value>
+  </data>
+  <data name="sliderText2" xml:space="preserve">
+    <value>احجز تذاكرك الآن واستمتع بتجربة فريدة</value>
+  </data>
+  <data name="slide3Text2" xml:space="preserve">
+    <value> يوم المباراة المثالي في انتظارك</value>
+  </data>
+  <data name="slide2Text2" xml:space="preserve">
+    <value>. احجز مقعدك اليوم وكن جزءًا من تجربة المشجع المثالية</value>
+  </data>
+  <data name="footerContent" xml:space="preserve">
+    <value>                بيع تذاكر المباريات والحفلات وتنظيم الفعاليات نقدم لعملائنا تجارب لا تُنسى من خلال تذاكر حصرية لأفضل الأحداث الرياضية والموسيقية والفنية</value>
   </data>
   <data name="Stadium_With_Match_Deletion_Failure" xml:space="preserve">
     <value>فشل حذف الملعب لأنه يحتوي على مباراة مخصصة.</value>
+  </data>
+  <data name="Admin_Panel" xml:space="preserve">
+    <value>لوحة الإدارة</value>
+  </data>
+  <data name="Stadiums" xml:space="preserve">
+    <value>الملاعب</value>
+  </data>
+  <data name="Champions" xml:space="preserve">
+    <value>البطولات</value>
+  </data>
+  <data name="MyTickets" xml:space="preserve">
+    <value>تذاكري</value>
+  </data>
+  <data name="UpcomingMatches" xml:space="preserve">
+    <value>المباريات القادمة</value>
   </data>
 </root>

@@ -48,6 +48,16 @@
                         <AppNavLink Href="/my-orders" BeforeIcon="@Icons.Material.Filled.Sell" Text="@Resource.MyOrders" />
                     }
                        
+                       @*  <AppNavLink Href="/Matches" BeforeIcon="@Icons.Material.Filled.SportsSoccer" Style="width: 170px; height: 100%" Text=@Resource.Matches_Settings /> *@
+                        @* <AppNavLink Href="/all-orders" BeforeIcon="@Icons.Material.Filled.Sell" Text="@Resource.Orders" /> *@
+                        @* <AppNavLink Href="/scan-qr-ticket" BeforeIcon="@Icons.Material.Filled.QrCodeScanner" Text="@Resource.ScanQr" /> *@
+                        <AppNavLink Href="/admin-panel" BeforeIcon="@Icons.Material.Filled.GridView" Style="width: 170px; height: 100%" Text=@Resource.Admin_Panel />
+                    }
+                    <AuthorizeView>
+                        <Authorized>
+                            <AppNavLink Href="/my-orders" BeforeIcon="@Icons.Material.Filled.Sell" Text="@Resource.MyTickets" />
+                        </Authorized>
+                    </AuthorizeView>
                     @if (!string.IsNullOrWhiteSpace(userName) && CurrentBreakpoint >= Breakpoint.Lg)
                     {
                         <div class="vr align-self-center" style="height: 45px; margin-right: 30px"></div>
@@ -118,8 +128,14 @@
                             <MudNavLink Href="/Matches" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.SportsSoccer" IconColor="Color.Primary">@Resource.Matches_Settings </MudNavLink>
                             <MudNavLink Href="/all-orders" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Sell" IconColor="Color.Primary">@Resource.Orders</MudNavLink>
                             <MudNavLink Href="/scan-qr-ticket" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.QrCodeScanner" IconColor="Color.Primary">@Resource.ScanQr</MudNavLink>
+                            <MudNavLink Href="/admin-panel" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.GridView" IconColor="Color.Primary">
+                                @Resource.Admin_Panel</MudNavLink>
                         }
-                            <MudNavLink Href="/my-orders" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Sell" IconColor="Color.Primary">@Resource.MyOrders</MudNavLink>
+                        <AuthorizeView>
+                            <Authorized>
+                                <MudNavLink Href="/my-orders" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Sell" IconColor="Color.Primary">@Resource.MyTickets</MudNavLink>
+                            </Authorized>
+                        </AuthorizeView>
                         <MudHidden Breakpoint="Breakpoint.LgAndUp">
                             <hr />
                             @if (string.IsNullOrWhiteSpace(userName))
@@ -206,11 +222,15 @@
         _appTheme.Palette.Primary = "#1e4164";
         _appTheme.Palette.AppbarBackground = new(_appTheme.Palette.Background.R, _appTheme.Palette.Background.G, _appTheme.Palette.Background.B, 0.8);
         _appTheme.Palette.AppbarText = "#424242";
+
+        _appTheme.Palette.Tertiary = "#FFFFFF";
+
         _appTheme.PaletteDark.Primary = "#d2a645";
         _appTheme.PaletteDark.AppbarBackground = new(_appTheme.PaletteDark.Background.R, _appTheme.PaletteDark.Background.G, _appTheme.PaletteDark.Background.B, 0.8);
         _appTheme.PaletteDark.AppbarText = "#92929f";
 
         _appTheme.Palette.Secondary = "#ff5e00";
+
 
         await AdjustDrawerViewOnDifferentBreakpointsAsync();
 
@@ -316,3 +336,4 @@
         return ValueTask.CompletedTask;
     }
 }
+

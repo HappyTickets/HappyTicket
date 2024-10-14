@@ -8,7 +8,7 @@
 @inject IChampionService ChampionService
 @inject BIStadiumService StadiumService
 @inject NavigationManager NavigationManager
-@* @attribute [Authorize(Policy = "IsAdmin")] *@
+@attribute [Authorize(Policy = "IsAdmin")]
 
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
 <PageTitle>@Resource.Create @Resource.Match</PageTitle>
