@@ -39,7 +39,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity: BaseEntit
     public void HardDeleteRange(IEnumerable<TEntity> entities)
         => _dbSet.RemoveRange(entities);
 
-    public void SoftDelete(SoftDeletableEntity<object> entity)
+    public void SoftDelete(SoftDeletableEntity<long> entity)
     {
         entity.IsActive = false;
         entity.SoftDeleteCount += 1;
@@ -47,7 +47,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity: BaseEntit
         _dbContext.Update(entity);
     }
 
-    public void SoftDeleteRange(IEnumerable<SoftDeletableEntity<object>> entities)
+    public void SoftDeleteRange(IEnumerable<SoftDeletableEntity<long>> entities)
     {
         foreach (var entity in entities)
         {

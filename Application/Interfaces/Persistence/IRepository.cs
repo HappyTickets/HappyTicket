@@ -16,8 +16,8 @@ public interface IRepository<TEntity> where TEntity: BaseEntity<long>
 
     void HardDelete(TEntity entity);
     void HardDeleteRange(IEnumerable<TEntity> entities);
-    void SoftDelete(SoftDeletableEntity<object> entity);
-    void SoftDeleteRange(IEnumerable<SoftDeletableEntity<object>> entities);
+    void SoftDelete(SoftDeletableEntity<long> entity);
+    void SoftDeleteRange(IEnumerable<SoftDeletableEntity<long>> entities);
 
     // queries
     IQueryable<TEntity> Query();

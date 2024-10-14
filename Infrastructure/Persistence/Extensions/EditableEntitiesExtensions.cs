@@ -11,7 +11,7 @@ namespace Infrastructure.Persistence.Extensions
         public static void PrepareAddedEntities(this ChangeTracker changeTracker, ICurrentUser user)
         {
             var entries = changeTracker
-                .Entries<BaseEntity<object>>()
+                .Entries<BaseEntity<long>>()
                 .Where(e => e.State == EntityState.Added);
 
             foreach (var entry in entries)
@@ -24,7 +24,7 @@ namespace Infrastructure.Persistence.Extensions
         public static void PrepareModifiedEntities(this ChangeTracker changeTracker, ICurrentUser user)
         {
             var entries = changeTracker
-                .Entries<BaseEntity<object>>()
+                .Entries<BaseEntity<long>>()
                 .Where(e => e.State == EntityState.Modified);
 
             foreach (var entry in entries)
@@ -37,7 +37,7 @@ namespace Infrastructure.Persistence.Extensions
         public static void PrepareDeletedEntities(this ChangeTracker changeTracker)
         {
             var entries = changeTracker
-                   .Entries<SoftDeletableEntity<object>>()
+                   .Entries<SoftDeletableEntity<long>>()
                    .Where(e => e.State == EntityState.Deleted);
 
             foreach (var entry in entries)

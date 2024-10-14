@@ -24,7 +24,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, 
     {
         base.OnModelCreating(builder);
 
-        builder.AppendGlobalQueryFilter<SoftDeletableEntity<object>>(e => e.IsActive);
+        builder.AppendGlobalQueryFilter<SoftDeletableEntity<long>>(e => e.IsActive);
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
