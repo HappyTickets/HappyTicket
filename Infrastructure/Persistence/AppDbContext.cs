@@ -1,10 +1,8 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
-using Domain.Entities.Common;
 using Domain.Entities.UserEntities;
 using Domain.Entities.UserEntities.AuthEntities;
 using Infrastructure.Persistence.Extensions;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -25,9 +23,6 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-
-        //builder.Entity<BaseEntity<long>>()
-        //   .UseTpcMappingStrategy();
 
         builder.AppendGlobalQueryFilter<SoftDeletableEntity<object>>(e => e.IsActive);
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

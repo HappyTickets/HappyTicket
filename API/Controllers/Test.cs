@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.Persistence;
 using Domain.Entities;
+using Domain.Entities.UserEntities;
 using Infrastructure.Persistence.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,11 +11,11 @@ namespace API.Controllers
     public class Test : Controller
     {
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices] AppDbContext ufw)
+        public async Task<IActionResult> Index([FromServices] IUnitOfWork ufw)
         {
-        //    var repo = ufw.Repository<Order>();
-        //    return Ok(await repo.ListAsync());
-            return Ok();
+            var repo = ufw.Repository<MatchTeam>();
+                return Ok(await repo.ListAsync());
+            //return Ok();
         }
     }
 }

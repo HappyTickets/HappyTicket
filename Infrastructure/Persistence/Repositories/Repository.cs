@@ -135,10 +135,16 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity: BaseEntit
     }
 
     public Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
-        => _dbSet.AnyAsync(predicate, cancellationToken);
+        => _dbSet.AnyAsync(predicate, cancellationToken); 
+    
+    public Task<bool> AnyAsync(CancellationToken cancellationToken = default)
+        => _dbSet.AnyAsync(cancellationToken);
 
     public Task<long> CountAsync(CancellationToken cancellationToken = default)
-        => _dbSet.LongCountAsync(cancellationToken);
+        => _dbSet.LongCountAsync(cancellationToken); 
+    
+    public Task<long> CountAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+        => _dbSet.LongCountAsync(predicate, cancellationToken);
 
     #endregion
 
