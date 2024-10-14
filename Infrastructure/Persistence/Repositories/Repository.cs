@@ -134,6 +134,9 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity: BaseEntit
         return await _dbSet.PaginateAsync(pageIndex, pageSize);
     }
 
+    public Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+        => _dbSet.AnyAsync(predicate, cancellationToken);
+
     public Task<long> CountAsync(CancellationToken cancellationToken = default)
         => _dbSet.LongCountAsync(cancellationToken);
 
