@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Domain.Entities.Common;
 
 namespace Domain.Entities;
 
-public class Championship : BaseEntity<long>
+public class Championship : SoftDeletableEntity<long>
 {
     [Required]
     public string Name { get; set; }

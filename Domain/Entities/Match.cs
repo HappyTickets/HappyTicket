@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Entities.Common;
 
 namespace Domain.Entities;
 
-public class Match : BaseEntity<long>
+public class Match : SoftDeletableEntity<long>
 {
     [Required]
     public DateTime? EventDate { get; set; }
@@ -22,7 +23,7 @@ public class Match : BaseEntity<long>
     [ForeignKey(nameof(ChampionId))]
     public virtual Championship Champion { get; set; }
 
-    public virtual MatchTeam HomeTeam { get; set; }
+    //public virtual MatchTeam HomeTeam { get; set; }
 
-    public virtual MatchTeam AwayTeam { get; set; }
+    //public virtual MatchTeam AwayTeam { get; set; }
 }

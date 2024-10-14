@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Entities.Common;
 
 namespace Domain.Entities;
 
-public class Seat : BaseEntity<long>
+public class Seat : SoftDeletableEntity<long>
 {
     public string Number { get; set; }
-    public Guid BlockId { get; set; }
+    public long BlockId { get; set; }
     [ForeignKey(nameof(BlockId))]
-    public virtual BlockO? Block { get; set; }
+    public virtual Block? Block { get; set; }
 }

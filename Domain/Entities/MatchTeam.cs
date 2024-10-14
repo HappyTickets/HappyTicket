@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Entities.Common;
 
 namespace Domain.Entities;
 
-public class MatchTeam : BaseEntity<long>
+public class MatchTeam : SoftDeletableEntity<long>
 {
     [Required]
     public long MatchId { get; set; }

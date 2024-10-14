@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Entities.Common;
 
 namespace Domain.Entities;
 
-public class ChampionSponsor : BaseEntity<long>
+public class ChampionSponsor : SoftDeletableEntity<long>
 {
     [Required]
     public long SponsorId { get; set; }

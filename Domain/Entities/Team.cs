@@ -2,7 +2,7 @@
 
 namespace Domain.Entities;
 
-public class Team : BaseEntity<long>
+public class Team : SoftDeletableEntity<long>
 {
     [Required]
     public string Name { get; set; }
