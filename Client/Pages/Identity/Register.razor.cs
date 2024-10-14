@@ -13,8 +13,6 @@ namespace Client.Pages.Identity
     public partial class Register
     {
         private RegisterRequest registerRequest = new RegisterRequest();
-        private string SelectedCountryPrefix { get; set; }
-        private string SearchText { get; set; } = string.Empty;
         private string CurrentPhoneNumberRegex { get; set; } = string.Empty;
         private bool IsPhoneNumberRegexErrorShown { get; set; }
 
@@ -25,11 +23,21 @@ namespace Client.Pages.Identity
         private string passwordIcon = Icons.Material.Filled.VisibilityOff;
 
         private string confirmingPasswordIcon = Icons.Material.Filled.VisibilityOff;
-        private bool TermsAndConditionsAccepted { get; set; }
+        private List<CountryDetailsDto> Countries { get; set; } = new List<CountryDetailsDto>();
 
-        private List<CountryDetailsDto> Countries { get; set; } = new();
+        private bool TermsAndConditionsAccepted { get; set; }
+        private string SelectedCountryPrefix { get; set; }
+        private string SearchText { get; set; } = string.Empty;
         private List<CountryDetailsDto> FilteredCountries => Countries
-            .Where(c => c.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) || c.Prefix.Contains(SearchText)).ToList();
+        .Where(country => string.IsNullOrEmpty(SearchText) ||
+                          country.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                          country.Prefix.Contains(SearchText)).ToList();
+        private void OnSearchTextChanged(string searchText)
+        {
+            SearchText = searchText;
+            StateHasChanged();
+        }
+
         protected override async Task OnInitializedAsync()
         {
             await GetCountriesDetailsAsync();

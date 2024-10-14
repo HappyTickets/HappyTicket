@@ -60,7 +60,8 @@
                         <MudItem xs="6" md="5">
 
                             <MudTextField T="string"
-                                          @bind-Value="SearchText"
+                                          Value="@SearchText"
+                                          ValueChanged="OnSearchTextChanged"
                                           Label="Search Country"
                                           Immediate="true"
                                           Placeholder="Type to search..." />
@@ -68,7 +69,7 @@
                             <MudSelect T="string"
                                        Value="@SelectedCountryPrefix"
                                        ValueChanged="@(new Action<string>(GetSelectedCountryPrefix))"
-                                       Label="@(Resource.CountryCode)"
+                                       Label="Select Country Code"
                                        Immediate="true"
                                        Required>
                                 @foreach (var country in FilteredCountries)

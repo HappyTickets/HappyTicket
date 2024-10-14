@@ -15,9 +15,7 @@ namespace Application.Implementations.ContactServices
         }
         public async Task SendMessageAsync(Contact contact, CancellationToken cancellationToken)
         {
-            //TODO :::::
-            //Convert My Email To ( Happy@ticketshappy.com )
-            string toEmail = "tm76498@gmail.com";
+            string toEmail = "Happy@ticketshappy.com";
             string subject = $"Contact Us Message from {contact.Username}";
             string body = $"Name: {contact.Username}\nEmail: {contact.Email}\nMessage: {contact.Message}";
 
