@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities;
 
-public class OrderItem : BaseEntity<long>
+public class CartItem : BaseEntity<long>
 {
     [Required]
-    public long OrderId { get; set; }
+    public long CartId { get; set; }
 
-    [ForeignKey(nameof(OrderId))]
-    public virtual Order Order { get; set; }
+    [ForeignKey(nameof(CartId))]
+    public virtual Cart Cart { get; set; }
 
     [Required]
     public long TicketId { get; set; }
@@ -17,5 +17,5 @@ public class OrderItem : BaseEntity<long>
     [ForeignKey(nameof(TicketId))]
     public virtual Ticket Ticket { get; set; }
 
-    public decimal Price { get; set; }
+    public bool IsCheckedOut { get; set; }
 }

@@ -15,9 +15,9 @@ using System.Linq.Expressions;
 
 namespace Application.Implementations
 {
-    public class MatchService : BaseService<Match, MatchDto>, IMatchService
+    public class MatchService : BaseService<MatchO, MatchDto>, IMatchService
     {
-        public MatchService(IUnitOfWork unitOfWork, ILogger<Match> logger, IMemoryCache cache, IMapper mapper, IValidator<MatchDto> validator, IStringLocalizer<Resource> localizer) : base(unitOfWork, logger, cache, mapper, validator, localizer)
+        public MatchService(IUnitOfWork unitOfWork, ILogger<MatchO> logger, IMemoryCache cache, IMapper mapper, IValidator<MatchDto> validator, IStringLocalizer<Resource> localizer) : base(unitOfWork, logger, cache, mapper, validator, localizer)
         {
         }
 

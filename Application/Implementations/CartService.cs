@@ -175,7 +175,7 @@ namespace Application.Implementations
                         if (notCheckedoutItems.Any())
                         {
                             // Create a new order
-                            Order newOrder = new()
+                            OrderO newOrder = new()
                             {
                                 Id = Guid.NewGuid(),
                                 UserId = checkoutRequestDto.UserId,
@@ -203,7 +203,7 @@ namespace Application.Implementations
 
                             // Update the Cart and create the Order
                             var result = await _unitOfWork.Repository<Cart>().Update(succ).Match(
-                                async updateSucc => await (await _unitOfWork.Repository<Order>().CreateAsync(newOrder)).Match(
+                                async updateSucc => await (await _unitOfWork.Repository<OrderO>().CreateAsync(newOrder)).Match(
                                         async createSucc => (await _unitOfWork.SaveChangesAsync(cancellationToken)).Map(succ => new Unit()),
                                         async createFail => await createFail.ToResultAsync<Unit>()),
                                 async updateFail => await updateFail.ToResultAsync<Unit>()

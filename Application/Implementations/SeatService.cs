@@ -11,9 +11,9 @@ using Shared.ResourceFiles;
 
 namespace Application.Implementations
 {
-    public class SeatService : BaseService<Seat, SeatDto>, ISeatService
+    public class SeatService : BaseService<SeatO, SeatDto>, ISeatService
     {
-        public SeatService(IUnitOfWork unitOfWork, ILogger<Seat> logger, IMemoryCache cache, IMapper mapper, IValidator<SeatDto> validator, IStringLocalizer<Resource> localizer) : base(unitOfWork, logger, cache, mapper, validator, localizer) { }
+        public SeatService(IUnitOfWork unitOfWork, ILogger<SeatO> logger, IMemoryCache cache, IMapper mapper, IValidator<SeatDto> validator, IStringLocalizer<Resource> localizer) : base(unitOfWork, logger, cache, mapper, validator, localizer) { }
 
     }
 }

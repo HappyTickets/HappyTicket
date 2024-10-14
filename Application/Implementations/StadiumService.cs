@@ -14,13 +14,13 @@ using Shared.ResourceFiles;
 
 namespace Application.Implementations
 {
-    public class StadiumService : BaseService<Stadium, StadiumDto>, IStadiumService
+    public class StadiumService : BaseService<StadiumO, StadiumDto>, IStadiumService
     {
-        public StadiumService(IUnitOfWork unitOfWork, ILogger<Stadium> logger, IMemoryCache cache, IMapper mapper, IValidator<StadiumDto> validator, IStringLocalizer<Resource> localizer) : base(unitOfWork, logger, cache, mapper, validator, localizer) { }
+        public StadiumService(IUnitOfWork unitOfWork, ILogger<StadiumO> logger, IMemoryCache cache, IMapper mapper, IValidator<StadiumDto> validator, IStringLocalizer<Resource> localizer) : base(unitOfWork, logger, cache, mapper, validator, localizer) { }
         public async Task<Result<StadiumDto>> DeleteStadiumWithNoMatchesAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var matchesRepo = _unitOfWork.Repository<Match>();
-            var stadiumRepo = _unitOfWork.Repository<Stadium>();
+            var matchesRepo = _unitOfWork.Repository<MatchO>();
+            var stadiumRepo = _unitOfWork.Repository<StadiumO>();
 
             if (await matchesRepo.Query().AnyAsync(m => m.StadiumId == id))
                 return new(new Exception(Resource.Stadium_With_Match_Deletion_Failure));

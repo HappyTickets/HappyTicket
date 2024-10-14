@@ -11,9 +11,9 @@ using Shared.ResourceFiles;
 
 namespace Application.Implementations
 {
-    public class SponsorService : BaseService<Sponsor, SponsorDto>, ISponsorService
+    public class SponsorService : BaseService<SponsorO, SponsorDto>, ISponsorService
     {
-        public SponsorService(IUnitOfWork unitOfWork, ILogger<Sponsor> logger, IMemoryCache cache, IMapper mapper, IValidator<SponsorDto> validator, IStringLocalizer<Resource> localizer) : base(unitOfWork, logger, cache, mapper, validator, localizer)
+        public SponsorService(IUnitOfWork unitOfWork, ILogger<SponsorO> logger, IMemoryCache cache, IMapper mapper, IValidator<SponsorDto> validator, IStringLocalizer<Resource> localizer) : base(unitOfWork, logger, cache, mapper, validator, localizer)
         {
         }
     }

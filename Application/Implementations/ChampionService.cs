@@ -14,11 +14,11 @@ using Shared.ResourceFiles;
 
 namespace Application.Implementations
 {
-    public class ChampionService : BaseService<Champion, ChampionDto>, IChampionService
+    public class ChampionService : BaseService<ChampionO, ChampionDto>, IChampionService
     {
         private readonly IValidator<CreateOrUpdateChampionDto> _createOrUpdateValidator;
 
-        public ChampionService(IUnitOfWork unitOfWork, ILogger<Champion> logger, IMemoryCache cache, IMapper mapper, IValidator<ChampionDto> validator, IStringLocalizer<Resource> localizer, IValidator<CreateOrUpdateChampionDto> createOrUpdateValidator) : base(unitOfWork, logger, cache, mapper, validator, localizer)
+        public ChampionService(IUnitOfWork unitOfWork, ILogger<ChampionO> logger, IMemoryCache cache, IMapper mapper, IValidator<ChampionDto> validator, IStringLocalizer<Resource> localizer, IValidator<CreateOrUpdateChampionDto> createOrUpdateValidator) : base(unitOfWork, logger, cache, mapper, validator, localizer)
         {
             _createOrUpdateValidator = createOrUpdateValidator;
         }
@@ -31,12 +31,12 @@ namespace Application.Implementations
                 if (!validationResult.IsValid)
                     return new(new ValidationException(validationResult.Errors));
 
-                var championRepo = _unitOfWork.Repository<Champion>();
+                var championRepo = _unitOfWork.Repository<ChampionO>();
                 
-                var champion = _mapper.Map<Champion>(dto);
+                var champion = _mapper.Map<ChampionO>(dto);
                 if(dto.SponsorsIds != null) 
                 {
-                    champion.ChampionSponsors = dto.SponsorsIds.Select(id => new ChampionSponsor
+                    champion.ChampionSponsors = dto.SponsorsIds.Select(id => new ChampionSponsorO
                     {
                         SponsorId = id
                     }).ToArray();
@@ -65,8 +65,8 @@ namespace Application.Implementations
                 if (!validationResult.IsValid)
                     return new(new ValidationException(validationResult.Errors));
 
-                var championRepo = _unitOfWork.Repository<Champion>();
-                var championSponsorRepo = _unitOfWork.Repository <ChampionSponsor>();
+                var championRepo = _unitOfWork.Repository<ChampionO>();
+                var championSponsorRepo = _unitOfWork.Repository <ChampionSponsorO>();
                 var championResult = await championRepo.GetByIdAsync(id, cancellationToken);
                 return await championResult.Match(
                     async champion =>
@@ -79,7 +79,7 @@ namespace Application.Implementations
                                 championSponsorRepo.HardDeleteRange(cs => cs.ChampionId == id);
                                 if (dto.SponsorsIds != null)
                                 {
-                                    var championSponsors = dto.SponsorsIds.Select(i => new ChampionSponsor
+                                    var championSponsors = dto.SponsorsIds.Select(i => new ChampionSponsorO
                                     {
                                         ChampionId = id,
                                         SponsorId = i
@@ -104,8 +104,8 @@ namespace Application.Implementations
         {
             try
             {
-                var matchRepo = _unitOfWork.Repository<Match>();
-                var championRepo = _unitOfWork.Repository<Champion>();
+                var matchRepo = _unitOfWork.Repository<MatchO>();
+                var championRepo = _unitOfWork.Repository<ChampionO>();
 
                 if (matchRepo.Query().Any(m => m.ChampionId == id))
                     return new(new Exception(Resource.Champion_With_Match_Deletion_Failure));

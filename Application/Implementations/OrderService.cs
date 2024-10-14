@@ -25,54 +25,17 @@ using System.Linq.Expressions;
 
 namespace Application.Implementations
 {
-    public class OrderService : BaseService<Order, OrderDto>, IOrderService
+    public class OrderService : BaseService<OrderO, OrderDto>, IOrderService
     {
-        public OrderService(IUnitOfWork unitOfWork, ILogger<Order> logger, IMemoryCache cache, IMapper mapper, IValidator<OrderDto> validator, IStringLocalizer<Resource> localizer)
+        public OrderService(IUnitOfWork unitOfWork, ILogger<OrderO> logger, IMemoryCache cache, IMapper mapper, IValidator<OrderDto> validator, IStringLocalizer<Resource> localizer)
             : base(unitOfWork, logger, cache, mapper, validator, localizer)
         {
         }
-        //public async Task<Result<IEnumerable<OrderDto>>> GetPaginatedOrdersAsync(PaginationParams paginationParams, bool useCache = false, Func<Order, OrderDto>? customMapper = null, CancellationToken cancellationToken = default)
-        //{
-
-        //    try
-        //    {
-        //        Expression<Func<IQueryable<OrderDto>, IIncludableQueryable<OrderDto, object>>>[] includeProperties =
-        //        {
-        //            x=>x.Include(o=>o.User),
-
-        //        };
-        //        Func<Order, OrderDto>? orderMap = order => new OrderDto
-        //        {
-        //            User = new ApplicationUserDTO
-        //            {
-        //                UserName = order.User.UserName,
-        //                Email = order.User.Email,
-        //                PhoneNumber = order.User.PhoneNumber,
-        //            },
-        //            TotalAmount = order.TotalAmount,
-        //            PaymentStatus = order.PaymentStatus,
-        //            PaymentStatusString = order.PaymentStatus.HasValue ? ((PaymentStatusEnum)order.PaymentStatus.Value).ToString() : null,
-        //            CreatedDate = order.CreatedDate,
-        //            ModifiedBy = order.ModifiedBy,
-
-        //        };
-
-        //        var result = await GetPaginatedAsync(paginationParams, useCache, orderMap, cancellationToken: cancellationToken, includeDTOProperties: includeProperties);
-
-        //        return result;
-        //    }
-
-
-        //    catch (Exception ex)
-        //    {
-        //        return new Result<IEnumerable<OrderDto>>(ex);
-        //    }
-
-        //}
+        
         public async Task<Result<IEnumerable<OrderDto>>> GetPaginatedOrdersAsync(
                      PaginationSearchModel paginationSearchModel,
                      bool useCache = false,
-                     Func<Order, OrderDto>? customMapper = null,
+                     Func<OrderO, OrderDto>? customMapper = null,
                      CancellationToken cancellationToken = default)
         {
 
@@ -86,7 +49,7 @@ namespace Application.Implementations
                 };
 
                 // Create a mapping function for converting Order to OrderDto
-                Func<Order, OrderDto> orderMap = order => new OrderDto
+                Func<OrderO, OrderDto> orderMap = order => new OrderDto
                 {
                     User = new ApplicationUserDTO
                     {
@@ -104,7 +67,7 @@ namespace Application.Implementations
                 };
 
                 // Get the queryable for orders and include related entities to do the sort logic
-                var query = _unitOfWork.Repository<Order>().Query();
+                var query = _unitOfWork.Repository<OrderO>().Query();
                 query = query.Include(o => o.User);
                 //filtering logic
                 if (!string.IsNullOrEmpty(paginationSearchModel.SearchKey) && !string.IsNullOrEmpty(paginationSearchModel.SearchIn))
@@ -179,7 +142,7 @@ namespace Application.Implementations
         }
 
         //function for creating sorting expressions based on the provided field name
-        private Expression<Func<Order, object>> GetSortExpression(string sortBy)
+        private Expression<Func<OrderO, object>> GetSortExpression(string sortBy)
         {
             return sortBy switch
             {

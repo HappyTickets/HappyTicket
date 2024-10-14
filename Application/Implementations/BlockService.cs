@@ -11,9 +11,9 @@ using Shared.ResourceFiles;
 
 namespace Application.Implementations
 {
-    public class BlockService : BaseService<Block, BlockDto>, IBlockService
+    public class BlockService : BaseService<BlockO, BlockDto>, IBlockService
     {
-        public BlockService(IUnitOfWork unitOfWork, ILogger<Block> logger, IMemoryCache cache, IMapper mapper, IValidator<BlockDto> validator, IStringLocalizer<Resource> localizer) : base(unitOfWork, logger, cache, mapper, validator, localizer) { }
+        public BlockService(IUnitOfWork unitOfWork, ILogger<BlockO> logger, IMemoryCache cache, IMapper mapper, IValidator<BlockDto> validator, IStringLocalizer<Resource> localizer) : base(unitOfWork, logger, cache, mapper, validator, localizer) { }
 
     }
 }

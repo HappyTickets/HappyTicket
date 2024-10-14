@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 
 namespace Infrastructure.Persistence.EntityFramework;
 
-public class Repository<Tentity> : IRepository<Tentity> where Tentity : BaseEntity
+public class Repository<Tentity> : IRepository<Tentity> where Tentity : BaseEntity<object>
 {
     protected readonly AppDbContext dbContext;
     protected readonly DbSet<Tentity> dbSet;

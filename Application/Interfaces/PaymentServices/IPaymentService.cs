@@ -9,6 +9,6 @@ namespace Application.Interfaces.PaymentServices
     {
         Task<Result<PaymentResponseDto>> SendPaymentRequestAsync(PaymentRequestDto paymentRequestDto);
         Task<PaymentStatusDto> CheckPaymentStatusAsync(Guid orderId);
-        Task<Result<Unit>> SendTicketEmailAsync(string email, ICollection<CartItem> ticketItems, CancellationToken cancellationToken = default);
+        Task<Result<Unit>> SendTicketEmailAsync(string email, ICollection<CartItemO> ticketItems, CancellationToken cancellationToken = default);
     }
 }

@@ -4,7 +4,7 @@ using Shared.DTOs;
 
 namespace Application.Interfaces
 {
-    public interface IStadiumService : IBaseService<Stadium, StadiumDto>
+    public interface IStadiumService : IBaseService<StadiumO, StadiumDto>
     {
         Task<Result<StadiumDto>> DeleteStadiumWithNoMatchesAsync(Guid id, CancellationToken cancellationToken = default);
     }

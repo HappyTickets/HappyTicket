@@ -24,11 +24,11 @@ public class BaseService<Tentity, Tdto> : IBaseService<Tentity, Tdto>
     where Tdto : class
 {
     protected readonly IMapper _mapper;
-    protected readonly IMemoryCache _cache;
+    //protected readonly IMemoryCache _cache;
     protected readonly IUnitOfWork _unitOfWork;
     protected readonly ILogger<Tentity> _logger;
-    protected readonly IValidator<Tdto> _validator;
-    protected readonly IStringLocalizer<Resource> _localizer;
+    //protected readonly IValidator<Tdto> _validator;
+    //protected readonly IStringLocalizer<Resource> _localizer;
 
     public BaseService(IUnitOfWork unitOfWork, ILogger<Tentity> logger, IMemoryCache cache, IMapper mapper, IValidator<Tdto> validator, IStringLocalizer<Resource> localizer)
     {

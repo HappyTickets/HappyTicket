@@ -39,7 +39,7 @@ namespace Application.Implementations
         {
             try
             {
-                var entityResult = await _unitOfWork.Repository<UserFavoriteTeam>()
+                var entityResult = await _unitOfWork.Repository<SelectedTeam>()
                     .FindAsync(x => x.UserId == userId && x.MatchId == matchId, cancellationToken, x => x.Include(y => y.Team));
 
                 var favoriteTeam = entityResult.Match(
@@ -67,8 +67,8 @@ namespace Application.Implementations
         {
             try
             {
-                UserFavoriteTeam userFavoriteTeam = _mapper.Map<UserFavoriteTeam>(userFavoriteTeamDto);
-                var entityResult = await _unitOfWork.Repository<UserFavoriteTeam>().CreateAsync(userFavoriteTeam, cancellationToken);
+                SelectedTeam userFavoriteTeam = _mapper.Map<SelectedTeam>(userFavoriteTeamDto);
+                var entityResult = await _unitOfWork.Repository<SelectedTeam>().CreateAsync(userFavoriteTeam, cancellationToken);
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
 
                 var teamResult = await _unitOfWork.Repository<Team>().GetByIdAsync(entityResult.Match(Succ => Succ.TeamId, Fail => Guid.Empty), cancellationToken);
@@ -86,9 +86,9 @@ namespace Application.Implementations
         {
             try
             {
-                UserFavoriteTeam userFavoriteTeam = _mapper.Map<UserFavoriteTeam>(userFavoriteTeamDto);
+                SelectedTeam userFavoriteTeam = _mapper.Map<SelectedTeam>(userFavoriteTeamDto);
 
-                var entityResult = await _unitOfWork.Repository<UserFavoriteTeam>()
+                var entityResult = await _unitOfWork.Repository<SelectedTeam>()
                     .FindAsync(x => x.UserId == userFavoriteTeam.UserId && x.MatchId == userFavoriteTeam.MatchId, cancellationToken);
 
                 return await entityResult.Match(
@@ -104,7 +104,7 @@ namespace Application.Implementations
                             }));
                         }
 
-                        return await _unitOfWork.Repository<UserFavoriteTeam>().HardDelete(favoriteTeam).MapAsync(
+                        return await _unitOfWork.Repository<SelectedTeam>().HardDelete(favoriteTeam).MapAsync(
                             async updateSucc =>
                             {
                                 return await _unitOfWork.SaveChangesAsync(cancellationToken).Map(succ => new Unit());
@@ -120,7 +120,7 @@ namespace Application.Implementations
 
         public async Task<Result<TeamDto>> DeleteTeamWithNoMatchesAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var matchesRepo = _unitOfWork.Repository<Match>();
+            var matchesRepo = _unitOfWork.Repository<MatchO>();
             var teamsRepo = _unitOfWork.Repository<Team>();
 
             if (await matchesRepo.Query().AnyAsync(m => m.TeamAId == id || m.TeamBId == id))
@@ -149,7 +149,7 @@ namespace Application.Implementations
                 var team = _mapper.Map<Team>(dto);
                 if (dto.SponsorsIds != null)
                 {
-                    team.TeamSponsors = dto.SponsorsIds.Select(id => new TeamSponsor
+                    team.TeamSponsors = dto.SponsorsIds.Select(id => new TeamSponsorO
                     {
                         SponsorId = id
                     }).ToArray();
@@ -179,7 +179,7 @@ namespace Application.Implementations
                     return new(new ValidationException(validationResult.Errors));
 
                 var teamRepo = _unitOfWork.Repository<Team>();
-                var teamSponsorRepo = _unitOfWork.Repository<TeamSponsor>();
+                var teamSponsorRepo = _unitOfWork.Repository<TeamSponsorO>();
                 var teamResult = await teamRepo.GetByIdAsync(id, cancellationToken);
                 return await teamResult.Match(
                     async team =>
@@ -192,7 +192,7 @@ namespace Application.Implementations
                                 teamSponsorRepo.HardDeleteRange(cs => cs.TeamId == id);
                                 if (dto.SponsorsIds != null)
                                 {
-                                    var teamSponsors = dto.SponsorsIds.Select(i => new TeamSponsor
+                                    var teamSponsors = dto.SponsorsIds.Select(i => new TeamSponsorO
                                     {
                                         TeamId = id,
                                         SponsorId = i

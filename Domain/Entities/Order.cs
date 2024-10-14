@@ -1,24 +1,24 @@
-﻿using Domain.Entities.CartEntity;
-using Domain.Entities.UserEntities;
+﻿using Domain.Entities.UserEntities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Domain.Entities
+namespace Domain.Entities;
+
+public class Order : BaseEntity<long>
 {
-    public class Order : BaseEntity
-    {
-        [ForeignKey("User")]
-        public string UserId { get; set; }
-        public virtual ApplicationUser User { get; set; }
+    [Required]
+    public string UserId { get; set; }
 
-        public decimal TotalAmount { get; set; }
+    [ForeignKey(nameof(UserId))]
+    public virtual ApplicationUser User { get; set; }
 
-        // Payment Fields
-        public int? PaymentStatus { get; set; }
-        public string? PaymentOrderRef { get; set; }
-        public string? PaymentUrl { get; set; }
+    public decimal TotalAmount { get; set; }
 
-        // Navigation property for Cart Items
-        public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
-    }
+    public int? PaymentStatus { get; set; }
 
+    public string? PaymentOrderRef { get; set; }
+
+    public string? PaymentUrl { get; set; }
+
+    public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities.CartEntity
 {
-    public class CartItem : BaseEntity
+    public class CartItemO : BaseEntity
     {
         [Required]
         [ForeignKey(nameof(CartId))]
@@ -12,7 +12,7 @@ namespace Domain.Entities.CartEntity
 
         [ForeignKey(nameof(OrderId))]
         public Guid? OrderId { get; set; }
-        public virtual Order Order { get; set; }
+        public virtual OrderO Order { get; set; }
 
         [Required]
         [ForeignKey(nameof(TicketId))]

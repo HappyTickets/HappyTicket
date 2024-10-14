@@ -10,8 +10,10 @@ using Shared.ResourceFiles;
 
 namespace Application.Implementations
 {
-    public class MatchCommandService : BaseService<Match, MatchCommandDto>, IMatchCommandService
+    public class MatchCommandService : BaseService<MatchO, MatchCommandDto>, IMatchCommandService
     {
-        public MatchCommandService(IUnitOfWork unitOfWork, ILogger<Match> logger, IMemoryCache cache, IMapper mapper, IValidator<MatchCommandDto> validator, IStringLocalizer<Resource> localizer) : base(unitOfWork, logger, cache, mapper, validator, localizer) { }
+        public MatchCommandService(IUnitOfWork unitOfWork, ILogger<MatchO> logger, IMemoryCache cache, IMapper mapper, IValidator<MatchCommandDto> validator, IStringLocalizer<Resource> localizer) : base(unitOfWork, logger, cache, mapper, validator, localizer) { }
+
+
     }
 }

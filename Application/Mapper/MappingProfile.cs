@@ -16,30 +16,30 @@ namespace Application.Mapper
         public MappingProfile()
         {
             CreateMap<Ticket, TicketDto>().ReverseMap();
-            CreateMap<Match, MatchDto>()
+            CreateMap<MatchO, MatchDto>()
                .ForMember(x => x.TeamA, opt => opt.MapFrom(x => x.TeamA))
                .ForMember(x => x.TeamB, opt => opt.MapFrom(x => x.TeamB))
                .ForMember(x => x.Stadium, opt => opt.MapFrom(x => x.Stadium))
                .ReverseMap();
-            CreateMap<Match, MatchCommandDto>().ReverseMap();
-            CreateMap<Stadium, StadiumDto>().ReverseMap();
+            CreateMap<MatchO, MatchCommandDto>().ReverseMap();
+            CreateMap<StadiumO, StadiumDto>().ReverseMap();
             CreateMap<Team, TeamDto>().ReverseMap();
             CreateMap<CreateOrUpdateTeamDto ,Team>();
-            CreateMap<Seat, SeatDto>().ReverseMap();
-            CreateMap<Block, BlockDto>().ReverseMap();
+            CreateMap<SeatO, SeatDto>().ReverseMap();
+            CreateMap<BlockO, BlockDto>().ReverseMap();
             CreateMap<Cart, CartDto>().ReverseMap();
             CreateMap<CartItem, CartItemDto>().ReverseMap();
-            CreateMap<UserFavoriteTeam, UserFavoriteTeamDto>()
+            CreateMap<SelectedTeam, UserFavoriteTeamDto>()
                 .ForMember(x => x.TeamId, opt => opt.MapFrom(x => x.TeamId))
                 .ReverseMap();
-            CreateMap<Order, OrderDto>().ReverseMap();
+            CreateMap<OrderO, OrderDto>().ReverseMap();
             //CreateMap<Block, BlockDTO>().ForMember(x => x.TicketsDTO, opt => opt.MapFrom(x => x.Tickets)).ReverseMap();
-            CreateMap<Sponsor, SponsorDto>().ReverseMap();
-            CreateMap<Champion, ChampionDto>().ReverseMap();
-            CreateMap<CreateOrUpdateChampionDto, Champion>();
+            CreateMap<SponsorO, SponsorDto>().ReverseMap();
+            CreateMap<ChampionO, ChampionDto>().ReverseMap();
+            CreateMap<CreateOrUpdateChampionDto, ChampionO>();
                 //.ForMember(dest => dest.ChampionSponsors, opt => opt.MapFrom(src => src.SponsorsIds.Select(id => new ChampionSponsor { SponsorId = id })));
-            CreateMap<ChampionSponsor, ChampionSponsorDto>().ReverseMap();
-            CreateMap<TeamSponsor, TeamSponsorDto>().ReverseMap();
+            CreateMap<ChampionSponsorO, ChampionSponsorDto>().ReverseMap();
+            CreateMap<TeamSponsorO, TeamSponsorDto>().ReverseMap();
         }
     }
 }

@@ -54,7 +54,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
             .HasForeignKey<ApplicationUser>(b => b.CartId);
 
         // Configure UserFavoriteTeam relationship with Team
-        builder.Entity<UserFavoriteTeam>()
+        builder.Entity<SelectedTeam>()
             .HasOne(uft => uft.Team)
             .WithMany(t => t.UserFavoriteTeams)
             .HasForeignKey(uft => uft.TeamId)
@@ -68,7 +68,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
             .OnDelete(DeleteBehavior.NoAction);
 
         // **Order -> CartItem Relationship**
-        builder.Entity<Order>()
+        builder.Entity<OrderO>()
             .HasMany(oi => oi.CartItems)
             .WithOne(o => o.Order)
             .HasForeignKey(oi => oi.OrderId);
@@ -85,18 +85,18 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<Ticket> Tickets { get; set; }
-    public DbSet<Block> Blocks { get; set; }
-    public DbSet<Match> Matches { get; set; }
+    public DbSet<BlockO> Blocks { get; set; }
+    public DbSet<MatchO> Matches { get; set; }
     public DbSet<Team> Teams { get; set; }
-    public DbSet<Stadium> Stadiums { get; set; }
-    public DbSet<Seat> Seats { get; set; }
-    public DbSet<Order> Orders { get; set; }
+    public DbSet<StadiumO> Stadiums { get; set; }
+    public DbSet<SeatO> Seats { get; set; }
+    public DbSet<OrderO> Orders { get; set; }
     public DbSet<CartItem> CartItems { get; set; }
-    public DbSet<UserFavoriteTeam> UserFavoriteTeams { get; set; }
-    public DbSet<Sponsor> Sponsors { get; set; }
-    public DbSet<Champion> Champions { get; set; }
-    public DbSet<ChampionSponsor> ChampionSponsors { get; set; }
-    public DbSet<TeamSponsor> TeamSponsors { get; set; }
+    public DbSet<SelectedTeam> UserFavoriteTeams { get; set; }
+    public DbSet<SponsorO> Sponsors { get; set; }
+    public DbSet<ChampionO> Champions { get; set; }
+    public DbSet<ChampionSponsorO> ChampionSponsors { get; set; }
+    public DbSet<TeamSponsorO> TeamSponsors { get; set; }
 
     public void PrepareEntity()
     {

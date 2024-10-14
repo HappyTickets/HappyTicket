@@ -171,7 +171,7 @@ namespace Application.Implementations.PaymentServices
 
             try
             {
-                var orderResult = await _unitOfWork.Repository<Order>().GetByIdAsync(orderId);
+                var orderResult = await _unitOfWork.Repository<OrderO>().GetByIdAsync(orderId);
 
                 var order = orderResult.Match(
                     succ => succ,      // Success: Get the Order object
@@ -219,7 +219,7 @@ namespace Application.Implementations.PaymentServices
                         var response = JsonSerializer.Deserialize<DeserializedPaymentResponse>(responseContent, JsonSerializerOptions);
 
                         order.PaymentStatus = (int)PaymentConfiguration.PaymentStatusEnum.Paid; // Left for now!
-                        _unitOfWork.Repository<Order>().Update(order);
+                        _unitOfWork.Repository<OrderO>().Update(order);
                         await _unitOfWork.SaveChangesAsync();
 
                         result.HasErrors = false;

@@ -11,6 +11,7 @@ using Application.Mapper;
 using Application.Validation;
 using AutoMapper.Extensions.ExpressionMapping;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using Infrastructure.Persistence.EntityFramework;
 using Infrastructure.Persistence.File;
 using Infrastructure.Persistence.Identity;
@@ -25,7 +26,7 @@ namespace API.Extensions
             services.AddMemoryCache();
             services.AddLogging(configure => configure.AddConsole());
             services.AddValidatorsFromAssembly(typeof(TicketDTOValidator).Assembly);
-
+            services.AddFluentValidationAutoValidation();
 
             //services.AddTransient<IValidator<TicketDto>, TicketDTOValidator>();
             //services.AddTransient<IValidator<TicketDto>, TicketDTOValidator>();

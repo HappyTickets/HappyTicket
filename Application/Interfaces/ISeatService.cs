@@ -3,7 +3,7 @@ using Shared.DTOs;
 
 namespace Application.Interfaces
 {
-    public interface ISeatService : IBaseService<Seat, SeatDto>
+    public interface ISeatService : IBaseService<SeatO, SeatDto>
     {
     }
 }

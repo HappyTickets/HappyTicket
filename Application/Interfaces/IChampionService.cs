@@ -4,7 +4,7 @@ using Shared.DTOs.Champion;
 
 namespace Application.Interfaces
 {
-    public interface IChampionService: IBaseService<Champion, ChampionDto>
+    public interface IChampionService: IBaseService<ChampionO, ChampionDto>
     {
         Task<Result<ChampionDto>> CreateAsync(CreateOrUpdateChampionDto dto, CancellationToken cancellationToken = default);
         Task<Result<ChampionDto>> DeleteAsync(Guid id, CancellationToken cancellationToken = default);

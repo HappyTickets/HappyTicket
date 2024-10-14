@@ -1,11 +1,19 @@
-﻿namespace Domain.Entities
-{
-    public class ChampionSponsor : BaseEntity
-    {
-        public Guid SponsorId { get; set; }
-        public Guid ChampionId { get; set; }
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-        public Champion Champion { get; set; }
-        public Sponsor Sponsor { get; set; }
-    }
+namespace Domain.Entities;
+
+public class ChampionSponsor : BaseEntity<long>
+{
+    [Required]
+    public long SponsorId { get; set; }
+
+    [ForeignKey(nameof(SponsorId))]
+    public virtual Sponsor Sponsor { get; set; }
+
+    [Required]
+    public long ChampionId { get; set; }
+
+    [ForeignKey(nameof(ChampionId))]
+    public virtual Championship Champion { get; set; }
 }

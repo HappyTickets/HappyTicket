@@ -5,12 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities.UserEntities;
 
-public class ApplicationUser : IdentityUser
+public class ApplicationUser : IdentityUser<long>
 {
     public Guid CartId { get; set; }
     [ForeignKey(nameof(CartId))]
     public virtual Cart? Cart { get; set; }
-    public virtual ICollection<UserFavoriteTeam>? FavoriteTeams { get; set; }
+    public virtual ICollection<UserSelectedTeam>? FavoriteTeams { get; set; }
 
     public int SoftDeleteCount { get; set; } = 0;
     public BaseEntityStatus? BaseEntityStatus { get; set; } = null;

@@ -4,7 +4,7 @@ using Shared.DTOs.MatchDtos;
 
 namespace Application.Interfaces
 {
-    public interface IMatchService : IBaseService<Match, MatchDto>
+    public interface IMatchService : IBaseService<MatchO, MatchDto>
     {
         Task<Result<IEnumerable<MatchDto>>> GetMatchesAsync(bool useCache, CancellationToken cancellationToken = default);
         Task<Result<IEnumerable<MatchDto>>> GetActiveMatchesAsync(bool useCache, CancellationToken cancellationToken = default);
