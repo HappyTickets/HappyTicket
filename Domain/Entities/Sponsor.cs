@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Domain.Entities.Common;
 
 namespace Domain.Entities;
 
-public class Sponsor : BaseEntity<long>
+public class Sponsor : SoftDeletableEntity<long>
 {
     [Required]
     public string Name { get; set; }

@@ -2,6 +2,6 @@
 
 namespace Shared.DTOs.Identity.Register.SendEmailConfirmation;
 
-public class SendEmailConfirmationResponse : BaseResponse
+public class SendEmailConfirmationResponse
 {
 }

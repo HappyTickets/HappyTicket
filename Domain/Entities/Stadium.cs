@@ -1,6 +1,8 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Entities.Common;
 
-public class Stadium : BaseEntity<long>
+namespace Domain.Entities;
+
+public class Stadium : SoftDeletableEntity<long>
 {
     public string Name { get; set; }
     public string? Photo { get; set; }

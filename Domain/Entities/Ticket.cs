@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities;
 
-public class Ticket : BaseEntity<long>
+public class Ticket : SoftDeletableEntity<long>
 {
     [Required]
     public long MatchTeamId { get; set; }

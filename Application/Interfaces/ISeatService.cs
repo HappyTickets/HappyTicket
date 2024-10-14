@@ -1,9 +1,9 @@
-﻿using Domain.Entities;
-using Shared.DTOs;
+﻿//using Domain.Entities;
+//using Shared.DTOs;
 
-namespace Application.Interfaces
-{
-    public interface ISeatService : IBaseService<SeatO, SeatDto>
-    {
-    }
-}
+//namespace Application.Interfaces
+//{
+//    public interface ISeatService : IBaseService<SeatO, SeatDto>
+//    {
+//    }
+//}
