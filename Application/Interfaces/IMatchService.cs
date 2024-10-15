@@ -1,13 +1,12 @@
-﻿//using Domain.Entities;
-//using LanguageExt.Common;
-//using Shared.DTOs.MatchDtos;
+﻿using Domain.Entities;
+using Shared.DTOs.MatchDtos;
 
-//namespace Application.Interfaces
-//{
-//    public interface IMatchService : IBaseService<MatchO, MatchDto>
-//    {
-//        Task<Result<IEnumerable<MatchDto>>> GetMatchesAsync(bool useCache, CancellationToken cancellationToken = default);
-//        Task<Result<IEnumerable<MatchDto>>> GetActiveMatchesAsync(bool useCache, CancellationToken cancellationToken = default);
-//        Task<Result<MatchDto>> GetMatchByIdAsync(Guid id, bool useCache = true, CancellationToken cancellationToken = default);
-//    }
-//}
+namespace Application.Interfaces
+{
+    public interface IMatchService : IBaseService<Match>
+    {
+        Task<IEnumerable<MatchDto>> GetMatchesAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<MatchDto>> GetActiveMatchesAsync(CancellationToken cancellationToken = default);
+        Task<MatchDto> GetMatchByIdAsync(long id, CancellationToken cancellationToken = default);
+    }
+}
