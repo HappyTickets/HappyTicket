@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace Infrastructure.Persistence.EntityFramework;
 
-public class Repository<TEntity> : IRepository<TEntity> where TEntity: BaseEntity<long>
+public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity<long>
 {
     protected readonly AppDbContext _dbContext;
     protected readonly DbSet<TEntity> _dbSet;
@@ -26,13 +26,13 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity: BaseEntit
 
     public void CreateRange(IEnumerable<TEntity> entities)
         => _dbSet.AddRange(entities);
-    
+
     public void Update(TEntity entity)
         => _dbSet.Update(entity);
 
     public void UpdateRange(IEnumerable<TEntity> entities)
         => _dbSet.UpdateRange(entities);
-    
+
     public void HardDelete(TEntity entity)
         => _dbSet.Remove(entity);
 
@@ -57,6 +57,24 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity: BaseEntit
 
         _dbContext.Update(entities);
     }
+
+    public void Recover(SoftDeletableEntity<long> entity)
+    {
+
+        entity.IsActive = true;
+        _dbContext.Update(entity);
+
+    }
+
+    public void RecoverRange(IEnumerable<SoftDeletableEntity<long>> entities)
+    {
+        foreach (var entity in entities)
+        {
+            entity.IsActive = true;
+        }
+        _dbContext.Update(entities);
+    }
+
     #endregion
 
     #region Query
@@ -83,7 +101,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity: BaseEntit
 
         return await query.FirstOrDefaultAsync(predicate, cancellationToken);
     }
-    
+
     public async Task<TEntity?> LastOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default)
     {
         var query = _dbSet.AsQueryable();
@@ -122,8 +140,8 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity: BaseEntit
             query = query.Include(includes);
 
         return await _dbSet.PaginateAsync(pageIndex, pageSize);
-    } 
-    
+    }
+
     public async Task<PaginatedList<TEntity>> PaginateAsync(Expression<Func<TEntity, bool>> predicate, int pageIndex, int pageSize, IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default)
     {
         var query = _dbSet.Where(predicate).AsQueryable();
@@ -135,14 +153,14 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity: BaseEntit
     }
 
     public Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
-        => _dbSet.AnyAsync(predicate, cancellationToken); 
-    
+        => _dbSet.AnyAsync(predicate, cancellationToken);
+
     public Task<bool> AnyAsync(CancellationToken cancellationToken = default)
         => _dbSet.AnyAsync(cancellationToken);
 
     public Task<long> CountAsync(CancellationToken cancellationToken = default)
-        => _dbSet.LongCountAsync(cancellationToken); 
-    
+        => _dbSet.LongCountAsync(cancellationToken);
+
     public Task<long> CountAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
         => _dbSet.LongCountAsync(predicate, cancellationToken);
 
