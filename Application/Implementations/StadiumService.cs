@@ -19,6 +19,7 @@
 //        public StadiumService(IUnitOfWork unitOfWork, ILogger<StadiumO> logger, IMemoryCache cache, IMapper mapper, IValidator<StadiumDto> validator, IStringLocalizer<Resource> localizer) : base(unitOfWork, logger, cache, mapper, validator, localizer) { }
 //        public async Task<Result<StadiumDto>> DeleteStadiumWithNoMatchesAsync(Guid id, CancellationToken cancellationToken = default)
 //        {
+
 //            var matchesRepo = _unitOfWork.Repository<MatchO>();
 //            var stadiumRepo = _unitOfWork.Repository<StadiumO>();
 
