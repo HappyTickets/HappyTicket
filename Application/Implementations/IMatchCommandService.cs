@@ -1,11 +1,11 @@
-﻿using Application.Interfaces;
-using Domain.Entities;
-using Shared.DTOs.MatchDtos;
+﻿//using Application.Interfaces;
+//using Domain.Entities;
+//using Shared.DTOs.MatchDtos;
 
-namespace Application.Implementations
-{
+//namespace Application.Implementations
+//{
 
-    public interface IMatchCommandService : IBaseService<Match, MatchCommandDto>
-    {
-    }
-}
+//    public interface IMatchCommandService : IBaseService<MatchO, MatchCommandDto>
+//    {
+//    }
+//}

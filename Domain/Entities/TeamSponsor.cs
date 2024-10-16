@@ -1,11 +1,20 @@
-﻿namespace Domain.Entities
-{
-    public class TeamSponsor: BaseEntity
-    {
-        public Guid SponsorId { get; set; }
-        public Guid TeamId { get; set; }
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Entities.Common;
 
-        public Team Team { get; set; }
-        public Sponsor Sponsor { get; set; }
-    }
+namespace Domain.Entities;
+
+public class TeamSponsor : SoftDeletableEntity<long>
+{
+    [Required]
+    public long SponsorId { get; set; }
+
+    [ForeignKey(nameof(SponsorId))]
+    public virtual Sponsor Sponsor { get; set; }
+
+    [Required]
+    public long TeamId { get; set; }
+
+    [ForeignKey(nameof(TeamId))]
+    public virtual Team Team { get; set; }
 }

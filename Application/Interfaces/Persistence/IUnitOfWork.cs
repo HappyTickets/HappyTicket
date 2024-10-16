@@ -1,13 +1,10 @@
-﻿using Domain.Entities;
-using LanguageExt.Common;
+﻿using Domain.Entities.Common;
 
 namespace Application.Interfaces.Persistence;
 
 public interface IUnitOfWork : IDisposable
 {
-    IRepository<T> Repository<T>() where T : BaseEntity;
+    IRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity<long>;
 
-    Result<int> SaveChanges();
-
-    Task<Result<int>> SaveChangesAsync(CancellationToken cancellationToken = default);
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

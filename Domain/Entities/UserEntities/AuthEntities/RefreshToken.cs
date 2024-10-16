@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Domain.Entities.Common;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities.UserEntities.AuthEntities;
 
-public class RefreshToken : BaseEntity
+public class RefreshToken : BaseEntity<long>
 {
     [Required]
     public string? Token { get; set; }
@@ -19,7 +20,7 @@ public class RefreshToken : BaseEntity
     public bool Invalidated { get; set; }
 
     [Required]
-    public string UserId { get; set; } = string.Empty;
+    public long UserId { get; set; }
     [Required]
     [ForeignKey(nameof(UserId))]
     public virtual ApplicationUser? User { get; set; }
