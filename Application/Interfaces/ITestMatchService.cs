@@ -1,13 +1,11 @@
-﻿using Domain.Entities;
-using LanguageExt;
+﻿using LanguageExt;
 using Shared.Common;
 using Shared.Common.General;
 using Shared.DTOs.MatchDtos;
-using System.Linq.Expressions;
 
 namespace Application.Interfaces
 {
-    public interface ITestMatchService : IBaseService<Match>
+    public interface ITestMatchService
     {
         // Retrieve all matches with their details
         ValueTask<BaseResponse<IEnumerable<MatchDto>>> GetAll();
@@ -26,8 +24,8 @@ namespace Application.Interfaces
         ValueTask<BaseResponse<Unit>> UpdateAsync_(MatchCreateOrUpdateDto dto, bool autoSave = true, CancellationToken cancellationToken = default);
         ValueTask<BaseResponse<Unit>> SoftDeleteByIdAsync_(long id, bool autoSave = true, CancellationToken cancellationToken = default);
         ValueTask<BaseResponse<Unit>> HardDeleteByIdAsync_(long id, bool autoSave = true, CancellationToken cancellationToken = default);
-        Task<BaseResponse<MatchDto?>> RecoverByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default);
-        Task<BaseResponse<Unit>> RecoverRangeAsync(Expression<Func<Match, bool>> predicate, bool autoSave = true, CancellationToken cancellationToken = default);
+        Task<BaseResponse<Unit>> RecoverByIdAsync_(long id, bool autoSave = true, CancellationToken cancellationToken = default);
+        //Task<BaseResponse<Unit>> RecoverRangeAsync_(Expression<Func<Match, bool>> predicate, bool autoSave = true, CancellationToken cancellationToken = default);
     }
 
 

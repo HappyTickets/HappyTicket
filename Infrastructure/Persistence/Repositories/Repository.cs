@@ -72,7 +72,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         {
             entity.IsActive = true;
         }
-        _dbContext.Update(entities);
+        _dbContext.UpdateRange(entities);
     }
 
     #endregion
@@ -82,9 +82,12 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
     public IQueryable<TEntity> Query()
         => _dbSet.AsQueryable();
 
-    public Task<TEntity?> GetByIdAsync(long id, IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default)
+    public Task<TEntity?> GetByIdAsync(long id, IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default, bool ignoreFilter = false)
     {
         var query = _dbSet.AsQueryable();
+
+        if (ignoreFilter)
+            query = query.IgnoreQueryFilters();
 
         if (includes != null)
             query = query.Include(includes);
@@ -95,7 +98,6 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
     public async Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default)
     {
         var query = _dbSet.AsQueryable();
-
         if (includes != null)
             query = query.Include(includes);
 
@@ -122,7 +124,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         return await query.ToListAsync(cancellationToken);
     }
 
-    public async Task<List<TEntity>> ListAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default)
+    public async Task<List<TEntity>> ListAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default, bool ignoreFilter = false)
     {
         var query = _dbSet.Where(predicate).AsQueryable();
 
