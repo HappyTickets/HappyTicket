@@ -86,17 +86,16 @@ namespace Application.Implementations
             return new Unit();
         }
 
-        public async Task<BaseResponse<MatchDto?>> RecoverByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default)
+        public async Task<BaseResponse<Unit>> RecoverByIdAsync_(long id, bool autoSave = true, CancellationToken cancellationToken = default)
         {
-            var match = await RecoverByIdAsync<MatchDto>(id, autoSave, cancellationToken: cancellationToken);
-            return new BaseResponse<MatchDto?>(match);
+            var match = await RecoverByIdAsync(id, autoSave, cancellationToken: cancellationToken);
+            return new Unit();
         }
 
-        // Example of recovering multiple matches
-        public async Task<BaseResponse<Unit>> RecoverRangeAsync(Expression<Func<Match, bool>> predicate, bool autoSave = true, CancellationToken cancellationToken = default)
-        {
-            return await RecoverRangeAsync<MatchDto>(predicate, autoSave, cancellationToken: cancellationToken);
-        }
+        //public async Task<BaseResponse<Unit>> RecoverRangeAsync_(Expression<Func<Match, bool>> predicate, bool autoSave = true, CancellationToken cancellationToken = default)
+        //{
+        //    return await RecoverRangeAsync(predicate, autoSave, cancellationToken: cancellationToken);
+        //}
 
     }
 }

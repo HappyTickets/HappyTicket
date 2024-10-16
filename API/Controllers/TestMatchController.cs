@@ -104,7 +104,7 @@ namespace API.Controllers
         [HttpGet("recover/{id}")]
         public async Task<IActionResult> RecoverById(long id)
         {
-            var result = await _testMatchService.RecoverByIdAsync(id);
+            var result = await _testMatchService.RecoverByIdAsync_(id);
             if (result.IsSuccess)
             {
                 return Ok(result);

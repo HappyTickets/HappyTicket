@@ -8,9 +8,6 @@ namespace Application.Interfaces
     public interface IBaseService<TEntity> where TEntity : BaseEntity<long>
     {
         #region Query
-
-        ValueTask<TDto?> Suck<TDto>(long id, CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class;
-
         ValueTask<TDto?> GetByIdAsync<TDto>(long id, CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class;
         ValueTask<TDto?> FirstOrDefaultAsync<TDto>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class;
         ValueTask<IEnumerable<TDto>> GetAllAsync<TDto>(CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class;
@@ -34,9 +31,8 @@ namespace Application.Interfaces
         ValueTask<Unit> UpdateRangeAsync<TDto>(IEnumerable<TDto> dtos, bool autoSave = true, CancellationToken cancellationToken = default) where TDto : class;
 
         ValueTask<TDto?> RecoverAsync<TDto>(TDto dto, bool autoSave = true, CancellationToken cancellationToken = default) where TDto : class;
-        Task<TDto?> RecoverByIdAsync<TDto>(long id, bool autoSave = true, CancellationToken cancellationToken = default) where TDto : class;
-        Task<TDto?> RecoverFirstAsync<TDto>(Expression<Func<TEntity, bool>> predicate, bool autoSave = true, CancellationToken cancellationToken = default) where TDto : class;
-        Task<Unit> RecoverRangeAsync<TDto>(Expression<Func<TEntity, bool>> predicate, bool autoSave = true, CancellationToken cancellationToken = default) where TDto : class;
+        Task<Unit> RecoverByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default);
+        Task<Unit> RecoverRangeAsync(Expression<Func<TEntity, bool>> predicate, bool autoSave = true, CancellationToken cancellationToken = default);
 
         ValueTask<Unit> SoftDeleteAsync<TDto>(TDto dto, bool autoSave = true, CancellationToken cancellationToken = default) where TDto : class;
         Task<Unit> SoftDeleteByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default);

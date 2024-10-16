@@ -144,7 +144,7 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity>
     public virtual async ValueTask<Unit> CreateRangeAsync<TDto>(IEnumerable<TDto> dtos, bool autoSave = true, CancellationToken cancellationToken = default) where TDto : class
     {
 
-        var mappedEntites = dtos.Select(dto => _mapper.Map<TEntity>(dto));
+        var mappedEntites = dtos.Select(_mapper.Map<TEntity>);
 
         _unitOfWork.Repository<TEntity>().CreateRange(mappedEntites);
         if (autoSave)
@@ -232,11 +232,11 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity>
         {
             _unitOfWork.Repository<TEntity>().SoftDelete(entityToDelete);
         }
+
         if (autoSave)
         {
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
-
         return new();
     }
 
@@ -395,14 +395,14 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity>
     {
         var entityToRecover = _mapper.Map<TEntity>(dto);
 
-        if (entityToRecover is not SoftDeletableEntity<long> softDeletableEntity)
-        {
-            throw new InvalidOperationException("Entity does not support recovery.");
-        }
-
         if (entityToRecover is null)
         {
             throw new NotFoundException("Entity not found for recovery.");
+        }
+
+        if (entityToRecover is not SoftDeletableEntity<long> softDeletableEntity)
+        {
+            throw new InvalidOperationException("Entity does not support recovery.");
         }
 
         _unitOfWork.Repository<TEntity>().Recover(softDeletableEntity);
@@ -416,18 +416,19 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity>
         return _mapper.Map<TDto>(entityToRecover);
     }
 
-    public virtual async Task<TDto?> RecoverByIdAsync<TDto>(long id, bool autoSave = true, CancellationToken cancellationToken = default) where TDto : class
+    public virtual async Task<Unit> RecoverByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default)
     {
-        var entityToRecover = await _unitOfWork.Repository<TEntity>().GetByIdAsync(id, null, cancellationToken);
+        var entityToRecover = await _unitOfWork.Repository<TEntity>().GetByIdAsync(id, null, cancellationToken, true);
+
+        if (entityToRecover is null)
+        {
+            throw new NotFoundException("Entity not found for recovery.");
+        }
+
 
         if (entityToRecover is not SoftDeletableEntity<long> softDeletableEntity)
         {
             throw new InvalidOperationException("Entity does not support recovery.");
-        }
-
-        if (entityToRecover == null)
-        {
-            throw new NotFoundException("Entity not found for recovery.");
         }
 
         _unitOfWork.Repository<TEntity>().Recover(softDeletableEntity);
@@ -437,48 +438,21 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity>
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
-        return _mapper.Map<TDto>(entityToRecover);
+        return new Unit();
     }
 
-    public virtual async Task<TDto?> RecoverFirstAsync<TDto>(
+
+    public virtual async Task<Unit> RecoverRangeAsync(
         Expression<Func<TEntity, bool>> predicate,
         bool autoSave = true,
-
-        CancellationToken cancellationToken = default) where TDto : class
-    {
-        var entityToRecover = await _unitOfWork.Repository<TEntity>().FirstOrDefaultAsync(predicate, null, cancellationToken);
-
-        if (entityToRecover is not SoftDeletableEntity<long> softDeletableEntity)
-        {
-            throw new InvalidOperationException("Entity does not support recovery.");
-        }
-
-        if (entityToRecover == null)
-        {
-            throw new NotFoundException("Entity not found for recovery.");
-        }
-
-        _unitOfWork.Repository<TEntity>().Recover(softDeletableEntity);
-
-        if (autoSave)
-        {
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-        }
-
-        return _mapper.Map<TDto>(entityToRecover);
-    }
-
-    public virtual async Task<Unit> RecoverRangeAsync<TDto>(
-        Expression<Func<TEntity, bool>> predicate,
-        bool autoSave = true,
-        CancellationToken cancellationToken = default) where TDto : class
+        CancellationToken cancellationToken = default)
     {
         if (!typeof(SoftDeletableEntity<long>).IsAssignableFrom(typeof(TEntity)))
         {
             throw new InvalidOperationException("Cannot perform Recover  on this entity type.");
         }
 
-        var entitiesToRecover = await _unitOfWork.Repository<TEntity>().ListAsync(predicate, null, cancellationToken);
+        var entitiesToRecover = await _unitOfWork.Repository<TEntity>().ListAsync(predicate, null, cancellationToken, true);
 
         if (!entitiesToRecover.Any())
         {
@@ -494,13 +468,6 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity>
 
         return new();
     }
-
-    public ValueTask<TDto?> Suck<TDto>(long id, CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class
-    {
-        throw new NotImplementedException();
-    }
-
-
 
     #endregion
 
