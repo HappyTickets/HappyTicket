@@ -1,13 +1,10 @@
 ﻿using Application.Implementations;
 using Application.Interfaces;
-using Application.Interfaces.IIdentityServices;
-using Application.Interfaces.Persistence;
+using Application.Mapper;
 using Application.Validation;
 using AutoMapper.Extensions.ExpressionMapping;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Infrastructure.File;
-using Infrastructure.Persistence.EntityFramework;
 
 namespace API.Extensions
 {
@@ -15,7 +12,7 @@ namespace API.Extensions
     {
         public static void AddDependencyInjectionServices(this IServiceCollection services)
         {
-            //services.AddAutoMapper(cfg => { cfg.AddExpressionMapping(); }, typeof(MappingProfile));
+            services.AddAutoMapper(cfg => { cfg.AddExpressionMapping(); }, typeof(MappingProfile));
             services.AddMemoryCache();
             services.AddLogging(configure => configure.AddConsole());
             services.AddValidatorsFromAssembly(typeof(TicketDTOValidator).Assembly);
@@ -45,6 +42,9 @@ namespace API.Extensions
             //services.AddTransient<ITicketService, TicketService>();
             //services.AddSingleton<CountryInfoService>();
             services.AddSingleton<IEmailSender, EmailSender>();
+
+            services.AddScoped<ITestMatchService, TestMatchService>();
+
             //services.AddScoped<IMatchService, MatchService>();
             //services.AddScoped<IMatchCommandService, MatchCommandService>();
             //services.AddScoped<ITeamService, TeamService>();
