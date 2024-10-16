@@ -234,7 +234,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Champions");
+                    b.ToTable("Championshipss");
                 });
 
             modelBuilder.Entity("Domain.Entities.Match", b =>

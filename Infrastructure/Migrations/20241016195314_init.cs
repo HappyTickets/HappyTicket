@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -47,7 +48,7 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Champions",
+                name: "Championshipss",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -64,7 +65,7 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Champions", x => x.Id);
+                    table.PrimaryKey("PK_Championshipss", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -215,9 +216,9 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_ChampionSponsors", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ChampionSponsors_Champions_ChampionId",
+                        name: "FK_ChampionSponsors_Championshipss_ChampionId",
                         column: x => x.ChampionId,
-                        principalTable: "Champions",
+                        principalTable: "Championshipss",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -277,9 +278,9 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Matches", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Matches_Champions_ChampionId",
+                        name: "FK_Matches_Championshipss_ChampionId",
                         column: x => x.ChampionId,
-                        principalTable: "Champions",
+                        principalTable: "Championshipss",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -898,7 +899,7 @@ namespace Infrastructure.Migrations
                 name: "Blocks");
 
             migrationBuilder.DropTable(
-                name: "Champions");
+                name: "Championshipss");
 
             migrationBuilder.DropTable(
                 name: "Stadiums");
