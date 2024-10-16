@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241016082227_AddIsHomeTeamFalgToMatchTeam")]
-    partial class AddIsHomeTeamFalgToMatchTeam
+    [Migration("20241016163657_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1134,7 +1134,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.MatchTeam", b =>
                 {
                     b.HasOne("Domain.Entities.Match", "Match")
-                        .WithMany()
+                        .WithMany("MatchTeams")
                         .HasForeignKey("MatchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1342,6 +1342,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("ChampionSponsors");
 
                     b.Navigation("Matches");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Match", b =>
+                {
+                    b.Navigation("MatchTeams");
                 });
 
             modelBuilder.Entity("Domain.Entities.MatchTeam", b =>

@@ -1,51 +1,50 @@
-﻿//using LanguageExt;
-//using LanguageExt.Common;
-//using Microsoft.EntityFrameworkCore.Query;
-//using Shared.Common.General;
-//using Shared.DTOs.Champion;
-//using System.Linq.Expressions;
+﻿using Domain.Entities.Common;
+using LanguageExt;
+using Shared.Common.General;
+using System.Linq.Expressions;
 
-//namespace Application.Interfaces
-//{
-//    public interface IBaseService<TEntity, Tdto>
+namespace Application.Interfaces
+{
+    public interface IBaseService<TEntity> where TEntity : BaseEntity<long>
+    {
+        #region Query
+        ValueTask<TDto?> GetByIdAsync<TDto>(long id, CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class;
+        ValueTask<TDto?> FirstOrDefaultAsync<TDto>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class;
+        ValueTask<IEnumerable<TDto>> GetAllAsync<TDto>(CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class;
 
-//        where Tdto : class
-//    {
 
-//        #region Query
+        ValueTask<IEnumerable<TDto>> FindAsync<TDto>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class;
 
-//        ValueTask<Result<Tdto>> GetByIdAsync(Guid id, bool useCache = true, Func<TEntity, Tdto>? customMapper = null, CancellationToken cancellationToken = default);
-//        ValueTask<Result<Tdto>> GetByIdAsync(Guid id, bool useCache = true, Func<TEntity, Tdto>? customMapper = null, CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tdto>, IIncludableQueryable<Tdto, object>>>[] includeDTOProperties);
-//        ValueTask<Result<Tdto>> FirstOrDefaultAsync(Expression<Func<Tdto, bool>> dtoPredicate, bool useCache = true, Func<TEntity, Tdto>? customMapper = null, CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tdto>, IIncludableQueryable<Tdto, object>>>[] includeDTOProperties);
-//        ValueTask<Result<IEnumerable<Tdto>>> FindAsync(Expression<Func<Tdto, bool>> dtoPredicate, bool useCache = true, Func<TEntity, Tdto>? customMapper = null, CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tdto>, IIncludableQueryable<Tdto, object>>>[] includeDTOProperties);
-//        ValueTask<Result<IEnumerable<Tdto>>> GetAllAsync(bool useCache = true, Func<TEntity, Tdto>? customMapper = null, CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tdto>, IIncludableQueryable<Tdto, object>>>[] includeDTOProperties);
-//        ValueTask<Result<IEnumerable<Tdto>>> GetPaginatedAsync(PaginationSearchModel paginationParams, bool useCache = true, Func<TEntity, Tdto>? customMapper = null, CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tdto>, IIncludableQueryable<Tdto, object>>>[] includeDTOProperties);
-//        ValueTask<Result<long>> GetLongCountAsync(CancellationToken cancellationToken = default);
-//        #endregion
+        ValueTask<PaginatedList<TDto>> GetPaginatedAsync<TDto>(PaginationSearchModel paginationParams, CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class;
+        ValueTask<PaginatedList<TDto>> GetPaginatedAsync<TDto>(Expression<Func<TEntity, bool>> predicate, PaginationSearchModel paginationParams, CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class;
 
-//        #region Command
+        ValueTask<long> GetLongCountAsync(CancellationToken cancellationToken = default);
 
-//        ValueTask<Result<Tdto>> CreateAsync(Tdto dto, bool autoSave = true, Func<Tdto, TEntity>? dtoToEntityMapper = null, Func<TEntity, Tdto>? entityToDTOMapper = null, CancellationToken cancellationToken = default);
-//        ValueTask<Result<Unit>> CreateRangeAsync(IEnumerable<Tdto> dtos, bool autoSave = true, Func<Tdto, TEntity>? dtoToEntityMapper = null, CancellationToken cancellationToken = default);
+        #endregion
 
-//        ValueTask<Result<Tdto>> UpdateAsync(Tdto dto, bool autoSave = true, Func<Tdto, TEntity>? dtoToEntityMapper = null, Func<TEntity, Tdto>? entityToDTOMapper = null, CancellationToken cancellationToken = default);
-//        Task<Result<Unit>> UpdateRangeAsync(Expression<Func<Tdto, bool>> dtoPredicate, Expression<Func<Tdto, Tdto>> updateDTOFactory, bool autoSave = true, CancellationToken cancellationToken = default);
-//        ValueTask<Result<Unit>> UpdateRangeAsync(IEnumerable<Tdto> dtos, bool autoSave = true, Func<Tdto, TEntity>? dtoToEntityMapper = null, CancellationToken cancellationToken = default);
+        #region Command
 
-//        ValueTask<Result<Tdto>> RecoverAsync(Tdto dto, bool autoSave = true, Func<Tdto, TEntity>? dtoToEntityMapper = null, Func<TEntity, Tdto>? entityToDTOMapper = null, CancellationToken cancellationToken = default);
-//        Task<Result<Tdto>> RecoverByIdAsync(Guid id, bool autoSave = true, Func<TEntity, Tdto>? entityToDTOMapper = null, CancellationToken cancellationToken = default);
-//        Task<Result<Tdto>> RecoverFirstAsync(Expression<Func<Tdto, bool>> dtoPredicate, bool autoSave = true, Func<TEntity, Tdto>? entityToDTOMapper = null, CancellationToken cancellationToken = default);
-//        Task<Result<Unit>> RecoverRangeAsync(Expression<Func<Tdto, bool>> dtoPredicate, bool autoSave = true, CancellationToken cancellationToken = default);
+        ValueTask<Unit> CreateAsync<TDto>(TDto dto, bool autoSave = true, CancellationToken cancellationToken = default) where TDto : class;
+        ValueTask<Unit> CreateRangeAsync<TDto>(IEnumerable<TDto> dtos, bool autoSave = true, CancellationToken cancellationToken = default) where TDto : class;
 
-//        ValueTask<Result<Tdto>> SoftDeleteAsync(Tdto dto, bool autoSave = true, Func<Tdto, TEntity>? dtoToEntityMapper = null, Func<TEntity, Tdto>? entityToDTOMapper = null, CancellationToken cancellationToken = default);
-//        Task<Result<Tdto>> SoftDeleteByIdAsync(Guid id, bool autoSave = true, Func<TEntity, Tdto>? entityToDTOMapper = null, CancellationToken cancellationToken = default);
-//        Task<Result<Tdto>> SoftDeleteFirstAsync(Expression<Func<Tdto, bool>> dtoPredicate, bool autoSave = true, Func<TEntity, Tdto>? entityToDTOMapper = null, CancellationToken cancellationToken = default);
-//        Task<Result<Unit>> SoftDeleteRangeAsync(Expression<Func<Tdto, bool>> dtoPredicate, bool autoSave = true, CancellationToken cancellationToken = default);
+        ValueTask<Unit> UpdateAsync<TDto>(TDto dto, bool autoSave = true, CancellationToken cancellationToken = default) where TDto : class;
+        ValueTask<Unit> UpdateRangeAsync<TDto>(IEnumerable<TDto> dtos, bool autoSave = true, CancellationToken cancellationToken = default) where TDto : class;
 
-//        ValueTask<Result<Tdto>> HardDeleteAsync(Tdto dto, bool autoSave = true, Func<Tdto, TEntity>? dtoToEntityMapper = null, Func<TEntity, Tdto>? entityToDTOMapper = null, CancellationToken cancellationToken = default);
-//        Task<Result<Tdto>> HardDeleteByIdAsync(Guid id, bool autoSave = true, Func<TEntity, Tdto>? entityToDTOMapper = null, CancellationToken cancellationToken = default);
-//        Task<Result<Tdto>> HardDeleteFirstAsync(Expression<Func<Tdto, bool>> dtoPredicate, bool autoSave = true, Func<TEntity, Tdto>? entityToDTOMapper = null, CancellationToken cancellationToken = default);
-//        Task<Result<Unit>> HardDeleteRangeAsync(Expression<Func<Tdto, bool>> dtoPredicate, bool autoSave = true, CancellationToken cancellationToken = default);
-//        #endregion
-//    }
-//}
+        ValueTask<TDto?> RecoverAsync<TDto>(TDto dto, bool autoSave = true, CancellationToken cancellationToken = default) where TDto : class;
+        Task<Unit> RecoverByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default);
+        Task<Unit> RecoverRangeAsync(Expression<Func<TEntity, bool>> predicate, bool autoSave = true, CancellationToken cancellationToken = default);
+
+        ValueTask<Unit> SoftDeleteAsync<TDto>(TDto dto, bool autoSave = true, CancellationToken cancellationToken = default) where TDto : class;
+        Task<Unit> SoftDeleteByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default);
+        Task<Unit> SoftDeleteFirstAsync(Expression<Func<TEntity, bool>> predicate, bool autoSave = true, CancellationToken cancellationToken = default);
+        Task<Unit> SoftDeleteRangeAsync(Expression<Func<TEntity, bool>> predicate, bool autoSave = true, CancellationToken cancellationToken = default);
+
+        ValueTask<Unit> HardDeleteAsync<TDto>(TDto dto, bool autoSave = true, CancellationToken cancellationToken = default) where TDto : class;
+        Task<Unit> HardDeleteByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default);
+        Task<Unit> HardDeleteFirstAsync(Expression<Func<TEntity, bool>> predicate, bool autoSave = true, CancellationToken cancellationToken = default);
+        Task<Unit> HardDeleteRangeAsync(Expression<Func<TEntity, bool>> predicate, bool autoSave = true, CancellationToken cancellationToken = default);
+
+        #endregion
+    }
+
+}

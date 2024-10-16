@@ -1131,7 +1131,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.MatchTeam", b =>
                 {
                     b.HasOne("Domain.Entities.Match", "Match")
-                        .WithMany()
+                        .WithMany("MatchTeams")
                         .HasForeignKey("MatchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1339,6 +1339,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("ChampionSponsors");
 
                     b.Navigation("Matches");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Match", b =>
+                {
+                    b.Navigation("MatchTeams");
                 });
 
             modelBuilder.Entity("Domain.Entities.MatchTeam", b =>

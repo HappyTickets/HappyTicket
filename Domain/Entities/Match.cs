@@ -21,4 +21,6 @@ public class Match : SoftDeletableEntity<long>
 
     [ForeignKey(nameof(ChampionId))]
     public virtual Championship Champion { get; set; }
+    public virtual ICollection<MatchTeam>? MatchTeams { get; set; } = new List<MatchTeam>();
+
 }

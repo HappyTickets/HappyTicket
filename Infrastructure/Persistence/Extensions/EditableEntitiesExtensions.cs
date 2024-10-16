@@ -1,8 +1,8 @@
 ﻿using Application.Common.Interfaces;
-using Domain.Entities.Common;
 using Domain.Entities;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Domain.Entities.Common;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Infrastructure.Persistence.Extensions
 {
@@ -17,7 +17,7 @@ namespace Infrastructure.Persistence.Extensions
             foreach (var entry in entries)
             {
                 entry.Entity.CreatedDate = DateTime.UtcNow;
-                entry.Entity.CreatedBy = user.Id.Value;
+                entry.Entity.CreatedBy = 0; //user.Id.Value;
             }
         }
 
@@ -30,7 +30,7 @@ namespace Infrastructure.Persistence.Extensions
             foreach (var entry in entries)
             {
                 entry.Entity.ModifiedDate = DateTime.UtcNow;
-                entry.Entity.ModifiedBy = user.Id.Value;
+                entry.Entity.ModifiedBy = 0; //user.Id.Value;
             }
         }
 
