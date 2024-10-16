@@ -23,7 +23,7 @@ public class Match : SoftDeletableEntity<long>
     [ForeignKey(nameof(ChampionId))]
     public virtual Championship Champion { get; set; }
 
-    //public virtual MatchTeam HomeTeam { get; set; }
+    public virtual MatchTeam HomeTeam { get; set; }
 
-    //public virtual MatchTeam AwayTeam { get; set; }
+    public virtual MatchTeam AwayTeam { get; set; }
 }
