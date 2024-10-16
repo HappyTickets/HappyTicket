@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Domain.Entities.Common;
 
 namespace Domain.Entities;
 
@@ -22,8 +21,4 @@ public class Match : SoftDeletableEntity<long>
 
     [ForeignKey(nameof(ChampionId))]
     public virtual Championship Champion { get; set; }
-
-    //public virtual MatchTeam HomeTeam { get; set; }
-
-    //public virtual MatchTeam AwayTeam { get; set; }
 }
