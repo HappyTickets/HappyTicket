@@ -4,7 +4,7 @@ namespace Shared.DTOs.Identity.UserDTOs;
 
 public class ApplicationUserDTO
 {
-    public string? Id { get; set; }
+    public long? Id { get; set; }
 
     [Required]
     public string? UserName { get; set; }

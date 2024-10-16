@@ -2,6 +2,6 @@
 
 namespace Shared.DTOs.CartDTOs;
 
-public class AddItemResponse : BaseResponse
+public class AddItemResponse
 {
 }

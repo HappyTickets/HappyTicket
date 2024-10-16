@@ -22,17 +22,19 @@ namespace Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Entities.BaseEntity", b =>
+            modelBuilder.Entity("Domain.Entities.Block", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<int?>("BaseEntityStatus")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -40,8 +42,51 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SoftDeleteCount")
+                        .HasColumnType("int");
+
+                    b.Property<long>("StadiumId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StadiumId");
+
+                    b.ToTable("Blocks");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Cart", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int?>("BaseEntityStatus")
+                        .HasColumnType("int");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
@@ -49,17 +94,731 @@ namespace Infrastructure.Migrations
                     b.Property<int>("SoftDeleteCount")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
-                    b.ToTable("BaseEntity", (string)null);
+                    b.ToTable("Cart");
+                });
 
-                    b.UseTpcMappingStrategy();
+            modelBuilder.Entity("Domain.Entities.CartItem", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int?>("BaseEntityStatus")
+                        .HasColumnType("int");
+
+                    b.Property<long>("CartId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsCheckedOut")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SoftDeleteCount")
+                        .HasColumnType("int");
+
+                    b.Property<long>("TicketId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CartId");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("CartItems");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ChampionSponsor", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int?>("BaseEntityStatus")
+                        .HasColumnType("int");
+
+                    b.Property<long>("ChampionId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SoftDeleteCount")
+                        .HasColumnType("int");
+
+                    b.Property<long>("SponsorId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChampionId");
+
+                    b.HasIndex("SponsorId");
+
+                    b.ToTable("ChampionSponsors");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Championship", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int?>("BaseEntityStatus")
+                        .HasColumnType("int");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Logo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SoftDeleteCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Champions");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Match", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int?>("BaseEntityStatus")
+                        .HasColumnType("int");
+
+                    b.Property<long>("ChampionId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("EventDate")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan?>("EventTime")
+                        .HasColumnType("time");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SoftDeleteCount")
+                        .HasColumnType("int");
+
+                    b.Property<long>("StadiumId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChampionId");
+
+                    b.HasIndex("StadiumId");
+
+                    b.ToTable("Matches");
+                });
+
+            modelBuilder.Entity("Domain.Entities.MatchTeam", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int?>("BaseEntityStatus")
+                        .HasColumnType("int");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsHomeTeam")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("MatchId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SoftDeleteCount")
+                        .HasColumnType("int");
+
+                    b.Property<long>("TeamId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MatchId");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("MatchTeam");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Order", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int?>("BaseEntityStatus")
+                        .HasColumnType("int");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentOrderRef")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PaymentStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PaymentUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SoftDeleteCount")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Domain.Entities.OrderItem", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int?>("BaseEntityStatus")
+                        .HasColumnType("int");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("OrderId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("SoftDeleteCount")
+                        .HasColumnType("int");
+
+                    b.Property<long>("TicketId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("OrderItem");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Seat", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int?>("BaseEntityStatus")
+                        .HasColumnType("int");
+
+                    b.Property<long>("BlockId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SoftDeleteCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlockId");
+
+                    b.ToTable("Seats");
+                });
+
+            modelBuilder.Entity("Domain.Entities.SelectedTeam", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int?>("BaseEntityStatus")
+                        .HasColumnType("int");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("MatchTeamId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SoftDeleteCount")
+                        .HasColumnType("int");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MatchTeamId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserFavoriteTeams");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Sponsor", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int?>("BaseEntityStatus")
+                        .HasColumnType("int");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsHappySponsor")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Logo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SoftDeleteCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sponsors");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Stadium", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int?>("BaseEntityStatus")
+                        .HasColumnType("int");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LocationUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Photo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SoftDeleteCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Stadiums");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Team", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int?>("BaseEntityStatus")
+                        .HasColumnType("int");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Logo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SoftDeleteCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Teams");
+                });
+
+            modelBuilder.Entity("Domain.Entities.TeamSponsor", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int?>("BaseEntityStatus")
+                        .HasColumnType("int");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SoftDeleteCount")
+                        .HasColumnType("int");
+
+                    b.Property<long>("SponsorId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TeamId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SponsorId");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("TeamSponsors");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Ticket", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int?>("BaseEntityStatus")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("BlockId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Class")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("DisplayForSale")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ExternalGate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InternalGate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("MatchTeamId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long?>("SeatId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("SeatNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SoftDeleteCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TicketStatus")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlockId");
+
+                    b.HasIndex("MatchTeamId");
+
+                    b.HasIndex("SeatId");
+
+                    b.ToTable("Tickets");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationRole", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationUser", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -67,15 +826,15 @@ namespace Infrastructure.Migrations
                     b.Property<int?>("BaseEntityStatus")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("CartId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("CartId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -93,8 +852,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long?>("ModifiedBy")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
@@ -145,443 +904,22 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserLogins", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.Block", b =>
-                {
-                    b.HasBaseType("Domain.Entities.BaseEntity");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("StadiumId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasIndex("StadiumId");
-
-                    b.ToTable("Blocks", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.CartEntity.Cart", b =>
-                {
-                    b.HasBaseType("Domain.Entities.BaseEntity");
-
-                    b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("Cart", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.CartEntity.CartItem", b =>
-                {
-                    b.HasBaseType("Domain.Entities.BaseEntity");
-
-                    b.Property<Guid>("CartId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsCheckedOut")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid?>("OrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TicketId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasIndex("CartId");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("TicketId");
-
-                    b.ToTable("CartItems", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.Champion", b =>
-                {
-                    b.HasBaseType("Domain.Entities.BaseEntity");
-
-                    b.Property<string>("Logo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("Champions", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.ChampionSponsor", b =>
-                {
-                    b.HasBaseType("Domain.Entities.BaseEntity");
-
-                    b.Property<Guid>("ChampionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SponsorId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasIndex("ChampionId");
-
-                    b.HasIndex("SponsorId");
-
-                    b.ToTable("ChampionSponsors", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.Match", b =>
-                {
-                    b.HasBaseType("Domain.Entities.BaseEntity");
-
-                    b.Property<Guid?>("ChampionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("EventDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<TimeSpan?>("EventTime")
-                        .HasColumnType("time");
-
-                    b.Property<int>("MaxPerUser")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("StadiumId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TeamAId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("TeamBId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasIndex("ChampionId");
-
-                    b.HasIndex("StadiumId");
-
-                    b.HasIndex("TeamAId");
-
-                    b.HasIndex("TeamBId");
-
-                    b.ToTable("Matches", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.Order", b =>
-                {
-                    b.HasBaseType("Domain.Entities.BaseEntity");
-
-                    b.Property<string>("PaymentOrderRef")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PaymentStatus")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PaymentUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Orders", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.Seat", b =>
-                {
-                    b.HasBaseType("Domain.Entities.BaseEntity");
-
-                    b.Property<Guid>("BlockId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Number")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasIndex("BlockId");
-
-                    b.ToTable("Seats", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.Sponsor", b =>
-                {
-                    b.HasBaseType("Domain.Entities.BaseEntity");
-
-                    b.Property<bool?>("IsHappySponsor")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Logo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("Sponsors", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.Stadium", b =>
-                {
-                    b.HasBaseType("Domain.Entities.BaseEntity");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LocationUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Photo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("Stadiums", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.Team", b =>
-                {
-                    b.HasBaseType("Domain.Entities.BaseEntity");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Logo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("Teams", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.TeamSponsor", b =>
-                {
-                    b.HasBaseType("Domain.Entities.BaseEntity");
-
-                    b.Property<Guid>("SponsorId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TeamId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasIndex("SponsorId");
-
-                    b.HasIndex("TeamId");
-
-                    b.ToTable("TeamSponsors", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.Ticket", b =>
-                {
-                    b.HasBaseType("Domain.Entities.BaseEntity");
-
-                    b.Property<string>("Barcode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("BlockId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Class")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("DisplayForSale")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ExternalGate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InternalGate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("MatchId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("QRCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("SeatId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("SeatNumber")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("TeamId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("TicketStatus")
-                        .HasColumnType("int");
-
-                    b.HasIndex("BlockId");
-
-                    b.HasIndex("MatchId");
-
-                    b.HasIndex("SeatId");
-
-                    b.HasIndex("TeamId");
-
-                    b.ToTable("Tickets", (string)null);
-                });
-
             modelBuilder.Entity("Domain.Entities.UserEntities.AuthEntities.RefreshToken", b =>
                 {
-                    b.HasBaseType("Domain.Entities.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int?>("BaseEntityStatus")
+                        .HasColumnType("int");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTimeOffset>("CreationDate")
                         .HasColumnType("datetimeoffset");
@@ -599,102 +937,127 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Token")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RefreshTokens", (string)null);
+                    b.ToTable("RefreshTokens");
                 });
 
-            modelBuilder.Entity("Domain.Entities.UserEntities.UserFavoriteTeam", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
                 {
-                    b.HasBaseType("Domain.Entities.BaseEntity");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("MatchId")
-                        .HasColumnType("uniqueidentifier");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid>("TeamId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("MatchId");
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
 
-                    b.HasIndex("TeamId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<long>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserFavoriteTeams", (string)null);
+                    b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationUser", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<long>", b =>
                 {
-                    b.HasOne("Domain.Entities.CartEntity.Cart", "Cart")
-                        .WithOne("User")
-                        .HasForeignKey("Domain.Entities.UserEntities.ApplicationUser", "CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Navigation("Cart");
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<long>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<long>", b =>
                 {
-                    b.HasOne("Domain.Entities.UserEntities.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.HasOne("Domain.Entities.UserEntities.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasOne("Domain.Entities.UserEntities.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.HasOne("Domain.Entities.UserEntities.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Block", b =>
@@ -708,17 +1071,13 @@ namespace Infrastructure.Migrations
                     b.Navigation("Stadium");
                 });
 
-            modelBuilder.Entity("Domain.Entities.CartEntity.CartItem", b =>
+            modelBuilder.Entity("Domain.Entities.CartItem", b =>
                 {
-                    b.HasOne("Domain.Entities.CartEntity.Cart", "Cart")
+                    b.HasOne("Domain.Entities.Cart", "Cart")
                         .WithMany("CartItems")
                         .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Domain.Entities.Order", "Order")
-                        .WithMany("CartItems")
-                        .HasForeignKey("OrderId");
 
                     b.HasOne("Domain.Entities.Ticket", "Ticket")
                         .WithMany()
@@ -728,14 +1087,12 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("Cart");
 
-                    b.Navigation("Order");
-
                     b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("Domain.Entities.ChampionSponsor", b =>
                 {
-                    b.HasOne("Domain.Entities.Champion", "Champion")
+                    b.HasOne("Domain.Entities.Championship", "Champion")
                         .WithMany("ChampionSponsors")
                         .HasForeignKey("ChampionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -754,9 +1111,11 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Match", b =>
                 {
-                    b.HasOne("Domain.Entities.Champion", "Champion")
-                        .WithMany()
-                        .HasForeignKey("ChampionId");
+                    b.HasOne("Domain.Entities.Championship", "Champion")
+                        .WithMany("Matches")
+                        .HasForeignKey("ChampionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Entities.Stadium", "Stadium")
                         .WithMany()
@@ -764,23 +1123,28 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Team", "TeamA")
-                        .WithMany()
-                        .HasForeignKey("TeamAId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Team", "TeamB")
-                        .WithMany()
-                        .HasForeignKey("TeamBId");
-
                     b.Navigation("Champion");
 
                     b.Navigation("Stadium");
+                });
 
-                    b.Navigation("TeamA");
+            modelBuilder.Entity("Domain.Entities.MatchTeam", b =>
+                {
+                    b.HasOne("Domain.Entities.Match", "Match")
+                        .WithMany("MatchTeams")
+                        .HasForeignKey("MatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("TeamB");
+                    b.HasOne("Domain.Entities.Team", "Team")
+                        .WithMany("MatchTeams")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Match");
+
+                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("Domain.Entities.Order", b =>
@@ -794,6 +1158,25 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.Entities.OrderItem", b =>
+                {
+                    b.HasOne("Domain.Entities.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Ticket", "Ticket")
+                        .WithMany()
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Ticket");
+                });
+
             modelBuilder.Entity("Domain.Entities.Seat", b =>
                 {
                     b.HasOne("Domain.Entities.Block", "Block")
@@ -803,6 +1186,25 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Block");
+                });
+
+            modelBuilder.Entity("Domain.Entities.SelectedTeam", b =>
+                {
+                    b.HasOne("Domain.Entities.MatchTeam", "MatchTeam")
+                        .WithMany("UserSelectedTeams")
+                        .HasForeignKey("MatchTeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.UserEntities.ApplicationUser", "User")
+                        .WithMany("SelectedTeams")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MatchTeam");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.TeamSponsor", b =>
@@ -830,9 +1232,9 @@ namespace Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("BlockId");
 
-                    b.HasOne("Domain.Entities.Match", "Match")
+                    b.HasOne("Domain.Entities.MatchTeam", "MatchTeam")
                         .WithMany("Tickets")
-                        .HasForeignKey("MatchId")
+                        .HasForeignKey("MatchTeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -840,25 +1242,28 @@ namespace Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("SeatId");
 
-                    b.HasOne("Domain.Entities.Team", "Team")
-                        .WithMany("Tickets")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.Navigation("Block");
 
-                    b.Navigation("Match");
+                    b.Navigation("MatchTeam");
 
                     b.Navigation("Seat");
+                });
 
-                    b.Navigation("Team");
+            modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationUser", b =>
+                {
+                    b.HasOne("Domain.Entities.Cart", "Cart")
+                        .WithOne("User")
+                        .HasForeignKey("Domain.Entities.UserEntities.ApplicationUser", "CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
                 });
 
             modelBuilder.Entity("Domain.Entities.UserEntities.AuthEntities.RefreshToken", b =>
                 {
                     b.HasOne("Domain.Entities.UserEntities.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -866,36 +1271,55 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.UserEntities.UserFavoriteTeam", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
                 {
-                    b.HasOne("Domain.Entities.Match", "Match")
+                    b.HasOne("Domain.Entities.UserEntities.ApplicationRole", null)
                         .WithMany()
-                        .HasForeignKey("MatchId")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.HasOne("Domain.Entities.Team", "Team")
-                        .WithMany("UserFavoriteTeams")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.UserEntities.ApplicationUser", "User")
-                        .WithMany("FavoriteTeams")
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<long>", b =>
+                {
+                    b.HasOne("Domain.Entities.UserEntities.ApplicationUser", null)
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Match");
-
-                    b.Navigation("Team");
-
-                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationUser", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<long>", b =>
                 {
-                    b.Navigation("FavoriteTeams");
+                    b.HasOne("Domain.Entities.UserEntities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<long>", b =>
+                {
+                    b.HasOne("Domain.Entities.UserEntities.ApplicationRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.UserEntities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<long>", b =>
+                {
+                    b.HasOne("Domain.Entities.UserEntities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.Block", b =>
@@ -903,26 +1327,35 @@ namespace Infrastructure.Migrations
                     b.Navigation("Seats");
                 });
 
-            modelBuilder.Entity("Domain.Entities.CartEntity.Cart", b =>
+            modelBuilder.Entity("Domain.Entities.Cart", b =>
                 {
                     b.Navigation("CartItems");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Champion", b =>
+            modelBuilder.Entity("Domain.Entities.Championship", b =>
                 {
                     b.Navigation("ChampionSponsors");
+
+                    b.Navigation("Matches");
                 });
 
             modelBuilder.Entity("Domain.Entities.Match", b =>
                 {
+                    b.Navigation("MatchTeams");
+                });
+
+            modelBuilder.Entity("Domain.Entities.MatchTeam", b =>
+                {
                     b.Navigation("Tickets");
+
+                    b.Navigation("UserSelectedTeams");
                 });
 
             modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
-                    b.Navigation("CartItems");
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("Domain.Entities.Sponsor", b =>
@@ -939,11 +1372,16 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Team", b =>
                 {
+                    b.Navigation("MatchTeams");
+
                     b.Navigation("TeamSponsors");
+                });
 
-                    b.Navigation("Tickets");
+            modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationUser", b =>
+                {
+                    b.Navigation("RefreshTokens");
 
-                    b.Navigation("UserFavoriteTeams");
+                    b.Navigation("SelectedTeams");
                 });
 #pragma warning restore 612, 618
         }

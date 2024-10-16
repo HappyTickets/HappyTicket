@@ -2,6 +2,6 @@
 
 namespace Shared.DTOs.Identity.Register;
 
-public class RegisterResponse : BaseResponse
+public class RegisterResponse
 {
 }

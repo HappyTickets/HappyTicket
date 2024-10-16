@@ -1,13 +1,18 @@
-﻿namespace Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using Domain.Entities.Common;
+
+namespace Domain.Entities;
+
+public class Sponsor : SoftDeletableEntity<long>
 {
-    public class Sponsor : BaseEntity
-    {
-        public string Name { get; set; }
-        public string? Logo { get; set; }
-        public bool? IsHappySponsor { get; set; }
+    [Required]
+    public string Name { get; set; }
 
-        public ICollection<ChampionSponsor>? ChampionSponsors { get; set; }
-        public ICollection<TeamSponsor>? TeamSponsors { get; set; }
+    public string? Logo { get; set; }
 
-    }
+    public bool? IsHappySponsor { get; set; }
+
+    public virtual ICollection<ChampionSponsor>? ChampionSponsors { get; set; }
+
+    public virtual ICollection<TeamSponsor>? TeamSponsors { get; set; }
 }

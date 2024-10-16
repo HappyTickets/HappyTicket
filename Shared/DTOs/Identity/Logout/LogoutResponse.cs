@@ -2,6 +2,6 @@
 
 namespace Shared.DTOs.Identity.Logout;
 
-public class LogoutResponse : BaseResponse
+public class LogoutResponse
 {
 }

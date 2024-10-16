@@ -1,5 +1,6 @@
 using API.Extensions;
 using Application.Implementations;
+using Infrastructure;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using Serilog;
@@ -60,7 +61,7 @@ builder.Services.AddDependencyInjectionServices();
 builder.Services.AddCORsServices();
 builder.Services.AddControllers().AddJsonOptions(opt => { opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve; });
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddScoped<WarmUpService>();
+//builder.Services.AddScoped<WarmUpService>();
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
@@ -71,15 +72,16 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 });
 
 builder.Services.AddControllers().AddViewLocalization().AddDataAnnotationsLocalization();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
-using (var scope = app.Services.CreateScope())
-{
-    var warmUpService = scope.ServiceProvider.GetRequiredService<WarmUpService>();
-    await warmUpService.WarmUpAsync();
-    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-    logger.LogInformation(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs/.log"));
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var warmUpService = scope.ServiceProvider.GetRequiredService<WarmUpService>();
+//    await warmUpService.WarmUpAsync();
+//    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+//    logger.LogInformation(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs/.log"));
+//}
 
 if (app.Environment.IsDevelopment())
 {

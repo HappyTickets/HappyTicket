@@ -1,21 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Entities.Common;
 
-namespace Domain.Entities
+namespace Domain.Entities;
+
+public class OrderItem : SoftDeletableEntity<long>
 {
-    public class OrderItem : BaseEntity
-    {
-        public int Id { get; set; }
+    [Required]
+    public long OrderId { get; set; }
 
-        [ForeignKey("Order")]
-        public Guid OrderId { get; set; }
-        public virtual Order Order { get; set; }
+    [ForeignKey(nameof(OrderId))]
+    public virtual Order Order { get; set; }
 
-        [ForeignKey("Ticket")]
-        public Guid TicketId { get; set; }
-        public virtual Ticket Ticket { get; set; }
+    [Required]
+    public long TicketId { get; set; }
 
-        public int Quantity { get; set; }
-        public decimal UnitPrice { get; set; }
-    }
+    [ForeignKey(nameof(TicketId))]
+    public virtual Ticket Ticket { get; set; }
 
+    public decimal Price { get; set; }
 }

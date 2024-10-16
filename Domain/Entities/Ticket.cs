@@ -1,28 +1,41 @@
 ﻿using Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities;
 
-public class Ticket : BaseEntity
+public class Ticket : SoftDeletableEntity<long>
 {
-    public Guid MatchId { get; set; }
-    [ForeignKey(nameof(MatchId))]
-    public virtual Match? Match { get; set; }
-    public Guid TeamId { get; set; }
-    [ForeignKey(nameof(TeamId))]
-    public virtual Team? Team { get; set; }
+    [Required]
+    public long MatchTeamId { get; set; }
+
+    [ForeignKey(nameof(MatchTeamId))]
+    public virtual MatchTeam MatchTeam { get; set; }
+
+    [Required]
     public decimal Price { get; set; }
+
     public string? Notes { get; set; }
+
     public virtual Block? Block { get; set; }
+
     public virtual Seat? Seat { get; set; }
+
     public bool IsActive { get; set; }
+
     public bool? DisplayForSale { get; set; }
-    public string? QRCode { get; set; }
-    public string? Barcode { get; set; }
+
+    [Required]
     public string Location { get; set; }
+
+    [Required]
     public string Class { get; set; }
+
     public TicketStatus TicketStatus { get; set; }
+
     public int SeatNumber { get; set; }
+
     public string ExternalGate { get; set; }
+
     public string InternalGate { get; set; }
 }

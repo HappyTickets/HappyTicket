@@ -2,6 +2,6 @@
 
 namespace Shared.DTOs.CartDTOs;
 
-public class RemoveItemResponse : BaseResponse
+public class RemoveItemResponse
 {
 }

@@ -1,67 +1,45 @@
 ﻿using Domain.Entities;
-using LanguageExt;
-using LanguageExt.Common;
-using Microsoft.EntityFrameworkCore.Query;
+using Domain.Entities.Common;
 using Shared.Common.General;
 using System.Linq.Expressions;
 
 namespace Application.Interfaces.Persistence;
 
-public interface IRepository<Tentity> where Tentity : BaseEntity
+public interface IRepository<TEntity> where TEntity : BaseEntity<long>
 {
-    #region Utilities
+    // commands
+    void Create(TEntity entity);
+    void CreateRange(IEnumerable<TEntity> entities);
 
-    IQueryable<Tentity> Query();
-    void Attach(Tentity entity);
-    void AttachRange(IEnumerable<Tentity> entities);
-    void ModifyInsertState(Tentity entity);
-    void ModifyUpdateState(Tentity entity);
-    void ModifyUnchangedState(Tentity entity);
-    void ModifyDeleteState(Tentity entity);
-    void ModifyDeleteRangeState(IEnumerable<Tentity> entities);
-    void Dispose();
-    void ClearTrack();
+    void Update(TEntity entity);
+    void UpdateRange(IEnumerable<TEntity> entities);
 
-    #endregion
+    void HardDelete(TEntity entity);
+    void HardDeleteRange(IEnumerable<TEntity> entities);
+    void SoftDelete(SoftDeletableEntity<long> entity);
+    void SoftDeleteRange(IEnumerable<SoftDeletableEntity<long>> entities);
 
-    #region Query
+    void Recover(SoftDeletableEntity<long> entity);
 
-    ValueTask<Result<Tentity>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
-    Task<Result<Tentity>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tentity>, IIncludableQueryable<Tentity, object>>>[] includeProperties);
-    Task<Result<Tentity>> FirstOrDefaultAsync(Expression<Func<Tentity, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tentity>, IIncludableQueryable<Tentity, object>>>[] includeProperties);
-    Task<Result<Tentity>> LastOrDefaultAsync(Expression<Func<Tentity, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tentity>, IIncludableQueryable<Tentity, object>>>[] includeProperties);
-    Task<Result<IEnumerable<Tentity>>> FindAsync(Expression<Func<Tentity, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tentity>, IIncludableQueryable<Tentity, object>>>[] includeProperties);
-    Task<Result<IEnumerable<Tentity>>> GetAllAsync(CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tentity>, IIncludableQueryable<Tentity, object>>>[] includeProperties);
-    Task<Result<IEnumerable<Tentity>>> GetPaginatedAsync(PaginationSearchModel paginationParams, CancellationToken cancellationToken = default, params Expression<Func<IQueryable<Tentity>, IIncludableQueryable<Tentity, object>>>[] includeProperties);
-    Task<Result<long>> GetLongCountAsync(CancellationToken cancellationToken = default);
+    void RecoverRange(IEnumerable<SoftDeletableEntity<long>> entities);
 
-    #endregion
+    // queries
+    IQueryable<TEntity> Query();
 
-    #region Command
+    Task<TEntity?> GetByIdAsync(long id, IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default, bool ignoreFilter = false);
 
-    Task<Result<Tentity>> CreateAsync(Tentity entity, CancellationToken cancellationToken = default);
-    Task<Result<Unit>> CreateRangeAsync(IEnumerable<Tentity> entities, CancellationToken cancellationToken = default);
+    Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default);
+    Task<TEntity?> LastOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default);
 
-    Result<Tentity> Update(Tentity entity);
-    Result<Unit> UpdateRange(IEnumerable<Tentity> entities, CancellationToken cancellationToken = default);
-    Task<Result<Unit>> UpdateRangeAsync(Expression<Func<Tentity, bool>> predicate, Func<Tentity, Tentity> updateFunc, CancellationToken cancellationToken = default);
-    Task<Result<Unit>> UpdateRangeFactoryAsync(Expression<Func<Tentity, bool>> predicate, Expression<Func<Tentity, Tentity>> updateFactory, CancellationToken cancellationToken = default);
+    Task<List<TEntity>> ListAsync(IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default);
+    Task<List<TEntity>> ListAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default, bool ignoreFilter = false);
 
-    Result<Tentity> Recover(Tentity entity);
-    Task<Result<Tentity>> RecoverByIdAsync(Guid id, CancellationToken cancellationToken = default);
-    Task<Result<Tentity>> RecoverFirstAsync(Expression<Func<Tentity, bool>> predicate, CancellationToken cancellationToken = default);
-    Task<Result<Unit>> RecoverRangeAsync(Expression<Func<Tentity, bool>> predicate, CancellationToken cancellationToken = default);
+    Task<PaginatedList<TEntity>> PaginateAsync(int pageIndex, int pageSize, IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default);
+    Task<PaginatedList<TEntity>> PaginateAsync(Expression<Func<TEntity, bool>> predicate, int pageIndex, int pageSize, IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default);
 
-    Result<Tentity> SoftDelete(Tentity entity);
-    Task<Result<Tentity>> SoftDeleteByIdAsync(Guid id, CancellationToken cancellationToken = default);
-    Task<Result<Tentity>> SoftDeleteFirstAsync(Expression<Func<Tentity, bool>> predicate, CancellationToken cancellationToken = default);
-    Task<Result<Unit>> SoftDeleteRangeAsync(Expression<Func<Tentity, bool>> predicate, CancellationToken cancellationToken = default);
+    Task<bool> AnyAsync(CancellationToken cancellationToken = default);
+    Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
 
-    Result<Tentity> HardDelete(Tentity entity);
-    Task<Result<Tentity>> HardDeleteByIdAsync(Guid id, CancellationToken cancellationToken = default);
-    Task<Result<Tentity>> HardDeleteFirstAsync(Expression<Func<Tentity, bool>> predicate, CancellationToken cancellationToken = default);
-    Result<Unit> HardDeleteRange(Expression<Func<Tentity, bool>> predicate);
-
-
-    #endregion
+    Task<long> CountAsync(CancellationToken cancellationToken = default);
+    Task<long> CountAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
 }

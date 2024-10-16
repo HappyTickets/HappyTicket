@@ -2,6 +2,6 @@
 
 namespace Shared.DTOs.Identity.Register.ConfirmEmail;
 
-public class ConfirmEmailResponse : BaseResponse
+public class ConfirmEmailResponse
 {
 }

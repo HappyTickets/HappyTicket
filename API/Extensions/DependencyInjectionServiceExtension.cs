@@ -1,19 +1,12 @@
 ﻿using Application.Implementations;
-using Application.Implementations.IdentityServices;
-using Application.Implementations.PaymentServices;
 using Application.Implementations.TicketServices;
 using Application.Interfaces;
-using Application.Interfaces.IIdentityServices;
 using Application.Interfaces.ITicketServices;
-using Application.Interfaces.PaymentServices;
-using Application.Interfaces.Persistence;
 using Application.Mapper;
 using Application.Validation;
 using AutoMapper.Extensions.ExpressionMapping;
 using FluentValidation;
-using Infrastructure.Persistence.EntityFramework;
-using Infrastructure.Persistence.File;
-using Infrastructure.Persistence.Identity;
+using FluentValidation.AspNetCore;
 
 namespace API.Extensions
 {
@@ -25,7 +18,8 @@ namespace API.Extensions
             services.AddMemoryCache();
             services.AddLogging(configure => configure.AddConsole());
             services.AddValidatorsFromAssembly(typeof(TicketDTOValidator).Assembly);
-
+            services.AddFluentValidationAutoValidation();
+            services.AddHttpContextAccessor();
 
             //services.AddTransient<IValidator<TicketDto>, TicketDTOValidator>();
             //services.AddTransient<IValidator<TicketDto>, TicketDTOValidator>();
@@ -39,30 +33,32 @@ namespace API.Extensions
             //services.AddTransient<IValidator<OrderDto>, OrderValidator>();
             //services.AddTransient<IValidator<SponsorDto>, SponsorValidator>();
 
-            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
-            services.AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork<AppDbContext>));
-            services.AddTransient(typeof(IUserRepository<>), typeof(UserRepository<>));
-            services.AddTransient(typeof(ITokenService<>), typeof(TokenService<>));
-            services.AddTransient(typeof(IBaseService<,>), typeof(BaseService<,>));
-            services.AddTransient<IIdentityService, IdentityService>();
+            //services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            //services.AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork));
+            //services.AddTransient(typeof(IUserRepository<>), typeof(UserRepository<>));
+            //services.AddTransient(typeof(ITokenService<>), typeof(TokenService<>));
+            //services.AddTransient(typeof(IBaseService<,>), typeof(BaseService<,>));
+            //services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<ITicketService, TicketService>();
+            services.AddTransient<ITestMatchService, TestMatchService>();
             //services.AddSingleton<CountryInfoService>();
             //services.AddTransient<ITicketService, TicketService>();
             //services.AddSingleton<CountryInfoService>();
             services.AddSingleton<IEmailSender, EmailSender>();
-            services.AddScoped<IMatchService, MatchService>();
-            services.AddScoped<IMatchCommandService, MatchCommandService>();
-            services.AddScoped<ITeamService, TeamService>();
-            services.AddScoped<IStadiumService, StadiumService>();
-            services.AddScoped<IBlockService, BlockService>();
-            services.AddScoped<ISeatService, SeatService>();
-            services.AddTransient<ICartService, CartService>();
-            services.AddTransient<IFileService, FileService>();
-            services.AddScoped<IPaymentService, PaymentService>();
-            services.AddScoped<IOrderService, OrderService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ISponsorService, SponsorService>();
-            services.AddScoped<IChampionService, ChampionService>();
+            //services.AddScoped<IMatchService, MatchService>();
+            //services.AddScoped<IMatchService, MatchService>();
+            //services.AddScoped<IMatchCommandService, MatchCommandService>();
+            //services.AddScoped<ITeamService, TeamService>();
+            //services.AddScoped<IStadiumService, StadiumService>();
+            //services.AddScoped<IBlockService, BlockService>();
+            //services.AddScoped<ISeatService, SeatService>();
+            //services.AddTransient<ICartService, CartService>();
+            //services.AddTransient<IFileService, FileService>();
+            //services.AddScoped<IPaymentService, PaymentService>();
+            //services.AddScoped<IOrderService, OrderService>();
+            //services.AddScoped<IUserService, UserService>();
+            //services.AddScoped<ISponsorService, SponsorService>();
+            //services.AddScoped<IChampionService, ChampionService>();
         }
     }
 }

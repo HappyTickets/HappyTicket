@@ -2,6 +2,6 @@
 
 namespace Shared.DTOs.Identity.ResetPassword.CreatePasswordResetToken;
 
-public class CreatePasswordResetTokenResponse : BaseResponse
+public class CreatePasswordResetTokenResponse
 {
 }
