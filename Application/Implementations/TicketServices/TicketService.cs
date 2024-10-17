@@ -2,6 +2,7 @@
 using Application.Interfaces.ITicketServices;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Shared.Common;
@@ -74,7 +75,21 @@ namespace Application.Implementations.TicketServices
         {
             var ticket = _mapper.Map<Ticket>(dto);
             
-            _unitOfWork.Tickets.UpdateAllWithSamePredicate(t => t.MatchTeamId == dto.MatchTeamId && t.Class == dto.Class, ticket);
+            _unitOfWork.Tickets.UpdateAllWithSamePredicate(t => 
+                t.MatchTeamId == dto.OldMatchTeamId && 
+                t.Class == dto.OldClass &&
+                t.Price == dto.OldPrice &&
+                t.Notes == dto.OldNotes &&
+                t.BlockId == dto.OldBlockId &&
+                t.SeatId == dto.OldSeatId &&
+                t.DisplayForSale == dto.OldDisplayForSale &&
+                t.Location == dto.OldLocation &&
+                t.TicketStatus == Enum.Parse<TicketStatus>(dto.OldTicketStatus.ToString()) &&
+                t.SeatNumber == dto.OldSeatNumber &&
+                t.ExternalGate == dto.OldExternalGate &&
+                t.InternalGate == dto.OldInternalGate,
+                ticket);
+
             await _unitOfWork.SaveChangesAsync();
 
             return HttpStatusCode.OK;

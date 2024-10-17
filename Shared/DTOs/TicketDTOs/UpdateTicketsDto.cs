@@ -4,9 +4,21 @@ namespace Shared.DTOs.TicketDTOs
 {
     public class UpdateTicketsDto
     {
+        public long OldMatchTeamId { get; set; }
+        public string OldClass { get; set; }
+        public decimal OldPrice { get; set; }
+        public string? OldNotes { get; set; }
+        public long OldBlockId { get; set; }
+        public long OldSeatId { get; set; }
+        public bool? OldDisplayForSale { get; set; }
+        public string OldLocation { get; set; }
+        public TicketStatusDTO OldTicketStatus { get; set; }
+        public int OldSeatNumber { get; set; }
+        public string OldExternalGate { get; set; }
+        public string OldInternalGate { get; set; }
+
         public long MatchTeamId { get; set; }
         public string Class { get; set; }
-
         public decimal Price { get; set; }
         public string? Notes { get; set; }
         public long BlockId { get; set; }
