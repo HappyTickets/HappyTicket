@@ -12,6 +12,7 @@ namespace Application.Validation.Ticket
             
             RuleFor(dto => dto.Price)
                 .NotEmpty()
+                .GreaterThan(0)
                 .PrecisionScale(18, 2, true);
             
             RuleFor(dto => dto.BlockId)
@@ -27,7 +28,6 @@ namespace Application.Validation.Ticket
                 .NotEmpty();
             
             RuleFor(dto => dto.TicketStatus)
-                .NotEmpty()
                 .IsInEnum();
             
             RuleFor(dto => dto.SeatNumber)
