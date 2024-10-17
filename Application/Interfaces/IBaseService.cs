@@ -1,6 +1,8 @@
 ﻿using Domain.Entities.Common;
 using LanguageExt;
+using Shared.Common;
 using Shared.Common.General;
+using Shared.DTOs.TicketDTOs;
 using System.Linq.Expressions;
 
 namespace Application.Interfaces

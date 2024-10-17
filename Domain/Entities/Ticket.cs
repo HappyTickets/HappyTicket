@@ -17,11 +17,11 @@ public class Ticket : SoftDeletableEntity<long>
 
     public string? Notes { get; set; }
 
+    public long BlockId { get; set; }
     public virtual Block? Block { get; set; }
 
+    public long SeatId { get; set; }
     public virtual Seat? Seat { get; set; }
-
-    public bool IsActive { get; set; }
 
     public bool? DisplayForSale { get; set; }
 

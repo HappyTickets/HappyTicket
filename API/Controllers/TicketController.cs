@@ -1,9 +1,10 @@
 ﻿using Application.Interfaces.ITicketServices;
 using Microsoft.AspNetCore.Mvc;
+using Shared.DTOs.TicketDTOs;
 
 namespace API.Controllers
 {
-    public class TicketController : Controller
+    public class TicketController : BaseController
     {
         private readonly ITicketService _ticketService;
 
@@ -12,6 +13,13 @@ namespace API.Controllers
             _ticketService = ticketService;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync(CreateTicketsDto dto)
+            => Result(await _ticketService.CreateAsync(dto));
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateAsync(UpdateTicketsDto dto)
+            => Result(await _ticketService.UpdateAsync(dto));
 
         [HttpGet]
         [Route("GetTicketsByMatchTeamId")]

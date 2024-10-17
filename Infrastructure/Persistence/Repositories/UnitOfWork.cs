@@ -1,4 +1,4 @@
-﻿using Application.Interfaces.Persistence;
+﻿using Application.Interfaces.Infrastructure.Persistence;
 using Domain.Entities.Common;
 
 namespace Infrastructure.Persistence.EntityFramework;
@@ -8,10 +8,13 @@ public class UnitOfWork : IUnitOfWork
     private readonly AppDbContext _context;
     private readonly Dictionary<Type, object> _repos;
 
-    public UnitOfWork(AppDbContext context)
+    public ITicketRepository Tickets { get; }
+
+    public UnitOfWork(AppDbContext context, ITicketRepository tickets)
     {
         _context = context;
         _repos = new();
+        Tickets = tickets;
     }
 
     public IRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity<long>
