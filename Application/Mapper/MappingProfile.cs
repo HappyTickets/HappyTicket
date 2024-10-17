@@ -2,6 +2,8 @@
 using Domain.Entities;
 using Shared.DTOs;
 using Shared.DTOs.Champion;
+using Shared.DTOs.Stadium;
+using Shared.DTOs.StadiumDTO;
 using Shared.DTOs.Test.Request;
 using Shared.DTOs.Test.Response;
 using Shared.DTOs.TicketDTOs;
@@ -20,9 +22,11 @@ namespace Application.Mapper
 
             CreateMap<Match, CreateTestMatchDto>().ReverseMap();
             CreateMap<Match, UpdateTestMatchDto>().ReverseMap();
-
             CreateMap<Stadium, StadiumDto>().ReverseMap();
             CreateMap<Championship, ChampionDto>().ReverseMap();
+            CreateMap<Stadium, GetStadiumDto>().ReverseMap();
+            CreateMap<Stadium, CreateStadiumDto>().ReverseMap();
+            CreateMap<Stadium, UpdateStadiumDto>().ReverseMap();
 
 
             CreateMap<CreateTicketsDto, Ticket>();
