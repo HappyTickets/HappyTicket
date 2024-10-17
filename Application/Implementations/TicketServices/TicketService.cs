@@ -1,10 +1,12 @@
-﻿using Application.Interfaces.ITicketServices;
-using Application.Interfaces.Persistence;
+﻿using Application.Interfaces.Infrastructure.Persistence;
+using Application.Interfaces.ITicketServices;
 using AutoMapper;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Shared.Common;
+using Shared.DTOs.TicketDTOs;
+using System.Net;
 
 namespace Application.Implementations.TicketServices
 {
@@ -59,6 +61,25 @@ namespace Application.Implementations.TicketServices
         //        return new Result<string>(ex);
         //    }
         //}
+
+        public async Task<BaseResponse<object?>> CreateAsync(CreateTicketsDto dto)
+        {
+            var ticket = _mapper.Map<Ticket>(dto);
+            await _unitOfWork.Tickets.CreateAsync(ticket, dto.TicketsCount);
+
+            return HttpStatusCode.Created;
+        }
+        
+        public async Task<BaseResponse<object?>> UpdateAsync(UpdateTicketsDto dto)
+        {
+            var ticket = _mapper.Map<Ticket>(dto);
+            
+            _unitOfWork.Tickets.UpdateAllWithSamePredicate(t => t.MatchTeamId == dto.MatchTeamId && t.Class == dto.Class, ticket);
+            await _unitOfWork.SaveChangesAsync();
+
+            return HttpStatusCode.OK;
+        }
+
         public async Task<BaseResponse<IEnumerable<Ticket?>>> GetDistinctTicketsAsync(long matchTeamId)
         {
             var randomTicketsQuery = _unitOfWork.Repository<Ticket>().Query()

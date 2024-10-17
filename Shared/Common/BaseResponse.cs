@@ -5,17 +5,23 @@ namespace Shared.Common;
 
 public class BaseResponse<TData>
 {
-    public BaseResponse() { }
-    public BaseResponse(TData data)
+    public BaseResponse(HttpStatusCode status = HttpStatusCode.OK) 
+    {
+        Status = status;
+    }
+
+    public BaseResponse(TData data, HttpStatusCode status = HttpStatusCode.OK)
     {
         Data = data;
+        Status = status;
     }
 
     public virtual TData? Data { get; set; }
     public string? Title { get; set; }
-    public HttpStatusCode Status { get; set; } = HttpStatusCode.OK;
+    public HttpStatusCode Status { get; set; }
     public IEnumerable<ResponseError>? ErrorList { get; set; }
     public bool IsSuccess => (int)Status < 400;
+
 
     public static implicit operator BaseResponse<TData>(TData data)
        => new BaseResponse<TData>
@@ -30,6 +36,12 @@ public class BaseResponse<TData>
             Status = ex.Code,
             Title = ex.Message,
             ErrorList = ex.Errors.Select(x => new ResponseError() { Title = x.Title, Message = x.Message, Details = x.Details })
+        };
+
+    public static implicit operator BaseResponse<TData>(HttpStatusCode status)
+        => new BaseResponse<TData>
+        {
+            Status = status
         };
 }
 

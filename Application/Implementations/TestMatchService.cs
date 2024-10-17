@@ -1,5 +1,5 @@
 ﻿using Application.Interfaces;
-using Application.Interfaces.Persistence;
+using Application.Interfaces.Infrastructure.Persistence;
 using AutoMapper;
 using Domain.Entities;
 using LanguageExt;

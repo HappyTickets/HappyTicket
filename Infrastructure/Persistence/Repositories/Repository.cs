@@ -1,4 +1,4 @@
-﻿using Application.Interfaces.Persistence;
+﻿using Application.Interfaces.Infrastructure.Persistence;
 using Domain.Entities;
 using Domain.Entities.Common;
 using Infrastructure.Persistence.Extensions;
@@ -60,18 +60,15 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
 
     public void Recover(SoftDeletableEntity<long> entity)
     {
-
         entity.IsActive = true;
         _dbContext.Update(entity);
-
     }
 
     public void RecoverRange(IEnumerable<SoftDeletableEntity<long>> entities)
     {
         foreach (var entity in entities)
-        {
             entity.IsActive = true;
-        }
+
         _dbContext.UpdateRange(entities);
     }
 

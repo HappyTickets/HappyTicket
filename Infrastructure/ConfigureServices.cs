@@ -1,7 +1,8 @@
-﻿using Application.Common.Interfaces;
-using Application.Interfaces.Persistence;
+﻿using Application.Interfaces.Infrastructure.Persistence;
+using Application.Interfaces.Infrastructure.Services;
 using Infrastructure.Persistence.EntityFramework;
 using Infrastructure.Persistence.Identity;
+using Infrastructure.Persistence.Repositories;
 using Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,10 +15,11 @@ namespace Infrastructure
         {
             // services
             services
-                .AddScoped<ICurrentUser, CurrentUserService>()
                 .AddScoped(typeof(IRepository<>), typeof(Repository<>))
                 .AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork))
-                .AddScoped(typeof(IUserRepository<>), typeof(UserRepository<>));
+                .AddScoped(typeof(IUserRepository<>), typeof(UserRepository<>))
+                .AddScoped<ICurrentUser, CurrentUserService>()
+                .AddScoped<ITicketRepository, TicketRepository>();
 
             return services;
         }

@@ -7,14 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Common\**" />
     <Compile Remove="Entities\CountryEntities\**" />
+    <Compile Remove="Events\**" />
+    <EmbeddedResource Remove="Common\**" />
     <EmbeddedResource Remove="Entities\CountryEntities\**" />
+    <EmbeddedResource Remove="Events\**" />
+    <None Remove="Common\**" />
     <None Remove="Entities\CountryEntities\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Common\" />
-    <Folder Include="Events\" />
+    <None Remove="Events\**" />
   </ItemGroup>
 
   <ItemGroup>
