@@ -14,5 +14,9 @@ namespace API.Controllers;
 public abstract class BaseController : ControllerBase
 {
     protected IActionResult Result(BaseResponse<object?> baseResponse)
-        => StatusCode((int)baseResponse.Status, baseResponse);
+        => baseResponse.Status switch
+        {
+            HttpStatusCode.NoContent => NoContent(),
+            _ => StatusCode((int)baseResponse.Status, baseResponse)
+        };
 }
