@@ -1193,4 +1193,31 @@
   <data name="UpcomingMatches" xml:space="preserve">
     <value>المباريات القادمة</value>
   </data>
+  <data name="CannotDeleteStadium" xml:space="preserve">
+    <value>لا يمكن مسح هذا الاستاد لانه يحتوي علي ماتش</value>
+  </data>
+  <data name="StadiumNotFound" xml:space="preserve">
+    <value>لم يتم العثور على الاستاد</value>
+  </data>
+  <data name="NoStadiumsFound" xml:space="preserve">
+    <value>لم يتم العثور على أي استاد</value>
+  </data>
+  <data name="DataNotFound" xml:space="preserve">
+    <value>لم يتم العثور على البيانات</value>
+  </data>
+  <data name="ThereAreNoStadiumsAvailable" xml:space="preserve">
+    <value>لا توجد استادات متاحة</value>
+  </data>
+  <data name="MatchNotFound" xml:space="preserve">
+    <value>لم يتم العثور على المباراة</value>
+  </data>
+  <data name="Conflict" xml:space="preserve">
+    <value>تعارض</value>
+  </data>
+  <data name="CannotDeleteAStadiumInvolvedInAMatch" xml:space="preserve">
+    <value>لا يمكن حذف استاد مشارك في مباراة</value>
+  </data>
+  <data name="StadiumDeleted" xml:space="preserve">
+    <value>تم حذف الاستاد</value>
+  </data>
 </root>

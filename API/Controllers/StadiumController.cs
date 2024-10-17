@@ -9,7 +9,7 @@ namespace API.Controllers
     public class StadiumController(IStadiumService _stadiumService) : ControllerBase
     {
 
-        [HttpPost("Create_Stadiums")]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateStadium([FromBody] CreateStadiumDto stadiumDto)
         {
             var result = await _stadiumService.CreateStadiumAsync(stadiumDto);
@@ -19,7 +19,7 @@ namespace API.Controllers
             }
             return BadRequest(result);
         }
-        [HttpPost("Update_stadium")]
+        [HttpPost("Update")]
         public async Task<IActionResult> UpdateStadium([FromBody] UpdateStadiumDto stadiumDto)
         {
             var result = await _stadiumService.UpdateAsync(stadiumDto);
@@ -27,18 +27,18 @@ namespace API.Controllers
                 return Ok(result);
             return NotFound();
         }
-        [HttpGet("GetAll_StadiumsAsync")]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetStadiums()
         {
             return Ok(await _stadiumService.GetStadiums());
         }
-        [HttpGet("Get_StaduimByIdAsync")]
+        [HttpGet("GetById")]
         public async Task<IActionResult> GetStaduimById(long stadiumId)
         {
             return Ok(await _stadiumService.GetStaduimByIdAsync(stadiumId));
         }
 
-        [HttpDelete("HardDeleteStadium")]
+        [HttpDelete("HardDelete")]
         public async Task<IActionResult> DeleteStadium(long stadiumId)
         {
             var result = await _stadiumService.DeleteStadiumAsync(stadiumId);

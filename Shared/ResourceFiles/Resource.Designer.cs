@@ -250,6 +250,24 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot Delete A Stadium Involved In A Match.
+        /// </summary>
+        public static string CannotDeleteAStadiumInvolvedInAMatch {
+            get {
+                return ResourceManager.GetString("CannotDeleteAStadiumInvolvedInAMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot Delete Stadium.
+        /// </summary>
+        public static string CannotDeleteStadium {
+            get {
+                return ResourceManager.GetString("CannotDeleteStadium", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cart.
         /// </summary>
         public static string Cart {
@@ -484,6 +502,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Conflict.
+        /// </summary>
+        public static string Conflict {
+            get {
+                return ResourceManager.GetString("Conflict", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact Us.
         /// </summary>
         public static string ContactUs {
@@ -573,6 +600,15 @@ namespace Shared.ResourceFiles {
         public static string DarkMode {
             get {
                 return ResourceManager.GetString("DarkMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data Not Found.
+        /// </summary>
+        public static string DataNotFound {
+            get {
+                return ResourceManager.GetString("DataNotFound", resourceCulture);
             }
         }
         
@@ -1511,6 +1547,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Match Not Found.
+        /// </summary>
+        public static string MatchNotFound {
+            get {
+                return ResourceManager.GetString("MatchNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max size 10MB.
         /// </summary>
         public static string Max_size_10MB {
@@ -1660,6 +1705,15 @@ namespace Shared.ResourceFiles {
         public static string NoRecordsFound {
             get {
                 return ResourceManager.GetString("NoRecordsFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Stadiums Found.
+        /// </summary>
+        public static string NoStadiumsFound {
+            get {
+                return ResourceManager.GetString("NoStadiumsFound", resourceCulture);
             }
         }
         
@@ -2348,6 +2402,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stadium Deleted.
+        /// </summary>
+        public static string StadiumDeleted {
+            get {
+                return ResourceManager.GetString("StadiumDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stadium Logo.
         /// </summary>
         public static string StadiumLogo {
@@ -2362,6 +2425,15 @@ namespace Shared.ResourceFiles {
         public static string StadiumName {
             get {
                 return ResourceManager.GetString("StadiumName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stadium Not Found.
+        /// </summary>
+        public static string StadiumNotFound {
+            get {
+                return ResourceManager.GetString("StadiumNotFound", resourceCulture);
             }
         }
         
@@ -2641,6 +2713,15 @@ namespace Shared.ResourceFiles {
         public static string TheMatches {
             get {
                 return ResourceManager.GetString("TheMatches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There Are No Stadiums Available.
+        /// </summary>
+        public static string ThereAreNoStadiumsAvailable {
+            get {
+                return ResourceManager.GetString("ThereAreNoStadiumsAvailable", resourceCulture);
             }
         }
         

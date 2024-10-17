@@ -1250,4 +1250,31 @@ Our mission is to bring fans closer to the action, creating opportunities for th
   <data name="UpcomingMatches" xml:space="preserve">
     <value>Upcoming Matches</value>
   </data>
+  <data name="CannotDeleteStadium" xml:space="preserve">
+    <value>Cannot Delete Stadium</value>
+  </data>
+  <data name="StadiumNotFound" xml:space="preserve">
+    <value>Stadium Not Found</value>
+  </data>
+  <data name="NoStadiumsFound" xml:space="preserve">
+    <value>No Stadiums Found</value>
+  </data>
+  <data name="DataNotFound" xml:space="preserve">
+    <value>Data Not Found</value>
+  </data>
+  <data name="ThereAreNoStadiumsAvailable" xml:space="preserve">
+    <value>There Are No Stadiums Available</value>
+  </data>
+  <data name="MatchNotFound" xml:space="preserve">
+    <value>Match Not Found</value>
+  </data>
+  <data name="Conflict" xml:space="preserve">
+    <value>Conflict</value>
+  </data>
+  <data name="CannotDeleteAStadiumInvolvedInAMatch" xml:space="preserve">
+    <value>Cannot Delete A Stadium Involved In A Match</value>
+  </data>
+  <data name="StadiumDeleted" xml:space="preserve">
+    <value>Stadium Deleted</value>
+  </data>
 </root>
