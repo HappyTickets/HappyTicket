@@ -1,17 +1,17 @@
 ﻿using FluentValidation;
-using Shared.DTOs;
+using Shared.DTOs.StadiumDTO;
 
 namespace Application.Validation
 {
     public partial class TicketDtoValidator
     {
-        public class StadiumValidator : AbstractValidator<StadiumDto>
+        public class StadiumValidator : AbstractValidator<CreateStadiumDto>
         {
             public StadiumValidator()
             {
                 RuleFor(x => x.Name).NotEmpty().WithMessage("Stadium name is required.");
                 RuleFor(x => x.Photo).NotEmpty().WithMessage("Photo is required.");
-                //RuleForEach(x => x.Blocks).SetValidator(new BlockValidator());
+                RuleFor(x => x.Location).NotEmpty().WithMessage("Location is required.");
             }
         }
     }

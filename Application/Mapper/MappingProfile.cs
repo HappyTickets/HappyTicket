@@ -25,6 +25,7 @@ namespace Application.Mapper
             CreateMap<Championship, ChampionDto>().ReverseMap();
             CreateMap<Stadium, GetStadiumDto>().ReverseMap();
             CreateMap<Stadium, CreateStadiumDto>().ReverseMap();
+            CreateMap<Stadium, UpdateStadiumDto>().ReverseMap();
 
 
             //CreateMap<Ticket, TicketDto>().ReverseMap();
