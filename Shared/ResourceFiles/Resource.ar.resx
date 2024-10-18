@@ -1193,4 +1193,7 @@
   <data name="UpcomingMatches" xml:space="preserve">
     <value>المباريات القادمة</value>
   </data>
+  <data name="CannotDeleteStadium" xml:space="preserve">
+    <value>لا يمكن مسح هذا الاستاد لانه يحتوي علي ماتش</value>
+  </data>
 </root>

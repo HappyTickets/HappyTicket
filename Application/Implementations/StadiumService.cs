@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Shared.Common;
 using Shared.DTOs.Stadium;
 using Shared.DTOs.StadiumDTO;
+using Shared.ResourceFiles;
 using System.Net;
 
 namespace Application.Implementations
@@ -105,7 +106,7 @@ namespace Application.Implementations
                 return new BaseResponse<Unit>
                 {
                     Status = HttpStatusCode.Conflict,
-                    Title = "Cannot Delete Stadium",
+                    Title = Resource.CannotDeleteStadium,
                     ErrorList = new List<ResponseError>
                     {
                         new ResponseError

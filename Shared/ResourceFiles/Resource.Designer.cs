@@ -250,6 +250,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot Delete Stadium.
+        /// </summary>
+        public static string CannotDeleteStadium {
+            get {
+                return ResourceManager.GetString("CannotDeleteStadium", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cart.
         /// </summary>
         public static string Cart {
