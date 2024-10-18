@@ -1,5 +1,5 @@
-﻿using Application.Interfaces.Infrastructure.Persistence;
-using Application.Interfaces.ITicketServices;
+﻿using Application.Common.Implementations;
+using Application.Common.Interfaces.Persistence;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
@@ -9,13 +9,13 @@ using Shared.Common;
 using Shared.DTOs.TicketDTOs;
 using System.Net;
 
-namespace Application.Implementations.TicketServices
+namespace Application.Tickets.Service
 {
     public class TicketService(
         IUnitOfWork unitOfWork,
         ILogger<Ticket> logger,
         IMapper mapper
-        ) : BaseService<Ticket>(unitOfWork, logger, mapper), ITicketService
+        ): BaseService<Ticket>(unitOfWork, logger, mapper), ITicketService
     {
 
         //public async Task<Result<string>> ScanQrCodeAsync(Guid ticketId, CancellationToken cancellationToken = default)
@@ -70,13 +70,13 @@ namespace Application.Implementations.TicketServices
 
             return HttpStatusCode.Created;
         }
-        
+
         public async Task<BaseResponse<object?>> UpdateAsync(UpdateTicketsDto dto)
         {
             var ticket = _mapper.Map<Ticket>(dto);
-            
-            _unitOfWork.Tickets.UpdateAllWithSamePredicate(t => 
-                t.MatchTeamId == dto.OldMatchTeamId && 
+
+            _unitOfWork.Tickets.UpdateAllWithSamePredicate(t =>
+                t.MatchTeamId == dto.OldMatchTeamId &&
                 t.Class == dto.OldClass &&
                 t.Price == dto.OldPrice &&
                 t.Notes == dto.OldNotes &&
@@ -98,7 +98,7 @@ namespace Application.Implementations.TicketServices
         public async Task<BaseResponse<IEnumerable<Ticket?>>> GetDistinctTicketsAsync(long matchTeamId)
         {
             var randomTicketsQuery = _unitOfWork.Repository<Ticket>().Query()
-                .Where(t => t.MatchTeamId == matchTeamId && t.TicketStatus == Domain.Enums.TicketStatus.Active)
+                .Where(t => t.MatchTeamId == matchTeamId && t.TicketStatus == TicketStatus.Active)
                 .GroupBy(t => t.Class)
                 .Select(g => g.OrderBy(t => Guid.NewGuid())
                 .FirstOrDefault());

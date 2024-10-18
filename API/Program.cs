@@ -1,5 +1,5 @@
 using API.Extensions;
-using Application.Implementations;
+using Application;
 using Infrastructure;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
@@ -73,6 +73,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 
 builder.Services.AddControllers().AddViewLocalization().AddDataAnnotationsLocalization();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddApplicationServices(builder.Configuration);
 
 var app = builder.Build();
 //using (var scope = app.Services.CreateScope())

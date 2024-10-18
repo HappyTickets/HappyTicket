@@ -5,7 +5,7 @@ using Shared.Common.General;
 using Shared.DTOs.TicketDTOs;
 using System.Linq.Expressions;
 
-namespace Application.Interfaces
+namespace Application.Common.Interfaces.Services
 {
     public interface IBaseService<TEntity> where TEntity : BaseEntity<long>
     {

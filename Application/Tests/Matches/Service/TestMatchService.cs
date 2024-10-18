@@ -1,5 +1,5 @@
-﻿using Application.Interfaces;
-using Application.Interfaces.Infrastructure.Persistence;
+﻿using Application.Common.Implementations;
+using Application.Common.Interfaces.Persistence;
 using AutoMapper;
 using Domain.Entities;
 using LanguageExt;
@@ -11,7 +11,7 @@ using Shared.DTOs.Test.Response;
 using System.Linq.Expressions;
 
 
-namespace Application.Implementations
+namespace Application.Tests.Matches.Service
 {
     public class TestMatchService : BaseService<Match>, ITestMatchService
     {
@@ -88,7 +88,7 @@ namespace Application.Implementations
 
         public async ValueTask<BaseResponse<Unit>> UpdateRangeAsyncTest(IEnumerable<UpdateTestMatchDto> dtos, bool autoSave = true, CancellationToken cancellationToken = default)
         {
-            await UpdateRangeAsync<UpdateTestMatchDto>(dtos, autoSave, cancellationToken: cancellationToken);
+            await UpdateRangeAsync(dtos, autoSave, cancellationToken: cancellationToken);
             return new();
         }
         public async ValueTask<BaseResponse<Unit>> SoftDeleteByIdAsyncTest(long id, bool autoSave = true, CancellationToken cancellationToken = default)

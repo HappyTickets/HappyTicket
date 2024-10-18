@@ -1,4 +1,4 @@
-﻿using Application.Interfaces.Infrastructure.Persistence;
+﻿using Application.Common.Interfaces.Persistence;
 using Domain.Entities.UserEntities;
 using Domain.Enums;
 using Microsoft.AspNetCore.Identity;

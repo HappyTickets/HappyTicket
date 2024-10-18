@@ -1,25 +1,17 @@
-﻿using Application.Implementations;
-using Application.Implementations.TicketServices;
-using Application.Interfaces;
-using Application.Interfaces.ITicketServices;
-using Application.Mapper;
-using Application.Validation;
-using AutoMapper.Extensions.ExpressionMapping;
-using FluentValidation;
-using FluentValidation.AspNetCore;
-
-namespace API.Extensions
+﻿namespace API.Extensions
 {
     public static class DependencyInjectionServiceExtension
     {
         public static void AddDependencyInjectionServices(this IServiceCollection services)
         {
-            services.AddAutoMapper(cfg => { cfg.AddExpressionMapping(); }, typeof(MappingProfile));
-            services.AddMemoryCache();
-            services.AddLogging(configure => configure.AddConsole());
-            services.AddValidatorsFromAssembly(typeof(TicketDTOValidator).Assembly);
-            services.AddFluentValidationAutoValidation();
             services.AddHttpContextAccessor();
+            services.AddLogging(configure => configure.AddConsole());
+            services.AddMemoryCache();
+
+
+            //services.AddAutoMapper(cfg => { cfg.AddExpressionMapping(); }, typeof(MappingProfile));
+            //services.AddValidatorsFromAssembly(typeof(TicketDTOValidator).Assembly);
+            //services.AddFluentValidationAutoValidation();
 
             //services.AddTransient<IValidator<TicketDto>, TicketDTOValidator>();
             //services.AddTransient<IValidator<TicketDto>, TicketDTOValidator>();
@@ -39,17 +31,17 @@ namespace API.Extensions
             //services.AddTransient(typeof(ITokenService<>), typeof(TokenService<>));
             //services.AddTransient(typeof(IBaseService<,>), typeof(BaseService<,>));
             //services.AddTransient<IIdentityService, IdentityService>();
-            services.AddTransient<ITicketService, TicketService>();
-            services.AddTransient<ITestMatchService, TestMatchService>();
+            //services.AddTransient<ITicketService, TicketService>();
+            //services.AddTransient<ITestMatchService, TestMatchService>();
             //services.AddSingleton<CountryInfoService>();
             //services.AddTransient<ITicketService, TicketService>();
             //services.AddSingleton<CountryInfoService>();
-            services.AddSingleton<IEmailSender, EmailSender>();
+            //services.AddSingleton<IEmailSender, EmailSender>();
             //services.AddScoped<IMatchService, MatchService>();
             //services.AddScoped<IMatchService, MatchService>();
             //services.AddScoped<IMatchCommandService, MatchCommandService>();
             //services.AddScoped<ITeamService, TeamService>();
-            services.AddScoped<IStadiumService, StadiumService>();
+            //services.AddScoped<IStadiumService, StadiumService>();
             //services.AddScoped<IBlockService, BlockService>();
             //services.AddScoped<ISeatService, SeatService>();
             //services.AddTransient<ICartService, CartService>();
