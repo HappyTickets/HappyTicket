@@ -117,7 +117,13 @@ namespace Application.Implementations
                 };
             }
             await HardDeleteAsync(stadium);
-            return new Unit();
+            return new BaseResponse<Unit>
+            {
+                Status = HttpStatusCode.OK,
+                Title = "Stadium Deleted",
+                Data = new Unit(),
+                ErrorList = null
+            };
         }
 
         private async Task<IEnumerable<Match>> GetMatchesByStadiumIdAsync(long stadiumId, CancellationToken cancellationToken)
