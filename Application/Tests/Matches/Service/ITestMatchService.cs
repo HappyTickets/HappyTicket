@@ -4,7 +4,7 @@ using Shared.Common.General;
 using Shared.DTOs.Test.Request;
 using Shared.DTOs.Test.Response;
 
-namespace Application.Interfaces
+namespace Application.Tests.Matches.Service
 {
     public interface ITestMatchService
     {

@@ -20,8 +20,6 @@ namespace Application.Mapper
                        .ForMember(dest => dest.ChampionName, opt => opt.MapFrom(src => src.Champion.Name))
                        .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive));
 
-            CreateMap<Match, CreateTestMatchDto>().ReverseMap();
-            CreateMap<Match, UpdateTestMatchDto>().ReverseMap();
             CreateMap<Championship, ChampionDto>().ReverseMap();
 
 

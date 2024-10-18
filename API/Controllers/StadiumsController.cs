@@ -6,7 +6,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StadiumController(IStadiumService _stadiumService) : ControllerBase
+    public class StadiumsController(IStadiumService _stadiumService) : ControllerBase
     {
 
         [HttpPost("Create_Stadiums")]
