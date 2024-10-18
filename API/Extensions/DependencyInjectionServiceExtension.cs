@@ -8,6 +8,7 @@
             services.AddLogging(configure => configure.AddConsole());
             services.AddMemoryCache();
 
+            services.AddScoped<IMatchService, MatchService>();
 
             //services.AddAutoMapper(cfg => { cfg.AddExpressionMapping(); }, typeof(MappingProfile));
             //services.AddValidatorsFromAssembly(typeof(TicketDTOValidator).Assembly);
