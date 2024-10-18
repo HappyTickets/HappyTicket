@@ -1,4 +1,5 @@
 ﻿using Application.Implementations;
+using Application.Interfaces;
 using Application.Stadiums.Service;
 using Application.Tests.Matches.Service;
 using Application.Tickets.Service;
@@ -20,10 +21,12 @@ namespace Application
                 .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
                 .AddFluentValidationAutoValidation();
 
-            services.AddScoped<ITicketService, TicketService>();
-            services.AddScoped<ITestMatchService, TestMatchService>();
-            services.AddScoped<IEmailSender, EmailSender>();
-            services.AddScoped<IStadiumService, StadiumService>();
+            services
+                .AddScoped<ITicketService, TicketService>()
+                .AddScoped<ITestMatchService, TestMatchService>()
+                .AddScoped<IEmailSender, EmailSender>()
+                .AddScoped<IStadiumService, StadiumService>()
+                .AddScoped<ISponsorService, SponsorService>();
 
             return services;
         }
