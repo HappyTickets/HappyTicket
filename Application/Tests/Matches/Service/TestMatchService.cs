@@ -32,10 +32,10 @@ namespace Application.Tests.Matches.Service
         public async ValueTask<BaseResponse<IEnumerable<GetMatchDto>>> GetAll()
         {
             // Define the includes for the related properties you want to load
-            var includes = new List<Expression<Func<Match, object>>>
+            var includes = new List<string>
                 {
-                    match => match.Stadium,
-                    match => match.Champion
+                    nameof(Match.Stadium),
+                    nameof(Match.Champion)
                 };
 
             // Call GetAllAsync to fetch the data with the specified includes
@@ -50,7 +50,7 @@ namespace Application.Tests.Matches.Service
             return new BaseResponse<GetMatchDto>(match);
         }
 
-        public async ValueTask<BaseResponse<GetMatchDto>> GetByIdAsync(long id, IEnumerable<Expression<Func<Match, object>>>? includes = null)
+        public async ValueTask<BaseResponse<GetMatchDto>> GetByIdAsync(long id, IEnumerable<string>? includes = null)
         {
             var match = await GetByIdAsync<GetMatchDto>(id, includes: includes);
             return new BaseResponse<GetMatchDto>(match);
