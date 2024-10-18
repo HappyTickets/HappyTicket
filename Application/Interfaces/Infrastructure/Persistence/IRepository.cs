@@ -3,7 +3,7 @@ using Domain.Entities.Common;
 using Shared.Common.General;
 using System.Linq.Expressions;
 
-namespace Application.Interfaces.Persistence;
+namespace Application.Interfaces.Infrastructure.Persistence;
 
 public interface IRepository<TEntity> where TEntity : BaseEntity<long>
 {

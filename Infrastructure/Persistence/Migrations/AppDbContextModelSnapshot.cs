@@ -234,7 +234,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Championshipss");
+                    b.ToTable("Championships");
                 });
 
             modelBuilder.Entity("Domain.Entities.Match", b =>
@@ -713,7 +713,7 @@ namespace Infrastructure.Migrations
                     b.Property<int?>("BaseEntityStatus")
                         .HasColumnType("int");
 
-                    b.Property<long?>("BlockId")
+                    b.Property<long>("BlockId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Class")
@@ -759,7 +759,7 @@ namespace Infrastructure.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<long?>("SeatId")
+                    b.Property<long>("SeatId")
                         .HasColumnType("bigint");
 
                     b.Property<int>("SeatNumber")
@@ -1230,7 +1230,9 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.Block", "Block")
                         .WithMany()
-                        .HasForeignKey("BlockId");
+                        .HasForeignKey("BlockId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Domain.Entities.MatchTeam", "MatchTeam")
                         .WithMany("Tickets")
@@ -1240,7 +1242,9 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Domain.Entities.Seat", "Seat")
                         .WithMany()
-                        .HasForeignKey("SeatId");
+                        .HasForeignKey("SeatId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Block");
 

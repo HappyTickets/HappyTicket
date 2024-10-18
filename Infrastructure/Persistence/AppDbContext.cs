@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Interfaces.Infrastructure.Services;
 using Domain.Entities;
 using Domain.Entities.UserEntities;
 using Domain.Entities.UserEntities.AuthEntities;
@@ -53,7 +53,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, 
     public DbSet<CartItem> CartItems { get; set; }
     public DbSet<SelectedTeam> UserFavoriteTeams { get; set; }
     public DbSet<Sponsor> Sponsors { get; set; }
-    public DbSet<Championship> Championshipss { get; set; }
+    public DbSet<Championship> Championships { get; set; }
     public DbSet<ChampionSponsor> ChampionSponsors { get; set; }
     public DbSet<TeamSponsor> TeamSponsors { get; set; }
 

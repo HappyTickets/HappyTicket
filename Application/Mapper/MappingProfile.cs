@@ -6,6 +6,7 @@ using Shared.DTOs.Stadium;
 using Shared.DTOs.StadiumDTO;
 using Shared.DTOs.Test.Request;
 using Shared.DTOs.Test.Response;
+using Shared.DTOs.TicketDTOs;
 
 namespace Application.Mapper
 {
@@ -28,7 +29,10 @@ namespace Application.Mapper
             CreateMap<Stadium, UpdateStadiumDto>().ReverseMap();
 
 
-            //CreateMap<Ticket, TicketDto>().ReverseMap();
+            CreateMap<CreateTicketsDto, Ticket>();
+            CreateMap<UpdateTicketsDto, Ticket>();
+            CreateMap<Ticket, TicketDto>();
+
             //CreateMap<MatchO, MatchCommandDto>().ReverseMap();
             //CreateMap<Team, TeamDto>().ReverseMap();
             //CreateMap<CreateOrUpdateTeamDto, Team>();

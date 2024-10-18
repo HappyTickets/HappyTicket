@@ -1,10 +1,13 @@
-﻿using Application.Interfaces.ITicketServices;
-using Application.Interfaces.Persistence;
+﻿using Application.Interfaces.Infrastructure.Persistence;
+using Application.Interfaces.ITicketServices;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Shared.Common;
+using Shared.DTOs.TicketDTOs;
+using System.Net;
 
 namespace Application.Implementations.TicketServices
 {
@@ -59,6 +62,39 @@ namespace Application.Implementations.TicketServices
         //        return new Result<string>(ex);
         //    }
         //}
+
+        public async Task<BaseResponse<object?>> CreateAsync(CreateTicketsDto dto)
+        {
+            var ticket = _mapper.Map<Ticket>(dto);
+            await _unitOfWork.Tickets.CreateAsync(ticket, dto.TicketsCount);
+
+            return HttpStatusCode.Created;
+        }
+        
+        public async Task<BaseResponse<object?>> UpdateAsync(UpdateTicketsDto dto)
+        {
+            var ticket = _mapper.Map<Ticket>(dto);
+            
+            _unitOfWork.Tickets.UpdateAllWithSamePredicate(t => 
+                t.MatchTeamId == dto.OldMatchTeamId && 
+                t.Class == dto.OldClass &&
+                t.Price == dto.OldPrice &&
+                t.Notes == dto.OldNotes &&
+                t.BlockId == dto.OldBlockId &&
+                t.SeatId == dto.OldSeatId &&
+                t.DisplayForSale == dto.OldDisplayForSale &&
+                t.Location == dto.OldLocation &&
+                t.TicketStatus == Enum.Parse<TicketStatus>(dto.OldTicketStatus.ToString()) &&
+                t.SeatNumber == dto.OldSeatNumber &&
+                t.ExternalGate == dto.OldExternalGate &&
+                t.InternalGate == dto.OldInternalGate,
+                ticket);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return HttpStatusCode.OK;
+        }
+
         public async Task<BaseResponse<IEnumerable<Ticket?>>> GetDistinctTicketsAsync(long matchTeamId)
         {
             var randomTicketsQuery = _unitOfWork.Repository<Ticket>().Query()
