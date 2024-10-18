@@ -8,15 +8,15 @@ namespace API.Controllers
     public class StadiumController(IStadiumService _stadiumService) : ControllerBase
     {
 
-        [HttpGet("GetAll_Stadiums")]
+        [HttpGet("GetAll_StadiumsAsync")]
         public async Task<IActionResult> GetStadiums()
         {
             return Ok(await _stadiumService.GetStadiums());
         }
-        [HttpGet("Get_StaduimById")]
+        [HttpGet("Get_StaduimByIdAsync")]
         public async Task<IActionResult> GetStaduimById(long stadiumId)
         {
-            return Ok(await _stadiumService.GetStaduimById(stadiumId));
+            return Ok(await _stadiumService.GetStaduimByIdAsync(stadiumId));
         }
 
         //        [HttpGet]

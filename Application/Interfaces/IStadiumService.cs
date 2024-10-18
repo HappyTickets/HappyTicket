@@ -6,6 +6,6 @@ namespace Application.Interfaces
     public interface IStadiumService
     {
         ValueTask<BaseResponse<IEnumerable<GetStadiumDto>>> GetStadiums();
-        ValueTask<BaseResponse<GetStadiumDto>> GetStaduimById(long stadiumId);
+        ValueTask<BaseResponse<GetStadiumDto>> GetStaduimByIdAsync(long stadiumId);
     }
 }
