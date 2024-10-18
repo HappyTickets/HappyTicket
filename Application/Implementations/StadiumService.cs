@@ -18,6 +18,11 @@ namespace Application.Implementations
                 return new BaseResponse<IEnumerable<GetStadiumDto>>(stadiums.ToList());
             return new BaseResponse<IEnumerable<GetStadiumDto>>();
         }
+        public async ValueTask<BaseResponse<GetStadiumDto>> GetStaduimById(long stadiumId)
+        {
+            var match = await GetByIdAsync<GetStadiumDto>(stadiumId);
+            return new BaseResponse<GetStadiumDto>(match);
+        }
     }
 
 }

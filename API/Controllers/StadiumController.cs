@@ -3,13 +3,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class StadiumController(IStadiumService _stadiumService) : ControllerBase
     {
 
-        [HttpGet("stadiums")]
+        [HttpGet("GetAll_Stadiums")]
         public async Task<IActionResult> GetStadiums()
         {
             return Ok(await _stadiumService.GetStadiums());
+        }
+        [HttpGet("Get_StaduimById")]
+        public async Task<IActionResult> GetStaduimById(long stadiumId)
+        {
+            return Ok(await _stadiumService.GetStaduimById(stadiumId));
         }
 
         //        [HttpGet]
