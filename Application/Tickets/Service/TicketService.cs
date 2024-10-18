@@ -68,7 +68,7 @@ namespace Application.Tickets.Service
             var ticket = _mapper.Map<Ticket>(dto);
             await _unitOfWork.Tickets.CreateAsync(ticket, dto.TicketsCount);
 
-            return HttpStatusCode.Created;
+            return HttpStatusCode.OK;
         }
 
         public async Task<BaseResponse<object?>> UpdateAsync(UpdateTicketsDto dto)

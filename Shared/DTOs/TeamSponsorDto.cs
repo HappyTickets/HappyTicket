@@ -1,4 +1,5 @@
 ﻿using Shared.DTOs.Champion;
+using Shared.DTOs.Sponsors;
 using Shared.DTOs.Team;
 
 namespace Shared.DTOs

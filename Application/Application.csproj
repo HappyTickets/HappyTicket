@@ -57,9 +57,6 @@
     <Folder Include="Seats\Mappings\" />
     <Folder Include="Seats\Service\" />
     <Folder Include="Seats\Validators\" />
-    <Folder Include="Sponsors\Mappings\" />
-    <Folder Include="Sponsors\Service\" />
-    <Folder Include="Sponsors\Validators\" />
     <Folder Include="Teams\Mappings\" />
     <Folder Include="Teams\Service\" />
     <Folder Include="Teams\Validators\" />

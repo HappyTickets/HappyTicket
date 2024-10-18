@@ -20,7 +20,6 @@ public interface IRepository<TEntity> where TEntity : BaseEntity<long>
     void SoftDeleteRange(IEnumerable<SoftDeletableEntity<long>> entities);
 
     void Recover(SoftDeletableEntity<long> entity);
-
     void RecoverRange(IEnumerable<SoftDeletableEntity<long>> entities);
 
     // queries
