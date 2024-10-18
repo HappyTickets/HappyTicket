@@ -128,7 +128,7 @@ namespace Application.Implementations
 
         private async Task<IEnumerable<Match>> GetMatchesByStadiumIdAsync(long stadiumId, CancellationToken cancellationToken)
         {
-            return await _unitOfWork.Repository<Match>().ListAsync(m => m.StadiumId == stadiumId, null, cancellationToken);
+            return await _unitOfWork.Repository<Match>().ListAsync(result => result.StadiumId == stadiumId, null, cancellationToken);
         }
     }
 
