@@ -1,5 +1,5 @@
 ﻿using Application.Interfaces;
-using Application.Interfaces.Persistence;
+using Application.Interfaces.Infrastructure.Persistence;
 using AutoMapper;
 using Domain.Entities;
 using LanguageExt;
@@ -14,7 +14,7 @@ namespace Application.Implementations
 {
     public class StadiumService : BaseService<Stadium>, IStadiumService
     {
-        public StadiumService(IUnitOfWork unitOfWork, ILogger<Stadium> logger, IMapper mapper) : base(unitOfWork, logger, mapper) { }
+        public StadiumService(IUnitOfWork _unitOfWork, ILogger<Stadium> logger, IMapper mapper) : base(_unitOfWork, logger, mapper) { }
 
         public async ValueTask<BaseResponse<GetStadiumDto>> CreateStadiumAsync(CreateStadiumDto createStadiumDto, bool autoSave = true, CancellationToken cancellationToken = default)
         {
