@@ -1,5 +1,4 @@
-﻿using Application.Interfaces.Persistence;
-using AutoMapper;
+﻿using AutoMapper;
 using Domain.Entities;
 using LanguageExt;
 using LanguageExt.Common;

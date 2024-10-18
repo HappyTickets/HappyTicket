@@ -17,7 +17,7 @@ namespace API.Controllers
             _matchService = matchService;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll()
         {
             var result = await _matchService.GetAll();
@@ -25,7 +25,7 @@ namespace API.Controllers
         }
 
         // GET: api/testmatch/{id}
-        [HttpGet("{id}")]
+        [HttpGet("GetById{id}")]
         public async Task<IActionResult> GetById(long id)
         {
             var result = await _matchService.GetByIdAsync(id);
@@ -37,23 +37,23 @@ namespace API.Controllers
         }
 
 
-        [HttpGet("FindActiveMatches")]
-        public async Task<IActionResult> FindActiveMatches()
+        [HttpGet("GetActiveMatches")]
+        public async Task<IActionResult> GetActiveMatches()
         {
 
             var matches = await _matchService.FindActiveMatches();
             return Ok(matches);
         }
 
-        [HttpGet("paginated")]
-        public async Task<IActionResult> GetPaginated([FromQuery] PaginationSearchModel paginationParams)
+        [HttpGet("GetPaginatedList")]
+        public async Task<IActionResult> GetPaginatedList([FromQuery] PaginationSearchModel paginationParams)
         {
             var result = await _matchService.GetPaginatedAsync(paginationParams);
             return Ok(result);
         }
 
         // POST: api/testmatch
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] CreateTestMatchDto matchDto)
         {
             var result = await _matchService.CreateAsyncTest(matchDto);
@@ -90,7 +90,7 @@ namespace API.Controllers
         }
 
         // DELETE: api/testmatch/soft
-        [HttpDelete("soft/{id}")]
+        [HttpDelete("softDelete/{id}")]
         public async Task<IActionResult> SoftDelete(long id)
         {
             var result = await _matchService.SoftDeleteByIdAsyncTest(id);
@@ -114,7 +114,7 @@ namespace API.Controllers
         }
 
         // GET: api/testmatch/recover/{id}
-        [HttpGet("recover/{id}")]
+        [HttpGet("RecoverById/{id}")]
         public async Task<IActionResult> RecoverById(long id)
         {
             var result = await _matchService.RecoverByIdAsyncTest(id);
