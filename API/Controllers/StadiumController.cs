@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Shared.DTOs.StadiumDTO;
 
 namespace API.Controllers
 {
@@ -8,6 +9,16 @@ namespace API.Controllers
     public class StadiumController(IStadiumService _stadiumService) : ControllerBase
     {
 
+        [HttpPost("Create_Stadiums")]
+        public async Task<IActionResult> CreateStadium([FromBody] CreateStadiumDto stadiumDto)
+        {
+            var result = await _stadiumService.CreateStadiumAsync(stadiumDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
         [HttpGet("GetAll_StadiumsAsync")]
         public async Task<IActionResult> GetStadiums()
         {
