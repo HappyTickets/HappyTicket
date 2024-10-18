@@ -49,7 +49,7 @@ namespace API.Extensions
             //services.AddScoped<IMatchService, MatchService>();
             //services.AddScoped<IMatchCommandService, MatchCommandService>();
             //services.AddScoped<ITeamService, TeamService>();
-            //services.AddScoped<IStadiumService, StadiumService>();
+            services.AddScoped<IStadiumService, StadiumService>();
             //services.AddScoped<IBlockService, BlockService>();
             //services.AddScoped<ISeatService, SeatService>();
             //services.AddTransient<ICartService, CartService>();
