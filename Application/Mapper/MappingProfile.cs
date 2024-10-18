@@ -15,10 +15,7 @@ namespace Application.Mapper
         public MappingProfile()
         {
 
-            CreateMap<Match, GetMatchDto>()
-                       .ForMember(dest => dest.StadiumName, opt => opt.MapFrom(src => src.Stadium.Name))
-                       .ForMember(dest => dest.ChampionName, opt => opt.MapFrom(src => src.Champion.Name))
-                       .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive));
+            
 
             CreateMap<Championship, ChampionDto>().ReverseMap();
 
