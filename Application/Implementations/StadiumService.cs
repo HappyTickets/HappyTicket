@@ -98,10 +98,31 @@ namespace Application.Implementations
                     }
                 };
             }
-            // TODO Check
-            //var matches = await GetMatchesByStadiumIdAsync(stadiumId, cancellationToken);
+            // Validator For Check if the stadium is involved in any match
+            var matches = await GetMatchesByStadiumIdAsync(stadiumId, cancellationToken);
+            if (matches != null && matches.Any())
+            {
+                return new BaseResponse<Unit>
+                {
+                    Status = HttpStatusCode.Conflict,
+                    Title = "Cannot Delete Stadium",
+                    ErrorList = new List<ResponseError>
+                    {
+                        new ResponseError
+                        {
+                            Title = "Conflict",
+                            Message = "Cannot delete a stadium involved in a match."
+                        }
+                    }
+                };
+            }
             await HardDeleteAsync(stadium);
             return new Unit();
+        }
+
+        private async Task<IEnumerable<Match>> GetMatchesByStadiumIdAsync(long stadiumId, CancellationToken cancellationToken)
+        {
+            return await _unitOfWork.Repository<Match>().ListAsync(m => m.StadiumId == stadiumId, null, cancellationToken);
         }
     }
 
