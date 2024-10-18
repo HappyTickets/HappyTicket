@@ -32,7 +32,7 @@ namespace Application.Implementations
                 return new BaseResponse<UpdateStadiumDto>
                 {
                     Status = HttpStatusCode.BadRequest,
-                    Title = "Stadium not found"
+                    Title = Resource.StadiumNotFound
                 };
             }
             _mapper.Map(stadiumDto, stadium);
@@ -47,13 +47,13 @@ namespace Application.Implementations
             return new BaseResponse<IEnumerable<GetStadiumDto>>
             {
                 Status = HttpStatusCode.NotFound,
-                Title = "No Stadiums Found",
+                Title = Resource.NoStadiumsFound,
                 ErrorList = new List<ResponseError>
                 {
                     new ResponseError
                     {
-                        Title = "Data Not Found",
-                        Message = "There are no stadiums available."
+                        Title = Resource.DataNotFound,
+                        Message = Resource.ThereAreNoStadiumsAvailable
                     }
                 }
             };
@@ -66,21 +66,19 @@ namespace Application.Implementations
                 return new BaseResponse<GetStadiumDto>
                 {
                     Status = HttpStatusCode.NotFound,
-                    Title = "Match Not Found",
+                    Title = Resource.MatchNotFound,
                     ErrorList = new List<ResponseError>
                 {
                     new ResponseError
                     {
-                        Title = "Data Not Found",
-                        Message = $"Match with ID {stadiumId} does not exist"
+                        Title = Resource.DataNotFound
                     }
                 }
                 };
             }
             return new BaseResponse<GetStadiumDto>(match);
         }
-
-        public async ValueTask<BaseResponse<Unit>> DeleteStadiumAsync(long stadiumId, CancellationToken cancellationToken = default)
+        public async ValueTask<BaseResponse<object?>> DeleteStadiumAsync(long stadiumId, CancellationToken cancellationToken = default)
         {
             var stadium = await GetByIdAsync<Stadium>(stadiumId, cancellationToken);
             if (stadium == null)
@@ -88,13 +86,12 @@ namespace Application.Implementations
                 return new BaseResponse<Unit>
                 {
                     Status = HttpStatusCode.NotFound,
-                    Title = "Stadium not found",
+                    Title = Resource.StadiumNotFound,
                     ErrorList = new List<ResponseError>
                     {
                         new ResponseError
                         {
-                            Title = "Data Not Found",
-                            Message = $"Stadium with ID {stadiumId} does not exist."
+                            Title = Resource.DataNotFound,
                         }
                     }
                 };
@@ -103,7 +100,7 @@ namespace Application.Implementations
             var matches = await GetMatchesByStadiumIdAsync(stadiumId, cancellationToken);
             if (matches != null && matches.Any())
             {
-                return new BaseResponse<Unit>
+                return new BaseResponse<object?>
                 {
                     Status = HttpStatusCode.Conflict,
                     Title = Resource.CannotDeleteStadium,
@@ -111,22 +108,21 @@ namespace Application.Implementations
                     {
                         new ResponseError
                         {
-                            Title = "Conflict",
-                            Message = "Cannot delete a stadium involved in a match."
+                            Title = Resource.Conflict,
+                            Message = Resource.CannotDeleteAStadiumInvolvedInAMatch
                         }
                     }
                 };
             }
             await HardDeleteAsync(stadium);
-            return new BaseResponse<Unit>
+            return new BaseResponse<object?>
             {
                 Status = HttpStatusCode.OK,
-                Title = "Stadium Deleted",
+                Title = Resource.StadiumDeleted,
                 Data = new Unit(),
                 ErrorList = null
             };
         }
-
         private async Task<IEnumerable<Match>> GetMatchesByStadiumIdAsync(long stadiumId, CancellationToken cancellationToken)
         {
             return await _unitOfWork.Repository<Match>().ListAsync(result => result.StadiumId == stadiumId, null, cancellationToken);
