@@ -1,5 +1,5 @@
-﻿using Application.Interfaces;
-using Application.Interfaces.Infrastructure.Persistence;
+﻿using Application.Common.Interfaces.Persistence;
+using Application.Common.Interfaces.Services;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Entities.Common;
@@ -9,7 +9,7 @@ using Shared.Common.General;
 using Shared.Exceptions;
 using System.Linq.Expressions;
 
-namespace Application.Implementations;
+namespace Application.Common.Implementations;
 
 public abstract class BaseService<TEntity> : IBaseService<TEntity>
     where TEntity : BaseEntity<long>

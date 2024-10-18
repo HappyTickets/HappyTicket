@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Stadiums.Service;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTOs.StadiumDTO;
 

@@ -2,7 +2,7 @@
 using Shared.Common;
 using Shared.DTOs.TicketDTOs;
 
-namespace Application.Interfaces.ITicketServices
+namespace Application.Tickets.Service
 {
     public interface ITicketService
     {

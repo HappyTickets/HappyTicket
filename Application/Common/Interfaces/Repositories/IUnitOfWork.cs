@@ -1,6 +1,6 @@
 ﻿using Domain.Entities.Common;
 
-namespace Application.Interfaces.Infrastructure.Persistence;
+namespace Application.Common.Interfaces.Persistence;
 
 public interface IUnitOfWork : IDisposable
 {

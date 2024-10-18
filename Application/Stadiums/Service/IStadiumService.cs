@@ -4,7 +4,7 @@ using Shared.Common;
 using Shared.DTOs.Stadium;
 using Shared.DTOs.StadiumDTO;
 
-namespace Application.Interfaces
+namespace Application.Stadiums.Service
 {
     public interface IStadiumService
     {

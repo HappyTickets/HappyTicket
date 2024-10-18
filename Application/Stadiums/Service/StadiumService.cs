@@ -1,5 +1,5 @@
-﻿using Application.Interfaces;
-using Application.Interfaces.Infrastructure.Persistence;
+﻿using Application.Common.Implementations;
+using Application.Common.Interfaces.Persistence;
 using AutoMapper;
 using Domain.Entities;
 using LanguageExt;
@@ -10,7 +10,7 @@ using Shared.DTOs.Stadium;
 using Shared.DTOs.StadiumDTO;
 using System.Net;
 
-namespace Application.Implementations
+namespace Application.Stadiums.Service
 {
     public class StadiumService : BaseService<Stadium>, IStadiumService
     {
