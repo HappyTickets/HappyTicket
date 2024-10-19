@@ -1,8 +1,6 @@
 ﻿using Domain.Entities.Common;
 using LanguageExt;
-using Shared.Common;
 using Shared.Common.General;
-using Shared.DTOs.TicketDTOs;
 using System.Linq.Expressions;
 
 namespace Application.Common.Interfaces.Services
@@ -10,15 +8,15 @@ namespace Application.Common.Interfaces.Services
     public interface IBaseService<TEntity> where TEntity : BaseEntity<long>
     {
         #region Query
-        ValueTask<TDto?> GetByIdAsync<TDto>(long id, CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class;
-        ValueTask<TDto?> FirstOrDefaultAsync<TDto>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class;
-        ValueTask<IEnumerable<TDto>> GetAllAsync<TDto>(CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class;
+        ValueTask<TDto?> GetByIdAsync<TDto>(long id, CancellationToken cancellationToken = default, IEnumerable<string>? includes = null) where TDto : class;
+        ValueTask<TDto?> FirstOrDefaultAsync<TDto>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default, IEnumerable<string>? includes = null) where TDto : class;
+        ValueTask<IEnumerable<TDto>> GetAllAsync<TDto>(CancellationToken cancellationToken = default, IEnumerable<string>? includes = null) where TDto : class;
 
 
-        ValueTask<IEnumerable<TDto>> FindAsync<TDto>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class;
+        ValueTask<IEnumerable<TDto>> FindAsync<TDto>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default, IEnumerable<string>? includes = null) where TDto : class;
 
-        ValueTask<PaginatedList<TDto>> GetPaginatedAsync<TDto>(PaginationSearchModel paginationParams, CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class;
-        ValueTask<PaginatedList<TDto>> GetPaginatedAsync<TDto>(Expression<Func<TEntity, bool>> predicate, PaginationSearchModel paginationParams, CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class;
+        ValueTask<PaginatedList<TDto>> GetPaginatedAsync<TDto>(PaginationSearchModel paginationParams, CancellationToken cancellationToken = default, IEnumerable<string>? includes = null) where TDto : class;
+        ValueTask<PaginatedList<TDto>> GetPaginatedAsync<TDto>(Expression<Func<TEntity, bool>> predicate, PaginationSearchModel paginationParams, CancellationToken cancellationToken = default, IEnumerable<string>? includes = null) where TDto : class;
 
         ValueTask<long> GetLongCountAsync(CancellationToken cancellationToken = default);
 
