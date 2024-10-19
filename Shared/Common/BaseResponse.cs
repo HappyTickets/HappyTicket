@@ -37,12 +37,6 @@ public class BaseResponse<TData>
             Title = ex.Message,
             ErrorList = ex.Errors.Select(x => new ResponseError() { Title = x.Title, Message = x.Message, Details = x.Details })
         };
-
-    public static implicit operator BaseResponse<TData>(HttpStatusCode status)
-        => new BaseResponse<TData>
-        {
-            Status = status
-        };
 }
 
 public class ResponseError

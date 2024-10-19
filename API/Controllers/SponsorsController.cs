@@ -4,11 +4,11 @@ using Shared.DTOs.Sponsors;
 
 namespace API.Controllers
 {
-    public class SponsorController : BaseController
+    public class SponsorsController : BaseController
     {
         private readonly ISponsorService _sponsorService;
 
-        public SponsorController(ISponsorService sponsorService)
+        public SponsorsController(ISponsorService sponsorService)
         {
             _sponsorService = sponsorService;
         }

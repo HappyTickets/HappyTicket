@@ -1,9 +1,7 @@
 ﻿namespace Shared.DTOs.CartDTOs;
 
-public class CheckoutRequestDto
+public class CheckoutCartDto
 {
-    public string UserId { get; set; } = string.Empty;
-
     public string? PaymentUrl { get; set; }
 
     public string? PaymentRef { get; set; }

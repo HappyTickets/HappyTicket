@@ -5,6 +5,8 @@ namespace Domain.Entities;
 
 public class Match : SoftDeletableEntity<long>
 {
+    public int MaxPerUser { get; set; }
+
     [Required]
     public DateTime? EventDate { get; set; }
 

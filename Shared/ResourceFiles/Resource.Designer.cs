@@ -394,6 +394,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your cart is empty. Please add items to your cart before proceeding to checkout..
+        /// </summary>
+        public static string Checkout_Cart_Empty {
+            get {
+                return ResourceManager.GetString("Checkout_Cart_Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error occured during checkout!.
         /// </summary>
         public static string Checkout_Error {

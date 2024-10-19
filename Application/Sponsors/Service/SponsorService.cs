@@ -5,6 +5,7 @@ using AutoMapper;
 using Domain.Entities;
 using Microsoft.Extensions.Logging;
 using Shared.Common;
+using Shared.Common.General;
 using Shared.DTOs.Sponsors;
 using Shared.Exceptions;
 using System.Net;
@@ -27,7 +28,7 @@ namespace Application.Implementations
             return sponsor.Id;
         }
 
-        public async Task<BaseResponse<object?>> UpdateAsync(long id, CreateOrUpdateSponsorDto dto, CancellationToken cancellationToken = default)
+        public async Task<BaseResponse<Empty>> UpdateAsync(long id, CreateOrUpdateSponsorDto dto, CancellationToken cancellationToken = default)
         {
             var sponsorRepo = _unitOfWork.Repository<Sponsor>();
 
@@ -40,10 +41,10 @@ namespace Application.Implementations
             sponsorRepo.Update(sponsor);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return HttpStatusCode.OK;
+            return Empty.Default;
         }
 
-        public async Task<BaseResponse<object?>> SoftDeleteAsync(long id, CancellationToken cancellationToken = default)
+        public async Task<BaseResponse<Empty>> SoftDeleteAsync(long id, CancellationToken cancellationToken = default)
         {
             var sponsorRepo = _unitOfWork.Repository<Sponsor>();
 
@@ -55,10 +56,10 @@ namespace Application.Implementations
             sponsorRepo.SoftDelete(sponsor);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return HttpStatusCode.OK;
+            return Empty.Default;
         }
         
-        public async Task<BaseResponse<object?>> HardDeleteAsync(long id, CancellationToken cancellationToken = default)
+        public async Task<BaseResponse<Empty>> HardDeleteAsync(long id, CancellationToken cancellationToken = default)
         {
             var sponsorRepo = _unitOfWork.Repository<Sponsor>();
 
@@ -70,7 +71,7 @@ namespace Application.Implementations
             sponsorRepo.HardDelete(sponsor);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return HttpStatusCode.OK;
+            return Empty.Default;
         }
 
         public async Task<BaseResponse<SponsorDto>> GetByIdAsync(long id, CancellationToken cancellationToken = default)

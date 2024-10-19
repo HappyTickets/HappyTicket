@@ -26,7 +26,8 @@ namespace Application
                 .AddScoped<ITestMatchService, TestMatchService>()
                 .AddScoped<IEmailSender, EmailSender>()
                 .AddScoped<IStadiumService, StadiumService>()
-                .AddScoped<ISponsorService, SponsorService>();
+                .AddScoped<ISponsorService, SponsorService>()
+                .AddScoped<ICartService, CartService>();
 
             return services;
         }

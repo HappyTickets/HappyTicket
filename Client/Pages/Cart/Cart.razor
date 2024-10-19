@@ -116,7 +116,7 @@
                 _spinnerShown = true;
                 StateHasChanged();
 
-                var checkoutRequestDto = new CheckoutRequestDto
+                var checkoutRequestDto = new CheckoutCartDto
                     {
                         UserId = (await AuthenticationState).User.FindFirst("sub")?.Value!,
                         PaymentUrl = pUrl,
