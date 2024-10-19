@@ -4,6 +4,7 @@ using Infrastructure.Persistence.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241019114557_MatchMaxPerUserField")]
+    partial class MatchMaxPerUserField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,7 +65,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("StadiumId");
 
-                    b.ToTable("Blocks", (string)null);
+                    b.ToTable("Blocks");
                 });
 
             modelBuilder.Entity("Domain.Entities.Cart", b =>
@@ -105,7 +108,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Cart", (string)null);
+                    b.ToTable("Cart");
                 });
 
             modelBuilder.Entity("Domain.Entities.CartItem", b =>
@@ -152,7 +155,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TicketId");
 
-                    b.ToTable("CartItems", (string)null);
+                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("Domain.Entities.ChampionSponsor", b =>
@@ -196,7 +199,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("SponsorId");
 
-                    b.ToTable("ChampionSponsors", (string)null);
+                    b.ToTable("ChampionSponsors");
                 });
 
             modelBuilder.Entity("Domain.Entities.Championship", b =>
@@ -237,7 +240,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Championships", (string)null);
+                    b.ToTable("Championships");
                 });
 
             modelBuilder.Entity("Domain.Entities.Match", b =>
@@ -291,7 +294,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("StadiumId");
 
-                    b.ToTable("Matches", (string)null);
+                    b.ToTable("Matches");
                 });
 
             modelBuilder.Entity("Domain.Entities.MatchTeam", b =>
@@ -338,7 +341,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("MatchTeam", (string)null);
+                    b.ToTable("MatchTeam");
                 });
 
             modelBuilder.Entity("Domain.Entities.Order", b =>
@@ -389,7 +392,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Domain.Entities.OrderItem", b =>
@@ -436,7 +439,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TicketId");
 
-                    b.ToTable("OrderItem", (string)null);
+                    b.ToTable("OrderItem");
                 });
 
             modelBuilder.Entity("Domain.Entities.Seat", b =>
@@ -479,7 +482,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("BlockId");
 
-                    b.ToTable("Seats", (string)null);
+                    b.ToTable("Seats");
                 });
 
             modelBuilder.Entity("Domain.Entities.SelectedTeam", b =>
@@ -523,7 +526,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserFavoriteTeams", (string)null);
+                    b.ToTable("UserFavoriteTeams");
                 });
 
             modelBuilder.Entity("Domain.Entities.Sponsor", b =>
@@ -567,7 +570,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sponsors", (string)null);
+                    b.ToTable("Sponsors");
                 });
 
             modelBuilder.Entity("Domain.Entities.Stadium", b =>
@@ -617,7 +620,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Stadiums", (string)null);
+                    b.ToTable("Stadiums");
                 });
 
             modelBuilder.Entity("Domain.Entities.Team", b =>
@@ -661,7 +664,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teams", (string)null);
+                    b.ToTable("Teams");
                 });
 
             modelBuilder.Entity("Domain.Entities.TeamSponsor", b =>
@@ -705,7 +708,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("TeamSponsors", (string)null);
+                    b.ToTable("TeamSponsors");
                 });
 
             modelBuilder.Entity("Domain.Entities.Ticket", b =>
@@ -785,7 +788,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("SeatId");
 
-                    b.ToTable("Tickets", (string)null);
+                    b.ToTable("Tickets");
                 });
 
             modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationRole", b =>
@@ -954,7 +957,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RefreshTokens", (string)null);
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>

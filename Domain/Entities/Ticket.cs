@@ -38,4 +38,6 @@ public class Ticket : SoftDeletableEntity<long>
     public string ExternalGate { get; set; }
 
     public string InternalGate { get; set; }
+
+    public virtual ICollection<CartItem>? CartItems { get; set; }
 }

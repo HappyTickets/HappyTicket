@@ -41,8 +41,6 @@
     <Folder Include="Blocks\Mappings\" />
     <Folder Include="Blocks\Validators\" />
     <Folder Include="Blocks\Service\" />
-    <Folder Include="Carts\Mappings\" />
-    <Folder Include="Carts\Service\" />
     <Folder Include="Carts\Validators\" />
     <Folder Include="Championships\Mappings\" />
     <Folder Include="Championships\Service\" />

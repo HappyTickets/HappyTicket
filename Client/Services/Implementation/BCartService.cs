@@ -21,9 +21,9 @@ namespace Client.Services.Implementation
             return response;
         }
 
-        public async Task<Result<BaseResponse<AddItemResponse>>> AddToCartAsync(AddItemRequest addItemRequest)
+        public async Task<Result<BaseResponse<AddItemResponse>>> AddToCartAsync(AddCartItemDto addItemRequest)
         {
-            var response = await _httpClientHelper.PostBaseAsync<AddItemRequest, BaseResponse<AddItemResponse>>("api/Cart/AddItem", addItemRequest);
+            var response = await _httpClientHelper.PostBaseAsync<AddCartItemDto, BaseResponse<AddItemResponse>>("api/Cart/AddItem", addItemRequest);
             return response;
         }
         public async Task<Result<BaseResponse<RemoveItemResponse>>> RemoveItemAsync(RemoveItemRequest removeItemRequest, CancellationToken cancellationToken = default)
@@ -32,9 +32,9 @@ namespace Client.Services.Implementation
             return response;
         }
 
-        public async Task<Result<BaseResponse<bool>>> CheckoutAsync(CheckoutRequestDto checkoutRequest, CancellationToken cancellationToken = default)
+        public async Task<Result<BaseResponse<bool>>> CheckoutAsync(CheckoutCartDto checkoutRequest, CancellationToken cancellationToken = default)
         {
-            var response = await _httpClientHelper.PostBaseAsync<CheckoutRequestDto, BaseResponse<bool>>("api/Cart/Checkout", checkoutRequest);
+            var response = await _httpClientHelper.PostBaseAsync<CheckoutCartDto, BaseResponse<bool>>("api/Cart/Checkout", checkoutRequest);
             return response;
         }
 
