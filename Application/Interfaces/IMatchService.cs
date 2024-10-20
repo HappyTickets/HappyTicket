@@ -15,24 +15,24 @@ namespace Application.Interfaces
     public interface IMatchService
     {
         // Retrieve all matches with their details
-        ValueTask<BaseResponse<IEnumerable<GetMatchDto>>> GetAll();
+        ValueTask<BaseResponse<IEnumerable<GetAllMatchesDto>>> GetAll();
 
         // Retrieve a match by its ID
-        ValueTask<BaseResponse<GetMatchDto>> GetByIdAsync(long id);
+        ValueTask<BaseResponse<GetMatchByIdDto>> GetByIdAsync(long id);
 
         // Find active matches (you may need to define the predicate based on your logic)
-        ValueTask<BaseResponse<IEnumerable<GetMatchDto>>> FindActiveMatches();
+        ValueTask<BaseResponse<IEnumerable<FindActiveMatchesDto>>> FindActiveMatches();
 
         // Get paginated matches based on search criteria
-        ValueTask<BaseResponse<PaginatedList<GetMatchDto>>> GetPaginatedAsync(PaginationSearchModel paginationParams);
+        ValueTask<BaseResponse<PaginatedList<GetPaginatedMatchesDto>>> GetPaginatedAsync(PaginationSearchModel paginationParams);
 
         ValueTask<BaseResponse<long>> GetCountAsync(CancellationToken cancellationToken = default);
-        ValueTask<BaseResponse<Unit>> CreateAsyncTest(CreateTestMatchDto dto, bool autoSave = true, CancellationToken cancellationToken = default);
-        ValueTask<BaseResponse<Unit>> UpdateAsyncTest(UpdateTestMatchDto dto, bool autoSave = true, CancellationToken cancellationToken = default);
-        ValueTask<BaseResponse<Unit>> UpdateRangeAsyncTest(IEnumerable<UpdateTestMatchDto> dtos, bool autoSave = true, CancellationToken cancellationToken = default);
-        ValueTask<BaseResponse<Unit>> SoftDeleteByIdAsyncTest(long id, bool autoSave = true, CancellationToken cancellationToken = default);
-        ValueTask<BaseResponse<Unit>> HardDeleteByIdAsyncTest(long id, bool autoSave = true, CancellationToken cancellationToken = default);
-        Task<BaseResponse<Unit>> RecoverByIdAsyncTest(long id, bool autoSave = true, CancellationToken cancellationToken = default);
+        ValueTask<BaseResponse<Unit>> CreateAsync(CreateMatchDto dto, bool autoSave = true, CancellationToken cancellationToken = default);
+        ValueTask<BaseResponse<Unit>> UpdateAsync(UpdateMatchDto dto, bool autoSave = true, CancellationToken cancellationToken = default);
+        ValueTask<BaseResponse<Unit>> UpdateRangeAsync(IEnumerable<UpdateMatchDto> dtos, bool autoSave = true, CancellationToken cancellationToken = default);
+        ValueTask<BaseResponse<Unit>> SoftDeleteByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default);
+        ValueTask<BaseResponse<Unit>> HardDeleteByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default);
+        Task<BaseResponse<Unit>> RecoverByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default);
 
     }
 }

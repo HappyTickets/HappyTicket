@@ -1,4 +1,14 @@
-﻿namespace API.Extensions
+﻿using Application.Implementations;
+using Application.Interfaces;
+using Application.Mapper;
+using Application.Validation;
+using AutoMapper.Extensions.ExpressionMapping;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Shared.DTOs.MatchDtos;
+using static Application.Validation.TicketDtoValidator;
+
+namespace API.Extensions
 {
     public static class DependencyInjectionServiceExtension
     {
@@ -9,11 +19,16 @@
             services.AddMemoryCache();
 
             services.AddScoped<IMatchService, MatchService>();
+            services.AddAutoMapper(cfg => { cfg.AddExpressionMapping(); }, typeof(MappingProfile));
+            services.AddFluentValidationAutoValidation();
 
-            //services.AddAutoMapper(cfg => { cfg.AddExpressionMapping(); }, typeof(MappingProfile));
+            //services.AddTransient<IValidator<MatchDto>, MatchValidator>();
+            //services.AddTransient<IValidator<CreateMatchDto>, MatchCreateValidator>();
+            //services.AddTransient<IValidator<UpdateMatchDto>, MatchUpdateValidator>();
+
+
+
             //services.AddValidatorsFromAssembly(typeof(TicketDTOValidator).Assembly);
-            //services.AddFluentValidationAutoValidation();
-
             //services.AddTransient<IValidator<TicketDto>, TicketDTOValidator>();
             //services.AddTransient<IValidator<TicketDto>, TicketDTOValidator>();
             //services.AddTransient<IValidator<MatchDto>, MatchValidator>();

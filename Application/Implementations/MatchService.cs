@@ -7,10 +7,7 @@ using LanguageExt;
 using Microsoft.Extensions.Logging;
 using Shared.Common;
 using Shared.Common.General;
-using Shared.DTOs.Test.Request;
-using Shared.DTOs.Test.Response;
-using Shared.Exceptions;
-using System.Linq.Expressions;
+using Shared.DTOs.MatchDtos;
 
 namespace Application.Implementations
 {
@@ -20,82 +17,71 @@ namespace Application.Implementations
         {
         }
 
-        public async ValueTask<BaseResponse<IEnumerable<GetMatchDto>>> GetAll()
+        public async ValueTask<BaseResponse<IEnumerable<GetAllMatchesDto>>> GetAll()
         {
-            var includes = new List<Expression<Func<Match, object>>>
+            var includes = new List<string>
                 {
-                    match => match.Stadium,
-                    match => match.Champion
+                    nameof(Match.Stadium),
+                    nameof(Match.Champion)
                 };
 
-            var result = await GetAllAsync<GetMatchDto>(includes: includes);
+            var result = await GetAllAsync<GetAllMatchesDto>(includes: includes);
 
             return result.ToList();
         }
-
-        public async ValueTask<BaseResponse<GetMatchDto>> GetByIdAsync(long id)
+        public async ValueTask<BaseResponse<GetMatchByIdDto>> GetByIdAsync(long id)
         {
-            var match = await GetByIdAsync<GetMatchDto>(id);
-            return new BaseResponse<GetMatchDto>(match);
+            var match = await GetByIdAsync<GetMatchByIdDto>(id);
+            return new BaseResponse<GetMatchByIdDto>(match);
         }
-        public async ValueTask<BaseResponse<GetMatchDto>> GetByIdAsync(long id, IEnumerable<Expression<Func<Match, object>>>? includes = null)
+        public async ValueTask<BaseResponse<GetMatchByIdDto>> GetByIdAsync(long id, IEnumerable<string>? includes = null)
         {
-            var match = await GetByIdAsync<GetMatchDto>(id, includes: includes);
-            return new BaseResponse<GetMatchDto>(match);
+            var match = await GetByIdAsync<GetMatchByIdDto>(id, includes: includes);
+            return new BaseResponse<GetMatchByIdDto>(match);
         }
-        public async ValueTask<BaseResponse<IEnumerable<GetMatchDto>>> FindActiveMatches()
+        public async ValueTask<BaseResponse<IEnumerable<FindActiveMatchesDto>>> FindActiveMatches()
         {
-            var matches = await FindAsync<GetMatchDto>(m => m.IsActive);
-            return new BaseResponse<IEnumerable<GetMatchDto>>(matches);
+            var matches = await FindAsync<FindActiveMatchesDto>(m => m.IsActive);
+            return new BaseResponse<IEnumerable<FindActiveMatchesDto>>(matches);
         }
-        public async ValueTask<BaseResponse<PaginatedList<GetMatchDto>>> GetPaginatedAsync(PaginationSearchModel paginationParams)
+        public async ValueTask<BaseResponse<PaginatedList<GetPaginatedMatchesDto>>> GetPaginatedAsync(PaginationSearchModel paginationParams)
         {
-            var paginatedMatches = await GetPaginatedAsync<GetMatchDto>(paginationParams);
-            return new BaseResponse<PaginatedList<GetMatchDto>>(paginatedMatches);
+            var paginatedMatches = await GetPaginatedAsync<GetPaginatedMatchesDto>(paginationParams);
+            return new BaseResponse<PaginatedList<GetPaginatedMatchesDto>>(paginatedMatches);
         }
         public async ValueTask<BaseResponse<long>> GetCountAsync(CancellationToken cancellationToken = default)
         {
             var count = await GetLongCountAsync(cancellationToken);
             return new(count);
         }
-        public async ValueTask<BaseResponse<Unit>> CreateAsyncTest(CreateTestMatchDto dto, bool autoSave = true, CancellationToken cancellationToken = default)
+        public async ValueTask<BaseResponse<Unit>> CreateAsync(CreateMatchDto dto, bool autoSave = true, CancellationToken cancellationToken = default)
         {
             await CreateAsync(dto, autoSave, cancellationToken: cancellationToken);
             return new Unit();
         }
-        public async ValueTask<BaseResponse<Unit>> UpdateAsyncTest(UpdateTestMatchDto dto, bool autoSave = true, CancellationToken cancellationToken = default)
+        public async ValueTask<BaseResponse<Unit>> UpdateAsync(UpdateMatchDto dto, bool autoSave = true, CancellationToken cancellationToken = default)
         {
             await UpdateAsync(dto, autoSave, cancellationToken: cancellationToken);
             return new Unit();
         }
-        public async ValueTask<BaseResponse<Unit>> UpdateRangeAsyncTest(IEnumerable<UpdateTestMatchDto> dtos, bool autoSave = true, CancellationToken cancellationToken = default)
+        public async ValueTask<BaseResponse<Unit>> UpdateRangeAsync(IEnumerable<UpdateMatchDto> dtos, bool autoSave = true, CancellationToken cancellationToken = default)
         {
-            await UpdateRangeAsync<UpdateTestMatchDto>(dtos, autoSave, cancellationToken: cancellationToken);
+            await UpdateRangeAsync<UpdateMatchDto>(dtos, autoSave, cancellationToken: cancellationToken);
             return new();
         }
-        public async ValueTask<BaseResponse<Unit>> SoftDeleteByIdAsyncTest(long id, bool autoSave = true, CancellationToken cancellationToken = default)
+        public async ValueTask<BaseResponse<Unit>> SoftDeleteByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default)
         {
             var match = await GetByIdAsync(id);
-
-
             await SoftDeleteByIdAsync(id, autoSave, cancellationToken);
             return new Unit();
-
-
         }
-
-        public async ValueTask<BaseResponse<Unit>> HardDeleteByIdAsyncTest(long id, bool autoSave = true, CancellationToken cancellationToken = default)
+        public async ValueTask<BaseResponse<Unit>> HardDeleteByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default)
         {
             var match = await GetByIdAsync(id);
-
-
             await HardDeleteByIdAsync(id, autoSave, cancellationToken: cancellationToken);
             return new Unit();
-
-
         }
-
-        public async Task<BaseResponse<Unit>> RecoverByIdAsyncTest(long id, bool autoSave = true, CancellationToken cancellationToken = default)
+        public async Task<BaseResponse<Unit>> RecoverByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default)
         {
             var match = await RecoverByIdAsync(id, autoSave, cancellationToken: cancellationToken);
             return new Unit();

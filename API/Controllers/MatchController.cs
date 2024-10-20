@@ -2,6 +2,7 @@
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Common.General;
+using Shared.DTOs.MatchDtos;
 using Shared.DTOs.Test.Request;
 
 namespace API.Controllers
@@ -54,9 +55,9 @@ namespace API.Controllers
 
         // POST: api/testmatch
         [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromBody] CreateTestMatchDto matchDto)
+        public async Task<IActionResult> Create([FromBody] CreateMatchDto matchDto)
         {
-            var result = await _matchService.CreateAsyncTest(matchDto);
+            var result = await _matchService.CreateAsync(matchDto);
             if (result.IsSuccess)
             {
                 NoContent();
@@ -66,9 +67,9 @@ namespace API.Controllers
 
         // PUT: api/testmatch
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] UpdateTestMatchDto matchDto)
+        public async Task<IActionResult> Update([FromBody] UpdateMatchDto matchDto)
         {
-            var result = await _matchService.UpdateAsyncTest(matchDto);
+            var result = await _matchService.UpdateAsync(matchDto);
             if (result.IsSuccess)
             {
                 return Ok(result);
@@ -79,9 +80,9 @@ namespace API.Controllers
 
         // PUT: api/testmatch
         [HttpPut("update-range")]
-        public async Task<IActionResult> UpdateRange([FromBody] IEnumerable<UpdateTestMatchDto> matchDtos)
+        public async Task<IActionResult> UpdateRange([FromBody] IEnumerable<UpdateMatchDto> matchDtos)
         {
-            var result = await _matchService.UpdateRangeAsyncTest(matchDtos);
+            var result = await _matchService.UpdateRangeAsync(matchDtos);
             if (result.IsSuccess)
             {
                 return Ok(result);
@@ -93,7 +94,7 @@ namespace API.Controllers
         [HttpDelete("softDelete/{id}")]
         public async Task<IActionResult> SoftDelete(long id)
         {
-            var result = await _matchService.SoftDeleteByIdAsyncTest(id);
+            var result = await _matchService.SoftDeleteByIdAsync(id);
             if (result.IsSuccess)
             {
                 return NoContent();
@@ -105,7 +106,7 @@ namespace API.Controllers
         [HttpDelete("hard/{id}")]
         public async Task<IActionResult> HardDelete(long id)
         {
-            var result = await _matchService.HardDeleteByIdAsyncTest(id);
+            var result = await _matchService.HardDeleteByIdAsync(id);
             if (result.IsSuccess)
             {
                 return NoContent();
@@ -117,7 +118,7 @@ namespace API.Controllers
         [HttpGet("RecoverById/{id}")]
         public async Task<IActionResult> RecoverById(long id)
         {
-            var result = await _matchService.RecoverByIdAsyncTest(id);
+            var result = await _matchService.RecoverByIdAsync(id);
             if (result.IsSuccess)
             {
                 return Ok(result);
