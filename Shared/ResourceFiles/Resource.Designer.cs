@@ -250,6 +250,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot delete a championship with assigned matches.
+        /// </summary>
+        public static string Cannotdeleteachampionshipwithassignedmatches {
+            get {
+                return ResourceManager.GetString("Cannotdeleteachampionshipwithassignedmatches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cart.
         /// </summary>
         public static string Cart {

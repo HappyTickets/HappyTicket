@@ -1202,4 +1202,7 @@
   <data name="ChampionshipDeleted" xml:space="preserve">
     <value>تم حذف البطولة</value>
   </data>
+  <data name="Cannotdeleteachampionshipwithassignedmatches" xml:space="preserve">
+    <value>لا يمكن حذف بطولة بالمباريات المخصصة لها</value>
+  </data>
 </root>

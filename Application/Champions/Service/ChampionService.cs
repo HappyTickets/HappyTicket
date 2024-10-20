@@ -72,12 +72,25 @@ namespace Application.Implementations
                     Title = Resource.ChampionshipNotFound
                 };
             }
+            var matches = await GetMatchesByStadiumIdAsync(championshipId, cancellationToken);
+            if (matches != null && matches.Any())
+            {
+                return new BaseResponse<object?>
+                {
+                    Status = HttpStatusCode.Conflict,
+                    Title = Resource.Cannotdeleteachampionshipwithassignedmatches
+                };
+            }
             await HardDeleteAsync(championship);
             return new BaseResponse<object?>
             {
                 Status = HttpStatusCode.OK,
                 Title = Resource.ChampionshipDeleted
             };
+        }
+        private async Task<IEnumerable<Match>> GetMatchesByStadiumIdAsync(long stadiumId, CancellationToken cancellationToken)
+        {
+            return await _unitOfWork.Repository<Match>().ListAsync(result => result.StadiumId == stadiumId, null, cancellationToken);
         }
     }
 }

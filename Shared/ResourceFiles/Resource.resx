@@ -1259,4 +1259,7 @@ Our mission is to bring fans closer to the action, creating opportunities for th
   <data name="ChampionshipDeleted" xml:space="preserve">
     <value>Championship Deleted</value>
   </data>
+  <data name="Cannotdeleteachampionshipwithassignedmatches" xml:space="preserve">
+    <value>Cannot delete a championship with assigned matches</value>
+  </data>
 </root>
