@@ -8,8 +8,6 @@ namespace Application.Tickets.Service
     {
         Task<BaseResponse<Empty>> CreateAsync(CreateTicketsDto dto);
         Task<BaseResponse<Empty>> UpdateAsync(UpdateTicketsDto dto);
-        Task<BaseResponse<object?>> CreateAsync(CreateTicketsDto dto);
-        Task<BaseResponse<object?>> UpdateAsync(UpdateTicketsDto dto);
         Task<BaseResponse<IEnumerable<TicketDto>>> GetDistinctTicketsAsync(long matchId);
         Task<BaseResponse<PaginatedList<TicketDto>>> GetMyTicketsAsync(long userId, PaginationParams pagination);
 
