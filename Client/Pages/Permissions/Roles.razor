@@ -1,0 +1,64 @@
+﻿@page "/Roles"
+@using Client.Components.Dialogs.Permessions
+@using Shared.DTOs.Authorization.Request
+@inject ICustomSnackbarProvider Snackbar
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+@attribute [Authorize(Policy = "IsAdmin")]
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+<MudToolBar>
+    <MudSpacer></MudSpacer>
+    <MudFab Color="Color.Primary" @onclick="OpenCreateModal" StartIcon="@Icons.Material.Filled.Add" Label="@($"{Resource.Create} {Resource.Role}")" />
+</MudToolBar>
+
+<PageTitle>@Resource.TheRoles</PageTitle>
+
+<MudCard>
+    <MudCardContent>
+        <MudText Typo="Typo.h3" Align="Align.Center" Class="mb-4">@Resource.TheRoles</MudText>
+
+        @if (roles == null)
+        {
+            <MudText Typo="Typo.h6">@Resource.Loading</MudText>
+        }
+        else if (!roles.Any())
+        {
+            <MudText Typo="Typo.h6">@Resource.Roles_NotAvailable</MudText>
+        }
+        else
+        {
+            <MudTable Items="@roles" Striped="true" Bordered="true" Hover="true">
+                <HeaderContent>
+                    <MudTh>@Resource.RoleName</MudTh>
+                    <MudTh>@Resource.RoleDesc</MudTh>
+                    <MudTh>@Resource.TheActions</MudTh>
+                </HeaderContent>
+
+                <RowTemplate>
+                    <MudTd>@context.RoleName</MudTd>
+                    <MudTd>@context.RoleDescription</MudTd>
+                    <MudTd>
+                        <MudButton StartIcon="@Icons.Material.Filled.Edit" OnClick="@(() => OpenEditModal(context.RoleId))" Color="Color.Primary" Variant="Variant.Filled">
+                            @Resource.Edit
+                        </MudButton>
+
+                        <MudButton StartIcon="@Icons.Material.Filled.Delete" OnClick="@(()=> OpenConfirmationDeleteDialog(context.RoleId))" Color="Color.Error" Variant="Variant.Filled">
+                            @Resource.Delete
+                        </MudButton>
+
+                        <MudButton StartIcon="@Icons.Material.Filled.Info" OnClick="@( ()=> NavigateTo("unassign",context.RoleId))" Color="Color.Warning" Variant="Variant.Filled">
+                            @Resource.UnassignUsers
+                        </MudButton>
+
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
+        }
+    </MudCardContent>
+</MudCard>
+
+<AddRoleDialog OnRoleCreated="ReloadRoles" @bind-IsVisible=isCreateModalVisible />
+<EditRoleDialog RoleId="@selectedRoleId" OnRoleEdited="ReloadRoles" @bind-IsVisible=isEditModalVisible />
+

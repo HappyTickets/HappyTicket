@@ -1193,6 +1193,18 @@
   <data name="UpcomingMatches" xml:space="preserve">
     <value>المباريات القادمة</value>
   </data>
+  <data name="ChampionshipNotFound" xml:space="preserve">
+    <value>لم يتم العثور على البطولة</value>
+  </data>
+  <data name="NoChampionshipFound" xml:space="preserve">
+    <value>لم يتم العثور على بطولة</value>
+  </data>
+  <data name="ChampionshipDeleted" xml:space="preserve">
+    <value>تم حذف البطولة</value>
+  </data>
+  <data name="Cannotdeleteachampionshipwithassignedmatches" xml:space="preserve">
+    <value>لا يمكن حذف بطولة بالمباريات المخصصة لها</value>
+  </data>
   <data name="Checkout_Cart_Empty" xml:space="preserve">
     <value>عربة التسوق الخاصة بك فارغة. يرجى إضافة عناصر إلى عربة التسوق قبل المتابعة إلى الدفع.</value>
   </data>
