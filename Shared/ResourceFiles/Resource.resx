@@ -1250,4 +1250,19 @@ Our mission is to bring fans closer to the action, creating opportunities for th
   <data name="UpcomingMatches" xml:space="preserve">
     <value>Upcoming Matches</value>
   </data>
+  <data name="AwayTeamIsRequired" xml:space="preserve">
+    <value>Away Team Is Required</value>
+  </data>
+  <data name="ChampionshipIsRequired" xml:space="preserve">
+    <value>Championship Is Required</value>
+  </data>
+  <data name="DateMustBeInFuture" xml:space="preserve">
+    <value>Date Must Be In Future</value>
+  </data>
+  <data name="HomeTeamIsRequired" xml:space="preserve">
+    <value>Home Team Is Required</value>
+  </data>
+  <data name="StadiumIsRequired" xml:space="preserve">
+    <value>Stadium Is Required</value>
+  </data>
 </root>

@@ -1193,4 +1193,19 @@
   <data name="UpcomingMatches" xml:space="preserve">
     <value>المباريات القادمة</value>
   </data>
+  <data name="AwayTeamIsRequired" xml:space="preserve">
+    <value>الفريق الضيف مطلوب</value>
+  </data>
+  <data name="ChampionshipIsRequired" xml:space="preserve">
+    <value>البطولة مطلوبة</value>
+  </data>
+  <data name="DateMustBeInFuture" xml:space="preserve">
+    <value>يجب أن يكون التاريخ في المستقبل</value>
+  </data>
+  <data name="HomeTeamIsRequired" xml:space="preserve">
+    <value>الفريق المضيف مطلوب</value>
+  </data>
+  <data name="StadiumIsRequired" xml:space="preserve">
+    <value>الملعب مطلوب</value>
+  </data>
 </root>

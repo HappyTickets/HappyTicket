@@ -205,6 +205,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Away Team Is Required.
+        /// </summary>
+        public static string AwayTeamIsRequired {
+            get {
+                return ResourceManager.GetString("AwayTeamIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back To Registration.
         /// </summary>
         public static string BackToRegistration {
@@ -381,6 +390,15 @@ namespace Shared.ResourceFiles {
         public static string Championship_Name {
             get {
                 return ResourceManager.GetString("Championship_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Championship Is Required.
+        /// </summary>
+        public static string ChampionshipIsRequired {
+            get {
+                return ResourceManager.GetString("ChampionshipIsRequired", resourceCulture);
             }
         }
         
@@ -582,6 +600,15 @@ namespace Shared.ResourceFiles {
         public static string Date {
             get {
                 return ResourceManager.GetString("Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date Must Be In Future.
+        /// </summary>
+        public static string DateMustBeInFuture {
+            get {
+                return ResourceManager.GetString("DateMustBeInFuture", resourceCulture);
             }
         }
         
@@ -1054,6 +1081,15 @@ namespace Shared.ResourceFiles {
         public static string HomeTeam {
             get {
                 return ResourceManager.GetString("HomeTeam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home Team Is Required.
+        /// </summary>
+        public static string HomeTeamIsRequired {
+            get {
+                return ResourceManager.GetString("HomeTeamIsRequired", resourceCulture);
             }
         }
         
@@ -2344,6 +2380,15 @@ namespace Shared.ResourceFiles {
         public static string Stadium_With_Match_Deletion_Failure {
             get {
                 return ResourceManager.GetString("Stadium_With_Match_Deletion_Failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stadium Is Required.
+        /// </summary>
+        public static string StadiumIsRequired {
+            get {
+                return ResourceManager.GetString("StadiumIsRequired", resourceCulture);
             }
         }
         

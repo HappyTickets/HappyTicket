@@ -54,8 +54,35 @@ namespace Application.Implementations
             var count = await GetLongCountAsync(cancellationToken);
             return new(count);
         }
-        public async ValueTask<BaseResponse<Unit>> CreateAsync(CreateMatchDto dto, bool autoSave = true, CancellationToken cancellationToken = default)
+        public async ValueTask<BaseResponse<Unit>> CreateMatchAsync(CreateMatchDto dto, bool autoSave = true, CancellationToken cancellationToken = default)
         {
+            var match = _mapper.Map<Match>(dto);
+
+            var teamA = new MatchTeam
+            {
+                TeamId = dto.TeamAId,
+                IsHomeTeam = true,
+                MatchId = match.Id
+            };
+
+            var teamB = new MatchTeam
+            {
+                TeamId = dto.TeamBId,
+                IsHomeTeam = false,
+                MatchId = match.Id
+            };
+
+            match.MatchTeams.Add(teamA);
+            match.MatchTeams.Add(teamB);
+
+            _unitOfWork.Repository<Match>().Create(match);
+
+            if (autoSave)
+            {
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+            }
+
+
             await CreateAsync(dto, autoSave, cancellationToken: cancellationToken);
             return new Unit();
         }

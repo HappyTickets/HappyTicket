@@ -53,14 +53,14 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        // POST: api/testmatch
+
         [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] CreateMatchDto matchDto)
         {
-            var result = await _matchService.CreateAsync(matchDto);
+            var result = await _matchService.CreateMatchAsync(matchDto);
             if (result.IsSuccess)
             {
-                NoContent();
+                return NoContent();
             }
             return BadRequest(result);
         }
