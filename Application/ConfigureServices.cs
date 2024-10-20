@@ -1,4 +1,5 @@
 ﻿using Application.Implementations;
+using Application.Interfaces;
 using Application.Stadiums.Service;
 using Application.Tests.Matches.Service;
 using Application.Tickets.Service;
@@ -24,6 +25,7 @@ namespace Application
             services.AddScoped<ITestMatchService, TestMatchService>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IStadiumService, StadiumService>();
+            services.AddScoped<IChampionService, ChampionService>();
 
             return services;
         }

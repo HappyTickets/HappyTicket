@@ -13,7 +13,7 @@ namespace Application.Implementations
     {
         public ChampionService(IUnitOfWork unitOfWork, ILogger<Championship> logger, IMapper mapper) : base(unitOfWork, logger, mapper) { }
 
-        public async ValueTask<BaseResponse<CreateChampionshipDto>> CreateAsync(CreateChampionshipDto createChampionshipDto, bool autoSave = true, CancellationToken cancellationToken = default)
+        public async ValueTask<BaseResponse<CreateChampionshipDto>> CreateChampionAsync(CreateChampionshipDto createChampionshipDto, bool autoSave = true, CancellationToken cancellationToken = default)
         {
             var championship = _mapper.Map<Championship>(createChampionshipDto);
             await CreateAsync(createChampionshipDto, autoSave, cancellationToken: cancellationToken);
