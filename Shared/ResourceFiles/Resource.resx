@@ -1250,4 +1250,7 @@ Our mission is to bring fans closer to the action, creating opportunities for th
   <data name="UpcomingMatches" xml:space="preserve">
     <value>Upcoming Matches</value>
   </data>
+  <data name="ChampionshipNotFound" xml:space="preserve">
+    <value>Championship Not Found</value>
+  </data>
 </root>

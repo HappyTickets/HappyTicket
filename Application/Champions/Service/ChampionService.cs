@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Shared.Common;
 using Shared.DTOs.Champion;
 using Shared.DTOs.ChampionDtos;
+using Shared.ResourceFiles;
 using System.Net;
 
 namespace Application.Implementations
@@ -31,7 +32,7 @@ namespace Application.Implementations
                 return new BaseResponse<UpdateChampionshipDto>
                 {
                     Status = HttpStatusCode.BadRequest,
-                    Title = "Champion Not Found"
+                    Title = Resource.ChampionshipNotFound
                 };
             }
             _mapper.Map(updateChampionshipDto, championship);
