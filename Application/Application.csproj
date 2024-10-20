@@ -47,7 +47,6 @@
     <Folder Include="Championships\Mappings\" />
     <Folder Include="Championships\Service\" />
     <Folder Include="Championships\Validators\" />
-    <Folder Include="Champions\Validators\" />
     <Folder Include="Interfaces\ITicketServices\" />
     <Folder Include="Matches\Mappings\" />
     <Folder Include="Matches\Service\" />
