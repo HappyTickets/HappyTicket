@@ -7,9 +7,9 @@ namespace Application.Champions.Validators
     {
         public UpdateChampionshipValidator()
         {
-            RuleFor(result => result.Id).NotEmpty().WithMessage("Id Is Required");
-            RuleFor(result => result.Name).NotEmpty().WithMessage("Name Is Required");
-            RuleFor(result => result.Logo).NotEmpty().WithMessage("Logo Is Required");
+            RuleFor(result => result.Id).NotEmpty();
+            RuleFor(result => result.Name).NotEmpty();
+            RuleFor(result => result.Logo).NotEmpty();
         }
     }
 }
