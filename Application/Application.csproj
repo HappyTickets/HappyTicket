@@ -41,8 +41,6 @@
     <Folder Include="Blocks\Mappings\" />
     <Folder Include="Blocks\Validators\" />
     <Folder Include="Blocks\Service\" />
-    <Folder Include="Carts\Mappings\" />
-    <Folder Include="Carts\Service\" />
     <Folder Include="Carts\Validators\" />
     <Folder Include="Championships\Mappings\" />
     <Folder Include="Championships\Service\" />
@@ -57,9 +55,6 @@
     <Folder Include="Seats\Mappings\" />
     <Folder Include="Seats\Service\" />
     <Folder Include="Seats\Validators\" />
-    <Folder Include="Sponsors\Mappings\" />
-    <Folder Include="Sponsors\Service\" />
-    <Folder Include="Sponsors\Validators\" />
     <Folder Include="Teams\Mappings\" />
     <Folder Include="Teams\Service\" />
     <Folder Include="Teams\Validators\" />

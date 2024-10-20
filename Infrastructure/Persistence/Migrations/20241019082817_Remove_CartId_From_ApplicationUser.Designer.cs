@@ -4,6 +4,7 @@ using Infrastructure.Persistence.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241019082817_Remove_CartId_From_ApplicationUser")]
+    partial class Remove_CartId_From_ApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -269,9 +272,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
-
-                    b.Property<int>("MaxPerUser")
-                        .HasColumnType("int");
 
                     b.Property<long>("ModifiedBy")
                         .HasColumnType("bigint");
@@ -719,7 +719,7 @@ namespace Infrastructure.Migrations
                     b.Property<int?>("BaseEntityStatus")
                         .HasColumnType("int");
 
-                    b.Property<long?>("BlockId")
+                    b.Property<long>("BlockId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Class")
@@ -765,10 +765,10 @@ namespace Infrastructure.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<long?>("SeatId")
+                    b.Property<long>("SeatId")
                         .HasColumnType("bigint");
 
-                    b.Property<int?>("SeatNumber")
+                    b.Property<int>("SeatNumber")
                         .HasColumnType("int");
 
                     b.Property<int>("SoftDeleteCount")
@@ -1091,7 +1091,7 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.Ticket", "Ticket")
-                        .WithMany("CartItems")
+                        .WithMany()
                         .HasForeignKey("TicketId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1242,7 +1242,8 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.Block", "Block")
                         .WithMany()
                         .HasForeignKey("BlockId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Domain.Entities.MatchTeam", "MatchTeam")
                         .WithMany("Tickets")
@@ -1253,7 +1254,8 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.Seat", "Seat")
                         .WithMany()
                         .HasForeignKey("SeatId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Block");
 
@@ -1375,11 +1377,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("MatchTeams");
 
                     b.Navigation("TeamSponsors");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Ticket", b =>
-                {
-                    b.Navigation("CartItems");
                 });
 
             modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationUser", b =>

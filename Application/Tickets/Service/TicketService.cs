@@ -6,6 +6,7 @@ using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Shared.Common;
+using Shared.Common.General;
 using Shared.DTOs.TicketDTOs;
 using System.Net;
 
@@ -63,15 +64,15 @@ namespace Application.Tickets.Service
         //    }
         //}
 
-        public async Task<BaseResponse<object?>> CreateAsync(CreateTicketsDto dto)
+        public async Task<BaseResponse<Empty>> CreateAsync(CreateTicketsDto dto)
         {
             var ticket = _mapper.Map<Ticket>(dto);
             await _unitOfWork.Tickets.CreateAsync(ticket, dto.TicketsCount);
 
-            return HttpStatusCode.Created;
+            return Empty.Default;
         }
 
-        public async Task<BaseResponse<object?>> UpdateAsync(UpdateTicketsDto dto)
+        public async Task<BaseResponse<Empty>> UpdateAsync(UpdateTicketsDto dto)
         {
             var ticket = _mapper.Map<Ticket>(dto);
 
@@ -92,7 +93,7 @@ namespace Application.Tickets.Service
 
             await _unitOfWork.SaveChangesAsync();
 
-            return HttpStatusCode.OK;
+            return Empty.Default;
         }
 
         public async Task<BaseResponse<IEnumerable<Ticket?>>> GetDistinctTicketsAsync(long matchTeamId)

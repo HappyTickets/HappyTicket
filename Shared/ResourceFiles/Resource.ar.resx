@@ -1193,4 +1193,7 @@
   <data name="UpcomingMatches" xml:space="preserve">
     <value>المباريات القادمة</value>
   </data>
+  <data name="Checkout_Cart_Empty" xml:space="preserve">
+    <value>عربة التسوق الخاصة بك فارغة. يرجى إضافة عناصر إلى عربة التسوق قبل المتابعة إلى الدفع.</value>
+  </data>
 </root>
