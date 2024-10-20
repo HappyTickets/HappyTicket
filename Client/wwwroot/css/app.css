@@ -1000,6 +1000,9 @@ code {
 
 
 
+
+
+
 /* Enhanced highlighted team styling */
 .highlight-team {
     position: relative; /* Position relative for the pseudo-element */
@@ -1044,6 +1047,9 @@ code {
     animation: outline-pulse 2s infinite alternate; /* Slower pulsing outline effect for smoother motion */
 }
 
+
+
+
 /* Animation for the outline pulse effect */
 @keyframes outline-pulse {
     0% {
@@ -1075,9 +1081,55 @@ code {
 .stadium-logo:hover {
    transform: scale(1.1);
 }
+.ticket-footer .sponsors-logos {
+    justify-content: flex-end; /* Align logos to the right */
+}
+@media (max-width: 768px) {
+    .sponsor-logo {
+        max-width: 40px; /* Make logos smaller on mobile */
+        max-height: 40px;
+    }
+}
+@media (max-width: 768px) {
+    .sponsor-logo:hover {
+        transform: none;
+        opacity: 1;
+    }
+}
+
+
+/* Sponsor Logos Styling */
+.sponsors-logos {
+    display: flex;
+    justify-content: flex-start; /* Align logos to the left */
+    align-items: center;
+    gap: 10px; /* Space between each logo */
+    flex-wrap: wrap; /* Allow logos to wrap to a new line if they overflow */
+}
+
+.sponsor-logo {
+    max-width: 50px; /* Control the maximum size of the logos */
+    max-height: 50px; /* Ensure logos maintain proper aspect ratio */
+    object-fit: contain; /* Prevent logo distortion */
+    margin: 5px; /* Add some space around each logo */
+    opacity: 0.8; /* Slight opacity for a cleaner look */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+    .sponsor-logo:hover {
+        opacity: 1; /* Full opacity on hover */
+        transform: scale(1.1); /* Slight enlarge on hover */
+    }
+
+
+
+
+
+
+
+
 
 /* admin-panel */
-
 .admin-panel-card {
     display:flex;
     justify-content: center;
