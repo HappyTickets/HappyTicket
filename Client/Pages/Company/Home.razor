@@ -9,7 +9,6 @@
 
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
 <PageTitle>@Resource.CompanyName</PageTitle>
-
 <!--Home banner-->
 <section class="mb-5">
     <MudCarousel Class="mud-width-75 mx-auto rounded-xl overflow-hidden" Style="height:500px;" ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object">
@@ -39,13 +38,13 @@
             <MudCarouselItem Transition="Transition.Fade" Color="@Color.Primary">
                 <div class="position-relative d-flex w-100" style="height:100%;">
                     <MudImage Src="Imgs/1.jpg" Class="mx-auto my-auto" Style="width:100%; height:100%; object-fit:cover;" />
-                    <!--  overlay -->
-
+                    
+                    <!--  overlay and text -->
+                    <!--
                     <div class="overlay position-absolute w-100 h-100" style="background-color: rgba(59, 86, 117, 0.4);"></div>
 
                     <MudItem>
                         <div class="text-overlay position-absolute w-100" style="top:40%; left: 5%;right:10%; transform:translateY(-50%);">
-
 
                             <MudText Typo="Typo.h3" style="font-size: 3.5rem; font-weight: bold; color: #fc5c04; margin-bottom: 33px; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);">
                                 @Resource.slide1
@@ -60,20 +59,21 @@
                             </MudText>
 
                         </div>
-
                     </MudItem>
+                    -->
 
                 </div>
             </MudCarouselItem>
 
-
             <MudCarouselItem Transition="Transition.Fade" Color="@Color.Primary">
                 <div class="position-relative d-flex w-100" style="height:100%;">
                     <MudImage Src="Imgs/2.jpg" Class="mx-auto my-auto" Style="width:100%; height:100%; object-fit:cover;" />
+                    
+                    <!-- overlay and text -->
+                    <!--
                     <div class="overlay position-absolute w-100 h-100" style="background-color: rgba(59, 86, 117, 0.6);"></div>
                     <MudItem>
                         <div class="text-overlay position-absolute w-100" style="top:40%; left: 5%;right:10%; transform:translateY(-50%);">
-
 
                             <MudText Typo="Typo.h3" style="font-size: 3.5rem; font-weight: bold; color: #fc5c04; margin-bottom: 33px; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);">
                                 @Resource.slide2
@@ -88,8 +88,8 @@
                             </MudText>
 
                         </div>
-
                     </MudItem>
+                    -->
 
                 </div>
             </MudCarouselItem>
@@ -97,10 +97,12 @@
             <MudCarouselItem Transition="Transition.Fade" Color="@Color.Primary">
                 <div class="position-relative d-flex w-100" style="height:100%;">
                     <MudImage Src="Imgs/3.jpg" Class="mx-auto my-auto" Style="width:100%; height:100%; object-fit:cover;" />
+
+                    <!-- overlay and text -->
+                    <!--
                     <div class="overlay position-absolute w-100 h-100" style="background-color: rgba(59, 86, 117, 0.6);"></div>
                     <MudItem>
                         <div class="text-overlay position-absolute w-100" style="top:40%; left: 5%;right:10%; transform:translateY(-50%);">
-
 
                             <MudText Typo="Typo.h3" style="font-size: 3.5rem; font-weight: bold; color: #fc5c04; margin-bottom: 33px; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);">
                                 @Resource.slide3
@@ -115,9 +117,8 @@
                             </MudText>
 
                         </div>
-
                     </MudItem>
-
+                    -->
                 </div>
             </MudCarouselItem>
         </ChildContent>
@@ -152,7 +153,7 @@
 </MudContainer>
 
 
-
+@* 
 <!--Events-->
 <div class="event-section mt-5" style="padding-top:70px !important; padding-bottom:90px !important;">
     <div class="section-header">
@@ -212,7 +213,13 @@
     </div>
 </div>
 
+ *@
 
+
+ <br />
+ <br />
+ <br />
+ <br />
 
 <!---Statistics Section-->
 <section class="stats-section">
