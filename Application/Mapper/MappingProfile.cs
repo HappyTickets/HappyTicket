@@ -15,23 +15,10 @@ namespace Application.Mapper
         public MappingProfile()
         {
 
-            CreateMap<Match, GetMatchDto>()
-                       .ForMember(dest => dest.StadiumName, opt => opt.MapFrom(src => src.Stadium.Name))
-                       .ForMember(dest => dest.ChampionName, opt => opt.MapFrom(src => src.Champion.Name))
-                       .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive));
+            
 
-            CreateMap<Match, CreateTestMatchDto>().ReverseMap();
-            CreateMap<Match, UpdateTestMatchDto>().ReverseMap();
-            CreateMap<Stadium, StadiumDto>().ReverseMap();
             CreateMap<Championship, ChampionDto>().ReverseMap();
-            CreateMap<Stadium, GetStadiumDto>().ReverseMap();
-            CreateMap<Stadium, CreateStadiumDto>().ReverseMap();
-            CreateMap<Stadium, UpdateStadiumDto>().ReverseMap();
 
-
-            CreateMap<CreateTicketsDto, Ticket>();
-            CreateMap<UpdateTicketsDto, Ticket>();
-            CreateMap<Ticket, TicketDto>();
 
             //CreateMap<MatchO, MatchCommandDto>().ReverseMap();
             //CreateMap<Team, TeamDto>().ReverseMap();

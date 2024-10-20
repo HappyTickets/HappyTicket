@@ -1,23 +1,23 @@
-﻿using Application.Interfaces.ITicketServices;
+﻿using Application.Tickets.Service;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTOs.TicketDTOs;
 
 namespace API.Controllers
 {
-    public class TicketController : BaseController
+    public class TicketsController : BaseController
     {
         private readonly ITicketService _ticketService;
 
-        public TicketController(IHttpContextAccessor httpContextAccessor, ITicketService ticketService)
+        public TicketsController(IHttpContextAccessor httpContextAccessor, ITicketService ticketService)
         {
             _ticketService = ticketService;
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult> CreateAsync(CreateTicketsDto dto)
             => Result(await _ticketService.CreateAsync(dto));
 
-        [HttpPut]
+        [HttpPut("update")]
         public async Task<IActionResult> UpdateAsync(UpdateTicketsDto dto)
             => Result(await _ticketService.UpdateAsync(dto));
 

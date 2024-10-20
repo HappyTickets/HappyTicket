@@ -1,5 +1,5 @@
-﻿using Application.Interfaces;
-using Application.Interfaces.Infrastructure.Persistence;
+﻿using Application.Common.Interfaces.Persistence;
+using Application.Common.Interfaces.Services;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Entities.Common;
@@ -9,7 +9,7 @@ using Shared.Common.General;
 using Shared.Exceptions;
 using System.Linq.Expressions;
 
-namespace Application.Implementations;
+namespace Application.Common.Implementations;
 
 public abstract class BaseService<TEntity> : IBaseService<TEntity>
     where TEntity : BaseEntity<long>
@@ -30,7 +30,7 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity>
     #region Query
 
 
-    public virtual async ValueTask<TDto?> GetByIdAsync<TDto>(long id, CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class
+    public virtual async ValueTask<TDto?> GetByIdAsync<TDto>(long id, CancellationToken cancellationToken = default, IEnumerable<string>? includes = null) where TDto : class
     {
 
         var entityResult = await _unitOfWork.Repository<TEntity>().GetByIdAsync(id, includes, cancellationToken);
@@ -46,7 +46,7 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity>
     }
 
 
-    public virtual async ValueTask<TDto?> FirstOrDefaultAsync<TDto>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class
+    public virtual async ValueTask<TDto?> FirstOrDefaultAsync<TDto>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default, IEnumerable<string>? includes = null) where TDto : class
     {
         var entityResult = await _unitOfWork.Repository<TEntity>().FirstOrDefaultAsync(predicate, includes, cancellationToken);
 
@@ -59,7 +59,7 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity>
     }
 
 
-    public virtual async ValueTask<IEnumerable<TDto>> GetAllAsync<TDto>(CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class
+    public virtual async ValueTask<IEnumerable<TDto>> GetAllAsync<TDto>(CancellationToken cancellationToken = default, IEnumerable<string>? includes = null) where TDto : class
     {
 
         var entityResult = await _unitOfWork.Repository<TEntity>().ListAsync(includes, cancellationToken);
@@ -70,7 +70,7 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity>
         return entityResult.Select(_mapper.Map<TDto>);
     }
 
-    public virtual async ValueTask<PaginatedList<TDto>> GetPaginatedAsync<TDto>(PaginationSearchModel paginationParams, CancellationToken cancellationToken = default, IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class
+    public virtual async ValueTask<PaginatedList<TDto>> GetPaginatedAsync<TDto>(PaginationSearchModel paginationParams, CancellationToken cancellationToken = default, IEnumerable<string>? includes = null) where TDto : class
     {
         // Retrieve paginated entities from the repository
         var entityResult = await _unitOfWork.Repository<TEntity>().PaginateAsync(paginationParams.PageIndex, paginationParams.PageSize, includes, cancellationToken);
@@ -97,7 +97,7 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity>
    Expression<Func<TEntity, bool>> predicate,
 
    CancellationToken cancellationToken = default,
-   IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class
+   IEnumerable<string>? includes = null) where TDto : class
     {
         var entities = await _unitOfWork.Repository<TEntity>().ListAsync(predicate, includes, cancellationToken);
 
@@ -110,7 +110,7 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity>
         PaginationSearchModel paginationParams,
 
         CancellationToken cancellationToken = default,
-        IEnumerable<Expression<Func<TEntity, object>>>? includes = null) where TDto : class
+        IEnumerable<string>? includes = null) where TDto : class
     {
         // Get paginated entities
         var paginatedEntities = await _unitOfWork.Repository<TEntity>().PaginateAsync(

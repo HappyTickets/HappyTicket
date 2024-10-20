@@ -1,4 +1,4 @@
-﻿using Application.Interfaces.Infrastructure.Persistence;
+﻿using Application.Common.Interfaces.Persistence;
 using Domain.Entities;
 using Domain.Entities.Common;
 using Infrastructure.Persistence.Extensions;
@@ -79,7 +79,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
     public IQueryable<TEntity> Query()
         => _dbSet.AsQueryable();
 
-    public Task<TEntity?> GetByIdAsync(long id, IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default, bool ignoreFilter = false)
+    public Task<TEntity?> GetByIdAsync(long id, IEnumerable<string>? includes = null, CancellationToken cancellationToken = default, bool ignoreFilter = false)
     {
         var query = _dbSet.AsQueryable();
 
@@ -92,7 +92,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         return query.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
     }
 
-    public async Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default)
+    public async Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<string>? includes = null, CancellationToken cancellationToken = default)
     {
         var query = _dbSet.AsQueryable();
         if (includes != null)
@@ -101,7 +101,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         return await query.FirstOrDefaultAsync(predicate, cancellationToken);
     }
 
-    public async Task<TEntity?> LastOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default)
+    public async Task<TEntity?> LastOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<string>? includes = null, CancellationToken cancellationToken = default)
     {
         var query = _dbSet.AsQueryable();
 
@@ -111,7 +111,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         return await query.LastOrDefaultAsync(predicate, cancellationToken);
     }
 
-    public async Task<List<TEntity>> ListAsync(IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default)
+    public async Task<List<TEntity>> ListAsync(IEnumerable<string>? includes = null, CancellationToken cancellationToken = default)
     {
         var query = _dbSet.AsQueryable();
 
@@ -121,7 +121,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         return await query.ToListAsync(cancellationToken);
     }
 
-    public async Task<List<TEntity>> ListAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default, bool ignoreFilter = false)
+    public async Task<List<TEntity>> ListAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<string>? includes = null, CancellationToken cancellationToken = default, bool ignoreFilter = false)
     {
         var query = _dbSet.Where(predicate).AsQueryable();
 
@@ -131,7 +131,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         return await query.ToListAsync(cancellationToken);
     }
 
-    public async Task<PaginatedList<TEntity>> PaginateAsync(int pageIndex, int pageSize, IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default)
+    public async Task<PaginatedList<TEntity>> PaginateAsync(int pageIndex, int pageSize, IEnumerable<string>? includes = null, CancellationToken cancellationToken = default)
     {
         var query = _dbSet.AsQueryable();
 
@@ -141,7 +141,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         return await _dbSet.PaginateAsync(pageIndex, pageSize);
     }
 
-    public async Task<PaginatedList<TEntity>> PaginateAsync(Expression<Func<TEntity, bool>> predicate, int pageIndex, int pageSize, IEnumerable<Expression<Func<TEntity, object>>>? includes = null, CancellationToken cancellationToken = default)
+    public async Task<PaginatedList<TEntity>> PaginateAsync(Expression<Func<TEntity, bool>> predicate, int pageIndex, int pageSize, IEnumerable<string>? includes = null, CancellationToken cancellationToken = default)
     {
         var query = _dbSet.Where(predicate).AsQueryable();
 

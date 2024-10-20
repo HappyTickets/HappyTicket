@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Tests.Matches.Service;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Common.General;
 using Shared.DTOs.Test.Request;

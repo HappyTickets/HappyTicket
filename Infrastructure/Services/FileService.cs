@@ -1,4 +1,4 @@
-﻿using Application.Interfaces.Infrastructure.Services;
+﻿using Application.Common.Interfaces.Services;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Hosting;
 using MimeDetective;

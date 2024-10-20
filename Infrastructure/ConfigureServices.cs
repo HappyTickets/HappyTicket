@@ -1,5 +1,5 @@
-﻿using Application.Interfaces.Infrastructure.Persistence;
-using Application.Interfaces.Infrastructure.Services;
+﻿using Application.Common.Interfaces.Persistence;
+using Application.Common.Interfaces.Services;
 using Infrastructure.Persistence.EntityFramework;
 using Infrastructure.Persistence.Identity;
 using Infrastructure.Persistence.Repositories;

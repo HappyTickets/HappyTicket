@@ -1,5 +1,5 @@
-﻿using Application.Interfaces;
-using Application.Interfaces.Infrastructure.Persistence;
+﻿using Application.Common.Implementations;
+using Application.Common.Interfaces.Persistence;
 using AutoMapper;
 using Domain.Entities;
 using LanguageExt;
@@ -11,7 +11,7 @@ using Shared.DTOs.Test.Response;
 using System.Linq.Expressions;
 
 
-namespace Application.Implementations
+namespace Application.Tests.Matches.Service
 {
     public class TestMatchService : BaseService<Match>, ITestMatchService
     {
@@ -32,10 +32,10 @@ namespace Application.Implementations
         public async ValueTask<BaseResponse<IEnumerable<GetMatchDto>>> GetAll()
         {
             // Define the includes for the related properties you want to load
-            var includes = new List<Expression<Func<Match, object>>>
+            var includes = new List<string>
                 {
-                    match => match.Stadium,
-                    match => match.Champion
+                    nameof(Match.Stadium),
+                    nameof(Match.Champion)
                 };
 
             // Call GetAllAsync to fetch the data with the specified includes
@@ -50,7 +50,7 @@ namespace Application.Implementations
             return new BaseResponse<GetMatchDto>(match);
         }
 
-        public async ValueTask<BaseResponse<GetMatchDto>> GetByIdAsync(long id, IEnumerable<Expression<Func<Match, object>>>? includes = null)
+        public async ValueTask<BaseResponse<GetMatchDto>> GetByIdAsync(long id, IEnumerable<string>? includes = null)
         {
             var match = await GetByIdAsync<GetMatchDto>(id, includes: includes);
             return new BaseResponse<GetMatchDto>(match);
@@ -88,7 +88,7 @@ namespace Application.Implementations
 
         public async ValueTask<BaseResponse<Unit>> UpdateRangeAsyncTest(IEnumerable<UpdateTestMatchDto> dtos, bool autoSave = true, CancellationToken cancellationToken = default)
         {
-            await UpdateRangeAsync<UpdateTestMatchDto>(dtos, autoSave, cancellationToken: cancellationToken);
+            await UpdateRangeAsync(dtos, autoSave, cancellationToken: cancellationToken);
             return new();
         }
         public async ValueTask<BaseResponse<Unit>> SoftDeleteByIdAsyncTest(long id, bool autoSave = true, CancellationToken cancellationToken = default)

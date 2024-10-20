@@ -18,7 +18,9 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="AutoMapper.Extensions.ExpressionMapping" Version="7.0.1" />
-    <PackageReference Include="FluentValidation" Version="11.9.2" />
+    <PackageReference Include="FluentValidation" Version="11.10.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
     <PackageReference Include="Haukcode.WkHtmlToPdfDotNet" Version="1.5.93" />
     <PackageReference Include="Humanizer.Core" Version="2.14.1" />
     <PackageReference Include="LanguageExt.Core" Version="4.4.9" />
@@ -30,6 +32,41 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Account\Mappings\" />
+    <Folder Include="Account\Service\" />
+    <Folder Include="Account\Validators\" />
+    <Folder Include="Blocks\Mappings\" />
+    <Folder Include="Blocks\Validators\" />
+    <Folder Include="Blocks\Service\" />
+    <Folder Include="Carts\Mappings\" />
+    <Folder Include="Carts\Service\" />
+    <Folder Include="Carts\Validators\" />
+    <Folder Include="Championships\Mappings\" />
+    <Folder Include="Championships\Service\" />
+    <Folder Include="Championships\Validators\" />
+    <Folder Include="Interfaces\ITicketServices\" />
+    <Folder Include="Matches\Mappings\" />
+    <Folder Include="Matches\Service\" />
+    <Folder Include="Matches\Validators\" />
+    <Folder Include="Orders\Mappings\" />
+    <Folder Include="Orders\Service\" />
+    <Folder Include="Orders\Validators\" />
+    <Folder Include="Seats\Mappings\" />
+    <Folder Include="Seats\Service\" />
+    <Folder Include="Seats\Validators\" />
+    <Folder Include="Sponsors\Mappings\" />
+    <Folder Include="Sponsors\Service\" />
+    <Folder Include="Sponsors\Validators\" />
+    <Folder Include="Teams\Mappings\" />
+    <Folder Include="Teams\Service\" />
+    <Folder Include="Teams\Validators\" />
+    <Folder Include="Tests\Matches\Validators\" />
+    <Folder Include="Users\Mappings\" />
+    <Folder Include="Users\Service\" />
+    <Folder Include="Users\Validators\" />
   </ItemGroup>
 
 </Project>
