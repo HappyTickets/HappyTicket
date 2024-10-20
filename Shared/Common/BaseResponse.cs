@@ -5,7 +5,7 @@ namespace Shared.Common;
 
 public class BaseResponse<TData>
 {
-    public BaseResponse(HttpStatusCode status = HttpStatusCode.OK) 
+    public BaseResponse(HttpStatusCode status = HttpStatusCode.OK)
     {
         Status = status;
     }
@@ -29,7 +29,7 @@ public class BaseResponse<TData>
            Status = HttpStatusCode.OK,
            Data = data
        };
-    
+
     public static implicit operator BaseResponse<TData>(BaseException ex)
         => new BaseResponse<TData>
         {

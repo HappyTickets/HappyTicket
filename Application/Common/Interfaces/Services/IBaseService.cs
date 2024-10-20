@@ -15,7 +15,7 @@ namespace Application.Common.Interfaces.Services
 
         ValueTask<IEnumerable<TDto>> FindAsync<TDto>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default, IEnumerable<string>? includes = null) where TDto : class;
 
-        ValueTask<PaginatedList<TDto>> GetPaginatedAsync<TDto>(PaginationSearchModel paginationParams, CancellationToken cancellationToken = default, IEnumerable<string>? includes = null) where TDto : class;
+        ValueTask<PaginatedList<TDto>> GetPaginatedAsync<TDto>(PaginationParams paginationParams, CancellationToken cancellationToken = default, IEnumerable<string>? includes = null) where TDto : class;
         ValueTask<PaginatedList<TDto>> GetPaginatedAsync<TDto>(Expression<Func<TEntity, bool>> predicate, PaginationSearchModel paginationParams, CancellationToken cancellationToken = default, IEnumerable<string>? includes = null) where TDto : class;
 
         ValueTask<long> GetLongCountAsync(CancellationToken cancellationToken = default);

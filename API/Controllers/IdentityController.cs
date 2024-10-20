@@ -1,152 +1,89 @@
-﻿//using Application.Interfaces.IIdentityServices;
-//using Microsoft.AspNetCore.Authorization;
-//using Microsoft.AspNetCore.Mvc;
-//using Shared.DTOs.Identity.Login;
-//using Shared.DTOs.Identity.Logout;
-//using Shared.DTOs.Identity.RefreshAuthToken;
-//using Shared.DTOs.Identity.Register;
-//using Shared.DTOs.Identity.Register.ConfirmEmail;
-//using Shared.DTOs.Identity.Register.SendEmailConfirmation;
-//using Shared.DTOs.Identity.ResetPassword;
-//using Shared.DTOs.Identity.ResetPassword.CreatePasswordResetToken;
-//using Shared.DTOs.Identity.TokenDTOs;
+﻿using Application.Interfaces.IIdentityServices;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Shared.DTOs.Identity.Login;
+using Shared.DTOs.Identity.Logout;
+using Shared.DTOs.Identity.RefreshAuthToken;
+using Shared.DTOs.Identity.Register;
+using Shared.DTOs.Identity.Register.ConfirmEmail;
+using Shared.DTOs.Identity.Register.SendEmailConfirmation;
+using Shared.DTOs.Identity.ResetPassword;
+using Shared.DTOs.Identity.ResetPassword.CreatePasswordResetToken;
 
-//namespace API.Controllers;
+namespace API.Controllers;
 
-////[Authorize]
-//public class IdentityController : BaseController
-//{
-//    private readonly IIdentityService _userService;
+//[Authorize]
+public class IdentityController(IIdentityService userService) : BaseController
+{
+    private readonly IIdentityService _userService = userService;
 
-//    public IdentityController(IHttpContextAccessor httpContextAccessor, IIdentityService userService) : base(httpContextAccessor)
-//    {
-//        _userService = userService;
-//    }
 
-//    [HttpPost]
-//    [Route("Register")]
-//    [AllowAnonymous]
-//    public async Task<ActionResult> Register([FromBody] RegisterRequest registerRequest, CancellationToken cancellationToken = default)
-//    {
-//        try
-//        {
-//            return ReturnBaseResult(await _userService.RegisterAsync(registerRequest, cancellationToken));
-//        }
-//        catch (Exception ex)
-//        {
-//            return ReturnException(ex);
-//        }
-//    }
+    [HttpPost]
+    [Route("Register")]
+    [AllowAnonymous]
+    public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest, CancellationToken cancellationToken = default)
+    {
 
-//    [HttpPost]
-//    [Route("SendEmailConfirmation")]
-//    [AllowAnonymous]
-//    public async Task<ActionResult> SendEmailConfirmation([FromBody] SendEmailConfirmationRequest sendEmailConfirmationRequest, CancellationToken cancellationToken = default)
-//    {
-//        try
-//        {
-//            return ReturnBaseResult(await _userService.SendEmailConfirmation(sendEmailConfirmationRequest, cancellationToken));
-//        }
-//        catch (Exception ex)
-//        {
-//            return ReturnException(ex);
-//        }
-//    }
+        return Result(await _userService.RegisterAsync(registerRequest, cancellationToken));
+    }
 
-//    [HttpPost]
-//    [Route("ConfirmEmail")]
-//    [AllowAnonymous]
-//    public async Task<ActionResult> ConfirmEmail([FromBody] ConfirmEmailRequest confirmEmailRequest, CancellationToken cancellationToken = default)
-//    {
-//        try
-//        {
-//            return ReturnBaseResult(await _userService.ConfirmEmailAsync(confirmEmailRequest, cancellationToken));
-//        }
-//        catch (Exception ex)
-//        {
-//            return ReturnException(ex);
-//        }
-//    }
+    [HttpPost]
+    [Route("SendEmailConfirmation")]
+    [AllowAnonymous]
+    public async Task<IActionResult> SendEmailConfirmation([FromBody] SendEmailConfirmationRequest sendEmailConfirmationRequest, CancellationToken cancellationToken = default)
+    {
+        return Result(await _userService.SendEmailConfirmation(sendEmailConfirmationRequest, cancellationToken));
 
-//    [HttpPost]
-//    [Route("Login")]
-//    [AllowAnonymous]
-//    public async Task<ActionResult> Login([FromBody] LoginRequest loginRequest, CancellationToken cancellationToken = default)
-//    {
-//        try
-//        {
-//            return ReturnResult<LoginResponse, TokenDTO>(await _userService.LoginAsync(loginRequest, cancellationToken));
-//        }
-//        catch (Exception ex)
-//        {
-//            return ReturnException(ex);
-//        }
-//    }
+    }
 
-//    [HttpPost]
-//    [Route("Logout")]
-//    public async Task<ActionResult> Logout([FromBody] LogoutRequest logoutRequest, CancellationToken cancellationToken = default)
-//    {
-//        try
-//        {
-//            return (await _userService.LogoutAsync(logoutRequest, cancellationToken)).Match(succ =>
-//            {
+    [HttpPost]
+    [Route("ConfirmEmail")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailRequest confirmEmailRequest, CancellationToken cancellationToken = default)
+    {
+        return Result(await _userService.ConfirmEmailAsync(confirmEmailRequest, cancellationToken));
+    }
 
-//                if (succ.IsSuccess)
-//                {
-//                    _ = Response.Headers.Remove("Authorization");
-//                }
-//                return ReturnRequest(succ);
-//            },
-//            ReturnException);
-//        }
-//        catch (Exception ex)
-//        {
-//            return ReturnException(ex);
-//        }
-//    }
+    [HttpPost]
+    [Route("Login")]
+    [AllowAnonymous]
+    public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest, CancellationToken cancellationToken = default)
+    {
+        return Result(await _userService.LoginAsync(loginRequest, cancellationToken));
+    }
 
-//    [HttpPost]
-//    [Route("RefreshAuthToken")]
-//    public async Task<ActionResult> RefreshAuthToken([FromBody] RefreshAuthTokenRequest refreshAuthTokenRequest, CancellationToken cancellationToken = default)
-//    {
-//        try
-//        {
-//            return ReturnResult<RefreshAuthTokenResponse, TokenDTO>(await _userService.RefreshAuthTokensAsync(refreshAuthTokenRequest, cancellationToken));
-//        }
-//        catch (Exception ex)
-//        {
-//            return ReturnException(ex);
-//        }
-//    }
+    [HttpPost]
+    [Route("Logout")]
+    public async Task<IActionResult> Logout([FromBody] LogoutRequest logoutRequest, CancellationToken cancellationToken = default)
+    {
 
-//    [HttpPost]
-//    [Route("CreatePasswordResetToken")]
-//    [AllowAnonymous]
-//    public async Task<ActionResult> CreatePasswordResetToken([FromBody] CreatePasswordResetTokenRequest createPasswordResetTokenRequest, CancellationToken cancellationToken = default)
-//    {
-//        try
-//        {
-//            return ReturnBaseResult(await _userService.CreatePasswordResetTokenAsync(createPasswordResetTokenRequest, cancellationToken));
-//        }
-//        catch (Exception ex)
-//        {
-//            return ReturnException(ex);
-//        }
-//    }
+        return Result(await _userService.LogoutAsync(logoutRequest, cancellationToken));
 
-//    [HttpPost]
-//    [Route("ResetPassword")]
-//    [AllowAnonymous]
-//    public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordRequest resetPasswordRequest, CancellationToken cancellationToken = default)
-//    {
-//        try
-//        {
-//            return ReturnResult(await _userService.ResetPasswordAsync(resetPasswordRequest, cancellationToken));
-//        }
-//        catch (Exception ex)
-//        {
-//            return ReturnException(ex);
-//        }
-//    }
-//}
+
+    }
+
+    [HttpPost]
+    [Route("RefreshAuthToken")]
+    public async Task<IActionResult> RefreshAuthToken([FromBody] RefreshAuthTokenRequest refreshAuthTokenRequest, CancellationToken cancellationToken = default)
+    {
+
+        return Result(await _userService.RefreshAuthTokensAsync(refreshAuthTokenRequest, cancellationToken));
+    }
+
+    [HttpPost]
+    [Route("CreatePasswordResetToken")]
+    [AllowAnonymous]
+    public async Task<IActionResult> CreatePasswordResetToken([FromBody] CreatePasswordResetTokenRequest createPasswordResetTokenRequest, CancellationToken cancellationToken = default)
+    {
+
+        return Result(await _userService.CreatePasswordResetTokenAsync(createPasswordResetTokenRequest, cancellationToken));
+    }
+
+    [HttpPost]
+    [Route("ResetPassword")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest resetPasswordRequest, CancellationToken cancellationToken = default)
+    {
+        return Result(await _userService.ResetPasswordAsync(resetPasswordRequest, cancellationToken));
+    }
+}

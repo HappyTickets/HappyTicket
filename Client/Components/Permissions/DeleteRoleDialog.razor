@@ -1,0 +1,64 @@
+﻿@using Shared.DTOs.Authorization.Request
+@inject IHttpClientHelper HttpHelper
+@inject BIAuthorizationService AuthService
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+<MudDialog>
+    <DialogContent>
+        <MudText>@Resource.ConfirmRoleDeletion</MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@Resource.Cancel</MudButton>
+        <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="HandleValidSubmit">@Resource.Delete</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [Inject] private ICustomSnackbarProvider Snackbar { get; set; }
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter] public string RoleId { get; set; } // Corrected roleId to RoleId for consistency
+
+    [Parameter]
+    public EventCallback OnRoleDeleted { get; set; }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            var response = await AuthService.DeleteRoleAsync(RoleId); // Using the RoleId parameter
+
+            _ = response.Match(
+                  res =>
+                    {
+                        if (res.IsSuccess)
+                        {
+                            Snackbar.Show(Resource.RoleDeletedSuccessfully, Severity.Success);
+                            MudDialog.Close(DialogResult.Ok(true)); // Close dialog on success
+                        }
+                        else
+                        {
+                            Snackbar.Show(Resource.RoleDeletionFailed, Severity.Error);
+                        }
+                        return new Unit();
+                    },
+                ex =>
+                {
+                    Snackbar.Show(Resource.RoleDeletionFailed, Severity.Error);
+                    return new Unit();
+                }
+            );
+
+            await OnRoleDeleted.InvokeAsync(); // Notify parent component
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show(Resource.RoleDeletionFailed, Severity.Error);
+        }
+    }
+
+    private void Cancel() => MudDialog.Cancel(); // Close the dialog if cancelled
+}

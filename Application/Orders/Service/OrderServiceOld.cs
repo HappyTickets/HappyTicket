@@ -1,5 +1,6 @@
-﻿//using Application.Interfaces;
-//using Application.Interfaces.Persistence;
+﻿//using Application.Common.Implementations;
+//using Application.Common.Interfaces.Persistence;
+//using Application.Interfaces;
 //using AutoMapper;
 //using Domain.Entities;
 //using Domain.Enums;
@@ -8,30 +9,25 @@
 //using LanguageExt.Common;
 //using Microsoft.EntityFrameworkCore;
 //using Microsoft.EntityFrameworkCore.Query;
-//using Microsoft.Extensions.Caching.Memory;
-//using Microsoft.Extensions.Localization;
 //using Microsoft.Extensions.Logging;
-//using Microsoft.IdentityModel.Tokens;
-//using Shared.Common.Enums;
 //using Shared.Common.General;
-//using Shared.DTOs;
 //using Shared.DTOs.Identity.UserDTOs;
 //using Shared.DTOs.MatchDtos;
 //using Shared.DTOs.Team;
 //using Shared.DTOs.TicketDTOs;
-//using Shared.ResourceFiles;
-//using System.Globalization;
 //using System.Linq.Expressions;
 
 //namespace Application.Implementations
 //{
-//    public class OrderService : BaseService<OrderO, OrderDto>, IOrderService
+//    public class OrderServiceOld(
+//          IUnitOfWork unitOfWork,
+//          ILogger<Ticket> logger,
+//          IMapper mapper
+//          ) : BaseService<Ticket>(unitOfWork, logger, mapper), IOrderService
+
 //    {
-//        public OrderService(IUnitOfWork unitOfWork, ILogger<OrderO> logger, IMemoryCache cache, IMapper mapper, IValidator<OrderDto> validator, IStringLocalizer<Resource> localizer)
-//            : base(unitOfWork, logger, cache, mapper, validator, localizer)
-//        {
-//        }
-        
+
+
 //        public async Task<Result<IEnumerable<OrderDto>>> GetPaginatedOrdersAsync(
 //                     PaginationSearchModel paginationSearchModel,
 //                     bool useCache = false,

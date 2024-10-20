@@ -54,7 +54,7 @@ namespace API.Controllers
         }
 
         [HttpGet("paginated")]
-        public async Task<IActionResult> GetPaginated([FromQuery] PaginationSearchModel paginationParams)
+        public async Task<IActionResult> GetPaginated([FromQuery] PaginationParams paginationParams)
         {
             var result = await _testMatchService.GetPaginatedAsync(paginationParams);
             return Ok(result);

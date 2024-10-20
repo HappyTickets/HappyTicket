@@ -44,14 +44,10 @@ public class UserRepository<TUser> : IUserRepository<TUser> where TUser : Applic
     }
 
 
-    public async Task<BaseResponse<TUser>> GetByIdAsync(string id, CancellationToken cancellationToken = default)
+    public async Task<BaseResponse<TUser>> GetByIdAsync(long id, CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrWhiteSpace(id))
-        {
-            return new BadRequestException([new() { Title = "Invalid Id", Message = "The Id cannot be empty/null." }]);
-        }
 
-        TUser? user = await _userManager.FindByIdAsync(id);
+        TUser? user = await _userManager.FindByIdAsync(id.ToString());
 
         return user == null ? new NotFoundException([new() { Title = "Not Found", Message = "The user requested cannot be found." }]) : user;
     }

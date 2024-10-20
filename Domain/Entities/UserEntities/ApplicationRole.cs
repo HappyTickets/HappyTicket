@@ -2,7 +2,9 @@
 
 namespace Domain.Entities.UserEntities
 {
-    public class ApplicationRole: IdentityRole<long>
+    public class ApplicationRole : IdentityRole<long>
     {
+        public string? Description { get; set; }
+
     }
 }

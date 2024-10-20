@@ -49,9 +49,7 @@
     <Folder Include="Matches\Mappings\" />
     <Folder Include="Matches\Service\" />
     <Folder Include="Matches\Validators\" />
-    <Folder Include="Orders\Mappings\" />
-    <Folder Include="Orders\Service\" />
-    <Folder Include="Orders\Validators\" />
+    <Folder Include="Permissions\Service\" />
     <Folder Include="Seats\Mappings\" />
     <Folder Include="Seats\Service\" />
     <Folder Include="Seats\Validators\" />

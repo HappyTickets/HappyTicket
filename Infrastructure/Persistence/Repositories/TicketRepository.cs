@@ -2,8 +2,10 @@
 using Application.Common.Interfaces.Services;
 using Domain.Entities;
 using Infrastructure.Persistence.EntityFramework;
+using Infrastructure.Persistence.Extensions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Shared.Common.General;
 using System.Linq.Expressions;
 
 namespace Infrastructure.Persistence.Repositories
@@ -43,6 +45,18 @@ namespace Infrastructure.Persistence.Repositories
                 );
         }
 
+        public async Task<PaginatedList<Ticket>> GetMyTicketsAsync(long userId, PaginationParams pagination)
+        {
+            var myTickets = _dbContext.Orders
+                   .Include(o => o.OrderItems)
+                   .ThenInclude(oi => oi.Ticket)
+                   .Where(o => o.UserId == userId)
+                   .SelectMany(o => o.OrderItems)
+                   .Select(oi => oi.Ticket);
+
+            return await PaginationExtensions.PaginateAsync(myTickets, pageIndex: pagination.PageIndex, pageSize: pagination.PageSize);
+        }
+
         public void UpdateAllWithSamePredicate(Expression<Func<Ticket, bool>> predicate, Ticket ticket)
         {
             _dbContext.Tickets.Where(predicate)
@@ -62,7 +76,7 @@ namespace Infrastructure.Persistence.Repositories
                     .SetProperty(t => t.ModifiedBy, _currentUser.Id)
                     .SetProperty(t => t.ModifiedDate, DateTime.UtcNow)
                 );
-               
+
         }
 
         private SqlParameter CreateParameter(string name, object? value)
