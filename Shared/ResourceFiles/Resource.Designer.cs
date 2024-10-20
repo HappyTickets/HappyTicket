@@ -1664,7 +1664,7 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Champion ship Found.
+        ///   Looks up a localized string similar to No Championship Found.
         /// </summary>
         public static string NoChampionshipFound {
             get {

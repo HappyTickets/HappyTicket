@@ -30,5 +30,10 @@ namespace API.Controllers
         {
             return Ok(await _championService.GetAllChampionshipsAsync());
         }
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetChampionshipById(long championshipId)
+        {
+            return Ok(await _championService.GetChampionshipByIdAsync(championshipId));
+        }
     }
 }

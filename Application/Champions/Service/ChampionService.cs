@@ -15,7 +15,6 @@ namespace Application.Implementations
     public class ChampionService : BaseService<Championship>, IChampionService
     {
         public ChampionService(IUnitOfWork unitOfWork, ILogger<Championship> logger, IMapper mapper) : base(unitOfWork, logger, mapper) { }
-
         public async ValueTask<BaseResponse<CreateChampionshipDto>> CreateChampionAsync(CreateChampionshipDto createChampionshipDto, bool autoSave = true, CancellationToken cancellationToken = default)
         {
             var championship = _mapper.Map<Championship>(createChampionshipDto);
@@ -48,6 +47,19 @@ namespace Application.Implementations
                 Status = HttpStatusCode.NotFound,
                 Title = Resource.NoChampionshipFound
             };
+        }
+        public async ValueTask<BaseResponse<GetChampionshipDto>> GetChampionshipByIdAsync(long championshipId)
+        {
+            var championship = await GetByIdAsync<GetChampionshipDto>(championshipId);
+            if (championship == null)
+            {
+                return new BaseResponse<GetChampionshipDto>
+                {
+                    Status = HttpStatusCode.NotFound,
+                    Title = Resource.NoChampionshipFound
+                };
+            }
+            return new BaseResponse<GetChampionshipDto>(championship);
         }
     }
 }
