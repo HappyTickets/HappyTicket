@@ -847,6 +847,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Token Generation Failed.
+        /// </summary>
+        public static string FailedToGenerateToken {
+            get {
+                return ResourceManager.GetString("FailedToGenerateToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No favorite team found for user {userId} for match {matchId}..
         /// </summary>
         public static string FavoriteTeam_NotFound_Message {
@@ -1010,6 +1019,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {PropertyName} must be greater than zero.
+        /// </summary>
+        public static string GreaterThanZero {
+            get {
+                return ResourceManager.GetString("GreaterThanZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Guest.
         /// </summary>
         public static string Guest {
@@ -1090,6 +1108,24 @@ namespace Shared.ResourceFiles {
         public static string Internal_Gate {
             get {
                 return ResourceManager.GetString("Internal_Gate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {PropertyName} not exist in Enum List.
+        /// </summary>
+        public static string InvalidEnumValue {
+            get {
+                return ResourceManager.GetString("InvalidEnumValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Payment Status.
+        /// </summary>
+        public static string InvalidPaymentStatus {
+            get {
+                return ResourceManager.GetString("InvalidPaymentStatus", resourceCulture);
             }
         }
         
@@ -1846,6 +1882,15 @@ namespace Shared.ResourceFiles {
         /// <summary>
         ///   Looks up a localized string similar to Password Reset Successfully.
         /// </summary>
+        public static string Password_Reset_Succeed {
+            get {
+                return ResourceManager.GetString("Password_Reset_Succeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password Reset Successfully.
+        /// </summary>
         public static string Password_Reset_Success {
             get {
                 return ResourceManager.GetString("Password_Reset_Success", resourceCulture);
@@ -1925,11 +1970,29 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TotalAmount must be a positive value.
+        /// </summary>
+        public static string PositiveTotalAmount {
+            get {
+                return ResourceManager.GetString("PositiveTotalAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Price.
         /// </summary>
         public static string Price {
             get {
                 return ResourceManager.GetString("Price", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Price must have up to 2 decimal places.
+        /// </summary>
+        public static string PricePrecision {
+            get {
+                return ResourceManager.GetString("PricePrecision", resourceCulture);
             }
         }
         
@@ -2011,6 +2074,15 @@ namespace Shared.ResourceFiles {
         public static string Registration_Success {
             get {
                 return ResourceManager.GetString("Registration_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {PropertyName} is required.
+        /// </summary>
+        public static string RequiredField {
+            get {
+                return ResourceManager.GetString("RequiredField", resourceCulture);
             }
         }
         
@@ -2938,6 +3010,15 @@ namespace Shared.ResourceFiles {
         public static string UpcomingMatches {
             get {
                 return ResourceManager.GetString("UpcomingMatches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Already Exist.
+        /// </summary>
+        public static string UserAlreadyExist {
+            get {
+                return ResourceManager.GetString("UserAlreadyExist", resourceCulture);
             }
         }
         

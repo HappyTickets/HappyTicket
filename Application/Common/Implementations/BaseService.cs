@@ -7,6 +7,7 @@ using LanguageExt;
 using Microsoft.Extensions.Logging;
 using Shared.Common.General;
 using Shared.Exceptions;
+using Shared.ResourceFiles;
 using System.Linq.Expressions;
 
 namespace Application.Common.Implementations;
@@ -70,7 +71,7 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity>
         return entityResult.Select(_mapper.Map<TDto>);
     }
 
-    public virtual async ValueTask<PaginatedList<TDto>> GetPaginatedAsync<TDto>(PaginationSearchModel paginationParams, CancellationToken cancellationToken = default, IEnumerable<string>? includes = null) where TDto : class
+    public virtual async ValueTask<PaginatedList<TDto>> GetPaginatedAsync<TDto>(PaginationParams paginationParams, CancellationToken cancellationToken = default, IEnumerable<string>? includes = null) where TDto : class
     {
         // Retrieve paginated entities from the repository
         var entityResult = await _unitOfWork.Repository<TEntity>().PaginateAsync(paginationParams.PageIndex, paginationParams.PageSize, includes, cancellationToken);
@@ -325,7 +326,7 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity>
 
         if (entityToDelete == null)
         {
-            throw new NotFoundException("Entity not found for deletion.");
+            throw new NotFoundException(Resource.NotFoundInDB_Message);
         }
 
         _unitOfWork.Repository<TEntity>().HardDelete(entityToDelete);

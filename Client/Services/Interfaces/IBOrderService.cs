@@ -1,7 +1,7 @@
 ﻿using LanguageExt.Common;
 using Shared.Common;
 using Shared.Common.General;
-using Shared.DTOs;
+using Shared.DTOs.OrderDtos.Response;
 using Shared.DTOs.TicketDTOs;
 
 namespace Client.Services.Interfaces

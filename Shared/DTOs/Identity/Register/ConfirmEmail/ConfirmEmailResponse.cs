@@ -1,7 +1,7 @@
-﻿using Shared.Common;
+﻿//using Shared.Common;
 
-namespace Shared.DTOs.Identity.Register.ConfirmEmail;
+//namespace Shared.DTOs.Identity.Register.ConfirmEmail;
 
-public class ConfirmEmailResponse
-{
-}
+//public class ConfirmEmailResponse
+//{
+//}

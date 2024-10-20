@@ -8,7 +8,6 @@ using Shared.Common;
 using Shared.Common.General;
 using Shared.DTOs.Test.Request;
 using Shared.DTOs.Test.Response;
-using System.Linq.Expressions;
 
 
 namespace Application.Tests.Matches.Service
@@ -63,7 +62,7 @@ namespace Application.Tests.Matches.Service
             return new BaseResponse<IEnumerable<GetMatchDto>>(matches);
         }
 
-        public async ValueTask<BaseResponse<PaginatedList<GetMatchDto>>> GetPaginatedAsync(PaginationSearchModel paginationParams)
+        public async ValueTask<BaseResponse<PaginatedList<GetMatchDto>>> GetPaginatedAsync(PaginationParams paginationParams)
         {
             var paginatedMatches = await GetPaginatedAsync<GetMatchDto>(paginationParams);
             return new BaseResponse<PaginatedList<GetMatchDto>>(paginatedMatches);

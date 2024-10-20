@@ -1,9 +1,9 @@
-﻿using Shared.Common;
-using Shared.DTOs.Identity.TokenDTOs;
+﻿//using Shared.Common;
+//using Shared.DTOs.Identity.TokenDTOs;
 
-namespace Shared.DTOs.Identity.Login;
+//namespace Shared.DTOs.Identity.Login;
 
-public class LoginResponse : BaseResponse<TokenDTO>
-{
-    public override TokenDTO? Data { get; set; }
-}
+//public class LoginResponse : BaseResponse<TokenDTO>
+//{
+//    public override TokenDTO? Data { get; set; }
+//}

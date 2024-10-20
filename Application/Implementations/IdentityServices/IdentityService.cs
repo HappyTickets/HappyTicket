@@ -1,240 +1,290 @@
-﻿//using Application.Interfaces.IIdentityServices;
-//using Domain.Entities.UserEntities;
-//using LanguageExt;
-//using LanguageExt.Common;
-//using Microsoft.AspNetCore.Identity;
-//using Microsoft.EntityFrameworkCore;
-//using Microsoft.Extensions.Localization;
-//using Shared.Common;
-//using Shared.Common.General;
-//using Shared.DTOs.Identity.Login;
-//using Shared.DTOs.Identity.Logout;
-//using Shared.DTOs.Identity.RefreshAuthToken;
-//using Shared.DTOs.Identity.Register;
-//using Shared.DTOs.Identity.Register.ConfirmEmail;
-//using Shared.DTOs.Identity.Register.SendEmailConfirmation;
-//using Shared.DTOs.Identity.ResetPassword;
-//using Shared.DTOs.Identity.ResetPassword.CreatePasswordResetToken;
-//using Shared.Exceptions;
-//using Shared.ResourceFiles;
-//using System.Net;
-//using System.Web;
+﻿using Application.Interfaces.IIdentityServices;
+using Domain.Entities;
+using Domain.Entities.UserEntities;
+using LanguageExt;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Shared.Common;
+using Shared.Common.General;
+using Shared.DTOs.Identity.Login;
+using Shared.DTOs.Identity.Logout;
+using Shared.DTOs.Identity.RefreshAuthToken;
+using Shared.DTOs.Identity.Register;
+using Shared.DTOs.Identity.Register.ConfirmEmail;
+using Shared.DTOs.Identity.Register.SendEmailConfirmation;
+using Shared.DTOs.Identity.ResetPassword;
+using Shared.DTOs.Identity.ResetPassword.CreatePasswordResetToken;
+using Shared.DTOs.Identity.TokenDTOs;
+using Shared.Exceptions;
+using Shared.ResourceFiles;
+using System.Net;
+using System.Security.Claims;
+using System.Web;
 
-//namespace Application.Implementations.IdentityServices;
-//public class IdentityService : IIdentityService
-//{
-//    private readonly UserManager<ApplicationUser> _userManager;
-//    private readonly ITokenService<ApplicationUser> _tokenService;
-//    private readonly IEmailSender _emailSender;
-//    protected IStringLocalizer<Resource> _localizer;
+namespace Application.Implementations.IdentityServices;
+public class IdentityService : IIdentityService
+{
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly ITokenService<ApplicationUser> _tokenService;
+    private readonly IEmailSender _emailSender;
 
-//    public IdentityService(UserManager<ApplicationUser> userManager, ITokenService<ApplicationUser> tokenService, IEmailSender emailSender, IStringLocalizer<Resource> localizer)
-//    {
-//        _userManager = userManager;
-//        _tokenService = tokenService;
-//        _emailSender = emailSender;
-//        _localizer = localizer;
-//    }
+    public IdentityService(UserManager<ApplicationUser> userManager, ITokenService<ApplicationUser> tokenService, IEmailSender emailSender)
+    {
+        _userManager = userManager;
+        _tokenService = tokenService;
+        _emailSender = emailSender;
+    }
 
-//    public async Task<Result<RegisterResponse>> RegisterAsync(RegisterRequest registerRequest, CancellationToken cancellationToken = default)
-//    {
-//        try
-//        {
-//            return await Task.Run(async () =>
-//            {
-//                bool isNotAdmin = await _userManager.Users.AnyAsync();
-//                if (registerRequest.Password != registerRequest.ConfirmPassword) return new(new RegisterResponse() { Status = HttpStatusCode.BadRequest });
+    public async Task<BaseResponse<TokenDTO?>> RegisterAsync(RegisterRequest registerRequest, CancellationToken cancellationToken = default)
+    {
+        return await Task.Run(async () =>
+        {
+            bool isNotAdmin = await _userManager.Users.AnyAsync(cancellationToken);
 
-//                ApplicationUser? user = null;
-//                if (isNotAdmin)
-//                {
-//                    user = await _userManager.FindByEmailAsync(registerRequest.Email);
-//                    if (user != null) return new(new RegisterResponse() { Status = HttpStatusCode.Forbidden });
-//                }
-//                user = new() { UserName = registerRequest.UserName, Email = registerRequest.Email, PhoneNumber = registerRequest.PhoneNumber, Cart = new() };
-//                user.Cart.UserId = user.Id;
-//                user.Cart.User = user;
-//                var registrationResults = await _userManager.CreateAsync(user, registerRequest.Password);
-//                if (!registrationResults.Succeeded) return new(new RegisterResponse() { Status = HttpStatusCode.BadRequest, ErrorList = registrationResults.Errors.Select(e => new ResponseError() { Title = e.Code, Message = e.Description }).ToList() });
+            if (registerRequest.Password != registerRequest.ConfirmPassword)
+            {
+                return new BaseResponse<TokenDTO?>()
+                {
+                    Status = HttpStatusCode.BadRequest,
+                    Title = Resource.Passwords_NotMatching,
+                    ErrorList = new List<ResponseError>
+                {
+                    new ResponseError { Title = Resource.Error_Occurred, Message = Resource.Passwords_NotMatching}
+                }
+                };
+            }
 
-//                user = (await _userManager.FindByEmailAsync(registerRequest.Email))!;
-//                if (!isNotAdmin) await _userManager.AddClaimAsync(user, new("Role", "Admin"));
+            ApplicationUser? user = null;
 
-//                //var confResult = await _userManager.ConfirmEmailAsync(user, await _userManager.GenerateEmailConfirmationTokenAsync(user));
-//                //return new Result<RegisterResponse>(confResult.Succeeded ? new RegisterResponse() { Status = HttpStatusCode.OK } : new RegisterResponse() { Status = HttpStatusCode.InternalServerError, Title = "Failed to confirm your email.", ErrorList = confResult.Errors.Select(x => new ResponseError() { Title = x.Code, Message = x.Description }).ToList() });
+            if (isNotAdmin)
+            {
+                user = await _userManager.FindByEmailAsync(registerRequest.Email);
+                if (user != null)
+                {
+                    return new BaseResponse<TokenDTO?>()
+                    {
+                        Status = HttpStatusCode.Conflict,
+                        Title = Resource.UserAlreadyExist,
+                        ErrorList = new List<ResponseError>
+                    {
+                        new ResponseError { Title = Resource.Error_Occurred, Message = Resource.UserAlreadyExist}
+                    }
+                    };
+                }
+            }
 
-//                var emailResult = await SendConfirmationEmail(user, cancellationToken);
-//                return emailResult.Map(e => new RegisterResponse() { Status = HttpStatusCode.OK });
-//            }, cancellationToken);
-//        }
-//        catch (Exception ex)
-//        {
-//            return new(new RegisterResponse() { Status = HttpStatusCode.InternalServerError, Title = ex.Message });
-//        }
-//    }
-//    public async Task<Result<SendEmailConfirmationResponse>> SendEmailConfirmation(SendEmailConfirmationRequest sendEmailConfirmationRequest, CancellationToken cancellationToken = default)
-//    {
-//        try
-//        {
-//            return await Task.Run(async () =>
-//            {
-//                var user = await _userManager.FindByEmailAsync(sendEmailConfirmationRequest.Email);
-//                if (user == null) return new(new SendEmailConfirmationResponse() { Status = HttpStatusCode.NotFound });
+            user = new ApplicationUser
+            {
+                UserName = registerRequest.UserName,
+                Email = registerRequest.Email,
+                PhoneNumber = registerRequest.PhoneNumber,
+                Cart = new Cart { User = user },
+                CreatedDate = DateTime.UtcNow,
+            };
 
-//                return await SendConfirmationEmail(user, cancellationToken).Map(succ => new Result<SendEmailConfirmationResponse>(new SendEmailConfirmationResponse()));
-//            }, cancellationToken);
-//        }
-//        catch (Exception ex)
-//        {
-//            return new(new SendEmailConfirmationResponse() { Status = HttpStatusCode.InternalServerError, Title = ex.Message });
-//        }
-//    }
+            var registrationResults = await _userManager.CreateAsync(user, registerRequest.Password);
+            if (!registrationResults.Succeeded)
+            {
+                return new()
+                {
+                    Status = HttpStatusCode.BadRequest,
+                    ErrorList = registrationResults.Errors.Select(e => new ResponseError { Title = e.Code, Message = e.Description }).ToList()
+                };
+            }
 
-//    private async Task<Result<Unit>> SendConfirmationEmail(ApplicationUser user, CancellationToken cancellationToken = default)
-//    {
-//        try
-//        {
-//            return await Task.Run(async () =>
-//            {
-//                if (user == null) return new(new BadRequestException());
+            user = await _userManager.FindByEmailAsync(registerRequest.Email);
+            if (user is null)
+            {
+                return new BaseResponse<TokenDTO?>()
+                {
+                    Status = HttpStatusCode.InternalServerError,
+                    Title = Resource.NotFound,
+                    ErrorList = new List<ResponseError>
+                {
+                    new ResponseError { Title = Resource.Error_Occurred, Message =Resource.NotFoundInDB_Message}
+                }
+                };
+            }
 
-//                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-//                token = HttpUtility.UrlEncode(token);
+            // Assign admin role if applicable
+            if (!isNotAdmin)
+            {
+                await _userManager.AddClaimAsync(user, new Claim("Role", "Admin"));
+            }
 
-//                return await _emailSender.SendEmailAsync(user.Email!, Resource.Email_Confirmation, $"{Resource.Email_Confirmation_Message}<a href=\"{UrlHelper.GetBlazorBase()}ConfirmEmail/{token}\">{Resource.Email_Confirm}</a>", cancellationToken: cancellationToken);
-//            }, cancellationToken);
-//        }
-//        catch (Exception ex)
-//        {
-//            return new(ex);
-//        }
-//    }
+            // Send confirmation email
+            var emailResult = await SendConfirmationEmail(user, cancellationToken);
+            if (!emailResult.IsSuccess)
+            {
+                return new BaseResponse<TokenDTO?>()
+                {
+                    Status = HttpStatusCode.InternalServerError,
+                    Title = Resource.Email_Confirmation_Fail,
+                    ErrorList = emailResult.ErrorList
+                };
+            }
 
-//    public async Task<Result<ConfirmEmailResponse>> ConfirmEmailAsync(ConfirmEmailRequest confirmEmailRequest, CancellationToken cancellationToken = default)
-//    {
-//        try
-//        {
-//            return await Task.Run(async () =>
-//            {
-//                var user = await _userManager.FindByEmailAsync(confirmEmailRequest.Email);
-//                if (user == null) return new(new ConfirmEmailResponse() { Status = HttpStatusCode.NotFound });
+            // Generate tokens for the user
+            var tokenDTO = await _tokenService.CreateAuthTokensAsync(user, cancellationToken);
+            if (tokenDTO is null)
+            {
+                return new BaseResponse<TokenDTO?>()
+                {
+                    Status = HttpStatusCode.InternalServerError,
+                    Title = Resource.FailedToGenerateToken,
+                    ErrorList = new List<ResponseError>
+                {
+                    new ResponseError { Title = Resource.Error_Occurred, Message = Resource.FailedToGenerateToken  }
+                }
+                };
+            }
+            return new BaseResponse<TokenDTO?>
+            {
+                Status = HttpStatusCode.OK,
+                Data = tokenDTO
+            };
+        }, cancellationToken);
+    }
 
-//                var confirmationResults = await _userManager.ConfirmEmailAsync(user, confirmEmailRequest.Token);
 
-//                if (!confirmationResults.Succeeded) return new(new ConfirmEmailResponse() { Status = HttpStatusCode.BadRequest, ErrorList = confirmationResults.Errors.Select(e => new ResponseError() { Title = e.Code, Message = e.Description }).ToList() }); ;
+    public async Task<BaseResponse<object?>> SendEmailConfirmation(SendEmailConfirmationRequest sendEmailConfirmationRequest, CancellationToken cancellationToken = default)
+    {
+        return await Task.Run(async () =>
+           {
+               var user = await _userManager.FindByEmailAsync(sendEmailConfirmationRequest.Email);
+               if (user is null)
+                   return new NotFoundException(Resource.Email_NotFound);
 
-//                return new Result<ConfirmEmailResponse>(new ConfirmEmailResponse());
-//            }, cancellationToken);
-//        }
-//        catch (Exception ex)
-//        {
-//            return new(new ConfirmEmailResponse() { Status = HttpStatusCode.InternalServerError, Title = ex.Message });
-//        }
-//    }
+               return await SendConfirmationEmail(user, cancellationToken).Map(succ => new BaseResponse<SendEmailConfirmationResponse>());
+           }, cancellationToken);
 
-//    public async Task<Result<LoginResponse>> LoginAsync(LoginRequest loginRequest, CancellationToken cancellationToken = default)
-//    {
-//        try
-//        {
-//            return await Task.Run(async () =>
-//            {
-//                ApplicationUser? user = await _userManager.FindByEmailAsync(loginRequest.Email);
-//                if (user == null) return new(new LoginResponse() { Status = HttpStatusCode.NotFound });
-//                bool isEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
-//                if (!isEmailConfirmed) return new(new LoginResponse() { Status = HttpStatusCode.BadRequest, Title = Resource.Email_Confirm, ErrorList = [new() { Title = Resource.Email_NotConfirmed, Message = Resource.Email_NotConfirmed_Message }] });
-//                bool isValidAttempt = await _userManager.CheckPasswordAsync(user, loginRequest.Password);
-//                if (!isValidAttempt) return new(new LoginResponse() { Status = HttpStatusCode.BadRequest, Title = Resource.Credentials_Invalid });
-//                return new Result<LoginResponse>((await _tokenService.CreateAuthTokensAsync(user, cancellationToken)).
-//                    Match<LoginResponse>(succ => new() { Status = HttpStatusCode.OK, Data = succ },
-//                                         fail => new() { Status = HttpStatusCode.InternalServerError, Title = fail.Message }));
-//            }, cancellationToken);
-//        }
-//        catch (Exception ex)
-//        {
-//            return new(new LoginResponse() { Status = HttpStatusCode.InternalServerError, Title = ex.Message });
-//        }
-//    }
+    }
 
-//    public async Task<Result<LogoutResponse>> LogoutAsync(LogoutRequest logoutRequest, CancellationToken cancellationToken = default)
-//    {
-//        try
-//        {
-//            return (await _tokenService.RevokeAuthTokensAsync(logoutRequest.UserInfo, cancellationToken)).Match<LogoutResponse>(
-//                succ => new() { Status = HttpStatusCode.OK },
-//                fail => new() { Status = HttpStatusCode.InternalServerError, Title = fail.Message });
-//        }
-//        catch (Exception ex)
-//        {
-//            return new(new LogoutResponse() { Status = HttpStatusCode.InternalServerError, Title = ex.Message });
-//        }
-//    }
+    private async Task<BaseResponse<object?>> SendConfirmationEmail(ApplicationUser user, CancellationToken cancellationToken = default)
+        => await Task.Run(async () =>
+        {
+            if (user == null) return new(new BadRequestException());
 
-//    public async Task<Result<RefreshAuthTokenResponse>> RefreshAuthTokensAsync(RefreshAuthTokenRequest refreshAuthTokenRequest, CancellationToken cancellationToken = default)
-//    {
-//        try
-//        {
-//            return (await _tokenService.RefreshAuthTokensAsync(refreshAuthTokenRequest.AuthInfo, cancellationToken))
-//                .Match<RefreshAuthTokenResponse>(succ => new() { Status = HttpStatusCode.OK, Data = succ },
-//                                                 fail => new() { Status = HttpStatusCode.InternalServerError, Title = fail.Message });
-//        }
-//        catch (Exception ex)
-//        {
-//            return new(new RefreshAuthTokenResponse() { Status = HttpStatusCode.InternalServerError, Title = ex.Message });
-//        }
-//    }
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            token = HttpUtility.UrlEncode(token);
 
-//    public async Task<Result<CreatePasswordResetTokenResponse>> CreatePasswordResetTokenAsync(CreatePasswordResetTokenRequest createPasswordResetTokenRequest, CancellationToken cancellationToken = default)
-//    {
-//        try
-//        {
-//            return await Task.Run(async () =>
-//            {
-//                var user = await _userManager.FindByEmailAsync(createPasswordResetTokenRequest.Email);
-//                if (user == null)
-//                {
-//                    return new(new CreatePasswordResetTokenResponse() { Status = HttpStatusCode.NotFound });
-//                }
+            return await _emailSender.SendEmailAsync(user.Email!, Resource.Email_Confirmation, $"{Resource.Email_Confirmation_Message}<a href=\"{UrlHelper.GetBlazorBase()}ConfirmEmail/{token}\">{Resource.Email_Confirm}</a>", cancellationToken: cancellationToken);
+        }, cancellationToken);
 
-//                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-//                if (token == null)
-//                {
-//                    return new(new CreatePasswordResetTokenResponse() { Status = HttpStatusCode.InternalServerError });
-//                }
-//                token = HttpUtility.UrlEncode(token);
-//                var emailResult = await _emailSender.SendEmailAsync(user.Email!, Resource.Password_Reset, $"{Resource.Password_Reset_Message} <a href=\"{UrlHelper.GetBlazorBase()}ResetPassword/{token}\">{Resource.Password_Reset}</a>", cancellationToken: cancellationToken);
-//                return emailResult.Map(_ => new CreatePasswordResetTokenResponse());
-//            }, cancellationToken);
-//        }
-//        catch (Exception ex)
-//        {
-//            return new(new CreatePasswordResetTokenResponse() { Status = HttpStatusCode.InternalServerError, Title = ex.Message });
-//        }
-//    }
+    public async Task<BaseResponse<object?>> ConfirmEmailAsync(ConfirmEmailRequest confirmEmailRequest, CancellationToken cancellationToken = default)
+    {
+        return await Task.Run(async () =>
+        {
+            var user = await _userManager.FindByEmailAsync(confirmEmailRequest.Email);
+            if (user == null)
+                return new NotFoundException(Resource.NotFoundInDB_Message);
 
-//    public async Task<Result<ResetPasswordResponse>> ResetPasswordAsync(ResetPasswordRequest resetPasswordRequest, CancellationToken cancellationToken = default)
-//    {
-//        try
-//        {
-//            return await Task.Run<Result<ResetPasswordResponse>>(async () =>
-//            {
-//                var user = await _userManager.FindByEmailAsync(resetPasswordRequest.Email);
-//                if (user == null)
-//                {
-//                    return new(new ResetPasswordResponse() { Status = HttpStatusCode.NotFound });
-//                }
+            var confirmationResults = await _userManager.ConfirmEmailAsync(user, confirmEmailRequest.Token);
 
-//                var resetPasswordResult = await _userManager.ResetPasswordAsync(user, resetPasswordRequest.Token, resetPasswordRequest.NewPassword);
-//                if (!resetPasswordResult.Succeeded || resetPasswordResult.Errors.Any())
-//                {
-//                    return new(new ResetPasswordResponse() { Status = HttpStatusCode.BadRequest, ErrorList = resetPasswordResult.Errors.Select(e => new ResponseError() { Title = e.Code, Message = e.Description }).ToList() });
-//                }
+            if (!confirmationResults.Succeeded)
+            {
+                return new()
+                {
+                    Status = HttpStatusCode.InternalServerError,
+                    ErrorList = confirmationResults.Errors.Select(e => new ResponseError() { Title = e.Code, Message = e.Description })
+                };
 
-//                return new(new ResetPasswordResponse());
-//            }, cancellationToken);
-//        }
-//        catch (Exception ex)
-//        {
-//            return new(new ResetPasswordResponse() { Status = HttpStatusCode.InternalServerError, Title = ex.Message });
-//        }
-//    }
-//}
+            }
+
+            return new BaseResponse<object?>();
+        }, cancellationToken);
+
+    }
+
+    public async Task<BaseResponse<TokenDTO?>> LoginAsync(LoginRequest loginRequest, CancellationToken cancellationToken = default)
+    {
+
+        return await Task.Run(async () =>
+        {
+            ApplicationUser? user = await _userManager.FindByEmailAsync(loginRequest.Email);
+
+            if (user is null)
+                return new NotFoundException(Resource.NotFoundInDB_Message);
+
+            bool isEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+
+            if (!isEmailConfirmed)
+                return new()
+                {
+                    Status = HttpStatusCode.BadRequest,
+                    Title = Resource.Email_Confirm,
+                    ErrorList = [new() { Title = Resource.Email_NotConfirmed, Message = Resource.Email_NotConfirmed_Message }]
+                };
+
+            bool isValidAttempt = await _userManager.CheckPasswordAsync(user, loginRequest.Password);
+
+            if (!isValidAttempt)
+                return new() { Status = HttpStatusCode.BadRequest, Title = Resource.Credentials_Invalid };
+            var token = await _tokenService.CreateAuthTokensAsync(user, cancellationToken);
+            return new BaseResponse<TokenDTO?>(token);
+        }, cancellationToken);
+
+    }
+
+    public async Task<BaseResponse<object?>> LogoutAsync(LogoutRequest logoutRequest, CancellationToken cancellationToken = default)
+    {
+        await _tokenService.RevokeAuthTokensAsync(logoutRequest.UserInfo, cancellationToken);
+        return new();
+    }
+
+    public async Task<BaseResponse<TokenDTO?>> RefreshAuthTokensAsync(RefreshAuthTokenRequest refreshAuthTokenRequest, CancellationToken cancellationToken = default)
+            => await _tokenService.RefreshAuthTokensAsync(refreshAuthTokenRequest.AuthInfo, cancellationToken);
+
+    public async Task<BaseResponse<object?>> CreatePasswordResetTokenAsync(CreatePasswordResetTokenRequest createPasswordResetTokenRequest, CancellationToken cancellationToken = default)
+    {
+
+        return await Task.Run(async () =>
+        {
+            var user = await _userManager.FindByEmailAsync(createPasswordResetTokenRequest.Email);
+            if (user is null)
+            {
+                return new BaseResponse<object?>(new NotFoundException());
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            if (token == null)
+            {
+                return new BaseResponse<object?>(new NotFoundException());
+            }
+            token = HttpUtility.UrlEncode(token);
+
+            var emailResult = await _emailSender.SendEmailAsync(user.Email!, Resource.Password_Reset, $"{Resource.Password_Reset_Message} <a href=\"{UrlHelper.GetBlazorBase()}ResetPassword/{token}\">{Resource.Password_Reset}</a>", cancellationToken: cancellationToken);
+
+            return emailResult.Map(_ => new CreatePasswordResetTokenResponse());
+        }, cancellationToken);
+
+    }
+
+    public async Task<BaseResponse<object?>> ResetPasswordAsync(ResetPasswordRequest resetPasswordRequest, CancellationToken cancellationToken = default)
+    {
+        var user = await _userManager.FindByEmailAsync(resetPasswordRequest.Email);
+        if (user == null)
+        {
+            return new NotFoundException();
+        }
+
+        var resetPasswordResult = await _userManager.ResetPasswordAsync(user, resetPasswordRequest.Token, resetPasswordRequest.NewPassword);
+
+        if (!resetPasswordResult.Succeeded || resetPasswordResult.Errors.Any())
+        {
+            return new BaseResponse<object?>
+            {
+                Status = HttpStatusCode.BadRequest,
+                Title = Resource.Password_Reset_Fail,
+                ErrorList = resetPasswordResult.Errors.Select(e => new ResponseError { Title = e.Code, Message = e.Description }).ToList()
+            };
+        }
+
+        return new
+        {
+            Status = HttpStatusCode.OK,
+            Title = Resource.Password_Reset_Succeed,
+        };
+    }
+
+}

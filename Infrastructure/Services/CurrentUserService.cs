@@ -5,7 +5,7 @@ using System.Security.Claims;
 
 namespace Infrastructure.Services
 {
-    internal class CurrentUserService: ICurrentUser
+    internal class CurrentUserService : ICurrentUser
     {
         private readonly HttpContext? _httpcontext;
 
@@ -18,7 +18,7 @@ namespace Infrastructure.Services
         {
             get
             {
-                var isParsed = long.TryParse(_httpcontext?.User.FindFirstValue(JwtRegisteredClaimNames.Sub), out var result);
+                var isParsed = long.TryParse(_httpcontext?.User.FindFirstValue(ClaimTypes.NameIdentifier), out var result);
                 return isParsed ? result : null;
             }
         }

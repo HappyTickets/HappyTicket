@@ -1,0 +1,78 @@
+﻿@using Shared.DTOs.Authorization.Request
+@inject IHttpClientHelper HttpHelper
+@inject BIAuthorizationService AuthService
+
+<LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
+
+<BaseFormDialog T="AddRoleDto" Submit=HandleValidSubmit Entity="addRoleDto"
+                Title=@($"{Resource.Add} {Resource.Role}") IsVisible="IsVisible" IsVisibleChanged="IsVisibleChanged">
+    <MudGrid Class="mx-4 my-1 gap-2">
+
+        <MudItem xs="12">
+            <MudTextField Label=@Resource.RoleName @bind-Value="@context.RoleName" FullWidth Required />
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudTextField Label=@Resource.RoleDesc @bind-Value="@context.RoleDescription" FullWidth />
+        </MudItem>
+
+    </MudGrid>
+</BaseFormDialog>
+
+@code {
+
+    [Parameter]
+    public EventCallback OnRoleCreated { get; set; }
+    [Parameter]
+    public bool IsVisible { get; set; }
+    [Parameter]
+    public EventCallback<bool> IsVisibleChanged { get; set; }
+
+    private AddRoleDto addRoleDto = new();
+
+    [Inject] private ICustomSnackbarProvider Snackbar { get; set; }
+    private async Task HandleValidSubmit(AddRoleDto roleDto)
+    {
+        try
+        {
+            var response = await AuthService.AddRoleAsync(roleDto);
+
+            _ = response.Match(
+                  res =>
+                    {
+                        if (res.IsSuccess)
+                        {
+                            Snackbar.Show(string.Format(Resource.RoleCreatedSuccessfully, roleDto.RoleName), Severity.Success);
+                        }
+                        else
+                        {
+                            Snackbar.Show(Resource.CreateRoleFailed, Severity.Error);
+                        }
+                        return new Unit();
+                    },
+                ex =>
+                {
+
+                    Snackbar.Show(Resource.CreateRoleFailed, Severity.Error);
+
+                    return new Unit();
+                }
+            );
+
+            await OnRoleCreated.InvokeAsync();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Show(Resource.CreateRoleFailed, Severity.Error);
+        }
+        finally
+        {
+
+            addRoleDto = new();
+        }
+
+
+    }
+
+
+}
