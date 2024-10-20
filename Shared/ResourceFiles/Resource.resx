@@ -1250,6 +1250,18 @@ Our mission is to bring fans closer to the action, creating opportunities for th
   <data name="UpcomingMatches" xml:space="preserve">
     <value>Upcoming Matches</value>
   </data>
+  <data name="ChampionshipNotFound" xml:space="preserve">
+    <value>Championship Not Found</value>
+  </data>
+  <data name="NoChampionshipFound" xml:space="preserve">
+    <value>No Championship Found</value>
+  </data>
+  <data name="ChampionshipDeleted" xml:space="preserve">
+    <value>Championship Deleted</value>
+  </data>
+  <data name="Cannotdeleteachampionshipwithassignedmatches" xml:space="preserve">
+    <value>Cannot delete a championship with assigned matches</value>
+  </data>
   <data name="PositiveTotalAmount" xml:space="preserve">
     <value>TotalAmount must be a positive value</value>
   </data>

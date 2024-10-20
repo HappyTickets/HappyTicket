@@ -250,6 +250,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot delete a championship with assigned matches.
+        /// </summary>
+        public static string Cannotdeleteachampionshipwithassignedmatches {
+            get {
+                return ResourceManager.GetString("Cannotdeleteachampionshipwithassignedmatches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cart.
         /// </summary>
         public static string Cart {
@@ -381,6 +390,24 @@ namespace Shared.ResourceFiles {
         public static string Championship_Name {
             get {
                 return ResourceManager.GetString("Championship_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Championship Deleted.
+        /// </summary>
+        public static string ChampionshipDeleted {
+            get {
+                return ResourceManager.GetString("ChampionshipDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Championship Not Found.
+        /// </summary>
+        public static string ChampionshipNotFound {
+            get {
+                return ResourceManager.GetString("ChampionshipNotFound", resourceCulture);
             }
         }
         
@@ -1696,6 +1723,15 @@ namespace Shared.ResourceFiles {
         public static string No_Tickets_To_Display {
             get {
                 return ResourceManager.GetString("No_Tickets_To_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Championship Found.
+        /// </summary>
+        public static string NoChampionshipFound {
+            get {
+                return ResourceManager.GetString("NoChampionshipFound", resourceCulture);
             }
         }
         
