@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Entities;
 using Shared.DTOs.Champion;
+using Shared.DTOs.ChampionDtos;
 
 namespace Application.Champions.Mappings
 {
@@ -9,6 +10,7 @@ namespace Application.Champions.Mappings
         public ChampionsProfile()
         {
             CreateMap<Championship, CreateChampionshipDto>().ReverseMap();
+            CreateMap<Championship, UpdateChampionshipDto>().ReverseMap();
         }
     }
 }

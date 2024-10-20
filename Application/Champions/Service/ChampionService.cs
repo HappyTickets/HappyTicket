@@ -6,6 +6,8 @@ using Domain.Entities;
 using Microsoft.Extensions.Logging;
 using Shared.Common;
 using Shared.DTOs.Champion;
+using Shared.DTOs.ChampionDtos;
+using System.Net;
 
 namespace Application.Implementations
 {
@@ -21,9 +23,20 @@ namespace Application.Implementations
             return championshipDto;
         }
 
-        public ValueTask<BaseResponse<ChampionDto>> UpdateAsync(CreateOrUpdateChampionDto dto, CancellationToken cancellationToken = default)
+        public async ValueTask<BaseResponse<UpdateChampionshipDto>> UpdateAsync(UpdateChampionshipDto updateChampionshipDto, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var championship = await GetByIdAsync<Championship>(updateChampionshipDto.Id);
+            if (championship == null)
+            {
+                return new BaseResponse<UpdateChampionshipDto>
+                {
+                    Status = HttpStatusCode.BadRequest,
+                    Title = "Champion Not Found"
+                };
+            }
+            _mapper.Map(updateChampionshipDto, championship);
+            await UpdateAsync(championship);
+            return updateChampionshipDto;
         }
     }
 }

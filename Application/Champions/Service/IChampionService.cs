@@ -1,12 +1,13 @@
 ﻿using Shared.Common;
 using Shared.DTOs.Champion;
+using Shared.DTOs.ChampionDtos;
 
 namespace Application.Interfaces
 {
     public interface IChampionService
     {
         ValueTask<BaseResponse<CreateChampionshipDto>> CreateChampionAsync(CreateChampionshipDto dto, bool autoSave = true, CancellationToken cancellationToken = default);
-        ValueTask<BaseResponse<ChampionDto>> UpdateAsync(CreateOrUpdateChampionDto dto, CancellationToken cancellationToken = default);
+        ValueTask<BaseResponse<UpdateChampionshipDto>> UpdateAsync(UpdateChampionshipDto updateChampionshipDto, CancellationToken cancellationToken = default);
         //Task<Result<ChampionDto>> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
         //Task<Result<IEnumerable<ChampionDto>>> GetAllAsync(bool useCache = true, CancellationToken cancellationToken = default);
         //Task<Result<ChampionDto>> GetByIdAsync(Guid id, bool useCache = true, CancellationToken cancellationToken = default);
