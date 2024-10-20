@@ -35,5 +35,13 @@ namespace API.Controllers
         {
             return Ok(await _championService.GetChampionshipByIdAsync(championshipId));
         }
+        [HttpDelete("HardDelete")]
+        public async Task<IActionResult> DeleteStadium(long championshipId)
+        {
+            var result = await _championService.DeleteChampionAsync(championshipId);
+            if (result.IsSuccess)
+                return Ok(result);
+            return BadRequest(result);
+        }
     }
 }

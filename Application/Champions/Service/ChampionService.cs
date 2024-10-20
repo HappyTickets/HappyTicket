@@ -61,5 +61,23 @@ namespace Application.Implementations
             }
             return new BaseResponse<GetChampionshipDto>(championship);
         }
+        public async ValueTask<BaseResponse<object?>> DeleteChampionAsync(long championshipId, CancellationToken cancellationToken = default)
+        {
+            var championship = await GetByIdAsync<Championship>(championshipId, cancellationToken);
+            if (championship == null)
+            {
+                return new BaseResponse<object?>
+                {
+                    Status = HttpStatusCode.NotFound,
+                    Title = Resource.ChampionshipNotFound
+                };
+            }
+            await HardDeleteAsync(championship);
+            return new BaseResponse<object?>
+            {
+                Status = HttpStatusCode.OK,
+                Title = Resource.ChampionshipDeleted
+            };
+        }
     }
 }

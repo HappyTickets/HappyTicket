@@ -1199,4 +1199,7 @@
   <data name="NoChampionshipFound" xml:space="preserve">
     <value>لم يتم العثور على بطولة</value>
   </data>
+  <data name="ChampionshipDeleted" xml:space="preserve">
+    <value>تم حذف البطولة</value>
+  </data>
 </root>

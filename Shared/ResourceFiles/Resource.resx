@@ -1256,4 +1256,7 @@ Our mission is to bring fans closer to the action, creating opportunities for th
   <data name="NoChampionshipFound" xml:space="preserve">
     <value>No Championship Found</value>
   </data>
+  <data name="ChampionshipDeleted" xml:space="preserve">
+    <value>Championship Deleted</value>
+  </data>
 </root>

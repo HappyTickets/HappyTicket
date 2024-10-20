@@ -10,6 +10,6 @@ namespace Application.Interfaces
         ValueTask<BaseResponse<UpdateChampionshipDto>> UpdateAsync(UpdateChampionshipDto updateChampionshipDto, CancellationToken cancellationToken = default);
         ValueTask<BaseResponse<IEnumerable<GetChampionshipDto>>> GetAllChampionshipsAsync(CancellationToken cancellationToken = default);
         ValueTask<BaseResponse<GetChampionshipDto>> GetChampionshipByIdAsync(long championshipId);
-        //Task<Result<ChampionDto>> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+        ValueTask<BaseResponse<Object?>> DeleteChampionAsync(long championshipId, CancellationToken cancellationToken = default);
     }
 }

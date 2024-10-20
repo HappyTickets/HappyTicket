@@ -385,6 +385,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Championship Deleted.
+        /// </summary>
+        public static string ChampionshipDeleted {
+            get {
+                return ResourceManager.GetString("ChampionshipDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Championship Not Found.
         /// </summary>
         public static string ChampionshipNotFound {
