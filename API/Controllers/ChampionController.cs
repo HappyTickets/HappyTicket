@@ -25,5 +25,10 @@ namespace API.Controllers
                 return Ok(result);
             return NotFound();
         }
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAllChampion()
+        {
+            return Ok(await _championService.GetAllChampionshipsAsync());
+        }
     }
 }

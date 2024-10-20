@@ -1193,7 +1193,10 @@
   <data name="UpcomingMatches" xml:space="preserve">
     <value>المباريات القادمة</value>
   </data>
-  <data name="ChampionNotFound" xml:space="preserve">
+  <data name="ChampionshipNotFound" xml:space="preserve">
     <value>لم يتم العثور على البطولة</value>
+  </data>
+  <data name="NoChampionshipFound" xml:space="preserve">
+    <value>لم يتم العثور على بطولة</value>
   </data>
 </root>

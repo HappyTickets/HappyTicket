@@ -11,6 +11,7 @@ namespace Application.Champions.Mappings
         {
             CreateMap<Championship, CreateChampionshipDto>().ReverseMap();
             CreateMap<Championship, UpdateChampionshipDto>().ReverseMap();
+            CreateMap<Championship, GetChampionshipDto>().ReverseMap();
         }
     }
 }

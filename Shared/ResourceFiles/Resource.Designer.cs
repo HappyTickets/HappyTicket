@@ -1664,6 +1664,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Champion ship Found.
+        /// </summary>
+        public static string NoChampionshipFound {
+            get {
+                return ResourceManager.GetString("NoChampionshipFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Records Found!.
         /// </summary>
         public static string NoRecordsFound {

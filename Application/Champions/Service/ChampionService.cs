@@ -23,7 +23,6 @@ namespace Application.Implementations
             var championshipDto = _mapper.Map<CreateChampionshipDto>(championship);
             return championshipDto;
         }
-
         public async ValueTask<BaseResponse<UpdateChampionshipDto>> UpdateAsync(UpdateChampionshipDto updateChampionshipDto, CancellationToken cancellationToken = default)
         {
             var championship = await GetByIdAsync<Championship>(updateChampionshipDto.Id);
@@ -38,6 +37,17 @@ namespace Application.Implementations
             _mapper.Map(updateChampionshipDto, championship);
             await UpdateAsync(championship);
             return updateChampionshipDto;
+        }
+        public async ValueTask<BaseResponse<IEnumerable<GetChampionshipDto>>> GetAllChampionshipsAsync(CancellationToken cancellationToken = default)
+        {
+            var championships = await GetAllAsync<GetChampionshipDto>();
+            if (championships != null && championships.Any())
+                return new BaseResponse<IEnumerable<GetChampionshipDto>>(championships.ToList());
+            return new BaseResponse<IEnumerable<GetChampionshipDto>>
+            {
+                Status = HttpStatusCode.NotFound,
+                Title = Resource.NoChampionshipFound
+            };
         }
     }
 }

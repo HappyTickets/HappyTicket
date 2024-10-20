@@ -1253,4 +1253,7 @@ Our mission is to bring fans closer to the action, creating opportunities for th
   <data name="ChampionshipNotFound" xml:space="preserve">
     <value>Championship Not Found</value>
   </data>
+  <data name="NoChampionshipFound" xml:space="preserve">
+    <value>No Champion ship Found</value>
+  </data>
 </root>
