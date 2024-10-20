@@ -13,9 +13,12 @@ namespace Application.Implementations
     {
         public ChampionService(IUnitOfWork unitOfWork, ILogger<Championship> logger, IMapper mapper) : base(unitOfWork, logger, mapper) { }
 
-        public ValueTask<BaseResponse<ChampionDto>> CreateAsync(CreateOrUpdateChampionDto dto, bool autoSave = true, CancellationToken cancellationToken = default)
+        public async ValueTask<BaseResponse<CreateChampionshipDto>> CreateAsync(CreateChampionshipDto createChampionshipDto, bool autoSave = true, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var championship = _mapper.Map<Championship>(createChampionshipDto);
+            await CreateAsync(createChampionshipDto, autoSave, cancellationToken: cancellationToken);
+            var championshipDto = _mapper.Map<CreateChampionshipDto>(championship);
+            return championshipDto;
         }
 
         public ValueTask<BaseResponse<ChampionDto>> UpdateAsync(CreateOrUpdateChampionDto dto, CancellationToken cancellationToken = default)

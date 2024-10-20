@@ -5,7 +5,7 @@ namespace Application.Interfaces
 {
     public interface IChampionService
     {
-        ValueTask<BaseResponse<ChampionDto>> CreateAsync(CreateOrUpdateChampionDto dto, bool autoSave = true, CancellationToken cancellationToken = default);
+        ValueTask<BaseResponse<CreateChampionshipDto>> CreateAsync(CreateChampionshipDto dto, bool autoSave = true, CancellationToken cancellationToken = default);
         ValueTask<BaseResponse<ChampionDto>> UpdateAsync(CreateOrUpdateChampionDto dto, CancellationToken cancellationToken = default);
         //Task<Result<ChampionDto>> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
         //Task<Result<IEnumerable<ChampionDto>>> GetAllAsync(bool useCache = true, CancellationToken cancellationToken = default);
