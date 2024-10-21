@@ -12,7 +12,7 @@ namespace Shared.DTOs.TicketDTOs
         public bool? DisplayForSale { get; set; }
         public string Location { get; set; }
         public string Class { get; set; }
-        public TicketStatusDTO TicketStatus { get; set; }
+        public TicketStatusDTO? TicketStatus { get; set; }
         public int? SeatNumber { get; set; }
         public string ExternalGate { get; set; }
         public string InternalGate { get; set; }

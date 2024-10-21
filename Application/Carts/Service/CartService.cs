@@ -69,8 +69,13 @@ namespace Application.Implementations
         public async Task<BaseResponse<Empty>> AddCartItemForCurrentUserAsync(AddCartItemDto dto, CancellationToken cancellationToken = default)
         {
             var matchRepo = _unitOfWork.Repository<Match>();
+            var ticketRepo = _unitOfWork.Repository<Ticket>();
             var cartItemRepo = _unitOfWork.Repository<CartItem>();
             var cartRepo = _unitOfWork.Repository<Cart>();
+
+            var ticket = await ticketRepo.GetByIdAsync(dto.TicketId, cancellationToken: cancellationToken);
+            if (ticket == null)
+                return new NotFoundException();
 
             // load match of the ticket
             var match = await matchRepo
@@ -114,8 +119,13 @@ namespace Application.Implementations
             cart.CartItems ??= [];
             cart.CartItems.Add(cartItem);
 
+            // update ticket
+            ticket.TicketStatus = TicketStatus.InCart;
+
             // update user cart
             cartRepo.Update(cart);
+            ticketRepo.Update(ticket);
+
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Empty.Default;
@@ -128,8 +138,13 @@ namespace Application.Implementations
             // get user cart
             var cart = await cartRepo.FirstOrDefaultAsync(c => c.UserId == _currentUser.Id,
                 [
-                    nameof(Cart.CartItems)
-                ], 
+                    nameof(Cart.CartItems),
+                    string.Join(".", 
+                    [
+                        nameof(Cart.CartItems),
+                        nameof(CartItem.Ticket)
+                    ])
+                ],
                 cancellationToken);
 
             if (cart == null)
@@ -148,6 +163,7 @@ namespace Application.Implementations
                 if (cartItem != null)
                 {
                     cart.CartItems.Remove(cartItem);
+                    cartItem.Ticket.TicketStatus = TicketStatus.Active;
 
                     // update user cart
                     cartRepo.Update(cart);
