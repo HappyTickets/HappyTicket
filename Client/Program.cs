@@ -50,6 +50,7 @@ builder.Services.AddScoped(typeof(BITeamService), typeof(BTeamService));
 builder.Services.AddScoped(typeof(BITicketService), typeof(BTicketService));
 builder.Services.AddScoped(typeof(BIFavoriteTeamService), typeof(BFavoriteTeamService));
 builder.Services.AddScoped(typeof(BICartService), typeof(BCartService));
+builder.Services.AddScoped(typeof(BIAuthorizationService), typeof(BAuthorizationService));
 builder.Services.AddScoped(typeof(ITokenExpirationService), typeof(TokenExpirationService));
 builder.Services.AddScoped<ICustomSnackbarProvider, CustomSnackbarProvider>();
 builder.Services.AddScoped<IBOrderService, BOrderService>();
