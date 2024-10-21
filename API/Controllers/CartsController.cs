@@ -29,7 +29,7 @@ namespace API.Controllers
             => Result(await _cartService.DeleteCartItemForCurrentUserAsync(dto, cancellationToken));
 
         [HttpPost("Checkout-cart-items-for-current-user")]
-        public async Task<IActionResult> Checkout(CheckoutCartDto dto, CancellationToken cancellationToken = default)
-            => Result(await _cartService.CheckoutCartItemsForCurrentUserAsync(dto, cancellationToken));
+        public async Task<IActionResult> Checkout(CancellationToken cancellationToken = default)
+            => Result(await _cartService.CheckoutCartItemsForCurrentUserAsync(cancellationToken));
     }
 }

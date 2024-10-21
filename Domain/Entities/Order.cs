@@ -1,5 +1,6 @@
 ﻿using Domain.Entities.Common;
 using Domain.Entities.UserEntities;
+using Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,7 +15,7 @@ public class Order : SoftDeletableEntity<long>
     public virtual ApplicationUser User { get; set; }
 
     public decimal TotalAmount { get; set; }
-
+    
     public int? PaymentStatus { get; set; }
 
     public string? PaymentOrderRef { get; set; }

@@ -1,5 +1,6 @@
 ﻿using Application.Implementations;
 using Application.Interfaces;
+using Application.Payments.Service;
 using Application.Stadiums.Service;
 using Application.Tests.Matches.Service;
 using Application.Tickets.Service;
@@ -21,13 +22,16 @@ namespace Application
                 .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
                 .AddFluentValidationAutoValidation();
 
-            services.AddScoped<ITicketService, TicketService>();
-            services.AddScoped<ITestMatchService, TestMatchService>();
-            services.AddScoped<IEmailSender, EmailSender>();
-            services.AddScoped<IStadiumService, StadiumService>();
-            services.AddScoped<IChampionService, ChampionService>();
-            services.AddScoped<ISponsorService, SponsorService>();
-            services.AddScoped<ICartService, CartService>();
+            services
+                .AddScoped<ITicketService, TicketService>()
+                .AddScoped<ITestMatchService, TestMatchService>()
+                .AddScoped<IEmailSender, EmailSender>()
+                .AddScoped<IStadiumService, StadiumService>()
+                .AddScoped<IChampionService, ChampionService>()
+                .AddScoped<ISponsorService, SponsorService>()
+                .AddScoped<ICartService, CartService>()
+                .AddScoped<IPaymentCallbackService, PaymentCallbackService>();
+
             return services;
         }
     }

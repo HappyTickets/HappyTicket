@@ -4,7 +4,9 @@ using Application.Common.Interfaces.Services;
 using Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Entities.UserEntities;
 using Domain.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Shared.Common;
@@ -18,13 +20,16 @@ namespace Application.Implementations
 {
     public class CartService : BaseService<Cart>, ICartService
     {
-        public CartService(IUnitOfWork unitOfWork, ILogger<Cart> logger, IMapper mapper, ICurrentUser currentUser) : base(unitOfWork, logger, mapper)
+        public CartService(IUnitOfWork unitOfWork, ILogger<Cart> logger, IMapper mapper, ICurrentUser currentUser, IPayment payment, UserManager<ApplicationUser> userManager) : base(unitOfWork, logger, mapper)
         {
             _currentUser = currentUser;
+            _payment = payment;
+            _userManager = userManager;
         }
 
-        //private readonly IPaymentService _paymentService;
         private readonly ICurrentUser _currentUser;
+        private readonly IPayment _payment;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public async Task<BaseResponse<CartDto>> GetForCurrentUserAsync(CancellationToken cancellationToken = default)
         {
@@ -174,7 +179,7 @@ namespace Application.Implementations
             return Empty.Default;
         }
 
-        public async Task<BaseResponse<Empty>> CheckoutCartItemsForCurrentUserAsync(CheckoutCartDto dto, CancellationToken cancellationToken = default)
+        public async Task<BaseResponse<string?>> CheckoutCartItemsForCurrentUserAsync(CancellationToken cancellationToken = default)
         {
             var cartRepo = _unitOfWork.Repository<Cart>();
             var orderRepo = _unitOfWork.Repository<Order>();
@@ -206,10 +211,9 @@ namespace Application.Implementations
             var order = new Order
             {
                 UserId = _currentUser.Id!.Value,
-                PaymentUrl = dto.PaymentUrl,
-                PaymentOrderRef = dto.PaymentRef,
-                PaymentStatus = (int)PaymentConfiguration.PaymentStatusEnum.Paid,
-                TotalAmount = checkoutCartItems.Aggregate(0m, (acc, ci) => acc + ci.Ticket.Price)
+                PaymentStatus = (int)PaymentConfiguration.PaymentStatusEnum.Pending,
+                TotalAmount = checkoutCartItems.Aggregate(0m, (acc, ci) => acc + ci.Ticket.Price),
+                User = (await _userManager.FindByIdAsync(_currentUser.Id.ToString()!))!
             };
 
             // prepare order items
@@ -221,18 +225,25 @@ namespace Application.Implementations
              .ToArray();
 
             // update tickets
-            foreach(var cartItem in checkoutCartItems)
-            {
-                cartItem.IsCheckedOut = true;
-                cartItem.Ticket.TicketStatus = TicketStatus.Sold;
-            }
+            //foreach(var cartItem in checkoutCartItems)
+            //{
+            //    cartItem.IsCheckedOut = true;
+            //    cartItem.Ticket.TicketStatus = TicketStatus.Sold;
+            //}
 
             orderRepo.Create(order);
             cartRepo.Update(cart);
 
             await _unitOfWork.SaveChangesAsync();
 
-            return Empty.Default;
+            // create order session
+            await _payment.ProcessOrderPaymentAsync(order);
+            
+            // update order session details
+            orderRepo.Update(order);
+            await _unitOfWork.SaveChangesAsync();
+
+            return order.PaymentUrl;
         }
     }
 }
