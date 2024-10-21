@@ -1262,4 +1262,34 @@ Our mission is to bring fans closer to the action, creating opportunities for th
   <data name="Cannotdeleteachampionshipwithassignedmatches" xml:space="preserve">
     <value>Cannot delete a championship with assigned matches</value>
   </data>
+  <data name="PositiveTotalAmount" xml:space="preserve">
+    <value>TotalAmount must be a positive value</value>
+  </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value>{PropertyName} is required</value>
+  </data>
+  <data name="GreaterThanZero" xml:space="preserve">
+    <value>{PropertyName} must be greater than zero</value>
+  </data>
+  <data name="InvalidEnumValue" xml:space="preserve">
+    <value>{PropertyName} not exist in Enum List</value>
+  </data>
+  <data name="PricePrecision" xml:space="preserve">
+    <value>Price must have up to 2 decimal places</value>
+  </data>
+  <data name="InvalidPaymentStatus" xml:space="preserve">
+    <value>Invalid Payment Status</value>
+  </data>
+  <data name="UserAlreadyExist" xml:space="preserve">
+    <value>User Already Exist</value>
+  </data>
+  <data name="FailedToGenerateToken" xml:space="preserve">
+    <value>Token Generation Failed</value>
+  </data>
+  <data name="Password_Reset_Succeed" xml:space="preserve">
+    <value>Password Reset Successfully</value>
+  </data>
+  <data name="Checkout_Cart_Empty" xml:space="preserve">
+    <value>Your cart is empty. Please add items to your cart before proceeding to checkout.</value>
+  </data>
 </root>

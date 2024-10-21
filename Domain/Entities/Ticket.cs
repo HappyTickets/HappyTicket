@@ -17,10 +17,10 @@ public class Ticket : SoftDeletableEntity<long>
 
     public string? Notes { get; set; }
 
-    public long BlockId { get; set; }
+    public long? BlockId { get; set; }
     public virtual Block? Block { get; set; }
 
-    public long SeatId { get; set; }
+    public long? SeatId { get; set; }
     public virtual Seat? Seat { get; set; }
 
     public bool? DisplayForSale { get; set; }
@@ -33,9 +33,11 @@ public class Ticket : SoftDeletableEntity<long>
 
     public TicketStatus TicketStatus { get; set; }
 
-    public int SeatNumber { get; set; }
+    public int? SeatNumber { get; set; }
 
     public string ExternalGate { get; set; }
 
     public string InternalGate { get; set; }
+
+    public virtual ICollection<CartItem>? CartItems { get; set; }
 }

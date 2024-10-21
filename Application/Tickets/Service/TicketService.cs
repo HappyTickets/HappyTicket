@@ -6,6 +6,7 @@ using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Shared.Common;
+using Shared.Common.General;
 using Shared.DTOs.TicketDTOs;
 using System.Net;
 
@@ -15,7 +16,7 @@ namespace Application.Tickets.Service
         IUnitOfWork unitOfWork,
         ILogger<Ticket> logger,
         IMapper mapper
-        ): BaseService<Ticket>(unitOfWork, logger, mapper), ITicketService
+        ) : BaseService<Ticket>(unitOfWork, logger, mapper), ITicketService
     {
 
         //public async Task<Result<string>> ScanQrCodeAsync(Guid ticketId, CancellationToken cancellationToken = default)
@@ -63,15 +64,15 @@ namespace Application.Tickets.Service
         //    }
         //}
 
-        public async Task<BaseResponse<object?>> CreateAsync(CreateTicketsDto dto)
+        public async Task<BaseResponse<Empty>> CreateAsync(CreateTicketsDto dto)
         {
             var ticket = _mapper.Map<Ticket>(dto);
             await _unitOfWork.Tickets.CreateAsync(ticket, dto.TicketsCount);
 
-            return HttpStatusCode.Created;
+            return Empty.Default;
         }
 
-        public async Task<BaseResponse<object?>> UpdateAsync(UpdateTicketsDto dto)
+        public async Task<BaseResponse<Empty>> UpdateAsync(UpdateTicketsDto dto)
         {
             var ticket = _mapper.Map<Ticket>(dto);
 
@@ -92,18 +93,30 @@ namespace Application.Tickets.Service
 
             await _unitOfWork.SaveChangesAsync();
 
-            return HttpStatusCode.OK;
+            return Empty.Default;
         }
 
-        public async Task<BaseResponse<IEnumerable<Ticket?>>> GetDistinctTicketsAsync(long matchTeamId)
+        public async Task<BaseResponse<IEnumerable<TicketDto>>> GetDistinctTicketsAsync(long matchTeamId)
         {
-            var randomTicketsQuery = _unitOfWork.Repository<Ticket>().Query()
+            var randomTickets = await _unitOfWork.Repository<Ticket>().Query()
                 .Where(t => t.MatchTeamId == matchTeamId && t.TicketStatus == TicketStatus.Active)
                 .GroupBy(t => t.Class)
                 .Select(g => g.OrderBy(t => Guid.NewGuid())
-                .FirstOrDefault());
+                .FirstOrDefault()).ToListAsync();
 
-            return await randomTicketsQuery.ToListAsync();
+            var ticketsDtos = _mapper.Map<List<TicketDto>>(randomTickets);
+
+            return ticketsDtos;
+        }
+
+        public async Task<BaseResponse<PaginatedList<TicketDto>>> GetMyTicketsAsync(long userId, PaginationParams pagination)
+        {
+            var ticketsList = await _unitOfWork.Tickets.GetMyTicketsAsync(userId, pagination);
+
+            var ticketsRes = _mapper.Map<IEnumerable<TicketDto>>(ticketsList.Items);
+
+            var res = new PaginatedList<TicketDto>(ticketsRes, ticketsList.TotalItems, pagination.PageIndex, pagination.PageSize);
+            return res;
         }
     }
 

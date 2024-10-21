@@ -18,7 +18,7 @@ namespace Application.Tests.Matches.Service
         ValueTask<BaseResponse<IEnumerable<GetMatchDto>>> FindActiveMatches();
 
         // Get paginated matches based on search criteria
-        ValueTask<BaseResponse<PaginatedList<GetMatchDto>>> GetPaginatedAsync(PaginationSearchModel paginationParams);
+        ValueTask<BaseResponse<PaginatedList<GetMatchDto>>> GetPaginatedAsync(PaginationParams paginationParams);
 
         ValueTask<BaseResponse<long>> GetCountAsync(CancellationToken cancellationToken = default);
         ValueTask<BaseResponse<Unit>> CreateAsyncTest(CreateTestMatchDto dto, bool autoSave = true, CancellationToken cancellationToken = default);

@@ -102,6 +102,9 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
                     b.ToTable("Cart");
                 });
 
@@ -266,6 +269,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
+
+                    b.Property<int>("MaxPerUser")
+                        .HasColumnType("int");
 
                     b.Property<long>("ModifiedBy")
                         .HasColumnType("bigint");
@@ -713,7 +719,7 @@ namespace Infrastructure.Migrations
                     b.Property<int?>("BaseEntityStatus")
                         .HasColumnType("int");
 
-                    b.Property<long>("BlockId")
+                    b.Property<long?>("BlockId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Class")
@@ -759,10 +765,10 @@ namespace Infrastructure.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<long>("SeatId")
+                    b.Property<long?>("SeatId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("SeatNumber")
+                    b.Property<int?>("SeatNumber")
                         .HasColumnType("int");
 
                     b.Property<int>("SoftDeleteCount")
@@ -826,9 +832,6 @@ namespace Infrastructure.Migrations
                     b.Property<int?>("BaseEntityStatus")
                         .HasColumnType("int");
 
-                    b.Property<long>("CartId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -889,9 +892,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CartId")
-                        .IsUnique();
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -1071,6 +1071,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("Stadium");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Cart", b =>
+                {
+                    b.HasOne("Domain.Entities.UserEntities.ApplicationUser", "User")
+                        .WithOne("Cart")
+                        .HasForeignKey("Domain.Entities.Cart", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.Entities.CartItem", b =>
                 {
                     b.HasOne("Domain.Entities.Cart", "Cart")
@@ -1080,7 +1091,7 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.Ticket", "Ticket")
-                        .WithMany()
+                        .WithMany("CartItems")
                         .HasForeignKey("TicketId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1231,8 +1242,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.Block", "Block")
                         .WithMany()
                         .HasForeignKey("BlockId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Domain.Entities.MatchTeam", "MatchTeam")
                         .WithMany("Tickets")
@@ -1243,25 +1253,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.Seat", "Seat")
                         .WithMany()
                         .HasForeignKey("SeatId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Block");
 
                     b.Navigation("MatchTeam");
 
                     b.Navigation("Seat");
-                });
-
-            modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationUser", b =>
-                {
-                    b.HasOne("Domain.Entities.Cart", "Cart")
-                        .WithOne("User")
-                        .HasForeignKey("Domain.Entities.UserEntities.ApplicationUser", "CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cart");
                 });
 
             modelBuilder.Entity("Domain.Entities.UserEntities.AuthEntities.RefreshToken", b =>
@@ -1334,8 +1332,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Cart", b =>
                 {
                     b.Navigation("CartItems");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Championship", b =>
@@ -1381,8 +1377,15 @@ namespace Infrastructure.Migrations
                     b.Navigation("TeamSponsors");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Ticket", b =>
+                {
+                    b.Navigation("CartItems");
+                });
+
             modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationUser", b =>
                 {
+                    b.Navigation("Cart");
+
                     b.Navigation("RefreshTokens");
 
                     b.Navigation("SelectedTeams");

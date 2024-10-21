@@ -3,7 +3,7 @@ using LanguageExt;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Shared.Common.General;
-using Shared.DTOs;
+using Shared.DTOs.OrderDtos.Response;
 
 namespace Client.Pages.Company
 {
