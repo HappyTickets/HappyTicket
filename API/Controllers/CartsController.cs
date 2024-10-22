@@ -17,19 +17,19 @@ namespace API.Controllers
         }
 
         [HttpGet("get-for-current-user")]
-        public async Task<IActionResult> GetForCurrentUserAsync(CancellationToken cancellationToken = default)
-            => Result(await _cartService.GetForCurrentUserAsync(cancellationToken));
+        public async Task<IActionResult> GetForCurrentUserAsync()
+            => Result(await _cartService.GetForCurrentUserAsync());
 
         [HttpPost("add-cart-item-for-current-user")]
-        public async Task<IActionResult> AddCartItemForCurrentUserAsync(AddCartItemDto dto, CancellationToken cancellationToken = default)
-            => Result(await _cartService.AddCartItemForCurrentUserAsync(dto, cancellationToken));
+        public async Task<IActionResult> AddCartItemForCurrentUserAsync(AddCartItemDto dto)
+            => Result(await _cartService.AddCartItemForCurrentUserAsync(dto));
         
         [HttpDelete("delete-cart-item-for-current-user")]
-        public async Task<IActionResult> DeleteCartItemForCurrentUserAsync(DeleteCartItemDto dto, CancellationToken cancellationToken = default)
-            => Result(await _cartService.DeleteCartItemForCurrentUserAsync(dto, cancellationToken));
+        public async Task<IActionResult> DeleteCartItemForCurrentUserAsync(DeleteCartItemDto dto)
+            => Result(await _cartService.DeleteCartItemForCurrentUserAsync(dto));
 
         [HttpPost("Checkout-cart-items-for-current-user")]
-        public async Task<IActionResult> Checkout(CheckoutCartDto dto, CancellationToken cancellationToken = default)
-            => Result(await _cartService.CheckoutCartItemsForCurrentUserAsync(dto, cancellationToken));
+        public async Task<IActionResult> Checkout()
+            => Result(await _cartService.CheckoutCartItemsForCurrentUserAsync());
     }
 }

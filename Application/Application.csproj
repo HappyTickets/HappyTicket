@@ -8,10 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="Configuration\**" />
+    <Compile Remove="Interfaces\ITicketServices\**" />
     <Compile Remove="Models\**" />
     <EmbeddedResource Remove="Configuration\**" />
+    <EmbeddedResource Remove="Interfaces\ITicketServices\**" />
     <EmbeddedResource Remove="Models\**" />
     <None Remove="Configuration\**" />
+    <None Remove="Interfaces\ITicketServices\**" />
     <None Remove="Models\**" />
   </ItemGroup>
 
