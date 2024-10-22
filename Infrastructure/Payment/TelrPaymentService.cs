@@ -1,12 +1,17 @@
 ﻿using Application.Common.Interfaces.Services;
+using Application.Common.Models;
 using Domain.Entities;
+using Domain.Enums;
 using Infrastructure.Payment.Models._PaymentRequest;
 using Infrastructure.Payment.Models._PaymentResponse;
+using Infrastructure.Payment.Models.Common;
 using Infrastructure.Payment.Models.PaymentRequest._PaymentRequest;
 using Infrastructure.Payment.Models.PaymentRequest.PaymentRequest;
 using Microsoft.Extensions.Options;
-using Shared.Common;
+using Shared.DTOs.Payments;
 using System.Net.Http.Json;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Infrastructure.Payment
 {
@@ -21,7 +26,7 @@ namespace Infrastructure.Payment
             _settings = settings.Value;
         }
 
-        public async Task ProcessOrderPaymentAsync(Order order)
+        public async Task<PaymentSessionResult> InitiatePaymentSessionAsync(Order order)
         {
            // prepare payment request
            var request = new PaymentRequest
@@ -37,7 +42,7 @@ namespace Infrastructure.Payment
                    Amount = order.TotalAmount.ToString(),
                    Currency = _settings.Currency,
                    Description = "Tickets Payment",
-                   //Trantype = "sale"
+                   Trantype = "sale"
                },
                Return = new ReturnRequest
                {
@@ -77,8 +82,77 @@ namespace Infrastructure.Payment
             if (result.Error != null)
                 throw new Exception("Create session failure.");
 
-            order.PaymentUrl = result.Order.Url;
-            order.PaymentOrderRef = result.Order.Ref;
+            return new PaymentSessionResult
+            {
+                PaymentUrl = result.Order.Url,
+                OrderRef = result.Order.Ref
+            };
+        }
+
+        public PaymentStatus ResolvePaymentStatusFromCallback(TelrPaymentCallbackDto dto)
+        {
+            if (!IsCallbackValid(dto))
+                throw new Exception("Invalid callback.");
+
+            switch (dto.Tran_Type)
+            {
+                case TransactionTypes.Sale:
+                case TransactionTypes.Capture:
+                    if (dto.Tran_Status == TransactionStatus.Authorized)
+                    {
+                        return PaymentStatus.Authorized;
+                    }
+                    break;
+
+                case TransactionTypes.Auth:
+                    if (dto.Tran_Status == TransactionStatus.Hold)
+                    {
+                        return PaymentStatus.OnHold;
+                    }
+                    break;
+
+                case TransactionTypes.Refund:
+                    if (dto.Tran_Status == TransactionStatus.Authorized)
+                    {
+                        return PaymentStatus.Refunded;
+                    }
+                    break;
+
+                case TransactionTypes.Release:
+                    if (dto.Tran_Status == TransactionStatus.Authorized)
+                    {
+                        return PaymentStatus.Cancelled;
+                    }
+                    break;
+            }
+
+            return PaymentStatus.Declined;
+        }
+
+        private bool IsCallbackValid(TelrPaymentCallbackDto dto)
+        {
+            var unhashed_string = string.Join(":", [
+                _settings.SecretKey,
+                dto.Tran_Store,
+                dto.Tran_Type,
+                dto.Tran_Class,
+                dto.Tran_Test,
+                dto.Tran_Ref,
+                dto.Tran_PrevRef,
+                dto.Tran_FirstRef,
+                dto.Tran_Currency,
+                dto.Tran_Amount,
+                dto.Tran_CartId,
+                dto.Tran_Desc,
+                dto.Tran_Status,
+                dto.Tran_AuthCode,
+                dto.Tran_AuthMessage
+                ]);
+
+            var hashed_bytes = SHA1.HashData(Encoding.UTF8.GetBytes(unhashed_string));
+            var hashed_string = BitConverter.ToString(hashed_bytes).Replace("-", "").ToLowerInvariant();
+
+            return hashed_string == dto.Tran_Check;
         }
     }
 }

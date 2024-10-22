@@ -1,42 +1,20 @@
-﻿//using Application.Interfaces.PaymentServices;
-//using Microsoft.AspNetCore.Mvc;
-//using Shared.DTOs.PaymentDTOs;
+﻿using Application.Payments.Service;
+using Microsoft.AspNetCore.Mvc;
+using Shared.DTOs.Payments;
 
-//namespace API.Controllers
-//{
-//    public class PaymentsController : BaseController
-//    {
-//        private readonly IPaymentService _paymentService;
+namespace API.Controllers
+{
+    public class PaymentsController : BaseController
+    {
+        private readonly IPaymentService _paymentCallbackService;
 
+        public PaymentsController(IPaymentService paymentCallbackService)
+        {
+            _paymentCallbackService = paymentCallbackService;
+        }
 
-//        public PaymentsController(IHttpContextAccessor httpContextAccessor, IPaymentService paymentService) : base(httpContextAccessor)
-//        {
-//            _paymentService = paymentService;
-//        }
-
-
-//        [HttpPost("Request")]
-//        public async Task<ActionResult> SendPaymentRequest([FromBody] PaymentRequestDto paymentRequestDto)
-//        {
-//            try
-//            {
-//                return ReturnResult(await _paymentService.SendPaymentRequestAsync(paymentRequestDto));
-//            }
-//            catch (Exception ex)
-//            {
-//                return ReturnException(ex);
-//            }
-//        }
-
-//        //[HttpGet("status/{orderId}")]
-//        //public async Task<IActionResult> CheckPaymentStatus(Guid orderId)
-//        //{
-//        //    var response = await _paymentService.CheckPaymentStatusAsync(orderId);
-//        //    if (response.HasErrors)
-//        //    {
-//        //        return BadRequest(response.Errors);
-//        //    }
-//        //    return Ok(response);
-//        //}
-//    }
-//}
+        [HttpPost("callback")]
+        public async Task<IActionResult> CallbackAsync([FromForm] TelrPaymentCallbackDto dto)
+            => Result(await _paymentCallbackService.ProcessPaymentCallbackAsync(dto));
+    }
+}

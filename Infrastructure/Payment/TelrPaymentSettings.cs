@@ -9,6 +9,7 @@
         public int StoreId { get; set; }
         public string AuthKey { get; set; }
         public string Currency { get; set; }
+        public string SecretKey { get; set; }
         public string AuthorisedUrl { get; set; }
         public string DeclinedUrl { get; set; }
         public string CancelledUrl { get; set; }

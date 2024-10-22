@@ -31,12 +31,12 @@ namespace Application.Implementations
         private readonly IPayment _payment;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public async Task<BaseResponse<CartDto>> GetForCurrentUserAsync(CancellationToken cancellationToken = default)
+        public async Task<BaseResponse<CartDto>> GetForCurrentUserAsync()
         {
             var cartItemRepo = _unitOfWork.Repository<CartItem>();
             var cartItems = await cartItemRepo
                 .Query()
-                .Where(c => c.Cart.UserId == _currentUser.Id && !c.IsCheckedOut)
+                .Where(c => c.Cart.UserId == _currentUser.Id)
                 .GroupBy(ci => new
                 {
                     ci.Ticket.MatchTeamId,
@@ -71,20 +71,20 @@ namespace Application.Implementations
             };
         }
 
-        public async Task<BaseResponse<Empty>> AddCartItemForCurrentUserAsync(AddCartItemDto dto, CancellationToken cancellationToken = default)
+        public async Task<BaseResponse<Empty>> AddCartItemForCurrentUserAsync(AddCartItemDto dto)
         {
             var matchRepo = _unitOfWork.Repository<Match>();
             var ticketRepo = _unitOfWork.Repository<Ticket>();
             var cartItemRepo = _unitOfWork.Repository<CartItem>();
             var cartRepo = _unitOfWork.Repository<Cart>();
 
-            var ticket = await ticketRepo.GetByIdAsync(dto.TicketId, cancellationToken: cancellationToken);
+            var ticket = await ticketRepo.GetByIdAsync(dto.TicketId);
             if (ticket == null)
                 return new NotFoundException();
 
             // load match of the ticket
             var match = await matchRepo
-                .FirstOrDefaultAsync(m => m.MatchTeams!.Any(mt => mt.Tickets.Any(t => t.Id == dto.TicketId)), cancellationToken: cancellationToken);
+                .FirstOrDefaultAsync(m => m.MatchTeams!.Any(mt => mt.Tickets.Any(t => t.Id == dto.TicketId)));
             
             // check if user exceeds the max tickets count
             if (await cartItemRepo.CountAsync(ci => 
@@ -103,8 +103,7 @@ namespace Application.Implementations
             var cart = await cartRepo.FirstOrDefaultAsync(c => c.UserId == _currentUser.Id,
                 [
                     nameof(Cart.CartItems)
-                ], 
-                cancellationToken);
+                ]);
 
             if (cart == null)
                 cart = new Cart
@@ -131,12 +130,12 @@ namespace Application.Implementations
             cartRepo.Update(cart);
             ticketRepo.Update(ticket);
 
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync();
 
             return Empty.Default;
         } 
         
-        public async Task<BaseResponse<Empty>> DeleteCartItemForCurrentUserAsync(DeleteCartItemDto dto, CancellationToken cancellationToken = default)
+        public async Task<BaseResponse<Empty>> DeleteCartItemForCurrentUserAsync(DeleteCartItemDto dto)
         {
             var cartRepo = _unitOfWork.Repository<Cart>();
 
@@ -144,13 +143,8 @@ namespace Application.Implementations
             var cart = await cartRepo.FirstOrDefaultAsync(c => c.UserId == _currentUser.Id,
                 [
                     nameof(Cart.CartItems),
-                    string.Join(".", 
-                    [
-                        nameof(Cart.CartItems),
-                        nameof(CartItem.Ticket)
-                    ])
-                ],
-                cancellationToken);
+                    string.Join(".",[nameof(Cart.CartItems), nameof(CartItem.Ticket)])
+                ]);
 
             if (cart == null)
                 cart = new Cart
@@ -172,14 +166,14 @@ namespace Application.Implementations
 
                     // update user cart
                     cartRepo.Update(cart);
-                    await _unitOfWork.SaveChangesAsync(cancellationToken);
+                    await _unitOfWork.SaveChangesAsync();
                 }
             }
 
             return Empty.Default;
         }
 
-        public async Task<BaseResponse<string?>> CheckoutCartItemsForCurrentUserAsync(CancellationToken cancellationToken = default)
+        public async Task<BaseResponse<string>> CheckoutCartItemsForCurrentUserAsync()
         {
             var cartRepo = _unitOfWork.Repository<Cart>();
             var orderRepo = _unitOfWork.Repository<Order>();
@@ -195,7 +189,7 @@ namespace Application.Implementations
                 ]);
 
             // check if cart is empty
-            if (cart == null || cart.CartItems == null || !cart.CartItems.Any(ci => !ci.IsCheckedOut))
+            if (cart == null || cart.CartItems == null || !cart.CartItems.Any())
                 return new BadRequestException(
                 [
                     new ErrorInfo 
@@ -205,45 +199,46 @@ namespace Application.Implementations
                     }
                 ]);
 
-            var checkoutCartItems = cart.CartItems.Where(ci => !ci.IsCheckedOut);
-
-            // prepare orders
+            // prepare order
             var order = new Order
             {
                 UserId = _currentUser.Id!.Value,
-                PaymentStatus = (int)PaymentConfiguration.PaymentStatusEnum.Pending,
-                TotalAmount = checkoutCartItems.Aggregate(0m, (acc, ci) => acc + ci.Ticket.Price),
+                PaymentStatus = PaymentStatus.Pending,
+                TotalAmount = cart.CartItems.Aggregate(0m, (acc, ci) => acc + ci.Ticket.Price),
                 User = (await _userManager.FindByIdAsync(_currentUser.Id.ToString()!))!
             };
 
-            // prepare order items
-            order.OrderItems = checkoutCartItems.Select(ci => new OrderItem
+            order.OrderItems = cart.CartItems.Select(ci => new OrderItem
             {
                 TicketId = ci.TicketId,
                 Price = ci.Ticket.Price
             })
              .ToArray();
 
-            // update tickets
-            //foreach(var cartItem in checkoutCartItems)
-            //{
-            //    cartItem.IsCheckedOut = true;
-            //    cartItem.Ticket.TicketStatus = TicketStatus.Sold;
-            //}
-
             orderRepo.Create(order);
-            cartRepo.Update(cart);
-
             await _unitOfWork.SaveChangesAsync();
 
-            // create order session
-            await _payment.ProcessOrderPaymentAsync(order);
-            
-            // update order session details
-            orderRepo.Update(order);
-            await _unitOfWork.SaveChangesAsync();
+            try
+            {
+                // create order session
+                var sessionResult = await _payment.InitiatePaymentSessionAsync(order);
 
-            return order.PaymentUrl;
+                // update order session details
+                order.PaymentUrl = sessionResult.PaymentUrl;
+                order.PaymentOrderRef = sessionResult.OrderRef;
+
+                orderRepo.Update(order);
+                await _unitOfWork.SaveChangesAsync();
+
+                return sessionResult.PaymentUrl;
+            }
+            catch
+            {
+                // remove order if payment session initiation failed
+                orderRepo.HardDelete(order);
+                await _unitOfWork.SaveChangesAsync();
+                throw;
+            }
         }
     }
 }

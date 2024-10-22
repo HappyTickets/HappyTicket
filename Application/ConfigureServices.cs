@@ -30,7 +30,7 @@ namespace Application
                 .AddScoped<IChampionService, ChampionService>()
                 .AddScoped<ISponsorService, SponsorService>()
                 .AddScoped<ICartService, CartService>()
-                .AddScoped<IPaymentCallbackService, PaymentCallbackService>();
+                .AddScoped<IPaymentService, PaymentService>();
 
             return services;
         }

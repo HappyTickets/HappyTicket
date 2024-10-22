@@ -16,9 +16,10 @@ public class Order : SoftDeletableEntity<long>
 
     public decimal TotalAmount { get; set; }
     
-    public int? PaymentStatus { get; set; }
+    public PaymentStatus PaymentStatus { get; set; }
 
     public string? PaymentOrderRef { get; set; }
+    public string? PaymentTranRef { get; set; }
 
     public string? PaymentUrl { get; set; }
 
