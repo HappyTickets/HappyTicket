@@ -29,6 +29,8 @@ namespace Infrastructure
 
             // configs
             services.Configure<TelrPaymentSettings>(config.GetSection(TelrPaymentSettings.SectionName));
+                .AddScoped<ITicketRepository, TicketRepository>()
+                .AddScoped<IOrderRepository, OrderRepository>();
 
             return services;
         }

@@ -11,10 +11,6 @@ namespace Application.Orders.Validators
                 .NotEmpty()
                 .WithMessage(Resource.RequiredField);
 
-            RuleFor(dto => dto.UserId)
-                .NotEmpty()
-                .WithMessage(Resource.RequiredField);
-
             RuleFor(dto => dto.TotalAmount)
                 .GreaterThanOrEqualTo(0);
 

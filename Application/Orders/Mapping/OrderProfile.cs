@@ -14,6 +14,7 @@ namespace Application.Orders.Mappings
             CreateMap<Order, CreateOrderDto>().ReverseMap();
             CreateMap<Order, UpdateOrderDto>().ReverseMap();
             CreateMap<Order, OrderDto>()
+                .ForMember(oi => oi.CreatedAt, x => x.MapFrom(src => src.CreatedDate))
                 .ForMember(oi => oi.Owner, x => x.MapFrom(src => src.User))
                 .ReverseMap();
 
@@ -25,7 +26,8 @@ namespace Application.Orders.Mappings
                 .ReverseMap();
 
             // orderOwner 
-            CreateMap<ApplicationUser, OrderOwner>();
+            CreateMap<ApplicationUser, OrderOwner>()
+            .ForMember(oo => oo.Name, x => x.MapFrom(src => src.UserName));
 
         }
     }
