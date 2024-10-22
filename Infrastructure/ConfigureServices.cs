@@ -25,12 +25,11 @@ namespace Infrastructure
                 .AddScoped(typeof(IUserRepository<>), typeof(UserRepository<>))
                 .AddScoped<ICurrentUser, CurrentUserService>()
                 .AddScoped<ITicketRepository, TicketRepository>()
-                .AddScoped<IPayment, TelrPaymentService>();
+                .AddScoped<IPayment, TelrPaymentService>()
+                .AddScoped<IOrderRepository, OrderRepository>();
 
             // configs
             services.Configure<TelrPaymentSettings>(config.GetSection(TelrPaymentSettings.SectionName));
-                .AddScoped<ITicketRepository, TicketRepository>()
-                .AddScoped<IOrderRepository, OrderRepository>();
 
             return services;
         }
