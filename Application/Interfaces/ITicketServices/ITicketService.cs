@@ -1,11 +1,11 @@
 ﻿using Domain.Entities;
-using LanguageExt.Common;
-using Shared.DTOs.TicketDTOs;
+using Shared.Common;
 
 namespace Application.Interfaces.ITicketServices
 {
-    public interface ITicketService : IBaseService<Ticket, TicketDto>
+    public interface ITicketService
     {
-        Task<Result<string>> ScanQrCodeAsync(Guid ticketId, CancellationToken cancellationToken = default);
+        Task<BaseResponse<IEnumerable<Ticket?>>> GetDistinctTicketsAsync(long matchId);
+        //Task<Result<string>> ScanQrCodeAsync(Guid ticketId, CancellationToken cancellationToken = default);
     }
 }

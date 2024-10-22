@@ -1,43 +1,36 @@
-﻿using System.Collections;
+﻿using Shared.Exceptions;
 using System.Net;
 
 namespace Shared.Common;
 
-public class BaseResponse
-{
-    public virtual dynamic? Data { get; set; }
-    public string? Title { get; set; }
-    public HttpStatusCode Status { get; set; } = HttpStatusCode.OK;
-    public IEnumerable<ResponseError>? ErrorList { get; set; }
-    public bool IsSuccess => (int)Status < 400;
-}
-public class BaseResponse<T>
+public class BaseResponse<TData>
 {
     public BaseResponse() { }
-    public BaseResponse(T data)
+    public BaseResponse(TData data)
     {
         Data = data;
     }
 
-    public virtual T? Data { get; set; }
+    public virtual TData? Data { get; set; }
     public string? Title { get; set; }
     public HttpStatusCode Status { get; set; } = HttpStatusCode.OK;
     public IEnumerable<ResponseError>? ErrorList { get; set; }
     public bool IsSuccess => (int)Status < 400;
-}
-public class BaseListResponse<T> where T : IEnumerable
-{
-    public BaseListResponse() { }
-    public BaseListResponse(T data)
-    {
-        Data = data;
-    }
 
-    public virtual T? Data { get; set; }
-    public string? Title { get; set; }
-    public HttpStatusCode Status { get; set; } = HttpStatusCode.OK;
-    public IEnumerable<ResponseError>? ErrorList { get; set; }
-    public bool IsSuccess => (int)Status < 400;
+    public static implicit operator BaseResponse<TData>(TData data)
+       => new BaseResponse<TData>
+       {
+           Status = HttpStatusCode.OK,
+           Data = data
+       };
+    
+    public static implicit operator BaseResponse<TData>(BaseException ex)
+        => new BaseResponse<TData>
+        {
+            Status = ex.Code,
+            Title = ex.Message,
+            ErrorList = ex.Errors.Select(x => new ResponseError() { Title = x.Title, Message = x.Message, Details = x.Details })
+        };
 }
 
 public class ResponseError

@@ -14,6 +14,6 @@ public class WarmUpService
 
     public async Task WarmUpAsync()
     {
-        await _userManager.FindByEmailAsync("Anas@gmail.com");
+        //await _userManager.FindByEmailAsync("Anas@gmail.com");
     }
 }
