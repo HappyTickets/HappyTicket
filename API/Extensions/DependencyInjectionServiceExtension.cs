@@ -1,9 +1,11 @@
-﻿using Application.Implementations;
-using Application.Implementations.IdentityServices;
+﻿using Application.Identity.Service;
+using Application.Implementations;
 using Application.Interfaces;
 using Application.Interfaces.IIdentityServices;
 using Application.Interfaces.Persistence;
 using Application.Orders.Service;
+using Application.Permissions.Service;
+using Infrastructure.Persistence.Identity;
 using Infrastructure.Persistence.Transaction;
 
 namespace API.Extensions
@@ -16,9 +18,9 @@ namespace API.Extensions
             services.AddLogging(configure => configure.AddConsole());
             services.AddMemoryCache();
 
-            //services.AddTransient<IAuthorizationRepository, AuthorizationRepository>();
+            services.AddTransient<IAuthorizationRepository, AuthorizationRepository>();
             services.AddTransient<ITransactionRepository, TransactionRepository>();
-            //services.AddScoped<IAuthorizationService, AuthorizationService>();
+            services.AddScoped<IAuthorizationService, AuthorizationService>();
 
             //services.AddAutoMapper(cfg => { cfg.AddExpressionMapping(); }, typeof(MappingProfile));
             //services.AddValidatorsFromAssembly(typeof(TicketDTOValidator).Assembly);

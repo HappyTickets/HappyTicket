@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Shared.DTOs.OrderDtos.Request;
-using Shared.ResourceFiles;
 
 namespace Application.Orders.Validators
 {
@@ -8,9 +7,7 @@ namespace Application.Orders.Validators
     {
         public CreateOrderDtoValidator()
         {
-            RuleFor(dto => dto.UserId)
-                .NotEmpty()
-                .WithMessage(Resource.RequiredField);
+
 
             RuleFor(dto => dto.TotalAmount)
                             .GreaterThanOrEqualTo(0);

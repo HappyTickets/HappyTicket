@@ -19,7 +19,8 @@ namespace Infrastructure
                 .AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork))
                 .AddScoped(typeof(IUserRepository<>), typeof(UserRepository<>))
                 .AddScoped<ICurrentUser, CurrentUserService>()
-                .AddScoped<ITicketRepository, TicketRepository>();
+                .AddScoped<ITicketRepository, TicketRepository>()
+                .AddScoped<IOrderRepository, OrderRepository>();
 
             return services;
         }

@@ -7,9 +7,6 @@ public class UpdateOrderDto
     public long Id { get; set; }
 
     [Required]
-    public long UserId { get; set; }
-
-    [Required]
     [Range(0, double.MaxValue)]
     public decimal TotalAmount { get; set; }
 

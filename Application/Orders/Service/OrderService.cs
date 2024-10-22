@@ -1,5 +1,6 @@
 ﻿using Application.Common.Implementations;
 using Application.Common.Interfaces.Persistence;
+using Application.Common.Interfaces.Services;
 using Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;
@@ -17,10 +18,12 @@ namespace Application.Orders.Service
     public class OrderService(
           IUnitOfWork unitOfWork,
           ILogger<Order> logger,
-          IMapper mapper
+          IMapper mapper,
+          ICurrentUser currentUser
           ) : BaseService<Order>(unitOfWork, logger, mapper), IOrderService
 
     {
+        private readonly ICurrentUser _currentUser = currentUser;
 
         public async ValueTask<BaseResponse<object?>> CreateOrderAsync(CreateOrderDto dto, CancellationToken cancellationToken = default)
         {
@@ -48,7 +51,7 @@ namespace Application.Orders.Service
             if (order is null)
                 return new NotFoundException(Resource.NotFoundInDB_Message);
 
-            if (order.UserId != dto.UserId)
+            if (order.UserId != _currentUser.Id)
                 return new NotAuthorizedException();
 
             _mapper.Map(dto, order);
@@ -72,14 +75,18 @@ namespace Application.Orders.Service
             return new();
         }
 
-        public async ValueTask<BaseResponse<PaginatedList<OrderDto>>> GetAllOrdersAsync(PaginationParams paginationParams, CancellationToken cancellationToken = default)
+        public async ValueTask<BaseResponse<PaginatedList<OrderDto>>> GetAllOrdersAsync(PaginationSearchModel paginationSearchModel, CancellationToken cancellationToken = default)
         {
             var includes = new List<string>()
             {
                 nameof(Order.User),
                 nameof(Order.OrderItems),
             };
-            return await GetPaginatedAsync<OrderDto>(paginationParams, includes: includes);
+
+            var ordersList = await _unitOfWork.Orders.GetAllOrdersAsync(paginationSearchModel, includes, cancellationToken);
+            var ordersDtos = _mapper.Map<IEnumerable<OrderDto>>(ordersList.Items);
+
+            return new PaginatedList<OrderDto>(ordersDtos, ordersList.TotalItems, paginationSearchModel.PageIndex, paginationSearchModel.PageSize);
         }
     }
 

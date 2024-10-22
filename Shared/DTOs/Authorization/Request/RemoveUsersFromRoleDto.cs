@@ -2,7 +2,7 @@
 {
     public class RemoveUsersFromRoleDto
     {
-        public string RoleId { get; set; }
-        public List<string> UserIds { get; set; }
+        public long RoleId { get; set; }
+        public List<long> UserIds { get; set; }
     }
 }

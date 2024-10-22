@@ -1,5 +1,6 @@
 ﻿using Application.Common.Implementations;
 using Application.Common.Interfaces.Persistence;
+using Application.Common.Interfaces.Services;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
@@ -8,16 +9,18 @@ using Microsoft.Extensions.Logging;
 using Shared.Common;
 using Shared.Common.General;
 using Shared.DTOs.TicketDTOs;
-using System.Net;
+using Shared.DTOs.Tickets;
 
 namespace Application.Tickets.Service
 {
     public class TicketService(
         IUnitOfWork unitOfWork,
         ILogger<Ticket> logger,
+        ICurrentUser currentUser,
         IMapper mapper
         ) : BaseService<Ticket>(unitOfWork, logger, mapper), ITicketService
     {
+        private readonly ICurrentUser _currentUser = currentUser;
 
         //public async Task<Result<string>> ScanQrCodeAsync(Guid ticketId, CancellationToken cancellationToken = default)
         //{
@@ -109,14 +112,13 @@ namespace Application.Tickets.Service
             return ticketsDtos;
         }
 
-        public async Task<BaseResponse<PaginatedList<TicketDto>>> GetMyTicketsAsync(long userId, PaginationParams pagination)
+        public async Task<BaseResponse<List<RichTicketDto>>> GetMyTicketsAsync()
         {
-            var ticketsList = await _unitOfWork.Tickets.GetMyTicketsAsync(userId, pagination);
 
-            var ticketsRes = _mapper.Map<IEnumerable<TicketDto>>(ticketsList.Items);
+            var ticketsList = await _unitOfWork.Tickets.GetMyTicketsAsync((long)_currentUser.Id!);
 
-            var res = new PaginatedList<TicketDto>(ticketsRes, ticketsList.TotalItems, pagination.PageIndex, pagination.PageSize);
-            return res;
+            return ticketsList.Select(_mapper.Map<RichTicketDto>).ToList();
+
         }
     }
 

@@ -1,16 +1,13 @@
-﻿using Application.Common.Interfaces.Services;
-using Application.Tickets.Service;
+﻿using Application.Tickets.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Common.General;
 using Shared.DTOs.TicketDTOs;
 
 namespace API.Controllers
 {
-    public class TicketsController(ITicketService ticketService, ICurrentUser currentUser) : BaseController
+    public class TicketsController(ITicketService ticketService) : BaseController
     {
         private readonly ITicketService _ticketService = ticketService;
-        private readonly ICurrentUser _currentUser = currentUser;
 
         [HttpPost("create")]
         public async Task<IActionResult> CreateAsync(CreateTicketsDto dto)
@@ -35,10 +32,10 @@ namespace API.Controllers
         [HttpGet]
         [Route("GetMyTickets")]
         [Authorize]
-        public async Task<ActionResult> GetMyTickets([FromQuery] PaginationParams pagination)
+        public async Task<ActionResult> GetMyTickets()
         {
 
-            var result = await _ticketService.GetMyTicketsAsync((long)_currentUser.Id!, pagination);
+            var result = await _ticketService.GetMyTicketsAsync();
             if (result.IsSuccess)
             {
                 return Ok(result);

@@ -1,7 +1,9 @@
 ﻿using LanguageExt;
-using LanguageExt.Common;
 using Microsoft.Extensions.Logging;
+using Shared.Common;
+using Shared.Common.General;
 using Shared.Configs;
+using Shared.Exceptions;
 using System.Net;
 using System.Net.Mail;
 
@@ -9,8 +11,8 @@ namespace Application.Implementations;
 
 public interface IEmailSender
 {
-    Task<Result<Unit>> SendEmailAsync(string recipient, string subject, string message, IEnumerable<Attachment>? attachments = null, CancellationToken cancellationToken = default);
-    Result<Unit> SendEmail(string recipient, string subject, string message, IEnumerable<Attachment>? attachments = null);
+    Task<BaseResponse<Empty>> SendEmailAsync(string recipient, string subject, string message, IEnumerable<Attachment>? attachments = null, CancellationToken cancellationToken = default);
+    BaseResponse<Empty> SendEmail(string recipient, string subject, string message, IEnumerable<Attachment>? attachments = null);
 }
 
 public class EmailSender : IEmailSender
@@ -24,7 +26,7 @@ public class EmailSender : IEmailSender
         _emailConfig = emailConfig;
     }
 
-    public async Task<Result<Unit>> SendEmailAsync(string recipient, string subject, string message, IEnumerable<Attachment>? attachments = null, CancellationToken cancellationToken = default)
+    public async Task<BaseResponse<Empty>> SendEmailAsync(string recipient, string subject, string message, IEnumerable<Attachment>? attachments = null, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -45,16 +47,16 @@ public class EmailSender : IEmailSender
 
             await client.SendMailAsync(mailMessage, cancellationToken);
             _logger.LogInformation("Email sent successfully to '{recipient}'.", recipient);
-            return new(new Unit());
+            return new();
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Couldn't send the email to '{recipient}'. Error message: {error}", recipient, ex.Message);
-            return new(ex);
+            return new BadRequestException();
+
         }
     }
-
-    public Result<Unit> SendEmail(string recipient, string subject, string message, IEnumerable<Attachment>? attachments = null)
+    public BaseResponse<Empty> SendEmail(string recipient, string subject, string message, IEnumerable<Attachment>? attachments = null)
     {
         try
         {
@@ -75,12 +77,12 @@ public class EmailSender : IEmailSender
 
             client.Send(mailMessage);
             _logger.LogInformation("Email sent successfully to '{recipient}'.", recipient);
-            return new(new Unit());
+            return new();
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Couldn't send the email to '{recipient}'. Error message: {error}", recipient, ex.Message);
-            return new(ex);
+            return new BadRequestException();
         }
     }
 }
