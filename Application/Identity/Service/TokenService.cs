@@ -13,7 +13,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Application.Implementations.IdentityServices;
+namespace Application.Identity.Service;
 
 public class TokenService<TUser> : ITokenService<TUser> where TUser : ApplicationUser
 {

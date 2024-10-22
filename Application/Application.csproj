@@ -45,11 +45,11 @@
     <Folder Include="Championships\Mappings\" />
     <Folder Include="Championships\Service\" />
     <Folder Include="Championships\Validators\" />
+    <Folder Include="Identity\Mapping\" />
     <Folder Include="Interfaces\ITicketServices\" />
     <Folder Include="Matches\Mappings\" />
     <Folder Include="Matches\Service\" />
     <Folder Include="Matches\Validators\" />
-    <Folder Include="Permissions\Service\" />
     <Folder Include="Seats\Mappings\" />
     <Folder Include="Seats\Service\" />
     <Folder Include="Seats\Validators\" />

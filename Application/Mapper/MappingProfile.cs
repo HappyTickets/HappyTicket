@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
 using Domain.Entities;
-using Shared.DTOs;
+using Domain.Entities.UserEntities;
 using Shared.DTOs.Champion;
-using Shared.DTOs.Stadium;
-using Shared.DTOs.StadiumDTO;
-using Shared.DTOs.Test.Request;
-using Shared.DTOs.Test.Response;
-using Shared.DTOs.TicketDTOs;
+using Shared.DTOs.Identity.UserDTOs;
 
 namespace Application.Mapper
 {
@@ -15,9 +11,10 @@ namespace Application.Mapper
         public MappingProfile()
         {
 
-            
+
 
             CreateMap<Championship, ChampionDto>().ReverseMap();
+            CreateMap<ApplicationUser, ApplicationUserDTO>().ReverseMap();
 
 
             //CreateMap<MatchO, MatchCommandDto>().ReverseMap();

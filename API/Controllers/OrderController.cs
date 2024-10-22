@@ -1,17 +1,14 @@
-﻿using Application.Common.Interfaces.Services;
-using Application.Interfaces;
-using Microsoft.AspNetCore.Authorization;
+﻿using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Common.General;
 using Shared.DTOs.OrderDtos.Request;
 
 namespace API.Controllers
 {
-    [Authorize]
-    public class OrderController(IOrderService orderService, ICurrentUser currentUser) : BaseController
+    //[Authorize]
+    public class OrderController(IOrderService orderService) : BaseController
     {
         private readonly IOrderService _orderService = orderService;
-        private readonly ICurrentUser _currentUser = currentUser;
 
         //        [HttpGet]
         //        [Route("GetMyOrders")]
@@ -102,15 +99,14 @@ namespace API.Controllers
         [HttpGet]
         [Route("GetAll")]
         // paginated only search not yet
-        public async Task<IActionResult> GetAllOrders([FromQuery] PaginationParams pagination, CancellationToken cancellationToken = default)
-         => Result(await _orderService.GetAllOrdersAsync(pagination, cancellationToken: cancellationToken));
+        public async Task<IActionResult> GetAllOrders([FromQuery] PaginationSearchModel paginationSearchModel, CancellationToken cancellationToken = default)
+         => Result(await _orderService.GetAllOrdersAsync(paginationSearchModel, cancellationToken: cancellationToken));
 
 
         [HttpPost]
         [Route("Create")]
         public async Task<IActionResult> AddOrder([FromBody] CreateOrderDto orderDto, CancellationToken cancellationToken = default)
         {
-            orderDto.UserId = _currentUser.Id ?? 0;
 
             return Result(await _orderService.CreateOrderAsync(orderDto, cancellationToken: cancellationToken));
 
@@ -121,7 +117,6 @@ namespace API.Controllers
         [Route("Update")]
         public async Task<IActionResult> EditOrder([FromBody] UpdateOrderDto orderDto, CancellationToken cancellationToken = default)
         {
-            orderDto.UserId = _currentUser.Id ?? 0;
             return Result(await _orderService.UpdateOrderAsync(orderDto, cancellationToken: cancellationToken));
         }
 

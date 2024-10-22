@@ -12,7 +12,7 @@ namespace Application.Interfaces
         ValueTask<BaseResponse<object?>> CreateOrderAsync(CreateOrderDto dto, CancellationToken cancellationToken = default);
 
         ValueTask<BaseResponse<OrderDto?>> GetOrderByIdAsync(long id, CancellationToken cancellationToken = default);
-        ValueTask<BaseResponse<PaginatedList<OrderDto>>> GetAllOrdersAsync(PaginationParams paginationParams, CancellationToken cancellationToken = default);
+        ValueTask<BaseResponse<PaginatedList<OrderDto>>> GetAllOrdersAsync(PaginationSearchModel paginationSearchModel, CancellationToken cancellationToken = default);
 
         ValueTask<BaseResponse<object?>> UpdateOrderAsync(UpdateOrderDto dto, CancellationToken cancellationToken = default);
 

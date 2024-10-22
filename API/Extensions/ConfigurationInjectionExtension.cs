@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using Shared.Common.General;
 using Shared.Configs;
 using System.Text;
 
@@ -8,6 +9,8 @@ namespace API.Extensions
     {
         public static IServiceCollection AddConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
+            LongIdEncryptionHelper.Initialize(configuration["EncryptionKeys:LongIdEncryptionKey"]);
+
             return services.AddJWTConfiguration(configuration).AddEmailConfiguration(configuration);
         }
 

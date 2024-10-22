@@ -4,8 +4,6 @@ namespace Shared.DTOs.OrderDtos.Request
 {
     public class CreateOrderDto
     {
-        [Required]
-        public long UserId { get; set; }
 
         [Required]
         [Range(0, double.MaxValue)]
