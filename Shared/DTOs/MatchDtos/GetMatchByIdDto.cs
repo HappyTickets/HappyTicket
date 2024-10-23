@@ -14,11 +14,9 @@ namespace Shared.DTOs.MatchDtos
         public string ChampionName { get; set; } = string.Empty;
         public DateTime? EventDate { get; set; }
         public TimeSpan? EventTime { get; set; }
-        public StadiumDto? Stadium { get; set; } = null;
-        public ChampionDto? Champion { get; set; }
-        public bool IsOver { get; set; }
-        public bool? HasTickets { get; set; } = false;
-        public TeamDto? TeamA { get; set; }
-        public TeamDto? TeamB { get; set; }
+        public string TeamAName { get; set; } = string.Empty;
+        public string TeamALogo { get; set; } = string.Empty;
+        public string TeamBName { get; set; } = string.Empty;
+        public string TeamBLogo { get; set; } = string.Empty;
     }
 }

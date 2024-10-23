@@ -29,7 +29,7 @@ namespace API.Controllers
         [HttpGet("GetById{id}")]
         public async Task<IActionResult> GetById(long id)
         {
-            var result = await _matchService.GetByIdAsync(id);
+            var result = await _matchService.GetMatchByIdAsync(id);
             if (result.IsSuccess)
             {
                 return Ok(result);

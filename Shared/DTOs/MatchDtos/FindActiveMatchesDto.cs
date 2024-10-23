@@ -8,11 +8,13 @@ namespace Shared.DTOs.MatchDtos
 {
     public class FindActiveMatchesDto
     {
+        public string StadiumName { get; set; } = string.Empty;
+        public string ChampionName { get; set; } = string.Empty;
         public DateTime? EventDate { get; set; }
         public TimeSpan? EventTime { get; set; }
-        public long TeamAId { get; set; }
-        public long TeamBId { get; set; }
-        public long StadiumId { get; set; }
-        public long ChampionId { get; set; }
+        public string TeamAName { get; set; } = string.Empty;
+        public string TeamALogo { get; set; } = string.Empty;
+        public string TeamBName { get; set; } = string.Empty;
+        public string TeamBLogo { get; set; } = string.Empty;
     }
 }

@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace Shared.DTOs.MatchDtos
 {
-    public class GetPaginatedMatchesDto : BaseMatch
+    public class GetPaginatedMatchesDto
     {
+        public DateTime? EventDate { get; set; }
+        public TimeSpan? EventTime { get; set; }
+        public long TeamAId { get; set; }
+        public long TeamBId { get; set; }
+        public long StadiumId { get; set; }
+        public long ChampionId { get; set; }
         public bool IsOver { get; set; }
     }
 }

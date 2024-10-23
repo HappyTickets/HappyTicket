@@ -37,18 +37,30 @@ namespace Application.Implementations
 
             return result.ToList();
         }
-        public async ValueTask<BaseResponse<GetMatchByIdDto>> GetByIdAsync(long id)
+        public async ValueTask<BaseResponse<GetMatchByIdDto>> GetMatchByIdAsync(long id)
         {
-            var match = await GetByIdAsync<GetMatchByIdDto>(id);
-            return new BaseResponse<GetMatchByIdDto>(match);
-        }
-        public async ValueTask<BaseResponse<GetMatchByIdDto>> GetByIdAsync(long id, IEnumerable<string>? includes = null)
-        {
+            var includes = new List<string>
+                {
+                    nameof(Match.Stadium),
+                    nameof(Match.Champion),
+                    $"{nameof(Match.MatchTeams)}.{nameof(MatchTeam.Team)}"
+
+                };
+
             var match = await GetByIdAsync<GetMatchByIdDto>(id, includes: includes);
             return new BaseResponse<GetMatchByIdDto>(match);
+
         }
+
         public async ValueTask<BaseResponse<IEnumerable<FindActiveMatchesDto>>> FindActiveMatches()
         {
+            var includes = new List<string>
+                {
+                    nameof(Match.Stadium),
+                    nameof(Match.Champion),
+                    $"{nameof(Match.MatchTeams)}.{nameof(MatchTeam.Team)}"
+
+                };
             // Get the current date and time (local or UTC based on your needs)
             var currentDateTime = DateTime.Now; // Use DateTime.UtcNow if your app works with UTC
 
@@ -70,7 +82,7 @@ namespace Application.Implementations
         }
         public async ValueTask<BaseResponse<PaginatedList<GetPaginatedMatchesDto>>> GetPaginatedAsync(PaginationSearchModel paginationParams)
         {
-            var paginatedMatches = await GetPaginatedAsync<GetPaginatedMatchesDto>(null,paginationParams);
+            var paginatedMatches = await GetPaginatedAsync<GetPaginatedMatchesDto>(null, paginationParams);
             return new BaseResponse<PaginatedList<GetPaginatedMatchesDto>>(paginatedMatches);
         }
         public async ValueTask<BaseResponse<long>> GetCountAsync(CancellationToken cancellationToken = default)
@@ -186,38 +198,38 @@ namespace Application.Implementations
         }
         public async ValueTask<BaseResponse<Unit>> SoftDeleteByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default)
         {
-            var match = await GetByIdAsync(id);
-            if (match == null)
-            {
-                return new BaseResponse<LanguageExt.Unit>
-                {
-                    Status = HttpStatusCode.NotFound,
-                    Title = "Match Not Found",
-                    ErrorList = new List<ResponseError>
-            {
-                new ResponseError("Null Data", "The requested data could not be found.")
-            }
-                };
-            }
-            await SoftDeleteByIdAsync(id, autoSave, cancellationToken);
+            //var match = await GetByIdAsync(id);
+            //if (match == null)
+            //{
+            //    return new BaseResponse<LanguageExt.Unit>
+            //    {
+            //        Status = HttpStatusCode.NotFound,
+            //        Title = "Match Not Found",
+            //        ErrorList = new List<ResponseError>
+            //{
+            //    new ResponseError("Null Data", "The requested data could not be found.")
+            //}
+            //    };
+            //}
+            //await SoftDeleteByIdAsync(id, autoSave, cancellationToken);
             return new Unit();
         }
         public async ValueTask<BaseResponse<Unit>> HardDeleteByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default)
         {
-            var match = await GetByIdAsync(id);
-            if (match == null)
-            {
-                return new BaseResponse<LanguageExt.Unit>
-                {
-                    Status = HttpStatusCode.NotFound,
-                    Title = "Match Not Found",
-                    ErrorList = new List<ResponseError>
-            {
-                new ResponseError("Null Data", "The requested data could not be found.")
-            }
-                };
-            }
-            await HardDeleteByIdAsync(id, autoSave, cancellationToken: cancellationToken);
+            //var match = await GetByIdAsync(id);
+            //if (match == null)
+            //{
+            //    return new BaseResponse<LanguageExt.Unit>
+            //    {
+            //        Status = HttpStatusCode.NotFound,
+            //        Title = "Match Not Found",
+            //        ErrorList = new List<ResponseError>
+            //{
+            //    new ResponseError("Null Data", "The requested data could not be found.")
+            //}
+            //    };
+            //}
+            //await HardDeleteByIdAsync(id, autoSave, cancellationToken: cancellationToken);
             return new Unit();
         }
         public async Task<BaseResponse<Unit>> RecoverByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default)

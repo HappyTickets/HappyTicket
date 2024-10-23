@@ -18,7 +18,7 @@ namespace Application.Interfaces
         ValueTask<BaseResponse<IEnumerable<GetAllMatchesDto>>> GetAll();
 
         // Retrieve a match by its ID
-        ValueTask<BaseResponse<GetMatchByIdDto>> GetByIdAsync(long id);
+        ValueTask<BaseResponse<GetMatchByIdDto>> GetMatchByIdAsync(long id);
 
         // Find active matches (you may need to define the predicate based on your logic)
         ValueTask<BaseResponse<IEnumerable<FindActiveMatchesDto>>> FindActiveMatches();
