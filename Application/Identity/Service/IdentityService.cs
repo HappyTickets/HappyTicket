@@ -30,116 +30,6 @@ public class IdentityService(UserManager<ApplicationUser> userManager, ITokenSer
     private readonly IEmailSender _emailSender = emailSender;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-    //public async Task<BaseResponse<TokenDTO?>> RegisterAsync2(RegisterRequest registerRequest, CancellationToken cancellationToken = default)
-    //{
-    //    return await Task.Run(async () =>
-    //    {
-    //        bool isNotAdmin = await _userManager.Users.AnyAsync(cancellationToken);
-
-    //        if (registerRequest.Password != registerRequest.ConfirmPassword)
-    //        {
-    //            return new BaseResponse<TokenDTO?>()
-    //            {
-    //                Status = HttpStatusCode.BadRequest,
-    //                Title = Resource.Passwords_NotMatching,
-    //                ErrorList = new List<ResponseError>
-    //            {
-    //                new ResponseError { Title = Resource.Error_Occurred, Message = Resource.Passwords_NotMatching}
-    //            }
-    //            };
-    //        }
-
-    //        ApplicationUser? user = null;
-
-    //        if (isNotAdmin)
-    //        {
-    //            user = await _userManager.FindByEmailAsync(registerRequest.Email);
-    //            if (user != null)
-    //            {
-    //                return new BaseResponse<TokenDTO?>()
-    //                {
-    //                    Status = HttpStatusCode.Conflict,
-    //                    Title = Resource.UserAlreadyExist,
-    //                    ErrorList = new List<ResponseError>
-    //                {
-    //                    new ResponseError { Title = Resource.Error_Occurred, Message = Resource.UserAlreadyExist}
-    //                }
-    //                };
-    //            }
-    //        }
-
-    //        user = new ApplicationUser
-    //        {
-    //            UserName = registerRequest.UserName,
-    //            Email = registerRequest.Email,
-    //            PhoneNumber = registerRequest.PhoneNumber,
-    //            Cart = new Cart { User = user },
-    //            CreatedDate = DateTime.UtcNow,
-    //        };
-
-    //        var registrationResults = await _userManager.CreateAsync(user, registerRequest.Password);
-    //        if (!registrationResults.Succeeded)
-    //        {
-    //            return new()
-    //            {
-    //                Status = HttpStatusCode.BadRequest,
-    //                ErrorList = registrationResults.Errors.Select(e => new ResponseError { Title = e.Code, Message = e.Description }).ToList()
-    //            };
-    //        }
-
-    //        user = await _userManager.FindByEmailAsync(registerRequest.Email);
-    //        if (user is null)
-    //        {
-    //            return new BaseResponse<TokenDTO?>()
-    //            {
-    //                Status = HttpStatusCode.InternalServerError,
-    //                Title = Resource.NotFound,
-    //                ErrorList = new List<ResponseError>
-    //            {
-    //                new ResponseError { Title = Resource.Error_Occurred, Message =Resource.NotFoundInDB_Message}
-    //            }
-    //            };
-    //        }
-
-    //        // Assign admin role if applicable
-    //        if (!isNotAdmin)
-    //        {
-    //            await _userManager.AddClaimAsync(user, new Claim("Role", "Admin"));
-    //        }
-
-    //        // Send confirmation email
-    //        var emailResult = await SendConfirmationEmail(user, cancellationToken);
-    //        if (!emailResult.IsSuccess)
-    //        {
-    //            return new BaseResponse<TokenDTO?>()
-    //            {
-    //                Status = HttpStatusCode.InternalServerError,
-    //                Title = Resource.Email_Confirmation_Fail,
-    //                ErrorList = emailResult.ErrorList
-    //            };
-    //        }
-
-    //        // Generate tokens for the user
-    //        var tokenDTO = await _tokenService.CreateAuthTokensAsync(user, cancellationToken);
-    //        if (tokenDTO is null)
-    //        {
-    //            return new BaseResponse<TokenDTO?>()
-    //            {
-    //                Status = HttpStatusCode.InternalServerError,
-    //                Title = Resource.FailedToGenerateToken,
-    //                ErrorList = new List<ResponseError>
-    //            {
-    //                new ResponseError { Title = Resource.Error_Occurred, Message = Resource.FailedToGenerateToken  }
-    //            }
-    //            };
-    //        }
-    //        return new BaseResponse<TokenDTO?>
-    //        {
-    //            Status = HttpStatusCode.OK,
-    //            Data = tokenDTO
-    //        };
-    //    }, cancellationToken);
-    //}
     public async Task<BaseResponse<TokenDTO?>> RegisterAsync(RegisterRequest registerRequest, CancellationToken cancellationToken = default)
     {
 
@@ -165,7 +55,7 @@ public class IdentityService(UserManager<ApplicationUser> userManager, ITokenSer
 
         if (isAdmin)
         {
-            await _userManager.AddToRoleAsync(user, Roles.Admin.ToString());
+            await _userManager.AddToRoleAsync(user, AppRoles.Admin.ToString());
         }
 
         _ = Task.Run(async () => await SendConfirmationEmail(user, cancellationToken));

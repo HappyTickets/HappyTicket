@@ -2,6 +2,7 @@
 using Application.Common.Interfaces.Services;
 using Infrastructure.Payment;
 using Infrastructure.Persistence.EntityFramework;
+using Infrastructure.Persistence.Extensions.Infrastructure.Persistence;
 using Infrastructure.Persistence.Identity;
 using Infrastructure.Persistence.Repositories;
 using Infrastructure.Services;
@@ -26,7 +27,8 @@ namespace Infrastructure
                 .AddScoped<ICurrentUser, CurrentUserService>()
                 .AddScoped<ITicketRepository, TicketRepository>()
                 .AddScoped<IPayment, TelrPaymentService>()
-                .AddScoped<IOrderRepository, OrderRepository>();
+                .AddScoped<IOrderRepository, OrderRepository>()
+                .AddScoped<DbSeeder>();
 
             // configs
             services.Configure<TelrPaymentSettings>(config.GetSection(TelrPaymentSettings.SectionName));

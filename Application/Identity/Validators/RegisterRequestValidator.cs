@@ -16,7 +16,9 @@ namespace Application.Identity.Validators
             _userManager = userManager;
 
             RuleFor(x => x.UserName)
-                .NotEmpty().WithMessage(Resource.UserName_Validation);
+        .NotEmpty().WithMessage(Resource.UserName_Validation)
+        .Matches(@"^\S+$").WithMessage(Resource.UserName_NoSpaces);
+
 
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage(Resource.Email_Required_Validation)

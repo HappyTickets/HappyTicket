@@ -19,7 +19,7 @@ namespace Application.Tickets.Mappings
             CreateMap<Ticket, TicketDto>().ReverseMap();
 
             CreateMap<Ticket, RichTicketDto>()
-            .ForMember(dest => dest.TicketId, opt => opt.MapFrom(src => LongIdEncryptionHelper.EncryptId(src.Id)))
+            .ForMember(dest => dest.TicketId, opt => opt.MapFrom(src => LongIdEncryptionHelper.EncryptLongId(src.Id)))
             .ForMember(dest => dest.TicketStatus, opt => opt.MapFrom(src => src.TicketStatus.ToString()))
             .ForMember(dest => dest.Stadium, opt => opt.MapFrom(src => src.MatchTeam.Match.Stadium))
             .ForMember(dest => dest.SelectedTeam, opt => opt.MapFrom(src => src.MatchTeam))

@@ -3356,6 +3356,15 @@ namespace Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User name should not contain spaces..
+        /// </summary>
+        public static string UserName_NoSpaces {
+            get {
+                return ResourceManager.GetString("UserName_NoSpaces", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Name field is required!.
         /// </summary>
         public static string UserName_Validation {
