@@ -28,7 +28,7 @@ namespace Application.Implementations
                 {
                     nameof(Match.Stadium),
                     nameof(Match.Champion),
-                    //nameof(Match.MatchTeams),
+                    nameof(Match.MatchTeams),
                 };
 
             var result = await GetAllAsync<GetAllMatchesDto>(includes: includes);
@@ -48,8 +48,24 @@ namespace Application.Implementations
         }
         public async ValueTask<BaseResponse<IEnumerable<FindActiveMatchesDto>>> FindActiveMatches()
         {
-            var matches = await FindAsync<FindActiveMatchesDto>(m => m.IsActive);
-            return new BaseResponse<IEnumerable<FindActiveMatchesDto>>(matches);
+            // Get the current date and time (local or UTC based on your needs)
+            var currentDateTime = DateTime.Now; // Use DateTime.UtcNow if your app works with UTC
+
+            // Fetch matches that are not finished and have valid EventDate and EventTime
+            var matches = await FindAsync<FindActiveMatchesDto>(
+                x => x.EventDate != null && x.EventTime != null);
+
+            // Perform the time calculation on the client side
+            var activeMatches = matches
+                .AsEnumerable()  // This moves the computation to the client-side
+                .Where(x =>
+                {
+                    var matchStartTime = x.EventDate.Value.Add(x.EventTime.Value);
+                    return matchStartTime <= currentDateTime; // Match has started or is about to start
+                });
+
+            return new BaseResponse<IEnumerable<FindActiveMatchesDto>>(activeMatches);
+
         }
         public async ValueTask<BaseResponse<PaginatedList<GetPaginatedMatchesDto>>> GetPaginatedAsync(PaginationSearchModel paginationParams)
         {
