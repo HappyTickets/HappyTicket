@@ -8,6 +8,16 @@ using FluentValidation.AspNetCore;
 using Shared.DTOs.MatchDtos;
 using static Application.Validation.TicketDtoValidator;
 
+using Application.Identity.Service;
+using Application.Implementations;
+using Application.Interfaces;
+using Application.Interfaces.IIdentityServices;
+using Application.Interfaces.Persistence;
+using Application.Orders.Service;
+using Application.Permissions.Service;
+using Infrastructure.Persistence.Identity;
+using Infrastructure.Persistence.Transaction;
+
 namespace API.Extensions
 {
     public static class DependencyInjectionServiceExtension
@@ -25,6 +35,9 @@ namespace API.Extensions
             //services.AddTransient<IValidator<MatchDto>, MatchValidator>();
             //services.AddTransient<IValidator<CreateMatchDto>, MatchCreateValidator>();
             //services.AddTransient<IValidator<UpdateMatchDto>, MatchUpdateValidator>();
+            services.AddTransient<IAuthorizationRepository, AuthorizationRepository>();
+            services.AddTransient<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IAuthorizationService, AuthorizationService>();
 
 
 
@@ -44,15 +57,15 @@ namespace API.Extensions
             //services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
             //services.AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork));
             //services.AddTransient(typeof(IUserRepository<>), typeof(UserRepository<>));
-            //services.AddTransient(typeof(ITokenService<>), typeof(TokenService<>));
+            services.AddTransient(typeof(ITokenService<>), typeof(TokenService<>));
             //services.AddTransient(typeof(IBaseService<,>), typeof(BaseService<,>));
-            //services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<IIdentityService, IdentityService>();
             //services.AddTransient<ITicketService, TicketService>();
             //services.AddTransient<ITestMatchService, TestMatchService>();
             //services.AddSingleton<CountryInfoService>();
             //services.AddTransient<ITicketService, TicketService>();
             //services.AddSingleton<CountryInfoService>();
-            //services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddSingleton<IEmailSender, EmailSender>();
             //services.AddScoped<IMatchService, MatchService>();
             //services.AddScoped<IMatchService, MatchService>();
             //services.AddScoped<IMatchCommandService, MatchCommandService>();
@@ -63,7 +76,7 @@ namespace API.Extensions
             //services.AddTransient<ICartService, CartService>();
             //services.AddTransient<IFileService, FileService>();
             //services.AddScoped<IPaymentService, PaymentService>();
-            //services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IOrderService, OrderService>();
             //services.AddScoped<IUserService, UserService>();
             //services.AddScoped<ISponsorService, SponsorService>();
             //services.AddScoped<IChampionService, ChampionService>();

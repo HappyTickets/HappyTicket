@@ -17,6 +17,10 @@ namespace Infrastructure.Persistence.Configurations
                 .WithMany()
                 .HasForeignKey(t=>t.SeatId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(t => t.CartItems)
+                .WithOne(ci => ci.Ticket)
+                .HasForeignKey(ci => ci.TicketId);
         }
     }
 }

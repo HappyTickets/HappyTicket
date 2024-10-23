@@ -17,6 +17,4 @@ public class CartItem : SoftDeletableEntity<long>
 
     [ForeignKey(nameof(TicketId))]
     public virtual Ticket Ticket { get; set; }
-
-    public bool IsCheckedOut { get; set; }
 }

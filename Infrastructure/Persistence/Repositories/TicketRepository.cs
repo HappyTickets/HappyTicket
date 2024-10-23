@@ -1,7 +1,9 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.Common.Interfaces.Services;
 using Domain.Entities;
+using Domain.Enums;
 using Infrastructure.Persistence.EntityFramework;
+using Infrastructure.Persistence.Extensions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -43,6 +45,33 @@ namespace Infrastructure.Persistence.Repositories
                 );
         }
 
+        public async Task<List<Ticket>> GetMyTicketsAsync(long userId)
+        {
+            var myTickets = _dbContext.Orders
+                   .Include(o => o.OrderItems)
+                   .ThenInclude(oi => oi.Ticket)
+                   .ThenInclude(t => t.MatchTeam)
+                   .ThenInclude(mt => mt.Match)
+                   .ThenInclude(m => m.Champion)
+                   .ThenInclude(c => c.ChampionSponsors)
+                   .ThenInclude(cs => cs.Sponsor)
+                   .Include(o => o.OrderItems)
+                   .ThenInclude(oi => oi.Ticket.MatchTeam.Match.Stadium)
+                   .Include(o => o.OrderItems)
+                   .ThenInclude(oi => oi.Ticket.MatchTeam.Match.MatchTeams)
+                   .ThenInclude(mt => mt.Team)
+                   .ThenInclude(t => t.TeamSponsors)
+                   .ThenInclude(ts => ts.Sponsor)
+
+                   .Where(o => o.UserId == userId)
+                   .SelectMany(o => o.OrderItems)
+                   .Select(oi => oi.Ticket)
+                    .Where(t => t.TicketStatus == TicketStatus.Sold || t.TicketStatus == TicketStatus.ForAdmins || t.TicketStatus == TicketStatus.Used)
+                    .OrderBy(t => t.TicketStatus == TicketStatus.Sold ? 0 : t.TicketStatus == TicketStatus.ForAdmins ? 0 : 1);
+
+            return await myTickets.ToListAsync();
+        }
+
         public void UpdateAllWithSamePredicate(Expression<Func<Ticket, bool>> predicate, Ticket ticket)
         {
             _dbContext.Tickets.Where(predicate)
@@ -62,7 +91,7 @@ namespace Infrastructure.Persistence.Repositories
                     .SetProperty(t => t.ModifiedBy, _currentUser.Id)
                     .SetProperty(t => t.ModifiedDate, DateTime.UtcNow)
                 );
-               
+
         }
 
         private SqlParameter CreateParameter(string name, object? value)

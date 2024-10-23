@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Shared.DTOs;
+using Shared.DTOs.OrderDtos.Response;
 
 namespace Application.Validation
 {

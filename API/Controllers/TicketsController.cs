@@ -1,17 +1,13 @@
 ﻿using Application.Tickets.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTOs.TicketDTOs;
 
 namespace API.Controllers
 {
-    public class TicketsController : BaseController
+    public class TicketsController(ITicketService ticketService) : BaseController
     {
-        private readonly ITicketService _ticketService;
-
-        public TicketsController(IHttpContextAccessor httpContextAccessor, ITicketService ticketService)
-        {
-            _ticketService = ticketService;
-        }
+        private readonly ITicketService _ticketService = ticketService;
 
         [HttpPost("create")]
         public async Task<IActionResult> CreateAsync(CreateTicketsDto dto)
@@ -22,10 +18,24 @@ namespace API.Controllers
             => Result(await _ticketService.UpdateAsync(dto));
 
         [HttpGet]
-        [Route("GetTicketsByMatchTeamId")]
-        public async Task<ActionResult> GetTicketsByMatchTeamId(long matchTeamId, CancellationToken cancellationToken = default)
+        [Route("GetRandomTickets")]
+        public async Task<ActionResult> GetRandomTickets(long matchTeamId, CancellationToken cancellationToken = default)
         {
             var result = await _ticketService.GetDistinctTicketsAsync(matchTeamId);
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet]
+        [Route("GetMyTickets")]
+        [Authorize]
+        public async Task<ActionResult> GetMyTickets()
+        {
+
+            var result = await _ticketService.GetMyTicketsAsync();
             if (result.IsSuccess)
             {
                 return Ok(result);

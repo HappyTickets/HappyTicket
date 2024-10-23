@@ -15,11 +15,11 @@ namespace Application.Tickets.Validators
                 .GreaterThan(0)
                 .PrecisionScale(18, 2, true);
 
-            RuleFor(dto => dto.BlockId)
-                .NotEmpty();
+            //RuleFor(dto => dto.BlockId)
+            //    .NotEmpty();
 
-            RuleFor(dto => dto.SeatId)
-                .NotEmpty();
+            //RuleFor(dto => dto.SeatId)
+            //    .NotEmpty();
 
             RuleFor(dto => dto.Location)
                 .NotEmpty();
@@ -30,9 +30,9 @@ namespace Application.Tickets.Validators
             RuleFor(dto => dto.TicketStatus)
                 .IsInEnum();
 
-            RuleFor(dto => dto.SeatNumber)
-                .NotEmpty()
-                .GreaterThan(0);
+            //RuleFor(dto => dto.SeatNumber)
+            //    .NotEmpty()
+            //    .GreaterThan(0);
 
             RuleFor(dto => dto.InternalGate)
                 .NotEmpty();

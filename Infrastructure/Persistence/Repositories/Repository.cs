@@ -138,7 +138,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         if (includes != null)
             query = query.Include(includes);
 
-        return await _dbSet.PaginateAsync(pageIndex, pageSize);
+        return await query.PaginateAsync(pageIndex, pageSize);
     }
 
     public async Task<PaginatedList<TEntity>> PaginateAsync(Expression<Func<TEntity, bool>> predicate, int pageIndex, int pageSize, IEnumerable<string>? includes = null, CancellationToken cancellationToken = default)
@@ -148,7 +148,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         if (includes != null)
             query = query.Include(includes);
 
-        return await _dbSet.PaginateAsync(pageIndex, pageSize);
+        return await query.PaginateAsync(pageIndex, pageSize);
     }
 
     public Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)

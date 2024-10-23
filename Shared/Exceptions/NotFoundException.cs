@@ -9,5 +9,5 @@ public class NotFoundException : BaseException
     public NotFoundException(IEnumerable<ErrorInfo> errors) : base(errors, "Item Not Found") { }
     public NotFoundException(IEnumerable<ErrorInfo> errors, string message) : base(errors, message) { }
 
-    public override HttpStatusCode Code { get; set; } = HttpStatusCode.NoContent;
+    public override HttpStatusCode Code { get; set; } = HttpStatusCode.NotFound;
 }

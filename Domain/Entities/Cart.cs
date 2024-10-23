@@ -14,6 +14,4 @@ public class Cart : SoftDeletableEntity<long>
     public virtual ApplicationUser? User { get; set; }
 
     public virtual ICollection<CartItem>? CartItems { get; set; }
-
-    public decimal Total { get; set; }
 }

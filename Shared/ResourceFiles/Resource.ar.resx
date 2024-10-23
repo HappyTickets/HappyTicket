@@ -1208,4 +1208,115 @@
   <data name="StadiumIsRequired" xml:space="preserve">
     <value>الملعب مطلوب</value>
   </data>
+  <data name="ChampionshipNotFound" xml:space="preserve">
+    <value>لم يتم العثور على البطولة</value>
+  </data>
+  <data name="NoChampionshipFound" xml:space="preserve">
+    <value>لم يتم العثور على بطولة</value>
+  </data>
+  <data name="ChampionshipDeleted" xml:space="preserve">
+    <value>تم حذف البطولة</value>
+  </data>
+  <data name="Cannotdeleteachampionshipwithassignedmatches" xml:space="preserve">
+    <value>لا يمكن حذف بطولة بالمباريات المخصصة لها</value>
+  </data>
+  <data name="Checkout_Cart_Empty" xml:space="preserve">
+    <value>عربة التسوق الخاصة بك فارغة. يرجى إضافة عناصر إلى عربة التسوق قبل المتابعة إلى الدفع.</value>
+  </data>
+  <data name="RoleName" xml:space="preserve">
+    <value>اسم الدور</value>
+  </data>
+  <data name="TheRoles" xml:space="preserve">
+    <value>الادوار</value>
+  </data>
+  <data name="TheRole" xml:space="preserve">
+    <value>الدور</value>
+  </data>
+  <data name="RoleAlreadyExists" xml:space="preserve">
+    <value>الدور {0} موجود بالفعل</value>
+  </data>
+  <data name="AssignRoleToSelectedUsers" xml:space="preserve">
+    <value>تعين الدور الي المستخدمين المحددين</value>
+  </data>
+  <data name="AssignRoles" xml:space="preserve">
+    <value>تعيين الادورا</value>
+  </data>
+  <data name="UserAssignedToRole" xml:space="preserve">
+    <value>تم اسناد الدور المستخدم بنجاح</value>
+  </data>
+  <data name="RoleAssignedSuccessfully" xml:space="preserve">
+    <value>تم اسناد الدور بنجاح</value>
+  </data>
+  <data name="RolesAssignedSuccessfully" xml:space="preserve">
+    <value>تم اسناد الدور بنجاح</value>
+  </data>
+  <data name="RoleCreatedSuccessfully" xml:space="preserve">
+    <value>تم إنشاء الدور '{0}' بنجاح!</value>
+  </data>
+  <data name="RoleEditedSuccessfully" xml:space="preserve">
+    <value>تم تعديل الدور بنجاح</value>
+  </data>
+  <data name="RoleDeletedSuccessfully" xml:space="preserve">
+    <value>تم حذف الدور بنجاح</value>
+  </data>
+  <data name="RoleRemovedSuccessfully" xml:space="preserve">
+    <value>تم حذف الدور بنجاح</value>
+  </data>
+  <data name="UserRemovedFromRole" xml:space="preserve">
+    <value>تم سحب الدور من المتسخدم</value>
+  </data>
+  <data name="SelectRole" xml:space="preserve">
+    <value>حدد دورا</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>دور</value>
+  </data>
+  <data name="AssignUsersToRoles" xml:space="preserve">
+    <value>صلاحيات المستخدمين</value>
+  </data>
+  <data name="GetRoleFailed" xml:space="preserve">
+    <value>غير قادر علي استدعاء الدور</value>
+  </data>
+  <data name="Roles_Load_Fail" xml:space="preserve">
+    <value>فشل في الحصول علي الادوار</value>
+  </data>
+  <data name="LoadRoleFailed" xml:space="preserve">
+    <value>فشل في الحصول علي الدور</value>
+  </data>
+  <data name="UserRemovedFromRoleFailed" xml:space="preserve">
+    <value>فشل في سحب الدور من المتسخدم</value>
+  </data>
+  <data name="AssignRoleFailed" xml:space="preserve">
+    <value>فشلت عملية تعيين الدور</value>
+  </data>
+  <data name="SelectMultiRoles" xml:space="preserve">
+    <value>قم بتحديد أدوار متعددة</value>
+  </data>
+  <data name="Roles_NotAvailable" xml:space="preserve">
+    <value>لا يوجد ادوار متاحة</value>
+  </data>
+  <data name="CreateRoleFailed" xml:space="preserve">
+    <value>لقد فشلت عملية انشاء الدور</value>
+  </data>
+  <data name="EditRoleFailed" xml:space="preserve">
+    <value>لقد فشلت عملية تعديل الدور</value>
+  </data>
+  <data name="RemoveRoleFailed" xml:space="preserve">
+    <value>لقد فشلت عملية حذف الدور</value>
+  </data>
+  <data name="RoleDeletionFailed" xml:space="preserve">
+    <value>لقد فشلت عملية حذف الدور</value>
+  </data>
+  <data name="RoleAssignedToUsers" xml:space="preserve">
+    <value>هذه الصلاحية معينة الي مستخدم أو اكثر</value>
+  </data>
+  <data name="ConfirmRoleDeletion" xml:space="preserve">
+    <value>هل تريد حقًا حذف هذا الدور؟ لا يمكن التراجع عن هذه العملية.</value>
+  </data>
+  <data name="RoleDesc" xml:space="preserve">
+    <value>وصف الدور</value>
+  </data>
+  <data name="PhoneNumber_Unique_Validation" xml:space="preserve">
+    <value> رقم الجول مستخدم من قبل. من فضلك استخدم رقم أخر</value>
+  </data>
 </root>

@@ -1,5 +1,4 @@
 ﻿using Domain.Entities.UserEntities;
-using LanguageExt.Common;
 using Shared.Common;
 using Shared.Common.General;
 using System.Linq.Expressions;
@@ -8,7 +7,7 @@ namespace Application.Common.Interfaces.Persistence;
 
 public interface IUserRepository<TUser> where TUser : ApplicationUser
 {
-    public Task<BaseResponse<TUser>> GetByIdAsync(string id, CancellationToken cancellationToken = default);
+    public Task<BaseResponse<TUser>> GetByIdAsync(long id, CancellationToken cancellationToken = default);
     public Task<BaseResponse<TUser>> GetByUserNameAsync(string username, CancellationToken cancellationToken = default);
     public Task<BaseResponse<TUser>> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
     public Task<BaseResponse<IEnumerable<TUser>>> GetAllAsync(CancellationToken cancellationToken = default);

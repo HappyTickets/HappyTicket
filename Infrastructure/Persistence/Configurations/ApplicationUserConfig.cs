@@ -1,4 +1,5 @@
-﻿using Domain.Entities.UserEntities;
+﻿using Domain.Entities;
+using Domain.Entities.UserEntities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,7 +19,7 @@ namespace Infrastructure.Persistence.Configurations
 
             builder.HasOne(u => u.Cart)
                 .WithOne(c => c.User)
-                .HasForeignKey<ApplicationUser>(u => u.CartId);
+                .HasForeignKey<Cart>(c => c.UserId);
         }
     }
 }

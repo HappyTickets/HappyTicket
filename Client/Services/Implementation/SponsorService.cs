@@ -1,7 +1,7 @@
 ﻿using Client.Services.Interfaces;
 using LanguageExt.Common;
 using Shared.Common;
-using Shared.DTOs;
+using Shared.DTOs.Sponsors;
 
 namespace Client.Services.Implementation
 {

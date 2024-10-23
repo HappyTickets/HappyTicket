@@ -846,52 +846,6 @@ For any questions or concerns regarding this Agreement, please contact [Customer
   <data name="Login_Success" xml:space="preserve">
     <value>You've logged in successfully!</value>
   </data>
-  <data name="Invoice_Email_Style" xml:space="preserve">
-    <value>@media screen and (max-width: 750px) {
-	table {
-		border: 0;
-	}
-
-	table caption {
-		font-size: 1.3em;
-	}
-
-	table thead {
-		border: none;
-		clip: rect(0 0 0 0);
-		height: 1px;
-		margin: -1px;
-		overflow: hidden;
-		padding: 0;
-		position: absolute;
-		width: 1px;
-	}
-
-	table tr {
-		border-bottom: 3px solid #ddd;
-		display: block;
-		margin-bottom: .625em;
-	}
-
-	table td {
-		border-bottom: 1px solid #ddd;
-		display: block;
-		font-size: .8em;
-		text-align: right;
-	}
-
-	table td::before {
-		content: attr(data-label);
-		float: left;
-		font-weight: bold;
-		text-transform: uppercase;
-	}
-
-	table td:last-child {
-		border-bottom: 0;
-	}
-}</value>
-  </data>
   <data name="footeraboutus" xml:space="preserve">
     <value>Beyond Us</value>
   </data>
@@ -1082,9 +1036,6 @@ For any questions or concerns regarding this Agreement, please contact [Customer
   <data name="PaymentStatus" xml:space="preserve">
     <value>Payment Status</value>
   </data>
-  <data name="PaymentStatusString" xml:space="preserve">
-    <value>Payment Status</value>
-  </data>
   <data name="Sponsors_All" xml:space="preserve">
     <value>All Sponsors</value>
   </data>
@@ -1175,9 +1126,6 @@ For any questions or concerns regarding this Agreement, please contact [Customer
   <data name="slide1" xml:space="preserve">
     <value>Get Closer to the Action</value>
   </data>
-  <data name="Assign_Sponsors_To_Champion_Failure" xml:space="preserve">
-    <value>Failed to assign sponsors to champion.</value>
-  </data>
   <data name="HomeAboutUs1" xml:space="preserve">
     <value>In the heart of the bustling world of sports and entertainment, our company stands as a beacon for fans seeking unforgettable experiences. We are not merely ticket sellers; we are custodians of excitement, catalysts of adventure, and architects of memory-making moments.
 
@@ -1264,5 +1212,198 @@ Our mission is to bring fans closer to the action, creating opportunities for th
   </data>
   <data name="StadiumIsRequired" xml:space="preserve">
     <value>Stadium Is Required</value>
+  </data>
+  <data name="ChampionshipNotFound" xml:space="preserve">
+    <value>Championship Not Found</value>
+  </data>
+  <data name="NoChampionshipFound" xml:space="preserve">
+    <value>No Championship Found</value>
+  </data>
+  <data name="ChampionshipDeleted" xml:space="preserve">
+    <value>Championship Deleted</value>
+  </data>
+  <data name="Cannotdeleteachampionshipwithassignedmatches" xml:space="preserve">
+    <value>Cannot delete a championship with assigned matches</value>
+  </data>
+  <data name="Checkout_Cart_Empty" xml:space="preserve">
+    <value>Your cart is empty. Please add items to your cart before proceeding to checkout.</value>
+  </data>
+  <data name="Invoice_Email_Style" xml:space="preserve">
+    <value>@media screen and (max-width: 750px) {
+	table {
+		border: 0;
+	}
+
+	table caption {
+		font-size: 1.3em;
+	}
+
+	table thead {
+		border: none;
+		clip: rect(0 0 0 0);
+		height: 1px;
+		margin: -1px;
+		overflow: hidden;
+		padding: 0;
+		position: absolute;
+		width: 1px;
+	}
+
+	table tr {
+		border-bottom: 3px solid #ddd;
+		display: block;
+		margin-bottom: .625em;
+	}
+
+	table td {
+		border-bottom: 1px solid #ddd;
+		display: block;
+		font-size: .8em;
+		text-align: right;
+	}
+
+	table td::before {
+		content: attr(data-label);
+		float: left;
+		font-weight: bold;
+		text-transform: uppercase;
+	}
+
+	table td:last-child {
+		border-bottom: 0;
+	}
+}</value>
+  </data>
+  <data name="PaymentStatusString" xml:space="preserve">
+    <value>Payment Status</value>
+  </data>
+  <data name="Assign_Sponsors_To_Champion_Failure" xml:space="preserve">
+    <value>Failed to assign sponsors to champion.</value>
+  </data>
+  <data name="PositiveTotalAmount" xml:space="preserve">
+    <value>TotalAmount must be a positive value</value>
+  </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value>{PropertyName} is required</value>
+  </data>
+  <data name="GreaterThanZero" xml:space="preserve">
+    <value>{PropertyName} must be greater than zero</value>
+  </data>
+  <data name="InvalidEnumValue" xml:space="preserve">
+    <value>{PropertyName} not exist in Enum List</value>
+  </data>
+  <data name="PricePrecision" xml:space="preserve">
+    <value>Price must have up to 2 decimal places</value>
+  </data>
+  <data name="InvalidPaymentStatus" xml:space="preserve">
+    <value>Invalid Payment Status</value>
+  </data>
+  <data name="UserAlreadyExist" xml:space="preserve">
+    <value>User Already Exist</value>
+  </data>
+  <data name="FailedToGenerateToken" xml:space="preserve">
+    <value>Token Generation Failed</value>
+  </data>
+  <data name="Password_Reset_Succeed" xml:space="preserve">
+    <value>Password Reset Successfully</value>
+  </data>
+  <data name="RoleName" xml:space="preserve">
+    <value>Role Name</value>
+  </data>
+  <data name="TheRoles" xml:space="preserve">
+    <value>The Roles</value>
+  </data>
+  <data name="TheRole" xml:space="preserve">
+    <value>The Role</value>
+  </data>
+  <data name="RoleAlreadyExists" xml:space="preserve">
+    <value>Role {0} already exists</value>
+  </data>
+  <data name="AssignRoleToSelectedUsers" xml:space="preserve">
+    <value> Assign Many</value>
+  </data>
+  <data name="AssignRoles" xml:space="preserve">
+    <value>Assign Roles</value>
+  </data>
+  <data name="UserAssignedToRole" xml:space="preserve">
+    <value>User successfully assigned to role</value>
+  </data>
+  <data name="RoleAssignedSuccessfully" xml:space="preserve">
+    <value>Role assigned successfully</value>
+  </data>
+  <data name="RolesAssignedSuccessfully" xml:space="preserve">
+    <value>Roles Assigned Successfully</value>
+  </data>
+  <data name="RoleCreatedSuccessfully" xml:space="preserve">
+    <value>Role '{0}' created successfully!</value>
+  </data>
+  <data name="RoleEditedSuccessfully" xml:space="preserve">
+    <value>Role Edited Successfully!</value>
+  </data>
+  <data name="RoleDeletedSuccessfully" xml:space="preserve">
+    <value>Role Deleted Successfully!</value>
+  </data>
+  <data name="RoleRemovedSuccessfully" xml:space="preserve">
+    <value>Role removed successfully</value>
+  </data>
+  <data name="UserRemovedFromRole" xml:space="preserve">
+    <value>User successfully removed from role</value>
+  </data>
+  <data name="SelectRole" xml:space="preserve">
+    <value>Select Role</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="AssignUsersToRoles" xml:space="preserve">
+    <value>Users To Roles Asigning</value>
+  </data>
+  <data name="GetRoleFailed" xml:space="preserve">
+    <value>Get Role operation failed</value>
+  </data>
+  <data name="Roles_Load_Fail" xml:space="preserve">
+    <value>Failed to load roles</value>
+  </data>
+  <data name="LoadRoleFailed" xml:space="preserve">
+    <value>Load Role Failed!</value>
+  </data>
+  <data name="UserRemovedFromRoleFailed" xml:space="preserve">
+    <value>Failed to remove user form role</value>
+  </data>
+  <data name="AssignRoleFailed" xml:space="preserve">
+    <value>Failed to assign role</value>
+  </data>
+  <data name="SelectMultiRoles" xml:space="preserve">
+    <value>Select Multi Roles</value>
+  </data>
+  <data name="Roles_NotAvailable" xml:space="preserve">
+    <value>There are no available roles</value>
+  </data>
+  <data name="CreateRoleFailed" xml:space="preserve">
+    <value>Create Role operation failed</value>
+  </data>
+  <data name="EditRoleFailed" xml:space="preserve">
+    <value>Edit Role operation failed</value>
+  </data>
+  <data name="RemoveRoleFailed" xml:space="preserve">
+    <value>Failed to remove role</value>
+  </data>
+  <data name="RoleDeletionFailed" xml:space="preserve">
+    <value>Role deletion failed</value>
+  </data>
+  <data name="RoleAssignedToUsers" xml:space="preserve">
+    <value>Role is currently assigned to users</value>
+  </data>
+  <data name="ConfirmRoleDeletion" xml:space="preserve">
+    <value>Do you really want to delete this role ? This process cannot be undone.</value>
+  </data>
+  <data name="RoleDesc" xml:space="preserve">
+    <value>Role Description</value>
+  </data>
+  <data name="test" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PhoneNumber_Unique_Validation" xml:space="preserve">
+    <value>The phone number you provided is already in use. Please enter a different phone number</value>
   </data>
 </root>

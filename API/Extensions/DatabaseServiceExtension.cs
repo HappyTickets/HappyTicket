@@ -10,7 +10,7 @@ namespace API.Extensions
             string sqlServerconnectionString = configuration.GetConnectionString("SqlServerConnection") ??
                 throw new InvalidOperationException("Connection string 'SqlServerConnection' not found.");
 
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(sqlServerconnectionString).EnableSensitiveDataLogging(true));
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(sqlServerconnectionString).EnableSensitiveDataLogging(true).EnableDetailedErrors());
             //if(databaseType == DatabaseType.MySql)
             //{
             //    string mySQLConnectionString = configuration.GetConnectionString("MySqlConnection") ??
