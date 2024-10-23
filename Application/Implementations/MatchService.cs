@@ -28,7 +28,8 @@ namespace Application.Implementations
                 {
                     nameof(Match.Stadium),
                     nameof(Match.Champion),
-                    nameof(Match.MatchTeams),
+                    $"{nameof(Match.MatchTeams)}.{nameof(MatchTeam.Team)}"
+
                 };
 
             var result = await GetAllAsync<GetAllMatchesDto>(includes: includes);
@@ -69,7 +70,7 @@ namespace Application.Implementations
         }
         public async ValueTask<BaseResponse<PaginatedList<GetPaginatedMatchesDto>>> GetPaginatedAsync(PaginationSearchModel paginationParams)
         {
-            var paginatedMatches = await GetPaginatedAsync<GetPaginatedMatchesDto>(paginationParams);
+            var paginatedMatches = await GetPaginatedAsync<GetPaginatedMatchesDto>(null,paginationParams);
             return new BaseResponse<PaginatedList<GetPaginatedMatchesDto>>(paginatedMatches);
         }
         public async ValueTask<BaseResponse<long>> GetCountAsync(CancellationToken cancellationToken = default)

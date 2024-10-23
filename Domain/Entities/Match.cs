@@ -11,7 +11,6 @@ public class Match : SoftDeletableEntity<long>
     public DateTime? EventDate { get; set; }
 
     public TimeSpan? EventTime { get; set; }
-    public bool IsOver { get; set; }
 
     [Required]
     public long StadiumId { get; set; }

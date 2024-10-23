@@ -24,9 +24,13 @@ namespace Application.Matches.Mappings
                        .ForMember(dest => dest.StadiumName, opt => opt.MapFrom(src => src.Stadium.Name))
                        .ForMember(dest => dest.ChampionName, opt => opt.MapFrom(src => src.Champion.Name)).ReverseMap();
 
+
             CreateMap<Domain.Entities.Match, GetAllMatchesDto>()
                        .ForMember(dest => dest.StadiumName, opt => opt.MapFrom(src => src.Stadium.Name))
                        .ForMember(dest => dest.ChampionName, opt => opt.MapFrom(src => src.Champion.Name)).ReverseMap();
+
+
+
         }
     }
 }

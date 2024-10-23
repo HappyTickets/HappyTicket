@@ -1,16 +1,9 @@
 ﻿using Application.Implementations;
 using Application.Interfaces;
 using Application.Mapper;
-using Application.Validation;
 using AutoMapper.Extensions.ExpressionMapping;
-using FluentValidation;
 using FluentValidation.AspNetCore;
-using Shared.DTOs.MatchDtos;
-using static Application.Validation.TicketDtoValidator;
-
 using Application.Identity.Service;
-using Application.Implementations;
-using Application.Interfaces;
 using Application.Interfaces.IIdentityServices;
 using Application.Interfaces.Persistence;
 using Application.Orders.Service;
