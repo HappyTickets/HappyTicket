@@ -1,6 +1,7 @@
 using API.Extensions;
 using Application;
 using Infrastructure;
+using Infrastructure.Persistence.Extensions.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using Serilog;
@@ -76,13 +77,21 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices(builder.Configuration);
 
 var app = builder.Build();
-//using (var scope = app.Services.CreateScope())
-//{
-//    var warmUpService = scope.ServiceProvider.GetRequiredService<WarmUpService>();
-//    await warmUpService.WarmUpAsync();
-//    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-//    logger.LogInformation(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs/.log"));
-//}
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var dbSeeder = services.GetRequiredService<DbSeeder>();
+        await dbSeeder.SeedAsync();
+    }
+    catch (Exception ex)
+    {
+        // Log the error or handle it as necessary
+        Console.WriteLine($"An error occurred while seeding the database: {ex.Message}");
+    }
+}
 
 if (app.Environment.IsDevelopment())
 {

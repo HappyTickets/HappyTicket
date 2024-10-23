@@ -1391,4 +1391,7 @@ Our mission is to bring fans closer to the action, creating opportunities for th
   <data name="PhoneNumber_Unique_Validation" xml:space="preserve">
     <value>The phone number you provided is already in use. Please enter a different phone number</value>
   </data>
+  <data name="UserName_NoSpaces" xml:space="preserve">
+    <value>User name should not contain spaces.</value>
+  </data>
 </root>

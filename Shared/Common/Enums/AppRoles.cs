@@ -1,6 +1,6 @@
 ﻿namespace Shared.Common.Enums
 {
-    public enum Roles
+    public enum AppRoles
     {
         Admin
     }

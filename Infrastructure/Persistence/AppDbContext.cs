@@ -28,6 +28,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, 
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
+
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         ChangeTracker.PrepareAddedEntities(_currentUser);

@@ -1,55 +1,75 @@
-﻿namespace Shared.Common.General
+﻿using System.Security.Cryptography;
+using System.Text;
+
+namespace Shared.Common.General
 {
+
     public static class LongIdEncryptionHelper
     {
         private static string LongIdEncryptionKey;
 
-        // Method to initialize the encryption key
         public static void Initialize(string encryptionKey)
         {
             LongIdEncryptionKey = encryptionKey ?? throw new ArgumentNullException(nameof(encryptionKey), "Encryption key cannot be null");
         }
 
-        public static string EncryptId(long id)
+
+
+        public static string EncryptLongId(long id)
         {
             if (string.IsNullOrEmpty(LongIdEncryptionKey))
                 throw new InvalidOperationException("Encryption key is not initialized.");
 
             var idBytes = BitConverter.GetBytes(id);
-            var keyBytes = System.Text.Encoding.UTF8.GetBytes(LongIdEncryptionKey);
-            var encryptedBytes = new byte[idBytes.Length];
 
-            for (int i = 0; i < idBytes.Length; i++)
-                encryptedBytes[i] = (byte)(idBytes[i] ^ keyBytes[i % keyBytes.Length]);
+            using (var aesAlg = Aes.Create())
+            {
+                var key = Encoding.UTF8.GetBytes(LongIdEncryptionKey.PadRight(32));
+                aesAlg.Key = key;
+                aesAlg.GenerateIV();
+                var iv = aesAlg.IV;
 
-            return Convert.ToBase64String(encryptedBytes);
+                using (var encryptor = aesAlg.CreateEncryptor(aesAlg.Key, iv))
+                using (var msEncrypt = new MemoryStream())
+                {
+                    msEncrypt.Write(iv, 0, iv.Length);
+
+                    using (var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                    {
+                        csEncrypt.Write(idBytes, 0, idBytes.Length);
+                    }
+
+                    var encrypted = msEncrypt.ToArray();
+                    return Convert.ToBase64String(encrypted);
+                }
+            }
         }
 
-        public static long DecryptId(string encryptedId)
+        public static long DecryptLongId(string encryptedId)
         {
             if (string.IsNullOrEmpty(LongIdEncryptionKey))
                 throw new InvalidOperationException("Encryption key is not initialized.");
 
-            try
-            {
-                var encryptedBytes = Convert.FromBase64String(encryptedId);
-                var keyBytes = System.Text.Encoding.UTF8.GetBytes(LongIdEncryptionKey);
-                var decryptedBytes = new byte[encryptedBytes.Length];
+            var encryptedBytes = Convert.FromBase64String(encryptedId);
 
-                for (int i = 0; i < encryptedBytes.Length; i++)
+            using (var aesAlg = Aes.Create())
+            {
+                var key = Encoding.UTF8.GetBytes(LongIdEncryptionKey.PadRight(32));
+                aesAlg.Key = key;
+
+                var iv = new byte[16];
+                Array.Copy(encryptedBytes, iv, iv.Length);
+
+                aesAlg.IV = iv;
+
+                using (var decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV))
+                using (var msDecrypt = new MemoryStream(encryptedBytes, iv.Length, encryptedBytes.Length - iv.Length))
+                using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
                 {
-                    decryptedBytes[i] = (byte)(encryptedBytes[i] ^ keyBytes[i % keyBytes.Length]);
+                    var decryptedBytes = new byte[8];
+                    csDecrypt.Read(decryptedBytes, 0, decryptedBytes.Length);
+                    return BitConverter.ToInt64(decryptedBytes, 0);
                 }
-
-                return BitConverter.ToInt64(decryptedBytes, 0);
-            }
-            catch (FormatException)
-            {
-                throw new InvalidOperationException("Invalid format for encrypted id.");
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred during decryption.", ex);
             }
         }
     }

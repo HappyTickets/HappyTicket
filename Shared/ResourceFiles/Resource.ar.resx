@@ -1304,4 +1304,7 @@
   <data name="PhoneNumber_Unique_Validation" xml:space="preserve">
     <value> رقم الجول مستخدم من قبل. من فضلك استخدم رقم أخر</value>
   </data>
+  <data name="UserName_NoSpaces" xml:space="preserve">
+    <value>.غير مسموح بالمسافات</value>
+  </data>
 </root>
