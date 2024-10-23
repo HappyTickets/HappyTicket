@@ -4,10 +4,15 @@ using Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;
 using LanguageExt;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Shared.Common;
 using Shared.Common.General;
 using Shared.DTOs.MatchDtos;
+using Shared.DTOs.Team;
+using System.Linq.Expressions;
+using System.Net;
 
 namespace Application.Implementations
 {
@@ -22,10 +27,12 @@ namespace Application.Implementations
             var includes = new List<string>
                 {
                     nameof(Match.Stadium),
-                    nameof(Match.Champion)
+                    nameof(Match.Champion),
+                    //nameof(Match.MatchTeams),
                 };
 
             var result = await GetAllAsync<GetAllMatchesDto>(includes: includes);
+
 
             return result.ToList();
         }
@@ -86,10 +93,74 @@ namespace Application.Implementations
             await CreateAsync(dto, autoSave, cancellationToken: cancellationToken);
             return new Unit();
         }
-        public async ValueTask<BaseResponse<Unit>> UpdateAsync(UpdateMatchDto dto, bool autoSave = true, CancellationToken cancellationToken = default)
+        public async ValueTask<BaseResponse<Unit>> UpdateMatchAsync(UpdateMatchDto dto, long id, bool autoSave = true, CancellationToken cancellationToken = default)
         {
+            // Retrieve the match by its ID
+            var match = await GetByIdAsync<Match>(id);
+
+            // Check if the match exists
+            if (match == null)
+            {
+                return new BaseResponse<Unit>
+                {
+                    Status = HttpStatusCode.NotFound,
+                    Title = "Match Not Found",
+                    ErrorList = new List<ResponseError>
+            {
+                new ResponseError("Match Not Found", "The requested match could not be found.")
+            }
+                };
+            }
+
+            // Update or add Team A (Home Team)
+            var teamA = match.MatchTeams.FirstOrDefault(mt => mt.IsHomeTeam == true);
+            if (teamA != null)
+            {
+                // Update existing Team A
+                teamA.TeamId = dto.TeamAId;
+            }
+            else
+            {
+                // Add new Team A if it doesn't exist
+                teamA = new MatchTeam
+                {
+                    TeamId = dto.TeamAId,
+                    IsHomeTeam = true,
+                    MatchId = match.Id
+                };
+                match.MatchTeams.Add(teamA);
+            }
+
+            // Update or add Team B (Away Team)
+            var teamB = match.MatchTeams.FirstOrDefault(mt => mt.IsHomeTeam == false);
+            if (teamB != null)
+            {
+                // Update existing Team B
+                teamB.TeamId = dto.TeamBId;
+            }
+            else
+            {
+                // Add new Team B if it doesn't exist
+                teamB = new MatchTeam
+                {
+                    TeamId = dto.TeamBId,
+                    IsHomeTeam = false,
+                    MatchId = match.Id
+                };
+                match.MatchTeams.Add(teamB);
+            }
+
+            // Update the match entity in the repository
+            _unitOfWork.Repository<Match>().Update(match);
+
+            // Save changes if autoSave is true
+            if (autoSave)
+            {
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+            }
+
             await UpdateAsync(dto, autoSave, cancellationToken: cancellationToken);
-            return new Unit();
+            return new BaseResponse<Unit>();
         }
         public async ValueTask<BaseResponse<Unit>> UpdateRangeAsync(IEnumerable<UpdateMatchDto> dtos, bool autoSave = true, CancellationToken cancellationToken = default)
         {
@@ -99,12 +170,36 @@ namespace Application.Implementations
         public async ValueTask<BaseResponse<Unit>> SoftDeleteByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default)
         {
             var match = await GetByIdAsync(id);
+            if (match == null)
+            {
+                return new BaseResponse<LanguageExt.Unit>
+                {
+                    Status = HttpStatusCode.NotFound,
+                    Title = "Match Not Found",
+                    ErrorList = new List<ResponseError>
+            {
+                new ResponseError("Null Data", "The requested data could not be found.")
+            }
+                };
+            }
             await SoftDeleteByIdAsync(id, autoSave, cancellationToken);
             return new Unit();
         }
         public async ValueTask<BaseResponse<Unit>> HardDeleteByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default)
         {
             var match = await GetByIdAsync(id);
+            if (match == null)
+            {
+                return new BaseResponse<LanguageExt.Unit>
+                {
+                    Status = HttpStatusCode.NotFound,
+                    Title = "Match Not Found",
+                    ErrorList = new List<ResponseError>
+            {
+                new ResponseError("Null Data", "The requested data could not be found.")
+            }
+                };
+            }
             await HardDeleteByIdAsync(id, autoSave, cancellationToken: cancellationToken);
             return new Unit();
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shared.DTOs.Team;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace Shared.DTOs.MatchDtos
         public TimeSpan? EventTime { get; set; }
         public long TeamAId { get; set; }
         public long TeamBId { get; set; }
+
         public long StadiumId { get; set; }
         public long ChampionId { get; set; }
 

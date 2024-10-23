@@ -28,7 +28,7 @@ namespace Application.Interfaces
 
         ValueTask<BaseResponse<long>> GetCountAsync(CancellationToken cancellationToken = default);
         ValueTask<BaseResponse<Unit>> CreateMatchAsync(CreateMatchDto dto, bool autoSave = true, CancellationToken cancellationToken = default);
-        ValueTask<BaseResponse<Unit>> UpdateAsync(UpdateMatchDto dto, bool autoSave = true, CancellationToken cancellationToken = default);
+        ValueTask<BaseResponse<Unit>> UpdateMatchAsync(UpdateMatchDto dto, long id, bool autoSave = true, CancellationToken cancellationToken = default);
         ValueTask<BaseResponse<Unit>> UpdateRangeAsync(IEnumerable<UpdateMatchDto> dtos, bool autoSave = true, CancellationToken cancellationToken = default);
         ValueTask<BaseResponse<Unit>> SoftDeleteByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default);
         ValueTask<BaseResponse<Unit>> HardDeleteByIdAsync(long id, bool autoSave = true, CancellationToken cancellationToken = default);

@@ -65,11 +65,11 @@ namespace API.Controllers
             return BadRequest(result);
         }
 
-        // PUT: api/testmatch
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] UpdateMatchDto matchDto)
+
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> Update([FromBody] UpdateMatchDto matchDto, long id)
         {
-            var result = await _matchService.UpdateAsync(matchDto);
+            var result = await _matchService.UpdateMatchAsync(matchDto, id);
             if (result.IsSuccess)
             {
                 return Ok(result);
