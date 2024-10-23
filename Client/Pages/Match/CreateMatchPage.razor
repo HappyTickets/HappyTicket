@@ -1,4 +1,4 @@
-﻿@page "/match/create"
+﻿@* @page "/match/create"
 @using Shared.DTOs.Champion
 
 @inject ICustomSnackbarProvider Snackbar
@@ -77,7 +77,7 @@
                                 <MudTimePicker @bind-Time="match.EventTime" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.BottomCenter" Label=@Resource.Time Variant="Variant.Text" AmPm />
                             </MudItem>
                         </MudGrid>
-                        @* <DateTimePicker @bind-DateTime=@match.EventDate Label="Match Date" /> *@
+                        <DateTimePicker @bind-DateTime=@match.EventDate Label="Match Date" /> 
                     </MudItem>
                     <MudItem xs="12" Class="d-flex justify-end">
                         <LoadingButton OnClick="CreateMatch" Color="Color.Primary" Variant="Variant.Filled">@Resource.Create @Resource.Match</LoadingButton>
@@ -278,3 +278,4 @@
         return match.TeamAId != Guid.Empty && match.TeamBId != Guid.Empty && match.StadiumId != Guid.Empty && match.EventDate != null && match.EventTime != null && match.ChampionId != Guid.Empty;
     }
 }
+ *@

@@ -1,4 +1,4 @@
-﻿@page "/matches"
+﻿@* @page "/matches"
 
 @inject ICustomSnackbarProvider Snackbar
 @inject BIMatchService MatchService
@@ -155,3 +155,4 @@
         NavigationManager.NavigateTo($"/match/{action}/{matchId}");
     }
 }
+ *@

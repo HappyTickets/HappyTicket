@@ -1,10 +1,12 @@
 ﻿@page "/sponsors"
+@using Client.Services.Sponsors
+@using Shared.DTOs.Sponsors
 
 @inject ICustomSnackbarProvider Snackbar
 @inject ISponsorService SponsorService
 @inject NavigationManager NavigationManager
 @inject IPopUpService PopUpService
-@attribute [Authorize(Policy = "IsAdmin")]
+@* @attribute [Authorize(Policy = "IsAdmin")] *@
 
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
 <PageTitle>@Resource.Sponsors_All</PageTitle>
@@ -60,21 +62,10 @@
 
     private async Task LoadSponsorsAsync()
     {
-        var result = await SponsorService.GetSponsorsAsync(false);
-        result.Match(
-            response =>
-            {
-                if (response.Data != null)
-                    SponsorsList = response.Data.ToList();
+        var result = await SponsorService.GetAllAsync();
 
-                return Unit.Default;
-            },
-            ex =>
-            {
-                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
-                return Unit.Default;
-            }
-        );
+        if (result.IsSuccess)
+            SponsorsList = result.Data.ToList();
     }
 
     private async Task DeleteSponsorAsync(SponsorDto sponsor)
@@ -83,26 +74,16 @@
         {
             SponsorsList.Remove(sponsor);
 
-            var result = await SponsorService.DeleteSponsorAsync(sponsor.Id);
-            result.Match(
-                response =>
-                {
-                    if(response.IsSuccess)
-                        Snackbar.Show(Resource.Sponsor_Deleted_Successfully, Severity.Success);
-                    else
-                    {
-                        SponsorsList.Add(sponsor);
-                        Snackbar.Show(Resource.Sponsor_Deletion_Failure, Severity.Error);
-                        Snackbar.Show(response.Title, Severity.Error);
-                    }
-                    return Unit.Default;
-                },
-                ex =>
-                {
-                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
-                    return Unit.Default;
-                }
-            );
+            var response = await SponsorService.HardDeleteAsync(sponsor.Id);
+
+            if (response.IsSuccess)
+                Snackbar.Show(Resource.Sponsor_Deleted_Successfully, Severity.Success);
+            else
+            {
+                SponsorsList.Add(sponsor);
+                Snackbar.Show(Resource.Sponsor_Deletion_Failure, Severity.Error);
+                Snackbar.Show(response.Title, Severity.Error);
+            }
         }
     }
 }

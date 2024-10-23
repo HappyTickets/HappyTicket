@@ -1,4 +1,4 @@
-﻿@page "/match/edit/{matchId:guid}"
+﻿@* @page "/match/edit/{matchId:guid}"
 @using Shared.DTOs.Champion
 
 @inject ICustomSnackbarProvider Snackbar
@@ -287,3 +287,4 @@
         return match.TeamAId != Guid.Empty && match.TeamBId != Guid.Empty && match.StadiumId != Guid.Empty && match.EventDate != null && match.EventTime != null;
     }
 }
+ *@

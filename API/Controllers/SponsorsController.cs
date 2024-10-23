@@ -1,9 +1,11 @@
 ﻿using Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTOs.Sponsors;
 
 namespace API.Controllers
 {
+    [Authorize]
     public class SponsorsController : BaseController
     {
         private readonly ISponsorService _sponsorService;

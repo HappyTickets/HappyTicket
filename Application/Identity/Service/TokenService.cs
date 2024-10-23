@@ -123,7 +123,7 @@ public class TokenService<TUser> : ITokenService<TUser> where TUser : Applicatio
             var jwt = await GenerateUserJWTAsync(user, _jwtConfig.DefaultTokenLifetime);
             if (string.IsNullOrEmpty(jwt)) return null;
 
-            var claimsPrincipal = ReadJWT(jwt);
+            var claimsPrincipal = ReadJWT(jwt, false);
             if (claimsPrincipal == null) return null;
 
             var jwtId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Jti)?.Value;

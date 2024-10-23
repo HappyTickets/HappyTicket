@@ -1,4 +1,4 @@
-﻿@page "/match/edit-ticket-prices/{matchId:guid}"                                                                                                                                                                                
+﻿@* @page "/match/edit-ticket-prices/{matchId:guid}"                                                                                                                                                                                
 @inject ICustomSnackbarProvider Snackbar
 @inject BIMatchService MatchService
 @inject BITicketService TicketService
@@ -113,10 +113,10 @@
                     }
 
                     <MudItem xs="12" Class="text-center">
-                        @* Use LoadingButton only when you have an asynchronous task not with synchronous ones. *@
+                         Use LoadingButton only when you have an asynchronous task not with synchronous ones. 
                         
-                        @* <LoadingButton Variant="Variant.Filled" Color="Color.Primary" OnClick="AddNewRow" Class="mt-2">@Resource.Add @Resource.NewTicket load</LoadingButton> *@
-                        @* <LoadingButton Variant="Variant.Filled" Color="Color.Primary" OnClick=@(() => ticketTemplate.Add(new TicketDto())) Class="mt-2">@Resource.Add @Resource.NewTicket load bad</LoadingButton> *@
+                         <LoadingButton Variant="Variant.Filled" Color="Color.Primary" OnClick="AddNewRow" Class="mt-2">@Resource.Add @Resource.NewTicket load</LoadingButton> 
+                         <LoadingButton Variant="Variant.Filled" Color="Color.Primary" OnClick=@(() => ticketTemplate.Add(new TicketDto())) Class="mt-2">@Resource.Add @Resource.NewTicket load bad</LoadingButton> 
                         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick=@(() => ticketTemplate.Add(new TicketDto())) Class="mt-2">@Resource.Add @Resource.NewTicket</MudButton> 
                     </MudItem>
                 </MudGrid>
@@ -280,3 +280,4 @@
         ticketTemplate = ticketTemplate.Where(x => x != ticket).ToList();
     }
 }
+ *@

@@ -1,28 +1,30 @@
 ﻿@inherits LayoutComponentBase
 @inject ICustomSnackbarProvider Snackbar
-@inject BICartService CartService
+@* @inject BICartService CartService *@
 @inject ILocalStorageService LocalStorage
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IStringLocalizer<Resource> Localizer
 @inject IBrowserViewportService BrowserViewportService
+@inject IIdentityService IdentityService
 @implements IAsyncDisposable
+@using Client.Services.Identity
 @using MudBlazor
 @using Client.Layout
 
 
-@* Here are the common providers and page title *@
+ Here are the common providers and page title 
 <MudThemeProvider @ref=_mudThemeProvider IsDarkMode=_darkMode Theme=_appTheme />
 <MudDialogProvider />
 <MudSnackbarProvider />
 <PageTitle>@Resource.CompanyName</PageTitle>
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
 
-@* Here is the (MUD RTL PROVIDER) and its contents *@
+ Here is the (MUD RTL PROVIDER) and its contents 
 <MudRTLProvider Class="pa-0" RightToLeft=_rightToLeft>
     <MudLayout>
 
-        @* Beginning of (MUD APP BAR) *@
+         Beginning of (MUD APP BAR) 
         <MudAppBar Elevation="1" Style="backdrop-filter: blur(15px); height: var(--mud-appbar-height);" Class="d-flex">
             <MudHidden Breakpoint="Breakpoint.MdAndDown" Invert="true">
                 <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Primary" Edge="Edge.Start" OnClick="@ToggleDrawer" />
@@ -42,9 +44,9 @@
                     <AppNavLink Href="/Active-Matches" BeforeIcon="@Icons.Material.Filled.SportsSoccer" Text=@Resource.Matches />
                     @if (user != null && user.Claims.Any(x => x.Type == "Role" && x.Value == "Admin"))
                     {
-                       @*  <AppNavLink Href="/Matches" BeforeIcon="@Icons.Material.Filled.SportsSoccer" Style="width: 170px; height: 100%" Text=@Resource.Matches_Settings /> *@
-                        @* <AppNavLink Href="/all-orders" BeforeIcon="@Icons.Material.Filled.Sell" Text="@Resource.Orders" /> *@
-                        @* <AppNavLink Href="/scan-qr-ticket" BeforeIcon="@Icons.Material.Filled.QrCodeScanner" Text="@Resource.ScanQr" /> *@
+                         <AppNavLink Href="/Matches" BeforeIcon="@Icons.Material.Filled.SportsSoccer" Style="width: 170px; height: 100%" Text=@Resource.Matches_Settings />
+                         <AppNavLink Href="/all-orders" BeforeIcon="@Icons.Material.Filled.Sell" Text="@Resource.Orders" /> 
+                         <AppNavLink Href="/scan-qr-ticket" BeforeIcon="@Icons.Material.Filled.QrCodeScanner" Text="@Resource.ScanQr" /> 
                         <AppNavLink Href="/admin-panel" BeforeIcon="@Icons.Material.Filled.GridView" Style="width: 170px; height: 100%" Text=@Resource.Admin_Panel />
                     }
                     <AuthorizeView>
@@ -55,36 +57,36 @@
                     @if (!string.IsNullOrWhiteSpace(userName) && CurrentBreakpoint >= Breakpoint.Lg)
                     {
                         <div class="vr align-self-center" style="height: 45px; margin-right: 30px"></div>
-@*                         <MudText Typo="Typo.subtitle1" Class="text-center pb-1">@Resource.Hello <strong>@userName</strong></MudText>
- *@                    }
+                         <MudText Typo="Typo.subtitle1" Class="text-center pb-1">@Resource.Hello <strong>@userName</strong></MudText>
+                     }
                 </div>
             </MudHidden>
 
             <MudSpacer />
             <MudSpacer />
 
-            @if (!string.IsNullOrWhiteSpace(userName))
+            @* @if (!string.IsNullOrWhiteSpace(userName))
             {
                 <MudText Typo="Typo.subtitle1" Class="text-center pb-1 ps-4 pe-4">@Resource.Hello <strong>@userName</strong></MudText>
 
-            }
+            } *@
             <LanguagePicker CultureChanged=@LanguageChange />
 
             <MudHidden Breakpoint="Breakpoint.LgAndUp" >
-               @*  <MudTooltip Placement="Placement.Bottom" Text=@(_modePreferences == 1 ? @Resource.SystemPreference : _modePreferences == 2 ? @Resource.DarkMode : @Resource.LightMode)>
+                 <MudTooltip Placement="Placement.Bottom" Text=@(_modePreferences == 1 ? @Resource.SystemPreference : _modePreferences == 2 ? @Resource.DarkMode : @Resource.LightMode)>
                     <MudIconButton Icon="@_iconTheme" Color="Color.Primary" OnClick="@ThemeToggle">
                         @(_modePreferences == 1 ? "SystemPreference" : _modePreferences == 2 ? @Resource.DarkMode : @Resource.LightMode)
                     </MudIconButton>
-                </MudTooltip> *@
+                </MudTooltip> 
                 <MudIconButton Icon="@Icons.Material.Filled.ShoppingCart" Color="Color.Primary" OnClick="@GoToCart" />
 
             </MudHidden>
-@* 
+
             <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="false">
                 <MudTooltip Text=@(_modePreferences == 1 ? @Resource.SystemPreference : _modePreferences == 2 ? @Resource.DarkMode : @Resource.LightMode)>
                     <MudIconButton OnClick="@ThemeToggle" Icon="@_iconTheme" Color="Color.Primary" Title=@(_modePreferences == 1 ? @Resource.SystemPreference : _modePreferences == 2 ? @Resource.DarkMode : @Resource.LightMode) />
                 </MudTooltip>
-            </MudHidden> *@
+            </MudHidden> 
 
             <MudHidden Breakpoint="Breakpoint.MdAndDown" Invert="false">
                 <div class="d-flex align-center" style="margin-left: auto;">
@@ -102,9 +104,9 @@
                 </div>
             </MudHidden>
         </MudAppBar>
-        @* End of (MUD APP BAR) *@
+         End of (MUD APP BAR) 
 
-        @* Beginning of the (MUD DRAWER) and (MUD MAIN CONTENT) *@
+         Beginning of the (MUD DRAWER) and (MUD MAIN CONTENT) 
         <MudPaper Style="overflow:hidden; position:relative;">
             <MudDrawerContainer Class="mud-height-full">
                 <MudDrawer @bind-Open="@_open" @bind-Variant="_drawerVariant" @bind-OpenMiniOnHover="_openMiniOnHover" @bind-ClipMode="_drawerClipMode" Style="position: fixed;">
@@ -152,7 +154,7 @@
                 </MudMainContent>
             </MudDrawerContainer>
         </MudPaper>
-        @* Beginning of the (MUD DRAWER) and (MUD MAIN CONTENT) *@
+         Beginning of the (MUD DRAWER) and (MUD MAIN CONTENT)
     </MudLayout>
     <Footer />
 </MudRTLProvider>
@@ -203,10 +205,12 @@
 
     async Task Logout()
     {
-        await LocalStorage.RemoveItemAsync("jwtToken");
-        await LocalStorage.RemoveItemAsync("refreshToken");
-        await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        StateHasChanged();
+        await IdentityService.LogoutAsync();
+        NavigationManager.NavigateTo("/");
+        // await LocalStorage.RemoveItemAsync("jwtToken");
+        // await LocalStorage.RemoveItemAsync("refreshToken");
+        // await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        // StateHasChanged();
     }
 
     protected override async Task OnInitializedAsync()

@@ -1,4 +1,4 @@
-﻿@page "/stadiums/create"
+﻿@* @page "/stadiums/create"
 @page "/stadiums/update/{id:guid}"
 
 @inject ICustomSnackbarProvider Snackbar
@@ -187,3 +187,4 @@
     private bool IsUpdate()
         => Id != null;
 }
+ *@

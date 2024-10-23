@@ -1,4 +1,4 @@
-﻿@page "/role/unassign/{roleId}"
+﻿@* @page "/role/unassign/{roleId}"
 @using Client.Components.Dialogs.Permessions
 @using Shared.DTOs.Authorization.Request
 @using Shared.DTOs.Authorization.Response
@@ -11,7 +11,7 @@
 
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
 
-@* <MudCard Outlined="true">
+<MudCard Outlined="true">
     <MudCardHeader>
         <CardHeaderContent>
             <MudText Typo="Typo.h6">@roleDetails.RoleName</MudText>
@@ -30,7 +30,7 @@
 
         <MudButton OnClick="OpenConfirmationDeleteDialog" Disabled="usersList.Count != 0" StartIcon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Error" >@Resource.Delete</MudButton>
     </MudCardActions>
-</MudCard> *@
+</MudCard>
 
 
 
@@ -105,7 +105,7 @@
     </PagerContent>
 </MudDataGrid>
 
-@* <EditRoleDialog RoleId="@roleId" OnRoleEdited="ReloadRole" @bind-IsVisible=isEditModalVisible /> *@
+<EditRoleDialog RoleId="@roleId" OnRoleEdited="ReloadRole" @bind-IsVisible=isEditModalVisible />
 
 @code {
     MudDataGrid<ApplicationUserDTO> dataGrid;
@@ -325,3 +325,4 @@
         }
     }
 }
+ *@

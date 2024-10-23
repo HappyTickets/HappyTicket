@@ -1,4 +1,5 @@
-﻿using Application.Implementations;
+﻿using Application.Common.Interfaces.Services;
+using Application.Implementations;
 using Application.Interfaces;
 using Application.Payments.Service;
 using Application.Stadiums.Service;
@@ -21,6 +22,14 @@ namespace Application
                 .AddAutoMapper(cfg => cfg.AddExpressionMapping(), Assembly.GetExecutingAssembly())
                 .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
                 .AddFluentValidationAutoValidation();
+
+            services.AddScoped<ITicketService, TicketService>();
+            services.AddScoped<ITestMatchService, TestMatchService>();
+            services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<IStadiumService, StadiumService>();
+            services.AddScoped<IChampionService, ChampionService>();
+            services.AddScoped<ISponsorService, SponsorService>();
+            services.AddScoped<ICartService, CartService>();
 
             services
                 .AddScoped<ITicketService, TicketService>()

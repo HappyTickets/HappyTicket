@@ -1,4 +1,4 @@
-﻿@page "/teams/create"
+﻿@* @page "/teams/create"
 @page "/teams/update/{id:guid}"
 
 @inject ICustomSnackbarProvider Snackbar
@@ -218,3 +218,4 @@
     private bool IsUpdate()
         => Id != null;
 }
+ *@

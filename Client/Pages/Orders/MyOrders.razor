@@ -1,4 +1,4 @@
-﻿@page "/my-orders/{PaymentStatus:guid?}"
+﻿@* @page "/my-orders/{PaymentStatus:guid?}"
 @using Shared.Enums
 @inject IBOrderService BOrderService
 @inject ILocalStorageService LocalStorageService
@@ -166,3 +166,4 @@
         isLoading = false;
     }
 }
+ *@

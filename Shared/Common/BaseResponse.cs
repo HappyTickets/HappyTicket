@@ -5,7 +5,12 @@ namespace Shared.Common;
 
 public class BaseResponse<TData>
 {
-    public BaseResponse(HttpStatusCode status = HttpStatusCode.OK)
+    public BaseResponse()
+    {
+        Status = HttpStatusCode.OK;
+    }
+    
+    public BaseResponse(HttpStatusCode status)
     {
         Status = status;
     }
@@ -16,7 +21,7 @@ public class BaseResponse<TData>
         Status = status;
     }
 
-    public virtual TData? Data { get; set; }
+    public virtual TData Data { get; set; }
     public string? Title { get; set; }
     public HttpStatusCode Status { get; set; }
     public IEnumerable<ResponseError>? ErrorList { get; set; }

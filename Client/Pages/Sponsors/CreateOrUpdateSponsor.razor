@@ -1,12 +1,15 @@
 ﻿@page "/sponsors/create"
-@page "/sponsors/update/{id:guid}"
+@page "/sponsors/update/{id:long}"
+@using Client.Services._File
+@using Client.Services.Sponsors
+@using Shared.DTOs.Sponsors
 
 @inject ICustomSnackbarProvider Snackbar
 @inject ISponsorService SponsorService
 @inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 @inject IFileService FileService
-@attribute [Authorize(Policy = "IsAdmin")]
+@* @attribute [Authorize(Policy = "IsAdmin")] *@
 
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
 <PageTitle>
@@ -36,9 +39,9 @@
 
 @code {
     [Parameter]
-    public Guid? Id { get; set; }
+    public long? Id { get; set; }
 
-    private SponsorDto Sponsor = new();
+    private CreateOrUpdateSponsorDto Sponsor = new();
     KeyValuePair<string, string>? Logo = null;
 
 
@@ -51,22 +54,15 @@
     {
         if(IsUpdate())
         {
-            var result = await SponsorService.GetSponsorByIdAsync(Id!.Value, false);
-            result.Match(
-                response =>
-                {
-                    if (response.Data != null)
-                        Sponsor = response.Data;
+            var response = await SponsorService.GetByIdAsync(Id!.Value);
 
-                    return Unit.Default;
-                }
-                ,
-                ex =>
+            if (response.IsSuccess)
+                Sponsor = new CreateOrUpdateSponsorDto
                 {
-                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
-                    return Unit.Default;
-                }
-            );
+                    Name = response.Data.Name,
+                    Logo = response.Data.Logo,
+                    IsHappySponsor = response.Data.IsHappySponsor
+                };
         }
     }
 
@@ -91,88 +87,76 @@
 
     private async Task UploadFileAsync()
     {
-        var result = await FileService.UploadFileAsync(new()
-            {
-                Path = $"/Images/Sponsors/{Sponsor.Name}/{Logo?.Key}".Replace(" ", "_"),
-                Base64EncodedString = Logo?.Value
-            });
+        try {
+            var response = await FileService.UploadFileAsync(new()
+                {
+                    Path = $"/Images/Sponsors/{Sponsor.Name}/{Logo?.Key}".Replace(" ", "_"),
+                    Base64EncodedString = Logo?.Value
+                });
 
-        result.Match(
-            response =>
-            {
-                if (response.IsSuccess)
-                    Sponsor.Logo = response.Data;
-                else
-                    Snackbar.Show(Resource.File_Upoad_Error, Severity.Error);
-
-                return Unit.Default;
-            },
-            ex =>
-            {
+            if (response.IsSuccess)
+                Sponsor.Logo = response.Data;
+            else
                 Snackbar.Show(Resource.File_Upoad_Error, Severity.Error);
-                return Unit.Default;
-            }
-        );
+        }
+        catch
+        {
+            Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+        }
     }
 
     private async Task CreateSponsorAsync()
     {
-        var result = await SponsorService.CreateSponsorAsync(Sponsor);
-        result.Match(
-            response =>
+        try
+        {
+            var response = await SponsorService.CreateAsync(Sponsor);
+
+            if (response.IsSuccess)
             {
-                if (response.IsSuccess)
-                {
-                    Snackbar.Show(Resource.Sponsor_Created, Severity.Success);
-                    NavigationManager.NavigateTo("/sponsors");
-                }
-                else
-                {
-                    Snackbar.Show(response.Title, Severity.Error);
-                    if (response.ErrorList != null)
-                    {
-                        foreach (var error in response.ErrorList)
-                            Snackbar.Show($"{error.Title}: {error.Message}", Severity.Error);
-                    }
-                }
-                return Unit.Default;
-            },
-            ex =>
-            {
-                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
-                return Unit.Default;
+                Snackbar.Show(Resource.Sponsor_Created, Severity.Success);
+                NavigationManager.NavigateTo("/sponsors");
             }
-        );
+            else
+            {
+                Snackbar.Show(response.Title, Severity.Error);
+                if (response.ErrorList != null)
+                {
+                    foreach (var error in response.ErrorList)
+                        Snackbar.Show($"{error.Title}: {error.Message}", Severity.Error);
+                }
+            }
+        }
+        catch
+        {
+            Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+        }
     }
 
     private async Task UpdateSponsorAsync()
     {
-        var result = await SponsorService.UpdateSponsorAsync(Sponsor);
-        result.Match(
-            response =>
+        try
+        {
+            var resposne = await SponsorService.UpdateAsync(Id.Value, Sponsor);
+
+            if (resposne.IsSuccess)
             {
-                if (response.IsSuccess)
-                {
-                    Snackbar.Show(Resource.Sponsor_Updated, Severity.Success);
-                    NavigationManager.NavigateTo("/sponsors");
-                }
-                else
-                {
-                    Snackbar.Show(response.Title, Severity.Error);
-                    if (response.ErrorList != null)
-                    {
-                        foreach (var error in response.ErrorList)
-                            Snackbar.Show($"{error.Title}: {error.Message}", Severity.Error);
-                    }
-                }
-                return Unit.Default;
-            },
-            ex =>
-            {
-                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
-                return Unit.Default;
+                Snackbar.Show(Resource.Sponsor_Updated, Severity.Success);
+                NavigationManager.NavigateTo("/sponsors");
             }
-        );
+            else
+            {
+                Snackbar.Show(resposne.Title, Severity.Error);
+                if (resposne.ErrorList != null)
+                {
+                    foreach (var error in resposne.ErrorList)
+                        Snackbar.Show($"{error.Title}: {error.Message}", Severity.Error);
+                }
+            }
+        }
+        catch
+        {
+            Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+        }
     }
 
     private void OnFileChanged(Dictionary<string, string> files)

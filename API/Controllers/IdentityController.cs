@@ -56,14 +56,12 @@ public class IdentityController(IIdentityService userService) : BaseController
     [Route("Logout")]
     public async Task<IActionResult> Logout([FromBody] LogoutRequest logoutRequest, CancellationToken cancellationToken = default)
     {
-
         return Result(await _userService.LogoutAsync(logoutRequest, cancellationToken));
-
-
     }
 
     [HttpPost]
     [Route("RefreshAuthToken")]
+    [AllowAnonymous]
     public async Task<IActionResult> RefreshAuthToken([FromBody] RefreshAuthTokenRequest refreshAuthTokenRequest, CancellationToken cancellationToken = default)
     {
 

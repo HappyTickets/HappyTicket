@@ -1,4 +1,4 @@
-﻿@page "/checkout"
+﻿@* @page "/checkout"
 
 @inject BICartService CartService
 @inject ICustomSnackbarProvider Snackbar
@@ -49,4 +49,4 @@
         var paymentUrl = "https://paymentgateway.com/process-payment";
         NavigationManager.NavigateTo(paymentUrl);
     }
-}
+} *@

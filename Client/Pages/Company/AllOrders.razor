@@ -1,4 +1,4 @@
-﻿@page "/all-orders"
+﻿@* @page "/all-orders"
 @attribute [Authorize(Policy = "IsAdmin")]
 
 
@@ -7,7 +7,7 @@
         <MudText Typo="Typo.h6" Class="mx-auto">@Resource.ClosedOrders</MudText>
     </ToolBarContent>
     <HeaderContent>
-        @* <MudTh><MudTableSortLabel SortLabel="Id" T="OrderDto">@Resource.Id</MudTableSortLabel></MudTh> *@
+         <MudTh><MudTableSortLabel SortLabel="Id" T="OrderDto">@Resource.Id</MudTableSortLabel></MudTh> 
         <MudTh>
             <MudTextField Placeholder="Search" ValueChanged="@(async (string e) => await OnSearchKeyChanged(e, @Resource.Username.Replace(" ", "")))" />
             <MudTableSortLabel SortLabel="UserName" T="OrderDto">@Resource.DoneBy</MudTableSortLabel>
@@ -39,8 +39,8 @@
        
     </HeaderContent>
     <RowTemplate>
-        @* <MudTd DataLabel="Id">@(++Counter)</MudTd> *@
-        @* <MudTd DataLabel="Id">@context.User.Id</MudTd> *@
+         <MudTd DataLabel="Id">@(++Counter)</MudTd> 
+         <MudTd DataLabel="Id">@context.User.Id</MudTd> 
         <MudTd DataLabel="User Name">@context.User.UserName</MudTd>
         <MudTd DataLabel="Email">@context.User.Email</MudTd>
         <MudTd DataLabel="Phone Number">@context.User.PhoneNumber</MudTd>
@@ -71,3 +71,4 @@
     </PagerContent>
 </MudTable>
 
+ *@

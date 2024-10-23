@@ -1,4 +1,4 @@
-﻿@page "/match-details/{matchId:guid}"
+﻿@* @page "/match-details/{matchId:guid}"
 
 @inject ICustomSnackbarProvider Snackbar
 @inject BIMatchService MatchService
@@ -135,3 +135,4 @@
         NavigationManager.NavigateTo($"/buy-tickets/{matchId}");
     }
 }
+ *@
