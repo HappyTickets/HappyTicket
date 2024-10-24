@@ -61,23 +61,16 @@ namespace Application.Implementations
                     $"{nameof(Match.MatchTeams)}.{nameof(MatchTeam.Team)}"
 
                 };
+            DateTime currentDateTime = DateTime.Now;
             // Get the current date and time (local or UTC based on your needs)
-            var currentDateTime = DateTime.Now; // Use DateTime.UtcNow if your app works with UTC
-
+            var currentDate = currentDateTime.ToString("yyyy-MM-dd");  // Use DateTime.UtcNow if your app works with UTC
+            var currentTime = currentDateTime.TimeOfDay;
             // Fetch matches that are not finished and have valid EventDate and EventTime
             var matches = await FindAsync<FindActiveMatchesDto>(
-                x => x.EventDate != null && x.EventTime != null);
+                x => x.EventDate.Value.Date.ToString() == currentDate && ((x.EventTime.Value + TimeSpan.FromHours(2) >= currentTime) && (x.EventTime <= currentTime)));
 
-            // Perform the time calculation on the client side
-            var activeMatches = matches
-                .AsEnumerable()  // This moves the computation to the client-side
-                .Where(x =>
-                {
-                    var matchStartTime = x.EventDate.Value.Add(x.EventTime.Value);
-                    return matchStartTime <= currentDateTime; // Match has started or is about to start
-                });
 
-            return new BaseResponse<IEnumerable<FindActiveMatchesDto>>(activeMatches);
+            return new BaseResponse<IEnumerable<FindActiveMatchesDto>>(matches);
 
         }
         public async ValueTask<BaseResponse<PaginatedList<GetPaginatedMatchesDto>>> GetPaginatedAsync(PaginationSearchModel paginationParams)
