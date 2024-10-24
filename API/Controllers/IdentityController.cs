@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces.IIdentityServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Common;
 using Shared.DTOs.Identity.Login;
 using Shared.DTOs.Identity.Logout;
 using Shared.DTOs.Identity.RefreshAuthToken;
@@ -9,6 +10,8 @@ using Shared.DTOs.Identity.Register.ConfirmEmail;
 using Shared.DTOs.Identity.Register.SendEmailConfirmation;
 using Shared.DTOs.Identity.ResetPassword;
 using Shared.DTOs.Identity.ResetPassword.CreatePasswordResetToken;
+using Shared.DTOs.Identity.TokenDTOs;
+using System.Net;
 
 namespace API.Controllers;
 
@@ -56,17 +59,16 @@ public class IdentityController(IIdentityService userService) : BaseController
     [Route("Logout")]
     public async Task<IActionResult> Logout([FromBody] LogoutRequest logoutRequest, CancellationToken cancellationToken = default)
     {
-
         return Result(await _userService.LogoutAsync(logoutRequest, cancellationToken));
-
-
     }
 
     [HttpPost]
     [Route("RefreshAuthToken")]
+    [AllowAnonymous]
     public async Task<IActionResult> RefreshAuthToken([FromBody] RefreshAuthTokenRequest refreshAuthTokenRequest, CancellationToken cancellationToken = default)
     {
-
+        //return Result(new BaseResponse<TokenDTO>(HttpStatusCode.Unauthorized));
+        //return Result(new BaseResponse<TokenDTO>(new TokenDTO { JWT = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJSb2xlIjoiQWRtaW4iLCJzdWIiOiI3IiwibmFtZSI6ImhlbWEiLCJlbWFpbCI6ImhlbWFAZ21haWwuY29tIiwianRpIjoiZTMxZDZmZDktNDJmNi00Zjg1LWJiNTQtYjIwM2FhMGVjM2Q3IiwibmJmIjoxNzI5NzYxODI2LCJleHAiOjE3Mjk3NzIwMjYsImlhdCI6MTcyOTc2MTgyNn0.KF76ddzfa1I4AxPtztWPOTMYMvnQ1llhfIlQ5FVxadvY1j1gsAN-9RXAi3G0ciFZ8qPPbFm4Yu2eLm98hcwN3A", RefreshToken= "b184819b-0b68-42dd-9bf2-840039154a77" }));
         return Result(await _userService.RefreshAuthTokensAsync(refreshAuthTokenRequest, cancellationToken));
     }
 

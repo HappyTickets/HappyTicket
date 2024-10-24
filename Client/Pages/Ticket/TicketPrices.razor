@@ -1,4 +1,4 @@
-﻿@page "/match/ticket-prices/{matchId:guid}"
+﻿@* @page "/match/ticket-prices/{matchId:guid}"
 @using Shared.Enums
 @inject ICustomSnackbarProvider Snackbar
 @inject BIMatchService MatchService
@@ -65,9 +65,9 @@
                     <MudItem xs="12" md="1">
                         <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.TicketsCount</MudText>
                     </MudItem>
-                    @* <MudItem xs="12" md="2">
+                     <MudItem xs="12" md="2">
                         <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.Location</MudText>
-                    </MudItem> *@
+                    </MudItem> 
                     <MudItem xs="12" md="1">
                         <MudText Typo="Typo.subtitle1" Align="Align.Center">@Resource.DoDisplay</MudText>
                     </MudItem>
@@ -115,7 +115,7 @@
                         <MudItem xs="12" md="1">
                             <MudNumericField @bind-Value="ticket.t.TicketsCount" Required Label=@Resource.TicketsCount Min="1" Variant="Variant.Text" />
                         </MudItem>
-                       @*  <MudItem xs="12" md="2">
+                         <MudItem xs="12" md="2">
                             <MudSelect @bind-Value="ticket.t.Location" Required Label=@Resource.Location>
                                 <MudSelectItem Value=@("VIP")>@Resource.VIP</MudSelectItem>
                                 <MudSelectItem Value=@("Grade 1")>@Resource.Grade1</MudSelectItem>
@@ -125,7 +125,7 @@
                                 <MudSelectItem Value=@("Invitations")>@Resource.Invitation</MudSelectItem>
                                 <MudSelectItem Value=@("All")>@Resource.TheAll</MudSelectItem>
                             </MudSelect>
-                        </MudItem> *@
+                        </MudItem> 
                         <MudItem xs="12" md="1">
                             <MudCheckBox T="bool" @bind-Value="ticket.t.DisplayForSale" />
                         </MudItem>
@@ -269,3 +269,4 @@
         }
     }
 }
+ *@

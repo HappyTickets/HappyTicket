@@ -1,9 +1,11 @@
 ﻿using Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTOs.Sponsors;
 
 namespace API.Controllers
 {
+    [Authorize]
     public class SponsorsController : BaseController
     {
         private readonly ISponsorService _sponsorService;
@@ -17,19 +19,19 @@ namespace API.Controllers
         public async Task<IActionResult> CreateAsync(CreateOrUpdateSponsorDto request)
             => Result(await _sponsorService.CreateAsync(request));
 
-        [HttpPut("update/{id:long}")]
+        [HttpPut("update")]
         public async Task<IActionResult> UpdateAsync(long id, CreateOrUpdateSponsorDto request)
             => Result(await _sponsorService.UpdateAsync(id, request));
 
-        [HttpDelete("soft-delete/{id:long}")]
+        [HttpDelete("soft-delete")]
         public async Task<IActionResult> SoftDeleteAsync(long id)
             => Result(await _sponsorService.SoftDeleteAsync(id));
 
-        [HttpDelete("hard-delete/{id:long}")]
+        [HttpDelete("hard-delete")]
         public async Task<IActionResult> HardDeleteAsync(long id)
             => Result(await _sponsorService.HardDeleteAsync(id));
 
-        [HttpGet("get-by-id/{id:long}")]
+        [HttpGet("get-by-id")]
         public async Task<IActionResult> GetByIdAsync(long id)
            => Result(await _sponsorService.GetByIdAsync(id));
 

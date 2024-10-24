@@ -1,4 +1,6 @@
 ﻿@page "/sponsors"
+@using Client.Services.Sponsors
+@using Shared.DTOs.Sponsors
 
 @inject ICustomSnackbarProvider Snackbar
 @inject ISponsorService SponsorService
@@ -60,49 +62,48 @@
 
     private async Task LoadSponsorsAsync()
     {
-        var result = await SponsorService.GetSponsorsAsync(false);
-        result.Match(
-            response =>
-            {
-                if (response.Data != null)
-                    SponsorsList = response.Data.ToList();
+        try 
+        {
+            var result = await SponsorService.GetAllAsync();
 
-                return Unit.Default;
-            },
-            ex =>
-            {
-                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
-                return Unit.Default;
-            }
-        );
+            if (result.IsSuccess)
+                SponsorsList = result.Data.ToList();
+        }
+        catch
+        {
+            
+        }
     }
 
     private async Task DeleteSponsorAsync(SponsorDto sponsor)
     {
-        if (await PopUpService.ConfirmDeletionAsync())
+        try
         {
-            SponsorsList.Remove(sponsor);
+            if (await PopUpService.ConfirmDeletionAsync())
+            {
+                var response = await SponsorService.HardDeleteAsync(sponsor.Id);
 
-            var result = await SponsorService.DeleteSponsorAsync(sponsor.Id);
-            result.Match(
-                response =>
+                if (response.IsSuccess) 
                 {
-                    if(response.IsSuccess)
-                        Snackbar.Show(Resource.Sponsor_Deleted_Successfully, Severity.Success);
-                    else
-                    {
-                        SponsorsList.Add(sponsor);
-                        Snackbar.Show(Resource.Sponsor_Deletion_Failure, Severity.Error);
-                        Snackbar.Show(response.Title, Severity.Error);
-                    }
-                    return Unit.Default;
-                },
-                ex =>
-                {
-                    Snackbar.Show(Resource.Error_Occurred, Severity.Error);
-                    return Unit.Default;
+                    Snackbar.Show(Resource.Sponsor_Deleted_Successfully, Severity.Success);
+                    SponsorsList.Remove(sponsor);
                 }
-            );
+                else
+                {
+                    SponsorsList.Add(sponsor);
+                    Snackbar.Show(Resource.Sponsor_Deletion_Failure, Severity.Error);
+                    Snackbar.Show(response.Title, Severity.Error);
+                    if (response.ErrorList != null)
+                    {
+                        foreach (var error in response.ErrorList)
+                            Snackbar.Show($"{error.Title}: {error.Message}", Severity.Error);
+                    }
+                }
+            }
+        }
+        catch
+        {
+            Snackbar.Show(Resource.Error_Occurred, Severity.Error);
         }
     }
 }

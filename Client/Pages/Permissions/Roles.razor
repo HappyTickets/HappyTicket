@@ -1,4 +1,4 @@
-﻿@page "/Roles"
+﻿@* @page "/Roles"
 @using Client.Components.Dialogs.Permessions
 @using Shared.DTOs.Authorization.Request
 @inject ICustomSnackbarProvider Snackbar
@@ -62,3 +62,4 @@
 <AddRoleDialog OnRoleCreated="ReloadRoles" @bind-IsVisible=isCreateModalVisible />
 <EditRoleDialog RoleId="@selectedRoleId" OnRoleEdited="ReloadRoles" @bind-IsVisible=isEditModalVisible />
 
+ *@

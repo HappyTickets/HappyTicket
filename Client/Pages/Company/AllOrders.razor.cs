@@ -1,138 +1,138 @@
-﻿using Client.Services.Interfaces;
-using LanguageExt;
-using Microsoft.AspNetCore.Components;
-using MudBlazor;
-using Shared.Common.General;
-using Shared.DTOs.OrderDtos.Response;
+﻿//using Client.Services.Interfaces;
+//using LanguageExt;
+//using Microsoft.AspNetCore.Components;
+//using MudBlazor;
+//using Shared.Common.General;
+//using Shared.DTOs.OrderDtos.Response;
 
-namespace Client.Pages.Company
-{
-    public partial class AllOrders : ComponentBase
-    {
-        [Inject] private IBOrderService BOrderService { get; set; } = default!;
+//namespace Client.Pages.Company
+//{
+//    public partial class AllOrders : ComponentBase
+//    {
+//        [Inject] private IBOrderService BOrderService { get; set; } = default!;
 
-        private TableData<OrderDto> OrdersTableData { get; set; } = new TableData<OrderDto>
-        {
-            Items = [],
-            TotalItems = 0,
-        };
+//        private TableData<OrderDto> OrdersTableData { get; set; } = new TableData<OrderDto>
+//        {
+//            Items = [],
+//            TotalItems = 0,
+//        };
 
-        private PaginationParams PaginationParams { get; set; } = new PaginationParams
-        {
-            PageIndex = 0,
-            PageSize = 10,
-        };
-        private PaginationSearchModel PaginationSearchModel { get; set; } = new PaginationSearchModel
-        {
-            PageIndex = 0,
-            PageSize = 10,
-            SearchIn = string.Empty,
-            SearchKey = string.Empty,
-        };
-
-
-
-        private int Counter { get; set; } = 0;
-
-        protected override async Task OnInitializedAsync()
-        {
-            var data = await BOrderService.GetOrdersCountAsync();
-
-            data.Match(
-                success =>
-                {
-                    if (success.IsSuccess)
-                    {
-                        OrdersTableData.TotalItems = (int)success.Data;
-                    }
-
-                    return new Unit();
-                },
-                failure =>
-                {
-                    return new Unit();
-                }
-            );
-        }
-
-        private async Task OnSearchKeyChanged(string searchKey, string searchIn)
-        {
-            PaginationSearchModel.SearchKey = searchKey;
-            PaginationSearchModel.SearchIn = searchIn;
-
-            TableState tableState = new TableState
-            {
-                Page = PaginationSearchModel.PageIndex,
-                PageSize = PaginationSearchModel.PageSize,
-            };
-
-            await ReloadServerDataAsync(tableState);
-        }
+//        private PaginationParams PaginationParams { get; set; } = new PaginationParams
+//        {
+//            PageIndex = 0,
+//            PageSize = 10,
+//        };
+//        private PaginationSearchModel PaginationSearchModel { get; set; } = new PaginationSearchModel
+//        {
+//            PageIndex = 0,
+//            PageSize = 10,
+//            SearchIn = string.Empty,
+//            SearchKey = string.Empty,
+//        };
 
 
 
-        private async Task<TableData<OrderDto>> ReloadServerDataAsync(TableState state)
-        {
+//        private int Counter { get; set; } = 0;
 
-            //PaginationParams.PageIndex = state.Page;
-            //PaginationParams.PageSize = state.PageSize;
+//        protected override async Task OnInitializedAsync()
+//        {
+//            var data = await BOrderService.GetOrdersCountAsync();
 
-            //var data = await BOrderService.GetPaginatedOrdersAsync(PaginationParams, false);
+//            data.Match(
+//                success =>
+//                {
+//                    if (success.IsSuccess)
+//                    {
+//                        OrdersTableData.TotalItems = (int)success.Data;
+//                    }
 
-            //_ = data.Match(
-            //        success =>
-            //        {
-            //            if (success.IsSuccess)
-            //            {
-            //                OrdersTableData.Items = success
-            //                .Data?
-            //                .OrderBy(x => x.User.UserName, StringComparer.Ordinal)
-            //                .ToList() ?? [];
+//                    return new Unit();
+//                },
+//                failure =>
+//                {
+//                    return new Unit();
+//                }
+//            );
+//        }
 
-            //                Counter = state.Page * state.PageSize;
-            //            }
+//        private async Task OnSearchKeyChanged(string searchKey, string searchIn)
+//        {
+//            PaginationSearchModel.SearchKey = searchKey;
+//            PaginationSearchModel.SearchIn = searchIn;
 
-            //            return OrdersTableData;
-            //        },
-            //        failure =>
-            //        {
-            //            return OrdersTableData;
-            //        }
-            //    );
+//            TableState tableState = new TableState
+//            {
+//                Page = PaginationSearchModel.PageIndex,
+//                PageSize = PaginationSearchModel.PageSize,
+//            };
 
-            //return OrdersTableData;
-
-            PaginationSearchModel.PageIndex = state.Page;
-            PaginationSearchModel.PageSize = state.PageSize;
-            //PaginationSearchModel.PageSize = state.PageSize != 0 ? state.PageSize : 10;
-
-            PaginationSearchModel.OrderBy = state.SortLabel;  // Capture the sorted column name
-            PaginationSearchModel.IsDescending = state.SortDirection == SortDirection.Descending; // Set sorting direction
-
-            var result = await BOrderService.GetPaginatedOrdersAsync(PaginationSearchModel, false);
+//            await ReloadServerDataAsync(tableState);
+//        }
 
 
 
-            result.Match(
-                success =>
-                {
-                    if (success.IsSuccess)
-                    {
-                        OrdersTableData.Items = success.Data?.ToList() ?? new List<OrderDto>();
-                        OrdersTableData.TotalItems = success.Data?.Count() ?? 0;
-                        Counter = state.Page * state.PageSize;
-                    }
+//        private async Task<TableData<OrderDto>> ReloadServerDataAsync(TableState state)
+//        {
 
-                    return OrdersTableData;
-                },
-                failure =>
-                {
+//            //PaginationParams.PageIndex = state.Page;
+//            //PaginationParams.PageSize = state.PageSize;
 
-                    return OrdersTableData;
-                }
-            );
+//            //var data = await BOrderService.GetPaginatedOrdersAsync(PaginationParams, false);
 
-            return OrdersTableData;
-        }
-    }
-}
+//            //_ = data.Match(
+//            //        success =>
+//            //        {
+//            //            if (success.IsSuccess)
+//            //            {
+//            //                OrdersTableData.Items = success
+//            //                .Data?
+//            //                .OrderBy(x => x.User.UserName, StringComparer.Ordinal)
+//            //                .ToList() ?? [];
+
+//            //                Counter = state.Page * state.PageSize;
+//            //            }
+
+//            //            return OrdersTableData;
+//            //        },
+//            //        failure =>
+//            //        {
+//            //            return OrdersTableData;
+//            //        }
+//            //    );
+
+//            //return OrdersTableData;
+
+//            PaginationSearchModel.PageIndex = state.Page;
+//            PaginationSearchModel.PageSize = state.PageSize;
+//            //PaginationSearchModel.PageSize = state.PageSize != 0 ? state.PageSize : 10;
+
+//            PaginationSearchModel.OrderBy = state.SortLabel;  // Capture the sorted column name
+//            PaginationSearchModel.IsDescending = state.SortDirection == SortDirection.Descending; // Set sorting direction
+
+//            var result = await BOrderService.GetPaginatedOrdersAsync(PaginationSearchModel, false);
+
+
+
+//            result.Match(
+//                success =>
+//                {
+//                    if (success.IsSuccess)
+//                    {
+//                        OrdersTableData.Items = success.Data?.ToList() ?? new List<OrderDto>();
+//                        OrdersTableData.TotalItems = success.Data?.Count() ?? 0;
+//                        Counter = state.Page * state.PageSize;
+//                    }
+
+//                    return OrdersTableData;
+//                },
+//                failure =>
+//                {
+
+//                    return OrdersTableData;
+//                }
+//            );
+
+//            return OrdersTableData;
+//        }
+//    }
+//}

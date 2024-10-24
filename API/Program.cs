@@ -59,7 +59,7 @@ builder.Services.AddSwaggerServices();
 builder.Services.AddDatabaseServices(builder.Configuration, DatabaseType.SqlServer); // Change this enum to MySql
 builder.Services.AddDependencyInjectionServices();
 builder.Services.AddCORsServices();
-builder.Services.AddControllers().AddJsonOptions(opt => { opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve; });
+builder.Services.AddControllers();//.AddJsonOptions(opt => { opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve; });
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddScoped<WarmUpService>();
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");

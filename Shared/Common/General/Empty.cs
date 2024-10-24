@@ -2,7 +2,7 @@
 {
     public class Empty
     {
-        private Empty() { }
+        public Empty() { }
 
         public static Empty Default { get; } = new Empty();
     }

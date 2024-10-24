@@ -1,4 +1,4 @@
-﻿@    using Shared.DTOs.Champion
+﻿@* @using Shared.DTOs.Champion
 @inject ICustomSnackbarProvider Snackbar
 @inject IChampionService ChampionService
 @inject ISponsorService SponsorService
@@ -160,3 +160,4 @@
         => Sponsors.First(s => s.Id == id).Name;
 
 }
+ *@

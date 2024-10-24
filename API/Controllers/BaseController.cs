@@ -10,7 +10,7 @@ namespace API.Controllers;
 //[ValidationActionFilter]
 public abstract class BaseController : ControllerBase
 {
-    protected IActionResult Result(BaseResponse<object?> baseResponse)
+    protected IActionResult Result<TData>(BaseResponse<TData> baseResponse)
         => baseResponse.Status switch
         {
             HttpStatusCode.NoContent => NoContent(),
