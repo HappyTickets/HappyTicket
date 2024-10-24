@@ -9,6 +9,6 @@ namespace Client.Services.Identity
     {
         Task<BaseResponse<TokenDTO>> LoginAsync(LoginRequest request);
         Task<BaseResponse<TokenDTO>> ReloginAsync();
-        Task<BaseResponse<Empty>> LogoutAsync();
+        Task LogoutAsync();
     }
 }

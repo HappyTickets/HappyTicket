@@ -6,7 +6,7 @@
 @inject ISponsorService SponsorService
 @inject NavigationManager NavigationManager
 @inject IPopUpService PopUpService
-@* @attribute [Authorize(Policy = "IsAdmin")] *@
+@attribute [Authorize(Policy = "IsAdmin")]
 
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
 <PageTitle>@Resource.Sponsors_All</PageTitle>
@@ -62,28 +62,48 @@
 
     private async Task LoadSponsorsAsync()
     {
-        var result = await SponsorService.GetAllAsync();
+        try 
+        {
+            var result = await SponsorService.GetAllAsync();
 
-        if (result.IsSuccess)
-            SponsorsList = result.Data.ToList();
+            if (result.IsSuccess)
+                SponsorsList = result.Data.ToList();
+        }
+        catch
+        {
+            
+        }
     }
 
     private async Task DeleteSponsorAsync(SponsorDto sponsor)
     {
-        if (await PopUpService.ConfirmDeletionAsync())
+        try
         {
-            SponsorsList.Remove(sponsor);
-
-            var response = await SponsorService.HardDeleteAsync(sponsor.Id);
-
-            if (response.IsSuccess)
-                Snackbar.Show(Resource.Sponsor_Deleted_Successfully, Severity.Success);
-            else
+            if (await PopUpService.ConfirmDeletionAsync())
             {
-                SponsorsList.Add(sponsor);
-                Snackbar.Show(Resource.Sponsor_Deletion_Failure, Severity.Error);
-                Snackbar.Show(response.Title, Severity.Error);
+                var response = await SponsorService.HardDeleteAsync(sponsor.Id);
+
+                if (response.IsSuccess) 
+                {
+                    Snackbar.Show(Resource.Sponsor_Deleted_Successfully, Severity.Success);
+                    SponsorsList.Remove(sponsor);
+                }
+                else
+                {
+                    SponsorsList.Add(sponsor);
+                    Snackbar.Show(Resource.Sponsor_Deletion_Failure, Severity.Error);
+                    Snackbar.Show(response.Title, Severity.Error);
+                    if (response.ErrorList != null)
+                    {
+                        foreach (var error in response.ErrorList)
+                            Snackbar.Show($"{error.Title}: {error.Message}", Severity.Error);
+                    }
+                }
             }
+        }
+        catch
+        {
+            Snackbar.Show(Resource.Error_Occurred, Severity.Error);
         }
     }
 }

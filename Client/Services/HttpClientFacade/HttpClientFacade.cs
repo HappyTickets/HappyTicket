@@ -1,7 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Client.Services.AuthStateProvider;
 using Client.Services.Identity;
-using Microsoft.AspNetCore.Components;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -14,15 +13,13 @@ namespace Client.Services._HttpClientFacade
         private readonly IAuthenticationStateProvider _authStateProvider;
         private readonly IServiceProvider _serviceProvider;
         private readonly ILocalStorageService _localStorage;
-        private readonly NavigationManager _navigationManager;
 
-        public HttpClientFacade(HttpClient httpClient, IAuthenticationStateProvider authStateProvider, IServiceProvider serviceProvider, ILocalStorageService localStorage, NavigationManager navigationManager)
+        public HttpClientFacade(HttpClient httpClient, IAuthenticationStateProvider authStateProvider, IServiceProvider serviceProvider, ILocalStorageService localStorage)
         {
             _httpClient = httpClient;
             _authStateProvider = authStateProvider;
             _serviceProvider = serviceProvider;
             _localStorage = localStorage;
-            _navigationManager = navigationManager;
         }
 
         public async Task<TResponse> GetAsync<TResponse>(string url, bool useAuth = true)
@@ -78,24 +75,12 @@ namespace Client.Services._HttpClientFacade
                 else
                 {
                     var identityService = _serviceProvider.GetRequiredService<IIdentityService>();
-                    try
-                    {
-                        var result = await identityService.ReloginAsync();
-                        if (result.IsSuccess)
-                        {
-                            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.Data!.JWT);
-                        }
-                        else
-                        {
-                            await identityService.LogoutAsync();
-                            _navigationManager.NavigateTo("/login");
-                        }
-                    }
-                    catch
-                    {
+                    
+                    var response = await identityService.ReloginAsync();         
+                    if (response.IsSuccess)
+                        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", response.Data!.JWT);
+                    else
                         await identityService.LogoutAsync();
-                        _navigationManager.NavigateTo("/login");
-                    }
                 }
             }
         }

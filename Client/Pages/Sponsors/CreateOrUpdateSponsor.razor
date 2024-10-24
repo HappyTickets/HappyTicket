@@ -9,7 +9,7 @@
 @inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 @inject IFileService FileService
-@* @attribute [Authorize(Policy = "IsAdmin")] *@
+@attribute [Authorize(Policy = "IsAdmin")]
 
 <LanguageTrackProvider OnInitializeEvent="provider => provider.RegisterComponent(this)" />
 <PageTitle>
@@ -54,15 +54,21 @@
     {
         if(IsUpdate())
         {
-            var response = await SponsorService.GetByIdAsync(Id!.Value);
+            try {
+                var response = await SponsorService.GetByIdAsync(Id!.Value);
 
-            if (response.IsSuccess)
-                Sponsor = new CreateOrUpdateSponsorDto
+                if (response.IsSuccess)
+                    Sponsor = new CreateOrUpdateSponsorDto
                 {
                     Name = response.Data.Name,
                     Logo = response.Data.Logo,
                     IsHappySponsor = response.Data.IsHappySponsor
                 };
+            }
+            catch
+            {
+                Snackbar.Show(Resource.Error_Occurred, Severity.Error);
+            }
         }
     }
 
