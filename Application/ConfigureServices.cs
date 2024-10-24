@@ -23,14 +23,6 @@ namespace Application
                 .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
                 .AddFluentValidationAutoValidation();
 
-            services.AddScoped<ITicketService, TicketService>();
-            services.AddScoped<ITestMatchService, TestMatchService>();
-            services.AddScoped<IEmailSender, EmailSender>();
-            services.AddScoped<IStadiumService, StadiumService>();
-            services.AddScoped<IChampionService, ChampionService>();
-            services.AddScoped<ISponsorService, SponsorService>();
-            services.AddScoped<ICartService, CartService>();
-
             services
                 .AddScoped<ITicketService, TicketService>()
                 .AddScoped<ITestMatchService, TestMatchService>()
